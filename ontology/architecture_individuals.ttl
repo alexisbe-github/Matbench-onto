@@ -1,0 +1,153 @@
+@prefix : <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@base <https://k.loria.fr/ontologies/architectureonto#> .
+
+<https://k.loria.fr/ontologies/architectureonto-individuals> rdf:type owl:Ontology ;
+                                                              owl:imports <https://k.loria.fr/ontologies/architectureonto> .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_family
+:mattersim_family rdf:type owl:NamedIndividual ,
+                           :ModelFamily ;
+                  :hasVariant :mattersim_graphormer ,
+                              :mattersim_m3gnet .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_graphormer
+:mattersim_graphormer rdf:type owl:NamedIndividual ,
+                               :ModelVariant ;
+                      :hasParameterNumber 182000000 .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_m3gnet
+:mattersim_m3gnet rdf:type owl:NamedIndividual ,
+                           :ModelVariant ;
+                  :hasBackboneArchitecture archind:m3gnet_architecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_architecture
+archind:alphanet_architecture rdf:type owl:NamedIndividual ,
+                                       :NeuralNetworkArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_family
+archind:alphanet_family rdf:type owl:NamedIndividual ,
+                                 :ModelFamily ;
+                        :hasVariant archind:alphanet_l ,
+                                    archind:alphanet_s .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_l
+archind:alphanet_l rdf:type owl:NamedIndividual ,
+                            :ModelVariant ;
+                   :hasMachineLearningArchitecture archind:alphanet_architecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_s
+archind:alphanet_s rdf:type owl:NamedIndividual ,
+                            :ModelVariant ;
+                   :hasMachineLearningArchitecture archind:alphanet_architecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#equiformer_family
+archind:equiformer_family rdf:type owl:NamedIndividual ,
+                                   :ModelFamily ;
+                          :hasVariant archind:equiformer_v1 ,
+                                      archind:equiformer_v2 ,
+                                      archind:equiformer_v3 .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#equiformer_v1
+archind:equiformer_v1 rdf:type owl:NamedIndividual ,
+                               :ModelVariant .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#equiformer_v2
+archind:equiformer_v2 rdf:type owl:NamedIndividual ,
+                               :ModelVariant .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#equiformer_v3
+archind:equiformer_v3 rdf:type owl:NamedIndividual ,
+                               :ModelVariant ;
+                      :hasMachineLearningArchitecture archind:equiformer_v3_architecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#equiformer_v3_architecture
+archind:equiformer_v3_architecture rdf:type owl:NamedIndividual ,
+                                            :EquivariantMessagePassingNeuralNetworkArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#graphormer_decoder_architecture
+archind:graphormer_decoder_architecture rdf:type owl:NamedIndividual ,
+                                                 :NeuralNetworkArchitecture ;
+                                        :hasMachineLearningArchitectureConfiguration archind:graphormer_decoder_config .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#graphormer_decoder_config
+archind:graphormer_decoder_config rdf:type owl:NamedIndividual ,
+                                           :MachineLearningArchitectureConfiguration ;
+                                  :hasLayerCount 10 .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#graphormer_encoder_architecture
+archind:graphormer_encoder_architecture rdf:type owl:NamedIndividual ,
+                                                 :GraphTransformerArchitecture ;
+                                        :hasMachineLearningArchitectureConfiguration archind:graphormer_encoder_config .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#graphormer_encoder_config
+archind:graphormer_encoder_config rdf:type owl:NamedIndividual ,
+                                           :MachineLearningArchitectureConfiguration ;
+                                  :hasHiddenDimension 768 ;
+                                  :hasLayerCount 24 .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#graphormer_family
+archind:graphormer_family rdf:type owl:NamedIndividual ,
+                                   :ModelFamily .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_architecture
+archind:m3gnet_architecture rdf:type owl:NamedIndividual ,
+                                     :MessagePassingNeuralNetworkArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_family
+archind:m3gnet_family rdf:type owl:NamedIndividual ,
+                               :ModelFamily .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_gated_neural_network
+archind:m3gnet_gated_neural_network rdf:type owl:NamedIndividual ,
+                                             :GatedNeuralNetworkArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_graphormer_architecture
+archind:mattersim_graphormer_architecture rdf:type owl:NamedIndividual ,
+                                                   :GraphTransformerArchitecture ;
+                                          :hasBackboneArchitecture archind:graphormer_encoder_architecture ;
+                                          :hasHeadArchitecture archind:graphormer_decoder_architecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_graphormer_config
+archind:mattersim_graphormer_config rdf:type owl:NamedIndividual .
+
+
+###  https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_m3gnet_architecture
+archind:mattersim_m3gnet_architecture rdf:type owl:NamedIndividual ,
+                                               :NeuralNetworkArchitecture ;
+                                      :hasBackboneArchitecture archind:m3gnet_architecture ;
+                                      :hasHeadArchitecture archind:m3gnet_gated_neural_network .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

@@ -1,0 +1,169 @@
+@prefix : <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <https://k.loria.fr/ontologies/architectureonto#> .
+
+<https://k.loria.fr/ontologies/architectureonto> rdf:type owl:Ontology ;
+                                                  owl:versionIRI <https://k.loria.fr/ontologies/architectureonto> .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://k.loria.fr/ontologies/architectureonto#hasBackboneArchitecture
+:hasBackboneArchitecture rdf:type owl:ObjectProperty ;
+                         rdfs:subPropertyOf :hasComponent ;
+                         rdfs:domain [ rdf:type owl:Class ;
+                                       owl:unionOf ( :MachineLearningArchitecture
+                                                     :ModelVariant
+                                                   )
+                                     ] ;
+                         rdfs:range :MachineLearningArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#hasComponent
+:hasComponent rdf:type owl:ObjectProperty ,
+                       owl:TransitiveProperty ;
+              rdfs:domain [ rdf:type owl:Class ;
+                            owl:unionOf ( :MachineLearningArchitecture
+                                          :ModelVariant
+                                        )
+                          ] ;
+              rdfs:range :MachineLearningArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#hasHeadArchitecture
+:hasHeadArchitecture rdf:type owl:ObjectProperty ;
+                     rdfs:subPropertyOf :hasComponent ;
+                     rdfs:domain [ rdf:type owl:Class ;
+                                   owl:unionOf ( :MachineLearningArchitecture
+                                                 :ModelVariant
+                                               )
+                                 ] ;
+                     rdfs:range :MachineLearningArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture
+:hasMachineLearningArchitecture rdf:type owl:ObjectProperty ,
+                                         owl:FunctionalProperty ;
+                                rdfs:domain :ModelVariant ;
+                                rdfs:range :MachineLearningArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitectureConfiguration
+:hasMachineLearningArchitectureConfiguration rdf:type owl:ObjectProperty ,
+                                                      owl:FunctionalProperty ;
+                                             rdfs:domain :MachineLearningArchitecture ;
+                                             rdfs:range :MachineLearningArchitectureConfiguration .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#hasVariant
+:hasVariant rdf:type owl:ObjectProperty ;
+            rdfs:domain :ModelFamily ;
+            rdfs:range :ModelVariant ;
+            rdfs:comment "Connects model family to members of his family." .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  https://k.loria.fr/ontologies/architectureonto#hasHiddenDimension
+:hasHiddenDimension rdf:type owl:DatatypeProperty ;
+                    rdfs:domain :MachineLearningArchitectureConfiguration ;
+                    rdfs:range xsd:int .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#hasLayerCount
+:hasLayerCount rdf:type owl:DatatypeProperty ;
+               rdfs:domain :MachineLearningArchitectureConfiguration ;
+               rdfs:range xsd:int .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#hasParameterNumber
+:hasParameterNumber rdf:type owl:DatatypeProperty ,
+                             owl:FunctionalProperty ;
+                    rdfs:domain :MachineLearningArchitectureConfiguration ,
+                                :ModelVariant ;
+                    rdfs:range xsd:integer .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  https://k.loria.fr/ontologies/architectureonto#AttentionBasedArchitecture
+:AttentionBasedArchitecture rdf:type owl:Class ;
+                            rdfs:subClassOf :NeuralNetworkArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#EquivariantGraphNeuralNetworkArchitecture
+:EquivariantGraphNeuralNetworkArchitecture rdf:type owl:Class ;
+                                           rdfs:subClassOf :EquivariantNeuralNetworkArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#EquivariantMessagePassingNeuralNetworkArchitecture
+:EquivariantMessagePassingNeuralNetworkArchitecture rdf:type owl:Class ;
+                                                    rdfs:subClassOf :EquivariantGraphNeuralNetworkArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#EquivariantNeuralNetworkArchitecture
+:EquivariantNeuralNetworkArchitecture rdf:type owl:Class ;
+                                      rdfs:subClassOf :NeuralNetworkArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#GatedNeuralNetworkArchitecture
+:GatedNeuralNetworkArchitecture rdf:type owl:Class ;
+                                rdfs:subClassOf :NeuralNetworkArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#GraphConvolutionArchitecture
+:GraphConvolutionArchitecture rdf:type owl:Class ;
+                              rdfs:subClassOf :GraphNeuralNetworkArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#GraphNeuralNetworkArchitecture
+:GraphNeuralNetworkArchitecture rdf:type owl:Class ;
+                                rdfs:subClassOf :NeuralNetworkArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#GraphTransformerArchitecture
+:GraphTransformerArchitecture rdf:type owl:Class ;
+                              rdfs:subClassOf :TransformerArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#MachineLearningArchitecture
+:MachineLearningArchitecture rdf:type owl:Class .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#MachineLearningArchitectureConfiguration
+:MachineLearningArchitectureConfiguration rdf:type owl:Class .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#MessagePassingNeuralNetworkArchitecture
+:MessagePassingNeuralNetworkArchitecture rdf:type owl:Class ;
+                                         rdfs:subClassOf :GraphNeuralNetworkArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#ModelFamily
+:ModelFamily rdf:type owl:Class .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#ModelVariant
+:ModelVariant rdf:type owl:Class .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#NeuralNetworkArchitecture
+:NeuralNetworkArchitecture rdf:type owl:Class ;
+                           rdfs:subClassOf :MachineLearningArchitecture .
+
+
+###  https://k.loria.fr/ontologies/architectureonto#TransformerArchitecture
+:TransformerArchitecture rdf:type owl:Class ;
+                         rdfs:subClassOf :AttentionBasedArchitecture .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

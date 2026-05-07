@@ -1,0 +1,10 @@
+{
+  "subject": {
+    "rdf:type": "ontology:Class",
+    "rdfs:label": "Person"
+  },
+  "predicate": "hasName",
+  "object": {
+    "rdf:value": "John Doe"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "template_id": "matbench_discovery_yaml_to_ontology_template_v1",
+  "model_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\mattersim-v1-5M.yml",
+  "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\2405.04967v2.pdf",
+  "ontology_context_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\ontology_context.json",
+  "ollama_model": "qwen2.5:1.5b",
+  "num_individuals": 0,
+  "answers": {
+    "questions_model": {
+      "question_model_name": {
+        "question": "What is the model name ?",
+        "variable": "model_name",
+        "yaml_path": "model_name",
+        "raw_value": "MatterSim v1 5M",
+        "selected_iri": null,
+        "selected_name": null,
+        "selected_individual": null,
+        "confidence": 0,
+        "source": "none",
+        "evidence": "",
+        "reason": "<urlopen error [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée>",
+        "candidate_count": 0,
+        "candidates": []
+      },
+      "question_model_family": {
+        "question": "Which ontology individual represents the family ?",
+        "variable": "model_family",
+        "yaml_path": null,
+        "raw_value": null,
+        "selected_iri": null,
+        "selected_name": null,
+        "selected_individual": null,
+        "confidence": 0,
+        "source": "none",
+        "evidence": "",
+        "reason": "<urlopen error [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée>",
+        "candidate_count": 0,
+        "candidates": []
+      },
+      "question_model_variant": {
+        "question": "What is the model variant ?",
+        "variable": "model_variable",
+        "yaml_path": null,
+        "raw_value": null,
+        "selected_iri": null,
+        "selected_name": null,
+        "selected_individual": null,
+        "confidence": 0,
+        "source": "none",
+        "evidence": "",
+        "reason": "<urlopen error [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée>",
+        "candidate_count": 0,
+        "candidates": []
+      },
+      "question_model_architecture": {
+        "question": "Which existing ontology individual represents the model architecture?",
+        "variable": "model_architecture",
+        "yaml_path": "notes.Description",
+        "raw_value": "This is an open source version of MatterSim V1 based on M3GNet architecture.",
+        "selected_iri": null,
+        "selected_name": null,
+        "selected_individual": null,
+        "confidence": 0,
+        "source": "none",
+        "evidence": "",
+        "reason": "<urlopen error [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée>",
+        "candidate_count": 0,
+        "candidates": []
+      },
+      "question_dataset": {
+        "question": "Which existing ontology individual represents the training dataset?",
+        "variable": "dataset",
+        "yaml_path": "training_set",
+        "raw_value": [
+          "MatterSim"
+        ],
+        "selected_iri": null,
+        "selected_name": null,
+        "selected_individual": null,
+        "confidence": 0,
+        "source": "none",
+        "evidence": "",
+        "reason": "<urlopen error [WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée>",
+        "candidate_count": 0,
+        "candidates": []
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+    "template_id": "matbench_discovery_yaml_to_ontology_template_v1",
+    "prefixes": {
+        "arch": "https://k.loria.fr/ontologies/architectureonto#",
+        "archind": "https://k.loria.fr/ontologies/architectureonto-individuals#",
+        "train": "https://k.loria.fr/ontologies/trainingonto#",
+        "trind": "https://k.loria.fr/ontologies/trainingonto-individuals#",
+        "data": "https://k.loria.fr/ontologies/datasetonto#",
+        "dataind": "https://k.loria.fr/ontologies/dataset-individuals#",
+        "bench": "https://k.loria.fr/ontologies/benchmarkonto#",
+        "benchind": "https://k.loria.fr/ontologies/benchmark-individuals#",
+        "prov": "http://www.w3.org/ns/prov#",
+        "schema": "https://schema.org/",
+        "dcterms": "http://purl.org/dc/terms/",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
+    },
+    "question_prompt": "Return only JSON.\nNo explanation.\n\nQuestion:\n{question}\n\nYAML value:\n{yaml_value}\n\nReturn the YAML value as the answer when it directly answers the question.\n\nJSON keys must be exactly:\n- variable\n- answer\n- source\n\nReturn JSON object only.",
+    "pdf_question_prompt": "Return only JSON.\nNo explanation.\nUse only the paper text.\n\nIf the question asks for names, return only names.\nIf the question asks for datasets, return a JSON array of dataset names only.\nDo not return sentences or descriptions.\n\nPaper text:\n{pdf_text}\n\nQuestion:\n{question}\n\nReturn format:\n{{\n  \"variable\": \"string\",\n  \"answer\": [],\n  \"evidence\": \"string\"\n}}",
+    "ontology_mapping_prompt": "Return only JSON.\nNo explanation.\n\nOntology context:\n{ontology_context}\n\nItem:\n{item}\n\nChoose the most appropriate class for this item.\nUse only class names that exist in ontology_context.\n\nReturn format:\n{{\n  \"item\": \"{item}\",\n  \"ontology_class\": \"string\"\n}}",
+    "rdf_generation_prompt": "Return only valid Turtle RDF.\nNo explanation.\nNo markdown.\n\nUse ONLY the classes and properties from this ontology context.\nDo not invent classes.\nDo not invent properties.\nUse the prefixes already defined.\n\nOntology context:\n{ontology_context}\n\nPrefixes:\n{prefixes}\n\nExtraction results:\n{results}\n\nGenerate RDF individuals for model family, model variant, architectures, architecture parameters, and datasets.",
+    "questionnaire": {
+        "questions_model": {
+            "question_model_family": {
+                "question": "What is the stable base model family name, the family is the shared root name without version, size, or release information. ",
+                "variable": "model_family",
+                "yaml_path": "model_name"
+            },
+            "question_model_variant": {
+                "question": "What is the model variant, just put the model name,Lower all cases and put replace spaces by '_'.",
+                "variable": "model_variant",
+                "yaml_path": "model_name"
+            },
+            "question_model_architecture": {
+                "question": "What are the architecture(s) used for this model ?",
+                "variable": "model_architectures"
+            },
+            "question_type_architecture": {
+                "question": "What is the ontology class of {item}?",
+                "variable": "model_architectures_types",
+                "source": "ontology_mapping",
+                "loop_over": "model_architectures"
+            },
+            "question_architecture_parameters": {
+                "question": "For the {item} architecture, extract only its total number of parameters as an integer.",
+                "variable": "architecture_parameters",
+                "loop_over": "model_architectures"
+            },
+            "question_training_dataset": {
+                "question": "What is/are the training dataset(s)? Make a list by their names",
+                "variable": "training_dataset"
+            },
+            "question_model_parameters": {
+                "question": "How many parameters does the model have?",
+                "variable": "parameter_number",
+                "yaml_path": "model_params"
+            }
+        }
+    }
+}

@@ -1,0 +1,197 @@
+@prefix : <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <https://k.loria.fr/ontologies/trainingonto#> .
+
+<https://k.loria.fr/ontologies/trainingonto> rdf:type owl:Ontology ;
+                                              owl:imports <http://www.w3.org/ns/prov-o-20130430> ,
+                                                          <https://k.loria.fr/ontologies/architectureonto> ,
+                                                          <https://k.loria.fr/ontologies/datasetonto> .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://k.loria.fr/ontologies/trainingonto#generatedBy
+:generatedBy rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf prov:wasGeneratedBy ;
+             rdfs:domain :ModelMaterialization ;
+             rdfs:range :MachineLearningTrainingRun .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue
+:hasHyperparameterValue rdf:type owl:ObjectProperty ;
+                        rdfs:domain :MachineLearningTrainingRun ;
+                        rdfs:range :MachineLearningHyperparameterValue .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#hasStudentModel
+:hasStudentModel rdf:type owl:ObjectProperty ;
+                 rdfs:domain :MachineLearningDistillationRun ;
+                 rdfs:range :ModelMaterialization .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#hasTeacherModel
+:hasTeacherModel rdf:type owl:ObjectProperty ,
+                          owl:FunctionalProperty ;
+                 rdfs:domain :MachineLearningDistillationRun ;
+                 rdfs:range :ModelMaterialization .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#initializedFromModelMaterialization
+:initializedFromModelMaterialization rdf:type owl:ObjectProperty ,
+                                              owl:FunctionalProperty ;
+                                     rdfs:domain :MachineLearningAdaptationRun ;
+                                     rdfs:range :ModelMaterialization .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#ofHyperparameter
+:ofHyperparameter rdf:type owl:ObjectProperty ;
+                  rdfs:domain :MachineLearningHyperparameterValue ;
+                  rdfs:range :MachineLearningHyperparameter .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#trainsModelVariant
+:trainsModelVariant rdf:type owl:ObjectProperty ;
+                    rdfs:domain :MachineLearningTrainingRun ;
+                    rdfs:range <https://k.loria.fr/ontologies/architectureonto#ModelVariant> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#usesDataset
+:usesDataset rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf prov:used ;
+             rdfs:domain :MachineLearningTrainingRun ;
+             rdfs:range <https://k.loria.fr/ontologies/datasetonto#Dataset> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#usesLoss
+:usesLoss rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf :usesObjectiveFunction ;
+          rdfs:domain :MachineLearningTrainingRun ;
+          rdfs:range :LossFunction .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#usesObjectiveFunction
+:usesObjectiveFunction rdf:type owl:ObjectProperty ;
+                       rdfs:domain :MachineLearningTrainingRun ;
+                       rdfs:range :ObjectiveFunction .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#usesOptimizer
+:usesOptimizer rdf:type owl:ObjectProperty ;
+               rdfs:domain :MachineLearningTrainingRun ;
+               rdfs:range :Optimizer .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#usesSamplingMethod
+:usesSamplingMethod rdf:type owl:ObjectProperty ;
+                    rdfs:domain :MachineLearningTrainingRun ;
+                    rdfs:range :SamplingMethod .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  https://k.loria.fr/ontologies/trainingonto#usesBatchedSelection
+:usesBatchedSelection rdf:type owl:DatatypeProperty ;
+                      rdfs:domain :MachineLearningActiveLearningRun ;
+                      rdfs:range xsd:boolean .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  https://k.loria.fr/ontologies/trainingonto#AlgorithmMethod
+:AlgorithmMethod rdf:type owl:Class .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#Checkpoint
+:Checkpoint rdf:type owl:Class ;
+            rdfs:subClassOf :ModelMaterialization .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#LossFunction
+:LossFunction rdf:type owl:Class ;
+              rdfs:subClassOf :ObjectiveFunction .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#MachineLearningActiveLearningRun
+:MachineLearningActiveLearningRun rdf:type owl:Class ;
+                                  rdfs:subClassOf :MachineLearningTrainingRun .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#MachineLearningAdaptationRun
+:MachineLearningAdaptationRun rdf:type owl:Class ;
+                              rdfs:subClassOf :MachineLearningTrainingRun .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#MachineLearningDistillationRun
+:MachineLearningDistillationRun rdf:type owl:Class ;
+                                rdfs:subClassOf :MachineLearningAdaptationRun .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#MachineLearningFinetuningRun
+:MachineLearningFinetuningRun rdf:type owl:Class ;
+                              rdfs:subClassOf :MachineLearningAdaptationRun .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#MachineLearningHyperparameter
+:MachineLearningHyperparameter rdf:type owl:Class .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#MachineLearningHyperparameterValue
+:MachineLearningHyperparameterValue rdf:type owl:Class .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#MachineLearningLoRAFineTuningRun
+:MachineLearningLoRAFineTuningRun rdf:type owl:Class ;
+                                  rdfs:subClassOf :MachineLearningFinetuningRun .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#MachineLearningTrainingRun
+:MachineLearningTrainingRun rdf:type owl:Class ;
+                            rdfs:subClassOf prov:Activity .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#MachineLearningTransferLearningRun
+:MachineLearningTransferLearningRun rdf:type owl:Class ;
+                                    rdfs:subClassOf :MachineLearningFinetuningRun .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#MathematicalFunction
+:MathematicalFunction rdf:type owl:Class .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#ModelMaterialization
+:ModelMaterialization rdf:type owl:Class ;
+                      rdfs:subClassOf <https://k.loria.fr/ontologies/architectureonto#ModelVariant> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#ObjectiveFunction
+:ObjectiveFunction rdf:type owl:Class ;
+                   rdfs:subClassOf :MathematicalFunction .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#Optimizer
+:Optimizer rdf:type owl:Class ;
+           rdfs:subClassOf :AlgorithmMethod .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#PretrainingRun
+:PretrainingRun rdf:type owl:Class ;
+                rdfs:subClassOf :MachineLearningTrainingRun .
+
+
+###  https://k.loria.fr/ontologies/trainingonto#SamplingMethod
+:SamplingMethod rdf:type owl:Class ;
+                rdfs:subClassOf :AlgorithmMethod .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

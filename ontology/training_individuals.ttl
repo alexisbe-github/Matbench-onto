@@ -1,0 +1,139 @@
+@prefix : <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@base <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+
+<https://k.loria.fr/ontologies/trainingonto-individuals> rdf:type owl:Ontology ;
+                                                          owl:imports <https://k.loria.fr/ontologies/trainingonto> .
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://k.loria.fr/ontologies/dataset-individuals#mattersim_training_set
+<https://k.loria.fr/ontologies/dataset-individuals#mattersim_training_set> rdf:type owl:NamedIndividual ,
+                                                                                    <https://k.loria.fr/ontologies/datasetonto#Dataset> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#adam
+trind:adam rdf:type owl:NamedIndividual ,
+                    <https://k.loria.fr/ontologies/trainingonto#Optimizer> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#adamw
+trind:adamw rdf:type owl:NamedIndividual ,
+                     <https://k.loria.fr/ontologies/trainingonto#Optimizer> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#batch_size
+trind:batch_size rdf:type owl:NamedIndividual ,
+                          <https://k.loria.fr/ontologies/trainingonto#MachineLearningHyperparameter> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#huber_loss
+trind:huber_loss rdf:type owl:NamedIndividual ,
+                          <https://k.loria.fr/ontologies/trainingonto#LossFunction> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#learning_rate
+trind:learning_rate rdf:type owl:NamedIndividual ,
+                             <https://k.loria.fr/ontologies/trainingonto#MachineLearningHyperparameter> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mae_loss
+trind:mae_loss rdf:type owl:NamedIndividual ,
+                        <https://k.loria.fr/ontologies/trainingonto#LossFunction> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#matter_sim_m3gnet_pretraining_run_learning_rate_initial_value
+trind:matter_sim_m3gnet_pretraining_run_learning_rate_initial_value rdf:type owl:NamedIndividual ,
+                                                                             <https://k.loria.fr/ontologies/trainingonto#MachineLearningHyperparameterValue> ;
+                                                                    <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> trind:learning_rate ;
+                                                                    <http://www.w3.org/ns/prov#value> 0.001 ;
+                                                                    rdfs:label "Initial learning rate for mattersim m3gnet  pretraining run" .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mattersim_active_learning_run
+trind:mattersim_active_learning_run rdf:type owl:NamedIndividual ,
+                                             <https://k.loria.fr/ontologies/trainingonto#MachineLearningActiveLearningRun> ;
+                                    <https://k.loria.fr/ontologies/trainingonto#usesBatchedSelection> "true"^^xsd:boolean .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mattersim_finetune_30_model
+trind:mattersim_finetune_30_model rdf:type owl:NamedIndividual ,
+                                           <https://k.loria.fr/ontologies/trainingonto#ModelMaterialization> ;
+                                  <https://k.loria.fr/ontologies/trainingonto#generatedBy> trind:mattersim_finetuning_run .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mattersim_finetuning_run
+trind:mattersim_finetuning_run rdf:type owl:NamedIndividual ,
+                                        <https://k.loria.fr/ontologies/trainingonto#MachineLearningFinetuningRun> ;
+                               <https://k.loria.fr/ontologies/trainingonto#initializedFromModelMaterialization> trind:mattersim_zero_shot_m3gnet_model ;
+                               <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mattersim_training_set> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mattersim_graphormer_model_variant
+trind:mattersim_graphormer_model_variant rdf:type owl:NamedIndividual ,
+                                                  <https://k.loria.fr/ontologies/trainingonto#ModelMaterialization> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mattersim_graphormer_pretraining_run
+trind:mattersim_graphormer_pretraining_run rdf:type owl:NamedIndividual ,
+                                                    <https://k.loria.fr/ontologies/trainingonto#PretrainingRun> ;
+                                           <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> trind:mattersim_graphormer_model_variant ;
+                                           <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mattersim_training_set> ;
+                                           <https://k.loria.fr/ontologies/trainingonto#usesLoss> trind:mae_loss ;
+                                           <https://k.loria.fr/ontologies/trainingonto#usesOptimizer> trind:adamw .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mattersim_m3gnet_model_variant
+trind:mattersim_m3gnet_model_variant rdf:type owl:NamedIndividual ,
+                                              <https://k.loria.fr/ontologies/trainingonto#ModelMaterialization> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mattersim_m3gnet_pretraining_run
+trind:mattersim_m3gnet_pretraining_run rdf:type owl:NamedIndividual ,
+                                                <https://k.loria.fr/ontologies/trainingonto#PretrainingRun> ;
+                                       <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> trind:matter_sim_m3gnet_pretraining_run_learning_rate_initial_value ,
+                                                                                                           trind:mattersim_m3gnet_pretraining_run_batch_size ;
+                                       <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> trind:mattersim_m3gnet_model_variant ;
+                                       <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mattersim_training_set> ;
+                                       <https://k.loria.fr/ontologies/trainingonto#usesLoss> trind:huber_loss ;
+                                       <https://k.loria.fr/ontologies/trainingonto#usesOptimizer> trind:adam .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mattersim_m3gnet_pretraining_run_batch_size
+trind:mattersim_m3gnet_pretraining_run_batch_size rdf:type owl:NamedIndividual ,
+                                                           <https://k.loria.fr/ontologies/trainingonto#MachineLearningHyperparameterValue> ;
+                                                  <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> trind:batch_size ;
+                                                  <http://www.w3.org/ns/prov#value> 128 .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mattersim_scratch_900_model
+trind:mattersim_scratch_900_model rdf:type owl:NamedIndividual ,
+                                           <https://k.loria.fr/ontologies/trainingonto#ModelMaterialization> ;
+                                  <https://k.loria.fr/ontologies/trainingonto#generatedBy> trind:mattersim_scratch_training_run .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mattersim_scratch_training_run
+trind:mattersim_scratch_training_run rdf:type owl:NamedIndividual ,
+                                              <https://k.loria.fr/ontologies/trainingonto#PretrainingRun> .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mattersim_zero_shot_graphormer_model
+trind:mattersim_zero_shot_graphormer_model rdf:type owl:NamedIndividual ,
+                                                    <https://k.loria.fr/ontologies/trainingonto#ModelMaterialization> ;
+                                           <https://k.loria.fr/ontologies/trainingonto#generatedBy> trind:mattersim_graphormer_pretraining_run .
+
+
+###  https://k.loria.fr/ontologies/trainingonto-individuals#mattersim_zero_shot_m3gnet_model
+trind:mattersim_zero_shot_m3gnet_model rdf:type owl:NamedIndividual ,
+                                                <https://k.loria.fr/ontologies/trainingonto#ModelMaterialization> ;
+                                       <https://k.loria.fr/ontologies/trainingonto#generatedBy> trind:mattersim_m3gnet_pretraining_run .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
