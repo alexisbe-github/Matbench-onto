@@ -38,7 +38,7 @@
                 "variable": "model_architectures"
             },
             "question_type_architecture": {
-                "question": "What is the ontology class of {item}?",
+                "question": "What is the ontology class of {item} among the MachineLearningArchitecture classes?",
                 "variable": "model_architectures_types",
                 "source": "ontology_mapping",
                 "loop_over": "model_architectures"
