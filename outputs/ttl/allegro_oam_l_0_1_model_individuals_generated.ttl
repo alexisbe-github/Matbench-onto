@@ -1,0 +1,42 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:allegro_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "Allegro"^^xsd:string ;
+    arch:hasVariant archind:allegro_mp_l_variant .
+
+trind:allegro_spice2_pretraining a owl:NamedIndividual,
+        train:PretrainingRun ;
+    rdfs:label "allegro_spice2_pretraining"^^xsd:string ;
+    rdfs:comment "Pretraining of Allegro models (small, medium, large) on the SPICE 2 dataset subset with neutral total charge, using distributed multi-GPU training with TorchInductor compilation and PyTorch Lightning DDP"^^xsd:string ;
+    train:trainsModelVariant archind:allegro_mp_l_allegro_model_variant ;
+    train:usesDataset dataind:spice_2 .
+
+archind:allegro_mp_l_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "allegro_mp_l"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\allegro_oam_l_0_1.yml" ;
+    arch:hasParameterNumber 18700000 .
+
+dataind:spice_2 a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "SPICE 2"^^xsd:string .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_variant> >> prov:wasDerivedFrom "YAML model_name: Allegro-MP-L, lowercased and spaces/hyphens replaced by underscores" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "18700000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 18700000" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_allegro_model_variant> >> prov:wasDerivedFrom "[{'value': 'Allegro', 'evidence': \"PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'\"}]" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#spice_2> >> prov:wasDerivedFrom "[{'value': 'SPICE 2', 'evidence': \"PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'; PDF Section III: 'subset of the SPICE 2 data limited to systems with neutral total charge'\"}]" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "Pretraining of Allegro models (small, medium, large) on the SPICE 2 dataset subset with neutral total charge, using distributed multi-GPU training with TorchInductor compilation and PyTorch Lightning DDP"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'; PDF Section III.B: 'distributed multi-GPU training'; PDF Section II.B: 'torch.compile'" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .

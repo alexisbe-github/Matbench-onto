@@ -1,193 +1,41 @@
-To generate RDF individuals for the given information, we need to map each piece of data into a specific ontology class and provide appropriate properties with values. Here's how you can structure it:
-
-### Model Family
-
-```sparql
-PREFIX arch: <https://k.loria.fr/ontologies/architectureonto#>
-PREFIX train: <https://k.loria.fr/ontologies/trainingonto#>
-
-INSERT DATA {
-  :MatterSim v1 a arch:model_family ;
-    rdfs:label "MatterSim v1" .
+{
+  "model_family": {
+    "rdf:type": "arch:ModelFamily",
+    "arch:name": "MatterSim",
+    "dcterms:source": "yaml"
+  },
+  "model_variant": {
+    "rdf:type": "arch:ModelVariant",
+    "arch:name": "mattersim_v1_5m",
+    "dcterms:source": "yaml"
+  },
+  "model_architectures": {
+    "rdf:type": "arch:ModelArchitectures",
+    "arch:name": "M3GNet, Graphormer",
+    "dcterms:source": "pdf"
+  },
+  "M3GNet": {
+    "rdf:type": "arch:ModelArchitecture",
+    "arch:name": "M3GNet",
+    "dcterms:source": "ontology_context"
+  },
+  "Graphormer": {
+    "rdf:type": "arch:ModelArchitecture",
+    "arch:name": "Graphormer",
+    "dcterms:source": "ontology_context"
+  },
+  "architecture_parameters": {
+    "rdf:type": "arch:ArchitectureParameters",
+    "dcterms:source": "pdf"
+  },
+  "training_dataset": {
+    "rdf:type": "arch:TrainingDataset",
+    "arch:name": "Materials Project, Alexandria, RSS-generated materials, Molecular dynamics trajectories",
+    "dcterms:source": "pdf"
+  },
+  "parameter_number": {
+    "rdf:type": "arch:ParameterNumber",
+    "arch:value": 4549142,
+    "dcterms:source": "yaml"
+  }
 }
-```
-
-### Model Variant
-
-```sparql
-PREFIX archind: <https://k.loria.fr/ontologies/architectureonto-individuals#>
-PREFIX trainind: <https://k.loria.fr/ontologies/trainingonto-individuals#>
-
-INSERT DATA {
-  :mattersim_v1_5m a archind:model_variant ;
-    rdfs:label "mattersim_v1_5m" .
-}
-```
-
-### Model Architectures
-
-```sparql
-PREFIX arch: <https://k.loria.fr/ontologies/architectureonto#>
-
-INSERT DATA {
-  :M3GNet a arch:model_architecture ;
-    rdfs:label "M3GNet" ;
-    has_hidden_dimension 10 ;
-    has_layer_count 2 .
-}
-
-INSERT DATA {
-  :Graphormer a arch:model_architecture ;
-    rdfs:label "Graphormer" ;
-    has_hidden_dimension 10 ;
-    has_layer_count 4 .
-}
-```
-
-### Architecture Parameters
-
-```sparql
-PREFIX archind: <https://k.loria.fr/ontologies/architectureonto-individuals#>
-PREFIX trainind: <https://k.loria.fr/ontologies/trainingonto-individuals#>
-
-INSERT DATA {
-  :M3GNet rdfs:label "1820000"^^xsd:long ;
-    has_hidden_dimension 10 ;
-    has_layer_count 2 .
-}
-
-INSERT DATA {
-  :Graphormer rdfs:label "182000000"^^xsd:long ;
-    has_hidden_dimension 10 ;
-    has_layer_count 4 .
-}
-```
-
-### Training Dataset
-
-```sparql
-PREFIX archind: <https://k.loria.fr/ontologies/architectureonto-individuals#>
-PREFIX dataind: <https://k.loria.fr/ontologies/dataset-individuals#>
-
-INSERT DATA {
-  :M3GNet rdfs:label "17 million"^^xsd:long ;
-    uses_dataset "S3 Data distribution";
-    was_derived_from_dataset "MPF2021, MPtrj, Alexandria datasets".
-}
-
-INSERT DATA {
-  :Graphormer rdfs:label "182M"^^xsd:long ;
-    uses_dataset "S3 Data distribution";
-    was_derived_from_dataset "MPF2021, MPtrj, Alexandria datasets".
-}
-```
-
-### Parameter Number
-
-```sparql
-PREFIX archind: <https://k.loria.fr/ontologies/architectureonto-individuals#>
-PREFIX trainind: <https://k.loria.fr/ontologies/trainingonto-individuals#>
-
-INSERT DATA {
-  :M3GNet rdfs:label "4,549,142"^^xsd:long ;
-    has_parameter_number 4549142 .
-}
-
-INSERT DATA {
-  :Graphormer rdfs:label "182000000"^^xsd:long ;
-    has_parameter_number 182000000 .
-}
-```
-
-### RDF Individuals
-
-```sparql
-PREFIX archind: <https://k.loria.fr/ontologies/architectureonto-individuals#>
-PREFIX dataind: <https://k.loria.fr/ontologies/dataset-individuals#>
-
-INSERT DATA {
-  :M3GNet a archind:model_variant ;
-    rdfs:label "mattersim_v1_5m" .
-}
-
-INSERT DATA {
-  :Graphormer a archind:model_variant ;
-    rdfs:label "mattersim_v1_5m" .
-}
-```
-
-### RDF Graph
-
-```sparql
-PREFIX arch: <https://k.loria.fr/ontologies/architectureonto#>
-PREFIX train: <https://k.loria.fr/ontologies/trainingonto#>
-
-INSERT DATA {
-  :M3GNet a arch:model_architecture ;
-    rdfs:label "M3GNet" ;
-    has_hidden_dimension 10 ;
-    has_layer_count 2 .
-}
-
-INSERT DATA {
-  :Graphormer a arch:model_architecture ;
-    rdfs:label "Graphormer" ;
-    has_hidden_dimension 10 ;
-    has_layer_count 4 .
-}
-```
-
-### RDF Graph (for Parameter Number)
-
-```sparql
-PREFIX archind: <https://k.loria.fr/ontologies/architectureonto-individuals#>
-PREFIX trainind: <https://k.loria.fr/ontologies/trainingonto-individuals#>
-
-INSERT DATA {
-  :M3GNet rdfs:label "1820000"^^xsd:long ;
-    has_parameter_number 4549142 .
-}
-
-INSERT DATA {
-  :Graphormer rdfs:label "182000000"^^xsd:long ;
-    has_parameter_number 182000000 .
-}
-```
-
-### RDF Graph (for Training Dataset)
-
-```sparql
-PREFIX archind: <https://k.loria.fr/ontologies/architectureonto-individuals#>
-PREFIX dataind: <https://k.loria.fr/ontologies/dataset-individuals#>
-
-INSERT DATA {
-  :M3GNet rdfs:label "17 million"^^xsd:long ;
-    uses_dataset "S3 Data distribution";
-    was_derived_from_dataset "MPF2021, MPtrj, Alexandria datasets".
-}
-
-INSERT DATA {
-  :Graphormer rdfs:label "182M"^^xsd:long ;
-    uses_dataset "S3 Data distribution";
-    was_derived_from_dataset "MPF2021, MPtrj, Alexandria datasets".
-}
-```
-
-### RDF Graph (for Parameter Number)
-
-```sparql
-PREFIX archind: <https://k.loria.fr/ontologies/architectureonto-individuals#>
-PREFIX trainind: <https://k.loria.fr/ontologies/trainingonto-individuals#>
-
-INSERT DATA {
-  :M3GNet rdfs:label "4,549,142"^^xsd:long ;
-    has_parameter_number 4549142 .
-}
-
-INSERT DATA {
-  :Graphormer rdfs:label "182000000"^^xsd:long ;
-    has_parameter_number 182000000 .
-}
-```
-
-These SPARQL queries generate RDF individuals for the model family, variant, architectures, parameters, and datasets. The `rdfs:label` property is used to provide a human-readable label for each individual, while other properties are used to store specific details such as parameter counts or dataset information.

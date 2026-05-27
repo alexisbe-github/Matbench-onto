@@ -1,0 +1,125 @@
+{
+  "model": {
+    "family": {
+      "value": "Allegro",
+      "evidence": "YAML model_name: Allegro-MP-L; PDF Section III refers to 'Allegro models'"
+    },
+    "variant": {
+      "value": "allegro_mp_l",
+      "evidence": "YAML model_name: Allegro-MP-L, lowercased and spaces/hyphens replaced by underscores"
+    },
+    "parameter_number": {
+      "value": 18700000,
+      "evidence": "YAML model_params: 18700000"
+    }
+  },
+  "architectures": {
+    "items": [
+      {
+        "name": "Allegro",
+        "ontology_class": {
+          "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+          "evidence": "PDF Section I: 'Allegro model architectures, which are deep equivariant neural networks'; PDF Section II.D: 'Allegro's tensor product operation'; architecture.ttl: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture"
+        },
+        "parameter_number": {
+          "value": 18700000,
+          "evidence": "YAML model_params: 18700000; PDF Table 1 lists large model with ℓmax=3, 128 tensor features, 3 layers"
+        },
+        "datasets": {
+          "value": [
+            "SPICE 2"
+          ],
+          "evidence": "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'"
+        },
+        "hyperparameters": {
+          "items": [
+            {
+              "name": "maximum rotation order (ℓmax)",
+              "ontology_class": {
+                "value": "MachineLearningHyperparameter",
+                "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
+              },
+              "value": {
+                "value": "3",
+                "evidence": "PDF Table 1: large model ℓmax=3"
+              }
+            },
+            {
+              "name": "number of tensor features",
+              "ontology_class": {
+                "value": "MachineLearningHyperparameter",
+                "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
+              },
+              "value": {
+                "value": "128",
+                "evidence": "PDF Table 1: large model Tensor Features=128"
+              }
+            },
+            {
+              "name": "number of Allegro layers",
+              "ontology_class": {
+                "value": "MachineLearningHyperparameter",
+                "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
+              },
+              "value": {
+                "value": "3",
+                "evidence": "PDF Table 1: large model Allegro Layers=3"
+              }
+            },
+            {
+              "name": "radial cutoff (rmax)",
+              "ontology_class": {
+                "value": "MachineLearningHyperparameter",
+                "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
+              },
+              "value": {
+                "value": "6.0 Å",
+                "evidence": "PDF Section III: 'All models employ a radial cutoff rmax of 6.0 Å'"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "training": {
+    "items": [
+      {
+        "id": "allegro_spice2_training",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'; trainingonto.ttl: PretrainingRun is a subclass of MachineLearningTrainingRun"
+        },
+        "architectures": {
+          "value": [
+            "Allegro"
+          ],
+          "evidence": "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'"
+        },
+        "datasets": {
+          "value": [
+            "SPICE 2"
+          ],
+          "evidence": "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'"
+        },
+        "optimizer": {
+          "value": null,
+          "evidence": "PDF does not specify optimizer used for training"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "PDF does not specify loss function used for training"
+        },
+        "description": {
+          "value": "Training of Allegro models (small, medium, large) on the SPICE 2 dataset subset limited to systems with neutral total charge, using the NequIP framework with TorchInductor compilation and distributed multi-GPU training",
+          "evidence": "PDF Section III: describes training Allegro models on SPICE 2 neutral total charge subset; Section II.B: describes distributed training with TorchInductor"
+        }
+      }
+    ]
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\allegro_mp_l_0_1.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2504.16068.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\allegro_mp_l_0_1.yml"
+  }
+}

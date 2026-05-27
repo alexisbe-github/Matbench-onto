@@ -1,0 +1,20 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:esnet_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "ESNet"^^xsd:string ;
+    arch:hasVariant archind:esnet_variant .
+
+archind:esnet_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "esnet"^^xsd:string ;
+    arch:hasParameterNumber 5429033 .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_variant> >> prov:wasDerivedFrom "yaml:model_key" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "5429033"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "yaml:model_params" .

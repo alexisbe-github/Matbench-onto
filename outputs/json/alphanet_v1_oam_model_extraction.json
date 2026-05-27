@@ -1,0 +1,172 @@
+{
+  "model": {
+    "family": "AlphaNet",
+    "variant": "alphanet-v1-mptrj",
+    "parameter_number": 16234332,
+    "evidence": {
+      "family": "PDF context: 'we present AlphaNet' (page 1); YAML model_name: 'AlphaNet-v1-MPtrj'",
+      "variant": "YAML model_name: 'AlphaNet-v1-MPtrj' → lowercased and underscored: 'alphanet-v1-mptrj'",
+      "parameter_number": "YAML model_params: 16234332; PDF context Table 4: 'AlphaNet-L ... 16.2M' (page 5)"
+    }
+  },
+  "architectures": {
+    "AlphaNet": {
+      "ontology_class": "EquivariantMessagePassingNeuralNetworkArchitecture",
+      "parameter_number": 16234332,
+      "datasets": [
+        "Formate Decomposition on Cu",
+        "Defected Bilayer Graphene",
+        "Zeolite",
+        "OC20",
+        "OC2M",
+        "MPTraj",
+        "Matbench Discovery WBM"
+      ],
+      "hyperparameters": [
+        "learning_rate",
+        "grad_clip",
+        "scheduler",
+        "epochs",
+        "loss_function",
+        "batch_size",
+        "num_layers",
+        "heads",
+        "num_basis",
+        "hidden_channels",
+        "cutoff",
+        "energy_loss_weight",
+        "force_loss_weight"
+      ],
+      "hyperparameter_details": {
+        "learning_rate": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "1e-4",
+          "evidence": "PDF context Table 6: 'Learning rate (lr) ... 1e-4' for MPTraj (page 15)"
+        },
+        "grad_clip": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "0.5",
+          "evidence": "PDF context Table 6: 'grad_clip 0.5' (page 15)"
+        },
+        "scheduler": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "CosineAnnealing",
+          "evidence": "PDF context Table 6: 'Scheduler Cos.' (page 15)"
+        },
+        "epochs": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "200",
+          "evidence": "PDF context Table 6: 'Epochs ... 200' for MPTraj (page 15)"
+        },
+        "loss_function": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "MAE",
+          "evidence": "PDF context Table 6: 'Loss func. MAE' (page 15)"
+        },
+        "batch_size": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "12",
+          "evidence": "PDF context Table 6: 'Batch size (per device) ... 12' for MPTraj (page 15)"
+        },
+        "num_layers": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "6",
+          "evidence": "PDF context Table 6: 'Num layers ... 6' for MPTraj (page 15)"
+        },
+        "heads": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "24",
+          "evidence": "PDF context Table 6: 'Heads ... 24' for MPTraj (page 15)"
+        },
+        "num_basis": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "256",
+          "evidence": "PDF context Table 6: 'Num basis ... 256' for MPTraj (page 15)"
+        },
+        "hidden_channels": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "256",
+          "evidence": "PDF context Table 6: 'Hidden channels ... 256' for MPTraj (page 15)"
+        },
+        "cutoff": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "6",
+          "evidence": "PDF context Table 6: 'Cutoff (Å) ... 6' for MPTraj (page 15)"
+        },
+        "energy_loss_weight": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "4",
+          "evidence": "PDF context Table 3: 'AlphaNet (λE = 4)' (page 4)"
+        },
+        "force_loss_weight": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "value": "100",
+          "evidence": "PDF context Table 3: 'the weight of the force loss λF is set to 100' (page 4)"
+        }
+      },
+      "evidence": {
+        "ontology_class": "PDF context: 'AlphaNet is a local-frame-based equivariant model' (page 1); 'Equivariant message-passing neural networks' (page 8); ontology: EquivariantMessagePassingNeuralNetworkArchitecture is the most specific class for a local-frame-based equivariant GNN using message passing",
+        "parameter_number": "YAML model_params: 16234332; PDF context Table 4: 'AlphaNet-L ... 16.2M' (page 5)",
+        "datasets": "PDF context: Formate Decomposition (page 2), Defected Graphene (page 2), Zeolite (page 3), OC20/OC2M (page 3), MPTraj and Matbench Discovery WBM (page 5)",
+        "hyperparameters": "PDF context Table 6: Hyperparameter configurations (page 15); PDF context Table 3: λE and λF (page 4)"
+      }
+    }
+  },
+  "training": {
+    "training_runs": [
+      "pretraining_mptrj",
+      "training_oc2m"
+    ],
+    "training_run_details": {
+      "pretraining_mptrj": {
+        "type": "PretrainingRun",
+        "architectures": [
+          "AlphaNet"
+        ],
+        "datasets": [
+          "MPTraj"
+        ],
+        "optimizer": null,
+        "loss_function": "MAE",
+        "description": "AlphaNet-L (16.2M parameters) is trained on the MPTraj dataset (1,580,395 structures from DFT relaxations of 154,719 Materials Project materials) with MAE loss, learning rate 1e-4, 6 layers, 24 heads, 256 hidden channels, 256 num basis, 6Å cutoff, batch size 12, for 200 epochs. Training cost is 243 GPU days with 10.1 GB memory per sample. The model is then evaluated on the Matbench Discovery WBM test set.",
+        "evidence": {
+          "type": "PDF context: MPTraj is described as a large-scale dataset for pre-training; the model is trained on MPTraj and tested on Matbench Discovery (page 5). Ontology: PretrainingRun is a subclass of MachineLearningTrainingRun.",
+          "architectures": "PDF context: AlphaNet is the architecture used throughout (page 1)",
+          "datasets": "PDF context Section B.1: 'The MPTraj Dataset ... 1,580,395 structures' (page 15); Section B.3: 'MPTraj 243 GPU days, 16.2M parameters' (page 15)",
+          "optimizer": "Not specified in the paper",
+          "loss_function": "PDF context Table 6: 'Loss func. MAE' for MPTraj (page 15)",
+          "description": "PDF context Table 4: 'AlphaNet-L ... 16.2M EFSG' (page 5); Table 6: hyperparameters for MPTraj (page 15); Table 7: training cost for MPTraj (page 15); Section B.1: MPTraj dataset description (page 15)"
+        }
+      },
+      "training_oc2m": {
+        "type": "PretrainingRun",
+        "architectures": [
+          "AlphaNet"
+        ],
+        "datasets": [
+          "OC2M"
+        ],
+        "optimizer": null,
+        "loss_function": "MAE",
+        "description": "AlphaNet (6.1M parameters) is trained on the OC2M subset (approximately 2 million configurations) for 2,000,000 steps with MAE loss, learning rate 1e-4, 4 layers, 16 heads, 256 hidden channels, 96 num basis, 5Å cutoff, batch size 4, for 130 epochs. Energy loss weight λE is set to 4 (or 20 for better energy accuracy), force loss weight λF is 100. Training cost is 361 GPU days with 5.1 GB memory per sample. The model achieves 0.25 eV energy MAE and 0.040 eV/Å force MAE on the OC20 validation set.",
+        "evidence": {
+          "type": "PDF context: OC2M is a large-scale dataset used for training (page 3). Ontology: PretrainingRun is a subclass of MachineLearningTrainingRun.",
+          "architectures": "PDF context: AlphaNet is the architecture used throughout (page 1)",
+          "datasets": "PDF context Section B.1: 'The OC2M Dataset ... approximately 2 million atomic configurations' (page 15); Section 2.1: 'AlphaNet, trained on the 2M subset for 2,000,000 steps' (page 3)",
+          "optimizer": "Not specified in the paper",
+          "loss_function": "PDF context Table 6: 'Loss func. MAE' for OC2M (page 15)",
+          "description": "PDF context Table 3: 'AlphaNet (λE = 4) 6.1M 0.25 0.040' and 'AlphaNet (λE = 20) 6.1M 0.24 0.062' (page 4); Table 6: hyperparameters for OC2M (page 15); Table 7: training cost for OC2M (page 15); Section 2.1: training details (page 3)"
+        }
+      }
+    },
+    "evidence": {
+      "training_runs": "PDF context describes training on MPTraj (page 5, Table 4) and OC2M (page 3-4, Table 3) as the two main training runs",
+      "training_run_details": "See individual evidence fields above"
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\alphanet_v1_oam.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2501.07155.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\alphanet_v1_oam.yml"
+  }
+}

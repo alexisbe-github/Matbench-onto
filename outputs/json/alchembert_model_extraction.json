@@ -1,0 +1,48 @@
+{
+  "model": {
+    "family": {
+      "value": "BERT",
+      "evidence": "YAML model_name: AlchemBERT"
+    },
+    "variant": {
+      "value": "alchembert",
+      "evidence": "YAML model_key: alchembert"
+    },
+    "parameter_number": {
+      "value": 110000000,
+      "evidence": "YAML model_params: 110000000"
+    }
+  },
+  "architectures": [
+    {
+      "name": {
+        "value": "Transformer",
+        "evidence": "YAML model_type: Transformer"
+      },
+      "ontology_class": {
+        "value": "TransformerArchitecture",
+        "evidence": "ontology_context architecture.ttl: TransformerArchitecture is a subclass of AttentionBasedArchitecture which is a subclass of NeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 110000000,
+        "evidence": "YAML model_params: 110000000"
+      },
+      "datasets": {
+        "value": [
+          "Matbench Discovery"
+        ],
+        "evidence": "PDF page 836: We tested BERT on the IS2RE task of Matbench Discovery; YAML notes_description"
+      },
+      "hyperparameters": {
+        "value": null,
+        "evidence": "No hyperparameters reported for AlchemBERT in the provided context"
+      }
+    }
+  ],
+  "training": {
+    "training_runs": {
+      "value": null,
+      "evidence": "No training runs or training processes are described for AlchemBERT in the provided YAML or PDF context"
+    }
+  }
+}

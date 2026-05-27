@@ -1,0 +1,351 @@
+{
+  "model": {
+    "family": {
+      "value": "eSEN",
+      "evidence": "model_name: eSEN-30M-MP"
+    },
+    "variant": {
+      "value": "esen_30m_mp",
+      "evidence": "model_name: eSEN-30M-MP"
+    },
+    "parameter_number": {
+      "value": 30085121,
+      "evidence": "model_params: 30085121"
+    }
+  },
+  "architectures": {
+    "eSEN": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "eSEN is a message-passing neural network with SO2 convolution layers from eSCN, equivariant; architectureonto defines EquivariantMessagePassingNeuralNetworkArchitecture as subclass of EquivariantGraphNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 30085121,
+        "evidence": "model_params: 30085121; Section 6.1: eSEN with 30M parameters"
+      },
+      "datasets": {
+        "value": [
+          "MPTrj",
+          "OMat24",
+          "sAlex",
+          "SPICE-MACE-OFF"
+        ],
+        "evidence": "Section 6.1: trained on MPTrj; Section 6.1: eSEN-30M-OAM pre-trained on OMat24 then fine-tuned on sAlex and MPTrj; Section 6.3: trained on SPICE-MACE-OFF"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "warmup_epochs",
+          "warmup_factor",
+          "max_learning_rate",
+          "batch_size",
+          "optimizer",
+          "learning_rate_schedule",
+          "gradient_clipping_norm",
+          "model_ema_decay",
+          "weight_decay",
+          "energy_loss_coefficient",
+          "force_loss_coefficient",
+          "stress_loss_coefficient",
+          "num_epochs",
+          "cutoff_radius",
+          "num_radial_basis_functions",
+          "radial_basis_function_type",
+          "max_degree_Lmax",
+          "max_order_Mmax",
+          "num_channels",
+          "num_eSEN_layer_blocks"
+        ],
+        "evidence": "Table 6: Hyper-parameters for eSEN variants"
+      },
+      "hyperparameter_details": {
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "4e-4",
+            "evidence": "Table 6: Maximum learning rate 4×10−4"
+          }
+        },
+        "warmup_epochs": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "0.1",
+            "evidence": "Table 6: Warmup epochs 0.1"
+          }
+        },
+        "warmup_factor": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "0.2",
+            "evidence": "Table 6: Warmup factor 0.2"
+          }
+        },
+        "max_learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "4e-4",
+            "evidence": "Table 6: Maximum learning rate 4×10−4"
+          }
+        },
+        "batch_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "512",
+            "evidence": "Table 6: Batch size 512 for MPTrj-30M"
+          }
+        },
+        "optimizer": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "AdamW",
+            "evidence": "Table 6: Optimizer AdamW"
+          }
+        },
+        "learning_rate_schedule": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "Cosine",
+            "evidence": "Table 6: Learning rate scheduling Cosine"
+          }
+        },
+        "gradient_clipping_norm": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "100",
+            "evidence": "Table 6: Gradient clipping norm 100"
+          }
+        },
+        "model_ema_decay": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "0.999",
+            "evidence": "Table 6: Model EMA decay 0.999"
+          }
+        },
+        "weight_decay": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "1e-3",
+            "evidence": "Table 6: Weight decay 1×10−3"
+          }
+        },
+        "energy_loss_coefficient": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "20",
+            "evidence": "Table 6: Energy loss coefficient 20 for MPTrj-30M"
+          }
+        },
+        "force_loss_coefficient": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "20",
+            "evidence": "Table 6: Force loss coefficient 20 for MPTrj-30M"
+          }
+        },
+        "stress_loss_coefficient": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "5",
+            "evidence": "Table 6: Stress loss coefficient 5 for MPTrj-30M"
+          }
+        },
+        "num_epochs": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "100",
+            "evidence": "Table 6: Number of epochs 100 (60+40 for MPTrj-30M)"
+          }
+        },
+        "cutoff_radius": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "6",
+            "evidence": "Table 6: Cutoff radius (Å) 6 for MPTrj-30M"
+          }
+        },
+        "num_radial_basis_functions": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "10",
+            "evidence": "Table 6: Number of radial basis functions 10 for MPTrj-30M"
+          }
+        },
+        "radial_basis_function_type": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "Gaussian",
+            "evidence": "Table 6: Radial basis function Gaussian for MPTrj-30M"
+          }
+        },
+        "max_degree_Lmax": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "3",
+            "evidence": "Table 6: Maximum degree Lmax 3 for MPTrj-30M"
+          }
+        },
+        "max_order_Mmax": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "2",
+            "evidence": "Table 6: Maximum order Mmax 2 for MPTrj-30M"
+          }
+        },
+        "num_channels": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "128",
+            "evidence": "Table 6: Number of channels Nchannel 128"
+          }
+        },
+        "num_eSEN_layer_blocks": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "10",
+            "evidence": "Table 6: Number of eSEN layer blocks 10 for MPTrj-30M"
+          }
+        }
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "direct_force_pretraining",
+        "conservative_finetuning"
+      ],
+      "evidence": "Section 5.1: direct-force pre-training and conservative fine-tuning; Section 6.1: 60 epochs of direct-force pre-training and 40 epochs of conservative fine-tuning"
+    },
+    "training_run_details": {
+      "direct_force_pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "Section 5.1: direct-force pre-training strategy; trainingonto.ttl: PretrainingRun class"
+        },
+        "architectures": {
+          "value": [
+            "eSEN"
+          ],
+          "evidence": "Section 5.1: direct-force pre-training of eSEN models"
+        },
+        "datasets": {
+          "value": [
+            "MPTrj"
+          ],
+          "evidence": "Section 5.1: trained on the MPTrj dataset; Section 6.1: 60 epochs of direct-force pre-training on MPTrj"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "Table 6: Optimizer AdamW"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "Not explicitly named beyond per-atom energy MAE, force l2 loss, stress MAE loss in Table 6"
+        },
+        "description": {
+          "value": "Direct-force pre-training of eSEN on MPTrj for 60 epochs using DeNS with noising probability 0.5, Gaussian noise std 0.1 Å, and DeNS loss coefficient 10. Uses per-atom energy MAE loss, force l2 loss, and stress MAE loss.",
+          "evidence": "Section 5.1: direct-force pre-training; Table 6: hyperparameters; Appendix D: DeNS details"
+        }
+      },
+      "conservative_finetuning": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "Section 5.1: conservative fine-tuning from pre-trained direct-force backbone; trainingonto.ttl: MachineLearningFinetuningRun class"
+        },
+        "architectures": {
+          "value": [
+            "eSEN"
+          ],
+          "evidence": "Section 5.1: conservative fine-tuning of eSEN"
+        },
+        "datasets": {
+          "value": [
+            "MPTrj"
+          ],
+          "evidence": "Section 6.1: fine-tuned on MPTrj for 40 epochs"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "Table 6: Optimizer AdamW"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "Not explicitly named beyond per-atom energy MAE, force l2 loss, stress MAE loss in Table 6"
+        },
+        "description": {
+          "value": "Conservative fine-tuning of eSEN on MPTrj for 40 epochs starting from direct-force pre-trained backbone. Forces computed as negative gradient of PES. Uses per-atom energy MAE loss, force l2 loss, and stress MAE loss.",
+          "evidence": "Section 5.1: conservative fine-tuning; Section 6.1: 40 epochs of conservative fine-tuning"
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\esen_30m_oam.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2502.12147.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\esen_30m_oam.yml"
+  }
+}

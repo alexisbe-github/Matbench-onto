@@ -1,0 +1,58 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:cgcnn_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "CGCNN"^^xsd:string ;
+    arch:hasVariant archind:cgcnn_p_cgcnn_model_variant,
+        archind:cgcnn_p_variant .
+
+archind:cgcnn_p_cgcnn_architecture a owl:NamedIndividual,
+        arch:GraphConvolutionArchitecture ;
+    rdfs:label "CGCNN"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_p_cgcnn_architecture_configuration ;
+    arch:hasParameterNumber 128450 ;
+    train:usesDataset dataind:materials_project,
+        dataind:perovskite_database .
+
+archind:cgcnn_p_cgcnn_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "CGCNN architecture configuration"^^xsd:string .
+
+archind:cgcnn_p_cgcnn_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "cgcnn+p CGCNN"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:cgcnn_p_cgcnn_architecture .
+
+archind:cgcnn_p_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "cgcnn+p"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/1710.10324.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\cgcnn.yml" ;
+    arch:hasParameterNumber 128450 .
+
+dataind:materials_project a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Materials Project"^^xsd:string .
+
+dataind:perovskite_database a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Perovskite database"^^xsd:string .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_variant> >> prov:wasDerivedFrom "model_key in YAML: cgcnn+p" ; dcterms:source <https://arxiv.org/pdf/1710.10324.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "128450"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params in YAML: 128450" ; dcterms:source <https://arxiv.org/pdf/1710.10324.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_model_variant> >> prov:wasDerivedFrom "CGCNN is a crystal graph convolutional neural network; ontology_mapping: GraphConvolutionArchitecture is a subclass of GraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/1710.10324.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> >> prov:wasDerivedFrom "CGCNN is a crystal graph convolutional neural network; ontology_mapping: GraphConvolutionArchitecture is a subclass of GraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/1710.10324.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "128450"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params in YAML: 128450" ; dcterms:source <https://arxiv.org/pdf/1710.10324.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project> >> prov:wasDerivedFrom "PDF page 2: trained with data from the Materials Project; PDF page 4: database of 18928 perovskite crystals" ; dcterms:source <https://arxiv.org/pdf/1710.10324.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#perovskite_database> >> prov:wasDerivedFrom "PDF page 2: trained with data from the Materials Project; PDF page 4: database of 18928 perovskite crystals" ; dcterms:source <https://arxiv.org/pdf/1710.10324.pdf> .

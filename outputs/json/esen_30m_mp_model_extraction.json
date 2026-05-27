@@ -1,0 +1,294 @@
+{
+  "model": {
+    "family": {
+      "value": "eSEN",
+      "evidence": "model_name: eSEN-30M-MP; notes_description: 'equivariant Smooth Energy Network (eSEN)'"
+    },
+    "variant": {
+      "value": "esen_30m_mp",
+      "evidence": "model_name: eSEN-30M-MP"
+    },
+    "parameter_number": {
+      "value": 30085121,
+      "evidence": "model_params: 30085121"
+    }
+  },
+  "architectures": {
+    "eSEN": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "Section 4: 'eSEN is a message-passing neural network'; Section 4: 'eSEN utilizes the same SO2 convolution layer from the equivariant spherical channel network (eSCN) architecture'; architecture ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture which is a subclass of EquivariantNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 30085121,
+        "evidence": "model_params: 30085121; Section 6.1: 'We train an eSEN with 30M parameters on MPTrj'"
+      },
+      "datasets": {
+        "value": [
+          "MPTrj",
+          "SPICE-MACE-OFF"
+        ],
+        "evidence": "Section 5: 'models trained on the MPTrj and the SPICE-MACE-OFF datasets'; Section 6.1: 'We train an eSEN with 30M parameters on MPTrj'; Section 6.3: 'We train and evaluate eSEN models on the SPICE-MACE-OFF dataset'"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "cutoff_radius",
+          "max_degree",
+          "max_order",
+          "num_channels",
+          "num_radial_basis",
+          "radial_basis_type",
+          "optimizer",
+          "weight_decay",
+          "gradient_clipping_norm",
+          "energy_loss_coefficient",
+          "force_loss_coefficient",
+          "stress_loss_coefficient",
+          "warmup_epochs",
+          "model_ema_decay"
+        ],
+        "evidence": "Table 6: Hyper-parameters for eSEN variants reported in this paper"
+      },
+      "hyperparameter_details": {
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "0.0004",
+            "evidence": "Table 6: Maximum learning rate 4×10−4"
+          }
+        },
+        "batch_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "512",
+            "evidence": "Table 6: Batch size 512 for MPTrj-30M"
+          }
+        },
+        "cutoff_radius": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "6",
+            "evidence": "Table 6: Cutoff radius (Å) 6 for MPTrj-30M; Section 5.3: 'we use the common approach of applying a distance cutoff (6Å)'"
+          }
+        },
+        "max_degree": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "3",
+            "evidence": "Table 6: Maximum degree Lmax 3 for MPTrj-30M"
+          }
+        },
+        "max_order": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "2",
+            "evidence": "Table 6: Maximum order Mmax 2 for MPTrj-30M"
+          }
+        },
+        "num_channels": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "128",
+            "evidence": "Table 6: Number of channels Nchannel 128"
+          }
+        },
+        "num_radial_basis": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "64",
+            "evidence": "Table 6: Number of radial basis functions 64 for MPTrj-30M"
+          }
+        },
+        "radial_basis_type": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "Gaussian",
+            "evidence": "Table 6: Radial basis function Gaussian for MPTrj-30M"
+          }
+        },
+        "optimizer": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "AdamW",
+            "evidence": "Table 6: Optimizer AdamW"
+          }
+        },
+        "weight_decay": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "0.001",
+            "evidence": "Table 6: Weight decay 1×10−3"
+          }
+        },
+        "gradient_clipping_norm": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "100",
+            "evidence": "Table 6: Gradient clipping norm 100"
+          }
+        },
+        "energy_loss_coefficient": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "20",
+            "evidence": "Table 6: Energy loss coefficient 20 for MPTrj-30M"
+          }
+        },
+        "force_loss_coefficient": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "20",
+            "evidence": "Table 6: Force loss coefficient 20 for MPTrj-30M"
+          }
+        },
+        "stress_loss_coefficient": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "5",
+            "evidence": "Table 6: Stress loss coefficient 5 for MPTrj-30M"
+          }
+        },
+        "warmup_epochs": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "0.1",
+            "evidence": "Table 6: Warmup epochs 0.1"
+          }
+        },
+        "model_ema_decay": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter is a class"
+          },
+          "value": {
+            "value": "0.999",
+            "evidence": "Table 6: Model EMA decay 0.999"
+          }
+        }
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "direct_force_pretraining_mptrj",
+        "conservative_finetuning_mptrj"
+      ],
+      "evidence": "Section 5.1: 'Direct-force pre-training... We start from a direct-force model trained for 60 epochs, remove its direct-force prediction head, and fine-tune using conservative force prediction'; Section 6.1: '60 epochs of direct-force pre-training and 40 epochs of conservative fine-tuning'"
+    },
+    "training_run_details": {
+      "direct_force_pretraining_mptrj": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "Section 5.1: 'Direct-force pre-training'; Section 6.1: '60 epochs of direct-force pre-training'; trainingonto.ttl: PretrainingRun is a subclass of MachineLearningTrainingRun"
+        },
+        "architectures": {
+          "value": [
+            "eSEN"
+          ],
+          "evidence": "Section 5.1: 'We start from a direct-force model trained for 60 epochs, remove its direct-force prediction head, and fine-tune using conservative force prediction'"
+        },
+        "datasets": {
+          "value": [
+            "MPTrj"
+          ],
+          "evidence": "Section 5.1: 'Figure 3 shows the validation loss of 2-layer eSEN models trained on the MPTrj dataset'; Section 6.1: '60 epochs of direct-force pre-training'"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "Table 6: Optimizer AdamW"
+        },
+        "loss_function": {
+          "value": "per-atom energy MAE loss, force l2 loss, stress MAE loss",
+          "evidence": "Section D: 'We train all models using a per-atom energy MAE loss, a force l2 loss, and a stress MAE loss. For direct-force models or direct-force pre-training, we use the same decomposed loss as described in Barroso-Luque et al. 2024.'"
+        },
+        "description": {
+          "value": "Direct-force pre-training of eSEN on the MPTrj dataset for 60 epochs using DeNS (Denoising Non-equilibrium Structures) with a noising probability of 0.5, standard deviation of 0.1 Å, and DeNS loss coefficient of 10.",
+          "evidence": "Section 5.1: 'Direct-force pre-training'; Section 6.1: '60 epochs of direct-force pre-training'; Section D: 'The eSEN-30M model trained on MPTrj uses Denoising Non-equilibrium Structures (DeNS) with a noising probability of 0.5, a standard deviation of 0.1 Å for the added Gaussian noise, and 10 for the DeNS loss coefficient during direct-force pre-training.'"
+        }
+      },
+      "conservative_finetuning_mptrj": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "Section 5.1: 'conservative fine-tuning from a pre-trained direct-force backbone'; Section 6.1: '40 epochs of conservative fine-tuning'; trainingonto.ttl: MachineLearningFinetuningRun is a subclass of MachineLearningAdaptationRun"
+        },
+        "architectures": {
+          "value": [
+            "eSEN"
+          ],
+          "evidence": "Section 5.1: 'remove its direct-force prediction head, and fine-tune using conservative force prediction'"
+        },
+        "datasets": {
+          "value": [
+            "MPTrj"
+          ],
+          "evidence": "Section 6.1: 'We train an eSEN with 30M parameters on MPTrj for 60 epochs of direct-force pre-training and 40 epochs of conservative fine-tuning'"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "Table 6: Optimizer AdamW"
+        },
+        "loss_function": {
+          "value": "per-atom energy MAE loss, force l2 loss, stress MAE loss",
+          "evidence": "Section D: 'We train all models using a per-atom energy MAE loss, a force l2 loss, and a stress MAE loss.'"
+        },
+        "description": {
+          "value": "Conservative fine-tuning of eSEN on the MPTrj dataset for 40 epochs, starting from the direct-force pre-trained backbone. Forces are computed as the negative gradient of the PES. DeNS is not used during conservative fine-tuning.",
+          "evidence": "Section 5.1: 'We start from a direct-force model trained for 60 epochs, remove its direct-force prediction head, and fine-tune using conservative force prediction. The conservative fine-tuned model achieves a lower validation loss after being trained for 40 epochs compared to the from-scratch conservative model being trained for 100 epochs'; Section 6.1: '40 epochs of conservative fine-tuning'; Section D: 'DeNS is not used during OMat24 training or conservative fine-tuning.'"
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\esen_30m_mp.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2502.12147.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\esen_30m_mp.yml"
+  }
+}

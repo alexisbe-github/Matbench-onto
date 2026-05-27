@@ -1,0 +1,24 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:allegro_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "Allegro"^^xsd:string ;
+    arch:hasVariant archind:allegro_mp_l_variant .
+
+archind:allegro_mp_l_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "allegro_mp_l"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\allegro_mp_l_0_1.yml" ;
+    arch:hasParameterNumber 18700000 .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_variant> >> prov:wasDerivedFrom "YAML model_name: Allegro-MP-L, lowercased and spaces/hyphens replaced by underscores" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "18700000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 18700000" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .

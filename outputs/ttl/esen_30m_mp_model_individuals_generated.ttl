@@ -1,0 +1,63 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:esen_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "eSEN"^^xsd:string ;
+    arch:hasVariant archind:esen_30m_mp_esen_model_variant,
+        archind:esen_30m_mp_variant .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:esen_30m_mp_esen_architecture a owl:NamedIndividual,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "eSEN"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:esen_30m_mp_esen_architecture_configuration ;
+    arch:hasParameterNumber 30085121 ;
+    train:usesDataset dataind:mptrj,
+        dataind:spice_mace_off .
+
+archind:esen_30m_mp_esen_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "eSEN architecture configuration"^^xsd:string .
+
+archind:esen_30m_mp_esen_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "esen_30m_mp eSEN"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:esen_30m_mp_esen_architecture .
+
+archind:esen_30m_mp_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "esen_30m_mp"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\esen_30m_mp.yml" ;
+    arch:hasParameterNumber 30085121 .
+
+dataind:mptrj a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MPTrj"^^xsd:string .
+
+dataind:spice_mace_off a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "SPICE-MACE-OFF"^^xsd:string .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_variant> >> prov:wasDerivedFrom "model_name: eSEN-30M-MP" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "30085121"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params: 30085121" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_model_variant> >> prov:wasDerivedFrom "Section 4: 'eSEN is a message-passing neural network'; Section 4: 'eSEN utilizes the same SO2 convolution layer from the equivariant spherical channel network (eSCN) architecture'; architecture ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture which is a subclass of EquivariantNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> >> prov:wasDerivedFrom "Section 4: 'eSEN is a message-passing neural network'; Section 4: 'eSEN utilizes the same SO2 convolution layer from the equivariant spherical channel network (eSCN) architecture'; architecture ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture which is a subclass of EquivariantNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "30085121"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params: 30085121; Section 6.1: 'We train an eSEN with 30M parameters on MPTrj'" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptrj> >> prov:wasDerivedFrom "Section 5: 'models trained on the MPTrj and the SPICE-MACE-OFF datasets'; Section 6.1: 'We train an eSEN with 30M parameters on MPTrj'; Section 6.3: 'We train and evaluate eSEN models on the SPICE-MACE-OFF dataset'" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#spice_mace_off> >> prov:wasDerivedFrom "Section 5: 'models trained on the MPTrj and the SPICE-MACE-OFF datasets'; Section 6.1: 'We train an eSEN with 30M parameters on MPTrj'; Section 6.3: 'We train and evaluate eSEN models on the SPICE-MACE-OFF dataset'" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .

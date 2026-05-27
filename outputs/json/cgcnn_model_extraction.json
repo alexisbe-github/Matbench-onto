@@ -1,0 +1,196 @@
+{
+  "model": {
+    "family": {
+      "value": "CGCNN",
+      "evidence": "model_name in YAML: CGCNN+P, base family is CGCNN"
+    },
+    "variant": {
+      "value": "cgcnn+p",
+      "evidence": "model_key in YAML: cgcnn+p"
+    },
+    "parameter_number": {
+      "value": 128450,
+      "evidence": "model_params in YAML: 128450"
+    }
+  },
+  "architectures": {
+    "CGCNN": {
+      "ontology_class": {
+        "value": "GraphConvolutionArchitecture",
+        "evidence": "CGCNN is a crystal graph convolutional neural network; ontology_mapping: GraphConvolutionArchitecture is a subclass of GraphNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 128450,
+        "evidence": "model_params in YAML: 128450"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "Perovskite database"
+        ],
+        "evidence": "PDF page 2: trained with data from the Materials Project; PDF page 4: database of 18928 perovskite crystals"
+      },
+      "hyperparameters": {
+        "number_of_convolutional_layers": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: hasLayerCount is a data property of MachineLearningArchitectureConfiguration"
+          },
+          "value": {
+            "value": "1-5",
+            "evidence": "PDF Supplemental Table I: Number of convolutional layers range 1,2,...,5; PDF Fig S3(b) shows 1-3 conv layers tested"
+          }
+        },
+        "length_of_learned_atom_feature_vector": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: hasHiddenDimension is a data property of MachineLearningArchitectureConfiguration"
+          },
+          "value": {
+            "value": "10, 20, 50, 100, 200",
+            "evidence": "PDF Supplemental Table I: Length of learned atom feature vector range 10,20,50,100,200"
+          }
+        },
+        "number_of_hidden_layers_l1": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: hasLayerCount is a data property of MachineLearningArchitectureConfiguration"
+          },
+          "value": {
+            "value": "1-4",
+            "evidence": "PDF Supplemental Table I: Number of hidden layer L1 range 1,2,...,4"
+          }
+        },
+        "number_of_hidden_layers_l2": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: hasLayerCount is a data property of MachineLearningArchitectureConfiguration"
+          },
+          "value": {
+            "value": "1-5",
+            "evidence": "PDF Supplemental Table I: Number of hidden layer L2 range 1,2,...,5"
+          }
+        },
+        "regularization_term": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: L2 regularization is a training hyperparameter"
+          },
+          "value": {
+            "value": "e-6, e-4, e-2, e0",
+            "evidence": "PDF Supplemental Table I: Regularization term λ range e−6, e−4, e−2, e0"
+          }
+        },
+        "gaussian_initialization_scaling_factor": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: weight initialization scaling is a training hyperparameter"
+          },
+          "value": {
+            "value": "e-8, e-6, e-4, e-2",
+            "evidence": "PDF Supplemental Table I: Scaling factor of the Gaussian initialization of weights range e−8, e−6, e−4, e−2"
+          }
+        },
+        "adam_optimizer_step_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: step size is a hyperparameter of the Adam optimizer"
+          },
+          "value": {
+            "value": "e-8, e-7, e-6, e-5, e-4, e-3",
+            "evidence": "PDF Supplemental Table I: Step size of the Adam optimizer range e−8, e−7, e−6, e−5, e−4, e−3"
+          }
+        },
+        "dropout_fraction": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: dropout is a regularization hyperparameter"
+          },
+          "value": {
+            "value": "0, 0.1, 0.2",
+            "evidence": "PDF Supplemental Table I: Dropout fraction range 0, 0.1, 0.2"
+          }
+        },
+        "number_of_atom_features": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: number of input features is a hyperparameter"
+          },
+          "value": {
+            "value": "2, 3, 9",
+            "evidence": "PDF Supplemental Table I: Number of properties used in atom feature vector range 2,3,10; PDF Fig S3(a) shows 2,3,9 features"
+          }
+        }
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "cgcnn_pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF page 2: CGCNN is trained on Materials Project data from scratch; ontology_mapping: PretrainingRun is a subclass of MachineLearningTrainingRun"
+        },
+        "architectures": {
+          "value": [
+            "CGCNN"
+          ],
+          "evidence": "PDF page 1-2: CGCNN framework trained on crystal structures"
+        },
+        "datasets": {
+          "value": [
+            "Materials Project"
+          ],
+          "evidence": "PDF page 2: trained with data from the Materials Project database, 46744 materials"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF page 2: stochastic gradient descent (SGD) mentioned; PDF Supplemental Table I: Step size of the Adam optimizer; PDF Ref [37]: Kingma and Ba Adam optimizer"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "PDF page 2: cost function J(y, ŷ) minimized but specific loss function name not explicitly stated; L2 regularization added to cost function per Supplemental Table I"
+        },
+        "description": {
+          "value": "CGCNN trained on 46744 crystals from Materials Project using 60/20/20 train-validation-test split with Adam optimizer and SGD to predict material properties including formation energy, band gap, Fermi energy, bulk moduli, shear moduli, and Poisson ratio.",
+          "evidence": "PDF page 2: 60% training, 20% validation, 20% test; 46744 materials; Table I lists 7 properties predicted"
+        }
+      },
+      "cgcnn_perovskite_training": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF page 4: CGCNN trained on perovskite energy above hull data; ontology_mapping: PretrainingRun"
+        },
+        "architectures": {
+          "value": [
+            "CGCNN"
+          ],
+          "evidence": "PDF page 4: CGCNN with linear pooling used for perovskite site energy extraction"
+        },
+        "datasets": {
+          "value": [
+            "Perovskite database"
+          ],
+          "evidence": "PDF page 4: database of 18928 perovskite crystals from Ref [26]"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF Supplemental Table I: Adam optimizer used; consistent with main training procedure"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "PDF page 4: cost function used but not explicitly named"
+        },
+        "description": {
+          "value": "CGCNN trained on 18928 perovskite crystals to predict energy above hull using convolution function Eq. 4 with linear pooling for interpretability, enabling extraction of site energies for A and B sites in ABX3 perovskites.",
+          "evidence": "PDF page 4: 18928 perovskites, linear pooling, Eq. 4 convolution function, site energy extraction"
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\cgcnn.pdf",
+    "pdf_url": "https://arxiv.org/pdf/1710.10324.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\cgcnn.yml"
+  }
+}

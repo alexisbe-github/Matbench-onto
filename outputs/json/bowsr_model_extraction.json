@@ -1,0 +1,187 @@
+{
+  "model": {
+    "family": {
+      "value": "BO-GNN",
+      "evidence": "model_type in YAML summary"
+    },
+    "variant": {
+      "value": "bowsr",
+      "evidence": "model_name in YAML summary lowercased and underscored"
+    },
+    "parameter_number": {
+      "value": 167761,
+      "evidence": "model_params in YAML summary"
+    }
+  },
+  "architectures": {
+    "items": [
+      {
+        "name": "MEGNet",
+        "ontology_class": {
+          "value": "GraphNeuralNetworkArchitecture",
+          "evidence": "MEGNet is a graph neural network architecture; ontology class GraphNeuralNetworkArchitecture in architecture.ttl"
+        },
+        "parameter_number": {
+          "value": null,
+          "evidence": "No specific parameter count reported for MEGNet architecture alone in the paper"
+        },
+        "datasets": [
+          {
+            "value": "Materials Project",
+            "evidence": "Section 2.1: MEGNet formation energy model trained on DFT-computed formation energies of 133,420 Materials Project crystals"
+          }
+        ],
+        "hyperparameters": [
+          {
+            "name": "learning_rate",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "Learning rate is a standard ML hyperparameter; ontology class MachineLearningHyperparameter in trainingonto.ttl"
+            },
+            "value": {
+              "value": "0.001",
+              "evidence": "Section 5.2: initial learning rate set to 0.001"
+            }
+          },
+          {
+            "name": "batch_size",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "Batch size is a standard ML hyperparameter; ontology class MachineLearningHyperparameter in trainingonto.ttl"
+            },
+            "value": {
+              "value": "128",
+              "evidence": "Section 5.2: batch size of 128 structures"
+            }
+          },
+          {
+            "name": "max_epochs",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "Max epochs is a standard ML hyperparameter; ontology class MachineLearningHyperparameter in trainingonto.ttl"
+            },
+            "value": {
+              "value": "1500",
+              "evidence": "Section 5.2: all models trained for a maximum of 1500 epochs"
+            }
+          },
+          {
+            "name": "early_stopping_patience",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "Early stopping patience is a standard ML hyperparameter; ontology class MachineLearningHyperparameter in trainingonto.ttl"
+            },
+            "value": {
+              "value": "500",
+              "evidence": "Section 5.2: early stopping callback terminates if validation error does not reduce for 500 consecutive steps"
+            }
+          },
+          {
+            "name": "cutoff_radius",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "Cutoff radius is a standard ML hyperparameter for graph construction; ontology class MachineLearningHyperparameter in trainingonto.ttl"
+            },
+            "value": {
+              "value": "5 Å",
+              "evidence": "Section 5.2: cutoff radius for constructing the neighbor graph was 5 Å"
+            }
+          },
+          {
+            "name": "hidden_dimensions",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "Hidden dimensions is a standard ML hyperparameter; ontology class MachineLearningHyperparameter in trainingonto.ttl"
+            },
+            "value": {
+              "value": "[64, 64, 32]",
+              "evidence": "Section 5.2: three graph convolutional layers with [64, 64, 32] neurons"
+            }
+          },
+          {
+            "name": "set2set_passes",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "Set2set passes is a standard ML hyperparameter; ontology class MachineLearningHyperparameter in trainingonto.ttl"
+            },
+            "value": {
+              "value": "2",
+              "evidence": "Section 5.2: set2set readout function with two passes"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "training": {
+    "training_runs": [
+      {
+        "id": "megnet_formation_energy_pretraining",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "MEGNet formation energy model trained on Materials Project data; ontology class PretrainingRun in trainingonto.ttl"
+        },
+        "architectures": [
+          {
+            "value": "MEGNet",
+            "evidence": "Section 2.1: MEGNet formation energy model trained on 133,420 Materials Project crystals"
+          }
+        ],
+        "datasets": [
+          {
+            "value": "Materials Project",
+            "evidence": "Section 2.1: trained on DFT-computed formation energies of 133,420 Materials Project crystals"
+          }
+        ],
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "Section 5.2: Adam optimizer used"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "No specific loss function mentioned for MEGNet training"
+        },
+        "description": {
+          "value": "Pretraining of MEGNet formation energy model on 133,420 crystals from the Materials Project database with DFT-computed formation energies. Model achieves cross-validated MAE of 26 meV atom^-1.",
+          "evidence": "Section 2.1 and Section 5.2"
+        }
+      },
+      {
+        "id": "megnet_elasticity_pretraining",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "MEGNet elasticity model trained on Materials Project data; ontology class PretrainingRun in trainingonto.ttl"
+        },
+        "architectures": [
+          {
+            "value": "MEGNet",
+            "evidence": "Section 2.2: MEGNet models trained on DFT-computed elastic moduli of 12,179 crystals"
+          }
+        ],
+        "datasets": [
+          {
+            "value": "Materials Project",
+            "evidence": "Section 2.2: trained on DFT-computed elastic moduli of 12,179 crystals from Materials Project"
+          }
+        ],
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "Section 5.2: Adam optimizer used"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "No specific loss function mentioned for MEGNet training"
+        },
+        "description": {
+          "value": "Pretraining of MEGNet elasticity models (bulk and shear moduli) on 12,179 crystals from the Materials Project database with DFT-computed elastic moduli.",
+          "evidence": "Section 2.2 and Section 5.2"
+        }
+      }
+    ]
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\bowsr.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2104.10242.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\bowsr.yml"
+  }
+}

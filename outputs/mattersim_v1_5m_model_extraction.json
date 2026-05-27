@@ -1,0 +1,37 @@
+{
+  "model": {
+    "family": "MatterSim",
+    "variant": "mattersim_v1_5m",
+    "parameter_number": 4549142
+  },
+  "architectures": {
+    "M3GNet": {
+      "ontology_class": "EquivariantMessagePassingNeuralNetworkArchitecture",
+      "parameter_number": null,
+      "datasets": [],
+      "hyperparameters": []
+    },
+    "Graphormer": {
+      "ontology_class": "GraphTransformerArchitecture",
+      "parameter_number": null,
+      "datasets": [],
+      "hyperparameters": []
+    }
+  },
+  "training": {
+    "training_runs": [
+      "pretraining_run"
+    ],
+    "pretraining_run": {
+      "type": "PretrainingRun",
+      "architectures": [
+        "M3GNet",
+        "Graphormer"
+      ],
+      "datasets": [],
+      "optimizer": null,
+      "loss_function": null,
+      "description": "Pretraining of MatterSim using large-scale first-principles computations via active learning."
+    }
+  }
+}

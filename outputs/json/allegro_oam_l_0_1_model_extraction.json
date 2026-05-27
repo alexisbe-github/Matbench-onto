@@ -1,0 +1,123 @@
+{
+  "model": {
+    "family": {
+      "value": "Allegro",
+      "evidence": "YAML model_name: Allegro-MP-L"
+    },
+    "variant": {
+      "value": "allegro_mp_l",
+      "evidence": "YAML model_name: Allegro-MP-L, lowercased and spaces/hyphens replaced by underscores"
+    },
+    "parameter_number": {
+      "value": 18700000,
+      "evidence": "YAML model_params: 18700000"
+    }
+  },
+  "architectures": {
+    "items": [
+      {
+        "name": "Allegro",
+        "ontology_class": {
+          "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+          "evidence": "PDF Section I: 'Allegro model architecture' described as deep equivariant neural network; PDF Section II.D: 'Allegro's tensor product operation'; architectureonto ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture"
+        },
+        "parameter_number": {
+          "value": 18700000,
+          "evidence": "YAML model_params: 18700000; PDF Table 1: large model with ℓmax=3, 128 tensor features, 3 Allegro layers"
+        },
+        "datasets": [
+          {
+            "value": "SPICE 2",
+            "evidence": "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'; PDF Section III: 'SPICE 2 dataset contains more than two million atomic configurations of organic systems'"
+          }
+        ],
+        "hyperparameters": [
+          {
+            "name": "maximum rotation order (ℓmax)",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto ontology: MachineLearningHyperparameter class"
+            },
+            "value": {
+              "value": "3",
+              "evidence": "PDF Table 1: large model ℓmax=3"
+            }
+          },
+          {
+            "name": "number of tensor features",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto ontology: MachineLearningHyperparameter class"
+            },
+            "value": {
+              "value": "128",
+              "evidence": "PDF Table 1: large model tensor features=128"
+            }
+          },
+          {
+            "name": "number of Allegro layers",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto ontology: MachineLearningHyperparameter class"
+            },
+            "value": {
+              "value": "3",
+              "evidence": "PDF Table 1: large model Allegro layers=3"
+            }
+          },
+          {
+            "name": "radial cutoff (rmax)",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto ontology: MachineLearningHyperparameter class"
+            },
+            "value": {
+              "value": "6.0 Å",
+              "evidence": "PDF Section III: 'All models employ a radial cutoff rmax of 6.0 Å'"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "training": {
+    "training_runs": [
+      {
+        "id": "allegro_spice2_pretraining",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF Section III: Allegro models trained on SPICE 2 dataset from scratch; trainingonto ontology: PretrainingRun"
+        },
+        "architectures": [
+          {
+            "value": "Allegro",
+            "evidence": "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'"
+          }
+        ],
+        "datasets": [
+          {
+            "value": "SPICE 2",
+            "evidence": "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'; PDF Section III: 'subset of the SPICE 2 data limited to systems with neutral total charge'"
+          }
+        ],
+        "optimizer": {
+          "value": null,
+          "evidence": "PDF does not specify optimizer"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "PDF does not specify loss function"
+        },
+        "description": {
+          "value": "Pretraining of Allegro models (small, medium, large) on the SPICE 2 dataset subset with neutral total charge, using distributed multi-GPU training with TorchInductor compilation and PyTorch Lightning DDP",
+          "evidence": "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'; PDF Section III.B: 'distributed multi-GPU training'; PDF Section II.B: 'torch.compile'"
+        }
+      }
+    ]
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\allegro_oam_l_0_1.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2504.16068.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\allegro_oam_l_0_1.yml"
+  }
+}

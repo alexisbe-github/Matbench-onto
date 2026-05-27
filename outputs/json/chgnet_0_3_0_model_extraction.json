@@ -1,0 +1,246 @@
+{
+  "model": {
+    "family": {
+      "value": "CHGNet",
+      "evidence": "model_name in YAML summary"
+    },
+    "variant": {
+      "value": "chgnet_0_3_0",
+      "evidence": "model_key in YAML summary"
+    },
+    "parameter_number": {
+      "value": 412525,
+      "evidence": "model_params in YAML summary"
+    }
+  },
+  "architectures": {
+    "architectures": [
+      "Graph Neural Network"
+    ],
+    "architecture_details": [
+      {
+        "name": "Graph Neural Network",
+        "ontology_class": {
+          "value": "GraphNeuralNetworkArchitecture",
+          "evidence": "architecture.ttl: GraphNeuralNetworkArchitecture is an owl:Class, subClassOf NeuralNetworkArchitecture. CHGNet is described as a GNN-based MLIP throughout the PDF (Abstract, Introduction, Results II.A)"
+        },
+        "parameter_number": {
+          "value": 400438,
+          "evidence": "PDF page 3, Section II.C: 'CHGNet with 400,438 trainable parameters was trained on the MPtrj dataset'"
+        },
+        "datasets": [
+          "Materials Project Trajectory Dataset"
+        ],
+        "hyperparameters": [
+          "rcut",
+          "bond_graph_cutoff",
+          "feature_dimensions",
+          "expansion_orders",
+          "batch_size",
+          "learning_rate",
+          "learning_rate_scheduler",
+          "epochs",
+          "force_loss_weight",
+          "stress_loss_weight",
+          "magmom_loss_weight",
+          "huber_delta",
+          "interaction_blocks",
+          "optimizer"
+        ],
+        "hyperparameter_details": [
+          {
+            "name": "rcut",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": "5 Å",
+              "evidence": "PDF page 9, Section V.B: 'the default rcut is set to 5 ˚A'"
+            }
+          },
+          {
+            "name": "bond_graph_cutoff",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": "3 Å",
+              "evidence": "PDF page 9, Section V.B: 'The bond graph is constructed with a cutoff of 3 ˚A for computational efficiency'"
+            }
+          },
+          {
+            "name": "feature_dimensions",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": 64,
+              "evidence": "PDF page 9, Section V.B: 'all have 64 feature dimensions by default'"
+            }
+          },
+          {
+            "name": "expansion_orders",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": "n=4 (2N+1=9, N=4) for both radial and angular expansions",
+              "evidence": "PDF page 9, Section V.B: 'we set the maximum orders for both n and ℓ to be 2N+1=9'"
+            }
+          },
+          {
+            "name": "batch_size",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": 40,
+              "evidence": "PDF page 10, Section V.C: 'The batch size is set to 40'"
+            }
+          },
+          {
+            "name": "learning_rate",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": "10^-3 initial, decaying to 10^-5",
+              "evidence": "PDF page 10, Section V.C: 'Adam optimizer is used with 10^-3 as the initial learning rate... final learning rate decays to 10^-5 after 20 epochs'"
+            }
+          },
+          {
+            "name": "learning_rate_scheduler",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": "CosineAnnealingLR, 10 adjustments per epoch",
+              "evidence": "PDF page 10, Section V.C: 'The CosineAnnealingLR scheduler is used to adjust the learning rate 10 times per epoch'"
+            }
+          },
+          {
+            "name": "epochs",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": 20,
+              "evidence": "PDF page 10, Section V.C: 'the final learning rate decays to 10^-5 after 20 epochs'"
+            }
+          },
+          {
+            "name": "force_loss_weight",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": 1,
+              "evidence": "PDF page 10, Section V.C: 'wf = 1'"
+            }
+          },
+          {
+            "name": "stress_loss_weight",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": 0.1,
+              "evidence": "PDF page 10, Section V.C: 'wσ = 0.1'"
+            }
+          },
+          {
+            "name": "magmom_loss_weight",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": 0.1,
+              "evidence": "PDF page 10, Section V.C: 'wm = 0.1'"
+            }
+          },
+          {
+            "name": "huber_delta",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": 0.1,
+              "evidence": "PDF page 10, Section V.C: 'Huber loss (with δ = 0.1)'"
+            }
+          },
+          {
+            "name": "interaction_blocks",
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
+            },
+            "value": {
+              "value": 4,
+              "evidence": "PDF page 10, Section V.B: 'with four atom convolution layers' and page 9: three full interaction blocks plus one additional convolution layer"
+            }
+          },
+          {
+            "name": "optimizer",
+            "ontology_class": {
+              "value": "Optimizer",
+              "evidence": "trainingonto.ttl: Optimizer is an owl:Class, subClassOf AlgorithmMethod"
+            },
+            "value": {
+              "value": "Adam",
+              "evidence": "PDF page 10, Section V.C: 'the Adam optimizer is used'"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "training": {
+    "training_runs": [
+      "pretraining_run"
+    ],
+    "training_run_details": [
+      {
+        "id": "pretraining_run",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "trainingonto.ttl: PretrainingRun is an owl:Class, subClassOf MachineLearningTrainingRun. PDF Abstract and Section II.B: CHGNet is 'pretrained' on the MPtrj dataset"
+        },
+        "architectures": [
+          "Graph Neural Network"
+        ],
+        "datasets": [
+          "Materials Project Trajectory Dataset"
+        ],
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF page 10, Section V.C: 'the Adam optimizer is used with 10^-3 as the initial learning rate'"
+        },
+        "loss_function": {
+          "value": "Weighted Huber loss (δ=0.1) over energy, forces, stress, and magnetic moments",
+          "evidence": "PDF page 10, Section V.C: 'The model is trained to minimize the summation of Huber loss (with δ = 0.1) of energy, force, stress, and magmoms'"
+        },
+        "description": {
+          "value": "CHGNet was pretrained on the Materials Project Trajectory (MPtrj) dataset containing ~1.5 million inorganic structures with energies, forces, stresses, and magnetic moments from DFT calculations. Training used an 8:1:1 train/validation/test split partitioned by materials, with Adam optimizer, CosineAnnealingLR scheduler, batch size 40, initial learning rate 10^-3 decaying to 10^-5 over 20 epochs.",
+          "evidence": "PDF page 3, Section II.B and II.C; page 10, Section V.C"
+        }
+      }
+    ]
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\chgnet_0_3_0.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2302.14231.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\chgnet_0_3_0.yml"
+  }
+}

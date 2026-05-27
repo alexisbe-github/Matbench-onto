@@ -1,0 +1,42 @@
+{
+  "model": {
+    "family": {
+      "value": "ESNet",
+      "evidence": "yaml:model_name"
+    },
+    "variant": {
+      "value": "esnet",
+      "evidence": "yaml:model_key"
+    },
+    "parameter_number": {
+      "value": 5429033,
+      "evidence": "yaml:model_params"
+    }
+  },
+  "architectures": [
+    {
+      "name": {
+        "value": "Graph Neural Network",
+        "evidence": "pdf:notes_description - 'ESNet is a graph neural network model designed for predicting the energy.'"
+      },
+      "ontology_class": {
+        "value": "GraphNeuralNetworkArchitecture",
+        "evidence": "ontology:architecture.ttl - GraphNeuralNetworkArchitecture is a subclass of NeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 5429033,
+        "evidence": "yaml:model_params"
+      },
+      "datasets": {
+        "value": [],
+        "evidence": "No specific training datasets mentioned in the YAML or PDF context for ESNet"
+      },
+      "hyperparameters": [],
+      "hyperparameter_details": []
+    }
+  ],
+  "training": {
+    "training_runs": [],
+    "training_run_details": []
+  }
+}

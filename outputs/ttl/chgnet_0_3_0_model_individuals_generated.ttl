@@ -1,0 +1,24 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:chgnet_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "CHGNet"^^xsd:string ;
+    arch:hasVariant archind:chgnet_0_3_0_variant .
+
+archind:chgnet_0_3_0_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "chgnet_0_3_0"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\chgnet_0_3_0.yml" ;
+    arch:hasParameterNumber 412525 .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_variant> >> prov:wasDerivedFrom "model_key in YAML summary" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "412525"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params in YAML summary" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .

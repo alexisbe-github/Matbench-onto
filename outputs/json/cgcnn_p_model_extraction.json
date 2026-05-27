@@ -1,0 +1,192 @@
+{
+  "model": {
+    "family": {
+      "value": "CGCNN",
+      "evidence": "model_name: CGCNN+P; PDF refers to CGCNN as the base crystal graph convolutional neural network model"
+    },
+    "variant": {
+      "value": "cgcnn+p",
+      "evidence": "model_key: cgcnn+p"
+    },
+    "parameter_number": {
+      "value": 128450,
+      "evidence": "model_params: 128450"
+    }
+  },
+  "architectures": {
+    "architectures": [
+      "CGCNN",
+      "CGCNN-HD"
+    ],
+    "CGCNN": {
+      "ontology_class": {
+        "value": "GraphConvolutionArchitecture",
+        "evidence": "PDF: CGCNN is a crystal graph convolutional neural network; ontology: GraphConvolutionArchitecture is a subclass of GraphNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "PDF does not specify parameter count separately for CGCNN; model_params 128450 refers to the overall CGCNN+P model"
+      },
+      "datasets": [
+        "Materials Project database"
+      ],
+      "hyperparameters": [
+        "graph_convolutional_layers",
+        "hidden_layers",
+        "hidden_neurons",
+        "activation_function"
+      ],
+      "graph_convolutional_layers": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology: hasLayerCount is a data property of MachineLearningArchitectureConfiguration"
+        },
+        "value": "3",
+        "evidence": "PDF section RESULTS: architecture consists of 3 graph convolutional layers"
+      },
+      "hidden_layers": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology: hasLayerCount is a data property of MachineLearningArchitectureConfiguration"
+        },
+        "value": "6",
+        "evidence": "PDF section RESULTS: 6 hidden layers with 64 neurons each"
+      },
+      "hidden_neurons": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology: hasHiddenDimension is a data property of MachineLearningArchitectureConfiguration"
+        },
+        "value": "64",
+        "evidence": "PDF section RESULTS: 6 hidden layers with 64 neurons each"
+      },
+      "activation_function": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "PDF: softplus activation function used in convolution function"
+        },
+        "value": "softplus",
+        "evidence": "PDF section INTRODUCTION: softplus activation function in the convolution function"
+      }
+    },
+    "CGCNN-HD": {
+      "ontology_class": {
+        "value": "GraphConvolutionArchitecture",
+        "evidence": "PDF: CGCNN-HD is a variant of CGCNN with regularization; ontology: GraphConvolutionArchitecture"
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "PDF does not specify parameter count separately for CGCNN-HD"
+      },
+      "datasets": [
+        "Materials Project database"
+      ],
+      "hyperparameters": [
+        "graph_convolutional_layers",
+        "hidden_layers",
+        "hidden_neurons",
+        "activation_function",
+        "dropout"
+      ],
+      "graph_convolutional_layers": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology: hasLayerCount"
+        },
+        "value": "3",
+        "evidence": "PDF section RESULTS: same architecture as CGCNN with 3 graph convolutional layers"
+      },
+      "hidden_layers": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology: hasLayerCount"
+        },
+        "value": "6",
+        "evidence": "PDF section RESULTS: 6 hidden layers with 64 neurons each"
+      },
+      "hidden_neurons": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology: hasHiddenDimension"
+        },
+        "value": "64",
+        "evidence": "PDF section RESULTS: 6 hidden layers with 64 neurons each"
+      },
+      "activation_function": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "PDF: hyperbolic tangent replaces softplus in convolution function"
+        },
+        "value": "hyperbolic tangent",
+        "evidence": "PDF section INTRODUCTION: replacing softplus with hyperbolic tangent"
+      },
+      "dropout": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "PDF: dropout layers added between fully connected layers"
+        },
+        "value": "between each fully connected layer",
+        "evidence": "PDF section INTRODUCTION: adding dropout layers between each fully connected layer"
+      }
+    }
+  },
+  "training": {
+    "training_runs": [
+      "cgcnn_pretraining",
+      "cgcnn_hd_pretraining"
+    ],
+    "cgcnn_pretraining": {
+      "type": {
+        "value": "PretrainingRun",
+        "evidence": "PDF: CGCNN trained on Materials Project database; ontology: PretrainingRun is a subclass of MachineLearningTrainingRun"
+      },
+      "architectures": [
+        "CGCNN"
+      ],
+      "datasets": [
+        "Materials Project database"
+      ],
+      "optimizer": {
+        "value": null,
+        "evidence": "PDF does not specify optimizer for CGCNN training"
+      },
+      "loss_function": {
+        "value": null,
+        "evidence": "PDF does not specify loss function explicitly; RMSE shown in learning curves but not named as a specific loss"
+      },
+      "description": {
+        "value": "CGCNN trained on relaxed structures from the Materials Project database, with data augmentation using perturbed structures mapped to DFT final energies",
+        "evidence": "PDF section METHODS: training on relaxed and augmented data from MP database"
+      }
+    },
+    "cgcnn_hd_pretraining": {
+      "type": {
+        "value": "PretrainingRun",
+        "evidence": "PDF: CGCNN-HD trained on Materials Project database; ontology: PretrainingRun"
+      },
+      "architectures": [
+        "CGCNN-HD"
+      ],
+      "datasets": [
+        "Materials Project database"
+      ],
+      "optimizer": {
+        "value": null,
+        "evidence": "PDF does not specify optimizer for CGCNN-HD training"
+      },
+      "loss_function": {
+        "value": null,
+        "evidence": "PDF does not specify loss function explicitly"
+      },
+      "description": {
+        "value": "CGCNN-HD with hyperbolic tangent activation and dropout regularization, trained on relaxed and augmented structures from the Materials Project database",
+        "evidence": "PDF section METHODS: CGCNN-HD trained on relaxed and augmented data"
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\cgcnn_p.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2202.13947.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\cgcnn_p.yml"
+  }
+}

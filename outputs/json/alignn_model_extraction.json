@@ -1,0 +1,173 @@
+{
+  "model": {
+    "family": {
+      "value": "ALIGNN",
+      "evidence": "YAML model_name: ALIGNN"
+    },
+    "variant": {
+      "value": "alignn",
+      "evidence": "YAML model_name lowercased and normalized: alignn"
+    },
+    "parameter_number": {
+      "value": 4026753,
+      "evidence": "YAML model_params: 4026753"
+    }
+  },
+  "architectures": {
+    "architectures": [
+      "Atomistic Line Graph Neural Network"
+    ],
+    "Atomistic Line Graph Neural Network": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF describes ALIGNN as a GNN performing message passing on bond graph and line graph with bond angles; ontology has EquivariantMessagePassingNeuralNetworkArchitecture as subclass of EquivariantGraphNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 4026753,
+        "evidence": "YAML model_params: 4026753"
+      },
+      "datasets": [
+        "JARVIS-DFT",
+        "Materials Project",
+        "QM9"
+      ],
+      "hyperparameters": [
+        "ALIGNN layers",
+        "GCN layers",
+        "Edge input features",
+        "Triplet input features",
+        "Embedding features",
+        "Hidden features",
+        "Normalization",
+        "Batch size",
+        "Learning rate"
+      ],
+      "ALIGNN layers": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
+        },
+        "value": {
+          "value": 4,
+          "evidence": "PDF Table 1: ALIGNN layers = 4"
+        }
+      },
+      "GCN layers": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
+        },
+        "value": {
+          "value": 4,
+          "evidence": "PDF Table 1: GCN layers = 4"
+        }
+      },
+      "Edge input features": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
+        },
+        "value": {
+          "value": 80,
+          "evidence": "PDF Table 1: Edge input features = 80"
+        }
+      },
+      "Triplet input features": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
+        },
+        "value": {
+          "value": 40,
+          "evidence": "PDF Table 1: Triplet input features = 40"
+        }
+      },
+      "Embedding features": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
+        },
+        "value": {
+          "value": 64,
+          "evidence": "PDF Table 1: Embedding features = 64"
+        }
+      },
+      "Hidden features": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
+        },
+        "value": {
+          "value": 256,
+          "evidence": "PDF Table 1: Hidden features = 256"
+        }
+      },
+      "Normalization": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
+        },
+        "value": {
+          "value": "Batch normalization",
+          "evidence": "PDF Table 1: Normalization = Batch normalization"
+        }
+      },
+      "Batch size": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
+        },
+        "value": {
+          "value": 64,
+          "evidence": "PDF Table 1: Batch size = 64"
+        }
+      },
+      "Learning rate": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
+        },
+        "value": {
+          "value": 0.001,
+          "evidence": "PDF Table 1: Learning rate = 0.001"
+        }
+      }
+    }
+  },
+  "training": {
+    "training_runs": [
+      "pretraining_run"
+    ],
+    "pretraining_run": {
+      "type": {
+        "value": "PretrainingRun",
+        "evidence": "PDF describes training ALIGNN models from scratch on JARVIS-DFT, Materials Project, and QM9 datasets; ontology trainingonto.ttl PretrainingRun class"
+      },
+      "architectures": [
+        "Atomistic Line Graph Neural Network"
+      ],
+      "datasets": [
+        "JARVIS-DFT",
+        "Materials Project",
+        "QM9"
+      ],
+      "optimizer": {
+        "value": "AdamW",
+        "evidence": "PDF Methods section B: AdamW optimizer with normalized weight decay of 10-5"
+      },
+      "loss_function": {
+        "value": "Mean Squared Error",
+        "evidence": "PDF Methods section B: For regression targets we minimize the mean squared error (MSE) loss"
+      },
+      "description": {
+        "value": "ALIGNN models trained for 300 epochs using AdamW optimizer with one-cycle learning rate policy, batch size 64, on JARVIS-DFT, Materials Project, and QM9 datasets for various solid-state and molecular property prediction tasks.",
+        "evidence": "PDF Methods section B and Section F"
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\alignn.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2106.01829.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\alignn.yml"
+  }
+}

@@ -1,0 +1,315 @@
+{
+  "model": {
+    "family": {
+      "value": "DPA",
+      "evidence": "YAML model_name 'DPA-3.1-3M-FT' indicates the DPA model family."
+    },
+    "variant": {
+      "value": "dpa_3.1_3m_ft",
+      "evidence": "YAML model_name 'DPA-3.1-3M-FT' lowercased and spaces/hyphens replaced by underscores."
+    },
+    "parameter_number": {
+      "value": 3268838,
+      "evidence": "YAML model_params is 3268838."
+    }
+  },
+  "architectures": [
+    {
+      "name": "DPA3",
+      "ontology_class": {
+        "value": "MessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF Section 2.1 describes DPA3 as a 'multi-layer message-passing neural network' built on line graph series. Ontology maps this to MessagePassingNeuralNetworkArchitecture."
+      },
+      "parameter_number": {
+        "value": 3268838,
+        "evidence": "PDF Section 2.5 states the DPA-3.1-3M model contains approximately 3.26 million parameters, consistent with YAML model_params 3268838."
+      },
+      "datasets": {
+        "value": [
+          "OpenLAM-v1",
+          "OMat24",
+          "MPtrj",
+          "sAlex",
+          "SPICE-MACE-OFF",
+          "TorsionNet-500",
+          "Water/Ice Systems",
+          "Formate Decomposition on Cu",
+          "Defected Bilayer Graphene",
+          "Zeolite",
+          "DPA2 Test Sets"
+        ],
+        "evidence": "PDF Sections 2.3, 2.5, and 4.1 describe training on OpenLAM-v1 (which includes OMat24, SPICE2, OC20, etc.), MPtrj, sAlex, and various benchmark datasets."
+      },
+      "hyperparameters": [
+        {
+          "name": "Number of update layers",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter as a class. Number of layers is a structural hyperparameter."
+          },
+          "value": {
+            "value": 16,
+            "evidence": "PDF Section 2.5 states DPA-3.1-3M employs L=16 layers. Table S-9 confirms 16 layers for DPA-3.1-3M."
+          }
+        },
+        {
+          "name": "Maximum graph order",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. LiGS order K is a structural hyperparameter."
+          },
+          "value": {
+            "value": 2,
+            "evidence": "PDF Section 2.5 states DPA-3.1-3M uses LiGS order truncated at K=2. Section 2.3 and Fig. 3 show K=2 as default."
+          }
+        },
+        {
+          "name": "Dimension of vertex features in G(1)",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Feature dimension is a model hyperparameter."
+          },
+          "value": {
+            "value": 128,
+            "evidence": "Table S-9 lists dimension of vertex features in G(1) as 128 for all configurations."
+          }
+        },
+        {
+          "name": "Dimension of edge features in G(1)",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Feature dimension is a model hyperparameter."
+          },
+          "value": {
+            "value": 64,
+            "evidence": "Table S-9 lists dimension of edge features in G(1) as 64 for all configurations."
+          }
+        },
+        {
+          "name": "Dimension of edge features in G(2)",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Feature dimension is a model hyperparameter."
+          },
+          "value": {
+            "value": 32,
+            "evidence": "Table S-9 lists dimension of edge features in G(2) as 32 for all configurations."
+          }
+        },
+        {
+          "name": "Cutoff radius in G(1)",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Cutoff radius is a model hyperparameter."
+          },
+          "value": {
+            "value": 6.0,
+            "evidence": "Table S-9 lists cutoff radius in G(1) as 6.0 Å for all configurations. PDF Section 4.3 also states r1c = 6.0 Å."
+          }
+        },
+        {
+          "name": "Cutoff radius in G(2)",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Cutoff radius is a model hyperparameter."
+          },
+          "value": {
+            "value": 4.0,
+            "evidence": "Table S-9 lists cutoff radius in G(2) as 4.0 Å for DPA-3.1-3M and most configurations."
+          }
+        },
+        {
+          "name": "Maximum learning rate",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Learning rate is a training hyperparameter."
+          },
+          "value": {
+            "value": 0.001,
+            "evidence": "Table S-9 lists maximum learning rate as 1e-3 for all configurations."
+          }
+        },
+        {
+          "name": "Minimum learning rate",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Learning rate is a training hyperparameter."
+          },
+          "value": {
+            "value": 1e-05,
+            "evidence": "Table S-9 lists minimum learning rate as 1e-5 for DPA-3.1-3M and most configurations."
+          }
+        },
+        {
+          "name": "Activation Function Threshold",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Activation threshold is a model hyperparameter."
+          },
+          "value": {
+            "value": 3.0,
+            "evidence": "Table S-9 lists Activation Function Threshold as 3.0 for DPA-3.1-3M."
+          }
+        },
+        {
+          "name": "Energy loss prefactor",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Loss prefactor is a training hyperparameter."
+          },
+          "value": {
+            "value": "0.2→20",
+            "evidence": "Table S-9 lists Energy loss prefactor as 0.2→20, indicating it changes from 0.2 to 20 during training."
+          }
+        },
+        {
+          "name": "Force loss prefactor",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Loss prefactor is a training hyperparameter."
+          },
+          "value": {
+            "value": "100→20",
+            "evidence": "Table S-9 lists Force loss prefactor as 100→20 for DPA-3.1-3M."
+          }
+        },
+        {
+          "name": "Virial loss prefactor",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Loss prefactor is a training hyperparameter."
+          },
+          "value": {
+            "value": "0.02→1",
+            "evidence": "Table S-9 lists Virial loss prefactor as 0.02→1 for DPA-3.1-3M."
+          }
+        },
+        {
+          "name": "Batch size",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Batch size is a training hyperparameter."
+          },
+          "value": {
+            "value": "dynamic per system size",
+            "evidence": "Table S-9 notes batch size is ⌈256/N⌉ or ⌈128/N⌉ where N is number of atoms, dynamically determined per system."
+          }
+        },
+        {
+          "name": "Number of training steps",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter. Training steps is a training hyperparameter."
+          },
+          "value": {
+            "value": 4000000,
+            "evidence": "PDF Section 2.5 states the model was trained for 4 million steps. Table S-9 confirms 4M steps for DPA-3.1-3M."
+          }
+        }
+      ]
+    }
+  ],
+  "training": {
+    "training_runs": [
+      {
+        "id": "multitask_pretraining_openlam_v1",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF Section 2.5 describes DPA-3.1-3M as 'multitask-pretrained on the OpenLAM-v1 dataset collection'. Ontology trainingonto.ttl defines PretrainingRun as a subclass of MachineLearningTrainingRun."
+        },
+        "architectures": {
+          "value": [
+            "DPA3"
+          ],
+          "evidence": "PDF Section 2.5 describes the DPA-3.1-3M model using the DPA3 architecture with LiGS order K=2 and L=16 layers."
+        },
+        "datasets": {
+          "value": [
+            "OpenLAM-v1"
+          ],
+          "evidence": "PDF Section 2.5 states DPA-3.1-3M is 'trained on the OpenLAM-v1 dataset collection'. OpenLAM-v1 consists of 31 datasets including OMat24, OC20, SPICE2, and others."
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "Table S-9 lists the optimizer as Adam for DPA-3.1-3M training."
+        },
+        "loss_function": {
+          "value": "MSE",
+          "evidence": "Table S-9 lists the loss function as MSE for DPA-3.1-3M training."
+        },
+        "description": {
+          "value": "Multitask pretraining of DPA-3.1-3M on the OpenLAM-v1 dataset collection using dataset encoding for multi-task training across 31 diverse datasets. Training performed for 4 million steps on 128 GPUs with Adam optimizer, exponential learning rate scheduling from 1e-3 to 1e-6, and MSE loss function.",
+          "evidence": "PDF Section 2.5 and Table S-9 provide details on the training procedure, optimizer, loss function, and hyperparameters."
+        }
+      },
+      {
+        "id": "finetuning_mptrj_salex",
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "PDF Section 2.5 describes DPA-3.1-3M-FT as a finetuned variant where 'the OMat24 encoding is finetuned on MPTrj and sAlex to align the XC functional.' Ontology trainingonto.ttl defines MachineLearningFinetuningRun."
+        },
+        "architectures": {
+          "value": [
+            "DPA3"
+          ],
+          "evidence": "PDF Section 2.5 describes DPA-3.1-3M-FT as a finetuned version of the DPA-3.1-3M model using the same DPA3 architecture."
+        },
+        "datasets": {
+          "value": [
+            "MPtrj",
+            "sAlex"
+          ],
+          "evidence": "PDF Section 2.5 states DPA-3.1-3M-FT is 'finetuned on MPTrj and sAlex' datasets."
+        },
+        "optimizer": {
+          "value": null,
+          "evidence": "PDF does not specify the optimizer used for fine-tuning DPA-3.1-3M-FT."
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "PDF does not specify the loss function used for fine-tuning DPA-3.1-3M-FT."
+        },
+        "description": {
+          "value": "Fine-tuning of the pretrained DPA-3.1-3M model on MPtrj and sAlex datasets to align the XC functional for improved performance on inorganic materials benchmarks such as Matbench Discovery.",
+          "evidence": "PDF Section 2.5 describes the fine-tuning procedure and results on Matbench Discovery benchmark (Table S-7)."
+        }
+      },
+      {
+        "id": "scaling_law_omat24",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF Section 2.4 describes scaling law experiments where 'training experiments were conducted with varying model sizes under six fixed IsoFLOP settings' on the OMat24 dataset. This is a pretraining run to study scaling behavior."
+        },
+        "architectures": {
+          "value": [
+            "DPA3"
+          ],
+          "evidence": "PDF Section 2.4 describes the scaling law experiments using DPA3 models with varying sizes (L3, L6, L9, L16, 24 layers)."
+        },
+        "datasets": {
+          "value": [
+            "OMat24"
+          ],
+          "evidence": "PDF Section 2.4 states 'The scaling behavior of DPA3 is examined on the OMat24 dataset' and Fig. 4 shows results from models trained on OMat24."
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "Table S-9 lists the optimizer as AdamW for scaling law experiments."
+        },
+        "loss_function": {
+          "value": "MSE",
+          "evidence": "Table S-9 lists the loss function as MSE for scaling law experiments."
+        },
+        "description": {
+          "value": "Scaling law investigation of DPA3 models on the OMat24 dataset. Training experiments conducted with varying model sizes (L3, L6, L9, L16, 24) under six fixed IsoFLOP settings to demonstrate power-law scaling of validation energy MAE with model parameters, dataset size, and compute budget.",
+          "evidence": "PDF Section 2.4 and Fig. 4 describe the scaling law experiments and results."
+        }
+      }
+    ]
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\dpa_3_1_3m_ft.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2506.01686.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\dpa_3_1_3m_ft.yml"
+  }
+}

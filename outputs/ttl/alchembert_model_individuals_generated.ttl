@@ -1,0 +1,20 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:bert_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "BERT"^^xsd:string ;
+    arch:hasVariant archind:alchembert_variant .
+
+archind:alchembert_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "alchembert"^^xsd:string ;
+    arch:hasParameterNumber 110000000 .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#bert_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#alchembert_variant> >> prov:wasDerivedFrom "YAML model_key: alchembert" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alchembert_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "110000000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 110000000" .

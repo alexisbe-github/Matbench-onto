@@ -1,0 +1,97 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:alphanet_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "AlphaNet"^^xsd:string ;
+    arch:hasVariant archind:alphanet_v1_mptrj_alphanet_model_variant,
+        archind:alphanet_v1_mptrj_variant .
+
+trind:evidence a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "evidence"^^xsd:string .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:alphanet_v1_mptrj_alphanet_architecture a owl:NamedIndividual,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "AlphaNet"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:alphanet_v1_mptrj_alphanet_architecture_configuration ;
+    arch:hasParameterNumber 16234332 ;
+    train:usesDataset dataind:defected_bilayer_graphene,
+        dataind:formate_decomposition_on_cu,
+        dataind:matbench_discovery_wbm,
+        dataind:mptraj,
+        dataind:oc20,
+        dataind:oc2m,
+        dataind:zeolite .
+
+archind:alphanet_v1_mptrj_alphanet_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AlphaNet architecture configuration"^^xsd:string .
+
+archind:alphanet_v1_mptrj_alphanet_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:alphanet_v1_mptrj_alphanet_architecture .
+
+archind:alphanet_v1_mptrj_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "alphanet-v1-mptrj"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\alphanet_v1_oam.yml" ;
+    arch:hasParameterNumber 16234332 .
+
+dataind:defected_bilayer_graphene a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Defected Bilayer Graphene"^^xsd:string .
+
+dataind:formate_decomposition_on_cu a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Formate Decomposition on Cu"^^xsd:string .
+
+dataind:matbench_discovery_wbm a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Matbench Discovery WBM"^^xsd:string .
+
+dataind:mptraj a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MPTraj"^^xsd:string .
+
+dataind:oc20 a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "OC20"^^xsd:string .
+
+dataind:oc2m a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "OC2M"^^xsd:string .
+
+dataind:zeolite a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Zeolite"^^xsd:string .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_variant> >> prov:wasDerivedFrom "alphanet-v1-mptrj" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "16234332"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "16234332" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_model_variant> >> prov:wasDerivedFrom "EquivariantMessagePassingNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> >> prov:wasDerivedFrom "EquivariantMessagePassingNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "16234332"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "16234332" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#formate_decomposition_on_cu> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#defected_bilayer_graphene> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#zeolite> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#oc20> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#oc2m> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptraj> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#matbench_discovery_wbm> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .

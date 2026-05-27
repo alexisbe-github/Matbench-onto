@@ -1,0 +1,60 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:bo_gnn_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "BO-GNN"^^xsd:string ;
+    arch:hasVariant archind:bowsr_variant .
+
+trind:megnet_elasticity_pretraining a owl:NamedIndividual,
+        train:PretrainingRun ;
+    rdfs:label "megnet_elasticity_pretraining"^^xsd:string ;
+    rdfs:comment "Pretraining of MEGNet elasticity models (bulk and shear moduli) on 12,179 crystals from the Materials Project database with DFT-computed elastic moduli."^^xsd:string ;
+    train:trainsModelVariant archind:bowsr_megnet_model_variant ;
+    train:usesDataset dataind:materials_project ;
+    train:usesOptimizer trind:adam .
+
+trind:megnet_formation_energy_pretraining a owl:NamedIndividual,
+        train:PretrainingRun ;
+    rdfs:label "megnet_formation_energy_pretraining"^^xsd:string ;
+    rdfs:comment "Pretraining of MEGNet formation energy model on 133,420 crystals from the Materials Project database with DFT-computed formation energies. Model achieves cross-validated MAE of 26 meV atom^-1."^^xsd:string ;
+    train:trainsModelVariant archind:bowsr_megnet_model_variant ;
+    train:usesDataset dataind:materials_project ;
+    train:usesOptimizer trind:adam .
+
+archind:bowsr_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "bowsr"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2104.10242.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\bowsr.yml" ;
+    arch:hasParameterNumber 167761 .
+
+dataind:materials_project a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Materials Project"^^xsd:string .
+
+trind:adam a owl:NamedIndividual,
+        train:Optimizer ;
+    rdfs:label "Adam"^^xsd:string .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#bo_gnn_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#bowsr_variant> >> prov:wasDerivedFrom "model_name in YAML summary lowercased and underscored" ; dcterms:source <https://arxiv.org/pdf/2104.10242.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#bowsr_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "167761"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params in YAML summary" ; dcterms:source <https://arxiv.org/pdf/2104.10242.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#megnet_formation_energy_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#bowsr_megnet_model_variant> >> prov:wasDerivedFrom "[{'value': 'MEGNet', 'evidence': 'Section 2.1: MEGNet formation energy model trained on 133,420 Materials Project crystals'}]" ; dcterms:source <https://arxiv.org/pdf/2104.10242.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#megnet_formation_energy_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project> >> prov:wasDerivedFrom "[{'value': 'Materials Project', 'evidence': 'Section 2.1: trained on DFT-computed formation energies of 133,420 Materials Project crystals'}]" ; dcterms:source <https://arxiv.org/pdf/2104.10242.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#megnet_formation_energy_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesOptimizer> <https://k.loria.fr/ontologies/trainingonto-individuals#adam> >> prov:wasDerivedFrom "Section 5.2: Adam optimizer used" ; dcterms:source <https://arxiv.org/pdf/2104.10242.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#megnet_formation_energy_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "Pretraining of MEGNet formation energy model on 133,420 crystals from the Materials Project database with DFT-computed formation energies. Model achieves cross-validated MAE of 26 meV atom^-1."^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "Section 2.1 and Section 5.2" ; dcterms:source <https://arxiv.org/pdf/2104.10242.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#megnet_elasticity_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#bowsr_megnet_model_variant> >> prov:wasDerivedFrom "[{'value': 'MEGNet', 'evidence': 'Section 2.2: MEGNet models trained on DFT-computed elastic moduli of 12,179 crystals'}]" ; dcterms:source <https://arxiv.org/pdf/2104.10242.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#megnet_elasticity_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project> >> prov:wasDerivedFrom "[{'value': 'Materials Project', 'evidence': 'Section 2.2: trained on DFT-computed elastic moduli of 12,179 crystals from Materials Project'}]" ; dcterms:source <https://arxiv.org/pdf/2104.10242.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#megnet_elasticity_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesOptimizer> <https://k.loria.fr/ontologies/trainingonto-individuals#adam> >> prov:wasDerivedFrom "Section 5.2: Adam optimizer used" ; dcterms:source <https://arxiv.org/pdf/2104.10242.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#megnet_elasticity_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "Pretraining of MEGNet elasticity models (bulk and shear moduli) on 12,179 crystals from the Materials Project database with DFT-computed elastic moduli."^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "Section 2.2 and Section 5.2" ; dcterms:source <https://arxiv.org/pdf/2104.10242.pdf> .
