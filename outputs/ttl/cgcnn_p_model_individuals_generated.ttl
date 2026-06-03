@@ -17,48 +17,151 @@ archind:cgcnn_family a owl:NamedIndividual,
         archind:cgcnn_p_cgcnn_model_variant,
         archind:cgcnn_p_variant .
 
-trind:cgcnn_hd_pretraining a owl:NamedIndividual,
-        train:PretrainingRun ;
-    rdfs:label "cgcnn_hd_pretraining"^^xsd:string ;
-    rdfs:comment "CGCNN-HD with hyperbolic tangent activation and dropout regularization, trained on relaxed and augmented structures from the Materials Project database"^^xsd:string ;
-    train:trainsModelVariant archind:cgcnn_p_cgcnn_hd_model_variant ;
-    train:usesDataset dataind:materials_project_database .
+dataind:augmented_dataset a owl:NamedIndividual,
+        train:TrainingDataset ;
+    rdfs:label "augmented dataset"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_graph_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 252000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_numbers_attribute,
+        dataind:crystal_graph_attribute,
+        dataind:lattice_vectors_attribute,
+        dataind:perturbed_atomic_coordinates_attribute ;
+    data:usesAttributeAsTargetFeature dataind:formation_energy_attribute ;
+    data:wasDerivedFromDataset dataind:relaxed_dataset .
 
-trind:cgcnn_pretraining a owl:NamedIndividual,
-        train:PretrainingRun ;
-    rdfs:label "cgcnn_pretraining"^^xsd:string ;
-    rdfs:comment "CGCNN trained on relaxed structures from the Materials Project database, with data augmentation using perturbed structures mapped to DFT final energies"^^xsd:string ;
-    train:trainsModelVariant archind:cgcnn_p_cgcnn_model_variant ;
-    train:usesDataset dataind:materials_project_database .
+dataind:h_relaxed a owl:NamedIndividual,
+        data:DatasetSplit ;
+    rdfs:label "H-Relaxed"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_graph_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:usesAttributeAsInputFeature dataind:atomic_coordinates_attribute,
+        dataind:atomic_numbers_attribute,
+        dataind:crystal_graph_attribute,
+        dataind:lattice_vectors_attribute ;
+    data:usesAttributeAsTargetFeature dataind:formation_energy_attribute ;
+    data:wasDerivedFromDataset dataind:nb_sr_h_hydride_structures .
+
+dataind:h_unrelaxed a owl:NamedIndividual,
+        data:DatasetSplit ;
+    rdfs:label "H-Unrelaxed"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_graph_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:usesAttributeAsInputFeature dataind:atomic_numbers_attribute,
+        dataind:crystal_graph_attribute,
+        dataind:lattice_vectors_attribute,
+        dataind:unrelaxed_atomic_coordinates_attribute ;
+    data:usesAttributeAsTargetFeature dataind:formation_energy_attribute ;
+    data:wasDerivedFromDataset dataind:nb_sr_h_hydride_structures .
+
+trind:cgcnn_hd_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "CGCNN-HD"^^xsd:string ;
+    train:generatedBy trind:cgcnn_hd_pretraining .
+
+trind:cgcnn_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "CGCNN"^^xsd:string ;
+    train:generatedBy trind:cgcnn_pretraining .
+
+trind:cgcnn_p_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "CGCNN+P"^^xsd:string ;
+    train:generatedBy trind:cgcnn_pretraining .
+
+archind:cgcnn_graph_convolutional_layers_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "graph_convolutional_layers"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_graph_convolutional_layers_component_configuration .
+
+archind:cgcnn_graph_convolutional_layers_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "graph_convolutional_layers component configuration"^^xsd:string .
+
+archind:cgcnn_hd_dropout_layers_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "dropout_layers"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_hd_dropout_layers_component_configuration .
+
+archind:cgcnn_hd_dropout_layers_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "dropout_layers component configuration"^^xsd:string .
+
+archind:cgcnn_hd_graph_convolutional_layers_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "graph_convolutional_layers"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_hd_graph_convolutional_layers_component_configuration .
+
+archind:cgcnn_hd_graph_convolutional_layers_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "graph_convolutional_layers component configuration"^^xsd:string .
+
+archind:cgcnn_hd_hidden_layers_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "hidden_layers"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_hd_hidden_layers_component_configuration .
+
+archind:cgcnn_hd_hidden_layers_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "hidden_layers component configuration"^^xsd:string .
+
+archind:cgcnn_hd_pooling_layer_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "pooling_layer"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_hd_pooling_layer_component_configuration .
+
+archind:cgcnn_hd_pooling_layer_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "pooling_layer component configuration"^^xsd:string .
+
+archind:cgcnn_hd_readout_layer_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "readout_layer"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_hd_readout_layer_component_configuration .
+
+archind:cgcnn_hd_readout_layer_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "readout_layer component configuration"^^xsd:string .
+
+archind:cgcnn_hidden_layers_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "hidden_layers"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_hidden_layers_component_configuration .
+
+archind:cgcnn_hidden_layers_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "hidden_layers component configuration"^^xsd:string .
 
 archind:cgcnn_p_cgcnn_architecture a owl:NamedIndividual,
         arch:GraphConvolutionArchitecture ;
     rdfs:label "CGCNN"^^xsd:string ;
-    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_p_cgcnn_architecture_configuration ;
-    train:usesDataset dataind:materials_project_database .
+    arch:hasComponent archind:cgcnn_graph_convolutional_layers_component,
+        archind:cgcnn_hidden_layers_component,
+        archind:cgcnn_pooling_layer_component,
+        archind:cgcnn_readout_layer_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_p_cgcnn_architecture_configuration .
 
 archind:cgcnn_p_cgcnn_architecture_configuration a owl:NamedIndividual,
         arch:MachineLearningArchitectureConfiguration ;
     rdfs:label "CGCNN architecture configuration"^^xsd:string ;
-    train:hasHyperparameterValue trind:cgcnn_p_cgcnn_activation_function_value,
-        trind:cgcnn_p_cgcnn_graph_convolutional_layers_value,
-        trind:cgcnn_p_cgcnn_hidden_layers_value,
-        trind:cgcnn_p_cgcnn_hidden_neurons_value .
+    arch:hasHiddenDimension 64 ;
+    arch:hasLayerCount 9 .
 
 archind:cgcnn_p_cgcnn_hd_architecture a owl:NamedIndividual,
         arch:GraphConvolutionArchitecture ;
     rdfs:label "CGCNN-HD"^^xsd:string ;
-    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_p_cgcnn_hd_architecture_configuration ;
-    train:usesDataset dataind:materials_project_database .
+    arch:hasComponent archind:cgcnn_hd_dropout_layers_component,
+        archind:cgcnn_hd_graph_convolutional_layers_component,
+        archind:cgcnn_hd_hidden_layers_component,
+        archind:cgcnn_hd_pooling_layer_component,
+        archind:cgcnn_hd_readout_layer_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_p_cgcnn_hd_architecture_configuration .
 
 archind:cgcnn_p_cgcnn_hd_architecture_configuration a owl:NamedIndividual,
         arch:MachineLearningArchitectureConfiguration ;
     rdfs:label "CGCNN-HD architecture configuration"^^xsd:string ;
-    train:hasHyperparameterValue trind:cgcnn_p_cgcnn_hd_activation_function_value,
-        trind:cgcnn_p_cgcnn_hd_dropout_value,
-        trind:cgcnn_p_cgcnn_hd_graph_convolutional_layers_value,
-        trind:cgcnn_p_cgcnn_hd_hidden_layers_value,
-        trind:cgcnn_p_cgcnn_hd_hidden_neurons_value .
+    arch:hasHiddenDimension 64 ;
+    arch:hasLayerCount 9 .
 
 archind:cgcnn_p_variant a owl:NamedIndividual,
         arch:ModelVariant ;
@@ -67,59 +170,113 @@ archind:cgcnn_p_variant a owl:NamedIndividual,
     prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\cgcnn_p.yml" ;
     arch:hasParameterNumber 128450 .
 
+archind:cgcnn_pooling_layer_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "pooling_layer"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_pooling_layer_component_configuration .
+
+archind:cgcnn_pooling_layer_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "pooling_layer component configuration"^^xsd:string .
+
+archind:cgcnn_readout_layer_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "readout_layer"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_readout_layer_component_configuration .
+
+archind:cgcnn_readout_layer_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "readout_layer component configuration"^^xsd:string .
+
+dataind:perturbed_atomic_coordinates_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "perturbed_atomic_coordinates"^^xsd:string .
+
+dataind:relaxed_dataset a owl:NamedIndividual,
+        data:Dataset,
+        train:TrainingDataset ;
+    rdfs:label "relaxed dataset"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_graph_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 126000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_coordinates_attribute,
+        dataind:atomic_numbers_attribute,
+        dataind:crystal_graph_attribute,
+        dataind:lattice_vectors_attribute ;
+    data:usesAttributeAsTargetFeature dataind:formation_energy_attribute ;
+    data:wasDerivedFromDataset dataind:materials_project_database .
+
+dataind:unrelaxed_atomic_coordinates_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "unrelaxed_atomic_coordinates"^^xsd:string .
+
+trind:cgcnn_hd_pretraining a owl:NamedIndividual,
+        train:PretrainingRun ;
+    rdfs:label "cgcnn_hd_pretraining"^^xsd:string ;
+    rdfs:comment "Pretraining of CGCNN-HD with dropout and hyperbolic tangent activation on Materials Project database"^^xsd:string ;
+    train:hasHyperparameterValue trind:cgcnn_p_cgcnn_hd_activation_function_value,
+        trind:cgcnn_p_cgcnn_hd_dropout_value,
+        trind:cgcnn_p_cgcnn_hd_graph_convolutional_layers_value,
+        trind:cgcnn_p_cgcnn_hd_hidden_layers_value,
+        trind:cgcnn_p_cgcnn_hd_hidden_neurons_value,
+        trind:cgcnn_p_cgcnn_hd_learning_rate_value ;
+    train:trainsModelVariant archind:cgcnn_p_cgcnn_hd_model_variant ;
+    train:usesDataset dataind:materials_project_database .
+
 trind:cgcnn_p_cgcnn_activation_function_value a owl:NamedIndividual,
         train:MachineLearningHyperparameterValue ;
     rdfs:label "cgcnn+p CGCNN activation_function value"^^xsd:string ;
-    prov:value "softplus"^^xsd:string ;
     train:ofHyperparameter trind:activation_function .
 
 trind:cgcnn_p_cgcnn_graph_convolutional_layers_value a owl:NamedIndividual,
         train:MachineLearningHyperparameterValue ;
     rdfs:label "cgcnn+p CGCNN graph_convolutional_layers value"^^xsd:string ;
-    prov:value 3 ;
     train:ofHyperparameter trind:graph_convolutional_layers .
 
 trind:cgcnn_p_cgcnn_hd_activation_function_value a owl:NamedIndividual,
         train:MachineLearningHyperparameterValue ;
     rdfs:label "cgcnn+p CGCNN-HD activation_function value"^^xsd:string ;
-    prov:value "hyperbolic tangent"^^xsd:string ;
     train:ofHyperparameter trind:activation_function .
 
 trind:cgcnn_p_cgcnn_hd_dropout_value a owl:NamedIndividual,
         train:MachineLearningHyperparameterValue ;
     rdfs:label "cgcnn+p CGCNN-HD dropout value"^^xsd:string ;
-    prov:value "between each fully connected layer"^^xsd:string ;
     train:ofHyperparameter trind:dropout .
 
 trind:cgcnn_p_cgcnn_hd_graph_convolutional_layers_value a owl:NamedIndividual,
         train:MachineLearningHyperparameterValue ;
     rdfs:label "cgcnn+p CGCNN-HD graph_convolutional_layers value"^^xsd:string ;
-    prov:value 3 ;
     train:ofHyperparameter trind:graph_convolutional_layers .
 
 trind:cgcnn_p_cgcnn_hd_hidden_layers_value a owl:NamedIndividual,
         train:MachineLearningHyperparameterValue ;
     rdfs:label "cgcnn+p CGCNN-HD hidden_layers value"^^xsd:string ;
-    prov:value 6 ;
     train:ofHyperparameter trind:hidden_layers .
 
 trind:cgcnn_p_cgcnn_hd_hidden_neurons_value a owl:NamedIndividual,
         train:MachineLearningHyperparameterValue ;
     rdfs:label "cgcnn+p CGCNN-HD hidden_neurons value"^^xsd:string ;
-    prov:value 64 ;
     train:ofHyperparameter trind:hidden_neurons .
+
+trind:cgcnn_p_cgcnn_hd_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "cgcnn+p CGCNN-HD learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
 
 trind:cgcnn_p_cgcnn_hidden_layers_value a owl:NamedIndividual,
         train:MachineLearningHyperparameterValue ;
     rdfs:label "cgcnn+p CGCNN hidden_layers value"^^xsd:string ;
-    prov:value 6 ;
     train:ofHyperparameter trind:hidden_layers .
 
 trind:cgcnn_p_cgcnn_hidden_neurons_value a owl:NamedIndividual,
         train:MachineLearningHyperparameterValue ;
     rdfs:label "cgcnn+p CGCNN hidden_neurons value"^^xsd:string ;
-    prov:value 64 ;
     train:ofHyperparameter trind:hidden_neurons .
+
+trind:cgcnn_p_cgcnn_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "cgcnn+p CGCNN learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
 
 trind:dropout a owl:NamedIndividual,
         train:MachineLearningHyperparameter ;
@@ -135,9 +292,33 @@ archind:cgcnn_p_cgcnn_model_variant a owl:NamedIndividual,
     rdfs:label "cgcnn+p CGCNN"^^xsd:string ;
     arch:hasMachineLearningArchitecture archind:cgcnn_p_cgcnn_architecture .
 
+dataind:nb_sr_h_hydride_structures a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Nb-Sr-H hydride structures"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_graph_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 623 ;
+    data:usesAttributeAsInputFeature dataind:atomic_coordinates_attribute,
+        dataind:atomic_numbers_attribute,
+        dataind:crystal_graph_attribute,
+        dataind:lattice_vectors_attribute ;
+    data:usesAttributeAsTargetFeature dataind:formation_energy_attribute .
+
 trind:activation_function a owl:NamedIndividual,
         train:MachineLearningHyperparameter ;
     rdfs:label "activation_function"^^xsd:string .
+
+trind:cgcnn_pretraining a owl:NamedIndividual,
+        train:PretrainingRun ;
+    rdfs:label "cgcnn_pretraining"^^xsd:string ;
+    rdfs:comment "Pretraining of CGCNN on Materials Project database of relaxed crystal structures for formation energy prediction"^^xsd:string ;
+    train:hasHyperparameterValue trind:cgcnn_p_cgcnn_activation_function_value,
+        trind:cgcnn_p_cgcnn_graph_convolutional_layers_value,
+        trind:cgcnn_p_cgcnn_hidden_layers_value,
+        trind:cgcnn_p_cgcnn_hidden_neurons_value,
+        trind:cgcnn_p_cgcnn_learning_rate_value ;
+    train:trainsModelVariant archind:cgcnn_p_cgcnn_model_variant ;
+    train:usesDataset dataind:materials_project_database .
 
 trind:graph_convolutional_layers a owl:NamedIndividual,
         train:MachineLearningHyperparameter ;
@@ -151,143 +332,149 @@ trind:hidden_neurons a owl:NamedIndividual,
         train:MachineLearningHyperparameter ;
     rdfs:label "hidden_neurons"^^xsd:string .
 
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
 dataind:materials_project_database a owl:NamedIndividual,
         data:Dataset ;
-    rdfs:label "Materials Project database"^^xsd:string .
+    rdfs:label "Materials Project database"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_graph_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 126000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_coordinates_attribute,
+        dataind:atomic_numbers_attribute,
+        dataind:crystal_graph_attribute,
+        dataind:lattice_vectors_attribute ;
+    data:usesAttributeAsTargetFeature dataind:formation_energy_attribute .
+
+dataind:atomic_coordinates_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic_coordinates"^^xsd:string .
+
+dataind:atomic_numbers_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic_numbers"^^xsd:string .
+
+dataind:crystal_graph_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "crystal_graph"^^xsd:string .
+
+dataind:crystal_graph_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "crystal graph"^^xsd:string .
+
+dataind:dft_labelling_method a owl:NamedIndividual,
+        data:LabellingMethod ;
+    rdfs:label "DFT"^^xsd:string .
+
+dataind:formation_energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "formation_energy"^^xsd:string .
+
+dataind:lattice_vectors_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "lattice_vectors"^^xsd:string .
 
 
 
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_variant> >> prov:wasDerivedFrom "model_key: cgcnn+p" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "128450"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params: 128450" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_model_variant> >> prov:wasDerivedFrom "PDF: CGCNN is a crystal graph convolutional neural network; ontology: GraphConvolutionArchitecture is a subclass of GraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> >> prov:wasDerivedFrom "PDF: CGCNN is a crystal graph convolutional neural network; ontology: GraphConvolutionArchitecture is a subclass of GraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> >> prov:wasDerivedFrom "['Materials Project database']" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#graph_convolutional_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount is a data property of MachineLearningArchitectureConfiguration" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: architecture consists of 3 graph convolutional layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> <http://www.w3.org/ns/prov#value> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "3" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount is a data property of MachineLearningArchitectureConfiguration" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> <http://www.w3.org/ns/prov#value> "6"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "6" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_neurons> >> prov:wasDerivedFrom "ontology: hasHiddenDimension is a data property of MachineLearningArchitectureConfiguration" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> <http://www.w3.org/ns/prov#value> "64"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "64" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#activation_function> >> prov:wasDerivedFrom "PDF: softplus activation function used in convolution function" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> >> prov:wasDerivedFrom "PDF section INTRODUCTION: softplus activation function in the convolution function" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> <http://www.w3.org/ns/prov#value> "softplus"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "softplus" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#graph_convolutional_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount is a data property of MachineLearningArchitectureConfiguration" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: architecture consists of 3 graph convolutional layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> <http://www.w3.org/ns/prov#value> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "3" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount is a data property of MachineLearningArchitectureConfiguration" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> <http://www.w3.org/ns/prov#value> "6"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "6" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_neurons> >> prov:wasDerivedFrom "ontology: hasHiddenDimension is a data property of MachineLearningArchitectureConfiguration" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> <http://www.w3.org/ns/prov#value> "64"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "64" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#activation_function> >> prov:wasDerivedFrom "PDF: softplus activation function used in convolution function" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> >> prov:wasDerivedFrom "PDF section INTRODUCTION: softplus activation function in the convolution function" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> <http://www.w3.org/ns/prov#value> "softplus"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "softplus" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_model_variant> >> prov:wasDerivedFrom "PDF: CGCNN-HD is a variant of CGCNN with regularization; ontology: GraphConvolutionArchitecture" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture> >> prov:wasDerivedFrom "PDF: CGCNN-HD is a variant of CGCNN with regularization; ontology: GraphConvolutionArchitecture" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> >> prov:wasDerivedFrom "['Materials Project database']" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#graph_convolutional_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: same architecture as CGCNN with 3 graph convolutional layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> <http://www.w3.org/ns/prov#value> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "3" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> <http://www.w3.org/ns/prov#value> "6"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "6" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_neurons> >> prov:wasDerivedFrom "ontology: hasHiddenDimension" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> <http://www.w3.org/ns/prov#value> "64"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "64" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#activation_function> >> prov:wasDerivedFrom "PDF: hyperbolic tangent replaces softplus in convolution function" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> >> prov:wasDerivedFrom "PDF section INTRODUCTION: replacing softplus with hyperbolic tangent" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> <http://www.w3.org/ns/prov#value> "hyperbolic tangent"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "hyperbolic tangent" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#dropout> >> prov:wasDerivedFrom "PDF: dropout layers added between fully connected layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> >> prov:wasDerivedFrom "PDF section INTRODUCTION: adding dropout layers between each fully connected layer" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> <http://www.w3.org/ns/prov#value> "between each fully connected layer"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "between each fully connected layer" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#graph_convolutional_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: same architecture as CGCNN with 3 graph convolutional layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> <http://www.w3.org/ns/prov#value> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "3" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> <http://www.w3.org/ns/prov#value> "6"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "6" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_neurons> >> prov:wasDerivedFrom "ontology: hasHiddenDimension" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> <http://www.w3.org/ns/prov#value> "64"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "64" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#activation_function> >> prov:wasDerivedFrom "PDF: hyperbolic tangent replaces softplus in convolution function" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> >> prov:wasDerivedFrom "PDF section INTRODUCTION: replacing softplus with hyperbolic tangent" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> <http://www.w3.org/ns/prov#value> "hyperbolic tangent"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "hyperbolic tangent" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#dropout> >> prov:wasDerivedFrom "PDF: dropout layers added between fully connected layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> >> prov:wasDerivedFrom "PDF section INTRODUCTION: adding dropout layers between each fully connected layer" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> <http://www.w3.org/ns/prov#value> "between each fully connected layer"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "between each fully connected layer" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_model_variant> >> prov:wasDerivedFrom "PDF: CGCNN is a crystal graph convolutional neural network; ontology: GraphConvolutionArchitecture is a subclass of GraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> >> prov:wasDerivedFrom "PDF: CGCNN is a crystal graph convolutional neural network; ontology: GraphConvolutionArchitecture is a subclass of GraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> >> prov:wasDerivedFrom "['Materials Project database']" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#graph_convolutional_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount is a data property of MachineLearningArchitectureConfiguration" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: architecture consists of 3 graph convolutional layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> <http://www.w3.org/ns/prov#value> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "3" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount is a data property of MachineLearningArchitectureConfiguration" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> <http://www.w3.org/ns/prov#value> "6"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "6" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_neurons> >> prov:wasDerivedFrom "ontology: hasHiddenDimension is a data property of MachineLearningArchitectureConfiguration" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> <http://www.w3.org/ns/prov#value> "64"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "64" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#activation_function> >> prov:wasDerivedFrom "PDF: softplus activation function used in convolution function" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> >> prov:wasDerivedFrom "PDF section INTRODUCTION: softplus activation function in the convolution function" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> <http://www.w3.org/ns/prov#value> "softplus"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "softplus" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#graph_convolutional_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount is a data property of MachineLearningArchitectureConfiguration" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: architecture consists of 3 graph convolutional layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> <http://www.w3.org/ns/prov#value> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "3" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount is a data property of MachineLearningArchitectureConfiguration" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> <http://www.w3.org/ns/prov#value> "6"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "6" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_neurons> >> prov:wasDerivedFrom "ontology: hasHiddenDimension is a data property of MachineLearningArchitectureConfiguration" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> <http://www.w3.org/ns/prov#value> "64"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "64" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#activation_function> >> prov:wasDerivedFrom "PDF: softplus activation function used in convolution function" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> >> prov:wasDerivedFrom "PDF section INTRODUCTION: softplus activation function in the convolution function" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> <http://www.w3.org/ns/prov#value> "softplus"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "softplus" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_model_variant> >> prov:wasDerivedFrom "PDF: CGCNN-HD is a variant of CGCNN with regularization; ontology: GraphConvolutionArchitecture" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture> >> prov:wasDerivedFrom "PDF: CGCNN-HD is a variant of CGCNN with regularization; ontology: GraphConvolutionArchitecture" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> >> prov:wasDerivedFrom "['Materials Project database']" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#graph_convolutional_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: same architecture as CGCNN with 3 graph convolutional layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> <http://www.w3.org/ns/prov#value> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "3" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> <http://www.w3.org/ns/prov#value> "6"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "6" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_neurons> >> prov:wasDerivedFrom "ontology: hasHiddenDimension" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> <http://www.w3.org/ns/prov#value> "64"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "64" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#activation_function> >> prov:wasDerivedFrom "PDF: hyperbolic tangent replaces softplus in convolution function" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> >> prov:wasDerivedFrom "PDF section INTRODUCTION: replacing softplus with hyperbolic tangent" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> <http://www.w3.org/ns/prov#value> "hyperbolic tangent"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "hyperbolic tangent" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#dropout> >> prov:wasDerivedFrom "PDF: dropout layers added between fully connected layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> >> prov:wasDerivedFrom "PDF section INTRODUCTION: adding dropout layers between each fully connected layer" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> <http://www.w3.org/ns/prov#value> "between each fully connected layer"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "between each fully connected layer" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#graph_convolutional_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: same architecture as CGCNN with 3 graph convolutional layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> <http://www.w3.org/ns/prov#value> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "3" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_layers> >> prov:wasDerivedFrom "ontology: hasLayerCount" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> <http://www.w3.org/ns/prov#value> "6"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "6" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_neurons> >> prov:wasDerivedFrom "ontology: hasHiddenDimension" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> >> prov:wasDerivedFrom "PDF section RESULTS: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> <http://www.w3.org/ns/prov#value> "64"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "64" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#activation_function> >> prov:wasDerivedFrom "PDF: hyperbolic tangent replaces softplus in convolution function" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> >> prov:wasDerivedFrom "PDF section INTRODUCTION: replacing softplus with hyperbolic tangent" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> <http://www.w3.org/ns/prov#value> "hyperbolic tangent"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "hyperbolic tangent" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#dropout> >> prov:wasDerivedFrom "PDF: dropout layers added between fully connected layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> >> prov:wasDerivedFrom "PDF section INTRODUCTION: adding dropout layers between each fully connected layer" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> <http://www.w3.org/ns/prov#value> "between each fully connected layer"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "between each fully connected layer" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_model_variant> >> prov:wasDerivedFrom "['CGCNN']" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> >> prov:wasDerivedFrom "['Materials Project database']" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "CGCNN trained on relaxed structures from the Materials Project database, with data augmentation using perturbed structures mapped to DFT final energies"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF section METHODS: training on relaxed and augmented data from MP database" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_model_variant> >> prov:wasDerivedFrom "['CGCNN-HD']" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> >> prov:wasDerivedFrom "['Materials Project database']" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "CGCNN-HD with hyperbolic tangent activation and dropout regularization, trained on relaxed and augmented structures from the Materials Project database"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF section METHODS: CGCNN-HD trained on relaxed and augmented data" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_model_variant> >> prov:wasDerivedFrom "['CGCNN']" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> >> prov:wasDerivedFrom "['Materials Project database']" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "CGCNN trained on relaxed structures from the Materials Project database, with data augmentation using perturbed structures mapped to DFT final energies"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF section METHODS: training on relaxed and augmented data from MP database" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_model_variant> >> prov:wasDerivedFrom "['CGCNN-HD']" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> >> prov:wasDerivedFrom "['Materials Project database']" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "CGCNN-HD with hyperbolic tangent activation and dropout regularization, trained on relaxed and augmented structures from the Materials Project database"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF section METHODS: CGCNN-HD trained on relaxed and augmented data" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_variant> >> prov:wasDerivedFrom "model_name in YAML: CGCNN+P, lowercased and spaces replaced with underscores" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "128450"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params in YAML: 128450" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_model_variant> >> prov:wasDerivedFrom "CGCNN is a crystal graph convolutional neural network; ontology_mapping: GraphConvolutionArchitecture is a subclass of GraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> >> prov:wasDerivedFrom "CGCNN is a crystal graph convolutional neural network; ontology_mapping: GraphConvolutionArchitecture is a subclass of GraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasLayerCount> "9"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF page 3: 3 graph convolutional layers + 6 hidden layers = 9 layers total" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasHiddenDimension> "64"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF page 3: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_graph_convolutional_layers_component> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal as multi-graph and builds graph convolutional neural network; PDF page 3: 3 graph convolutional layers followed by 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_hidden_layers_component> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal as multi-graph and builds graph convolutional neural network; PDF page 3: 3 graph convolutional layers followed by 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_pooling_layer_component> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal as multi-graph and builds graph convolutional neural network; PDF page 3: 3 graph convolutional layers followed by 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_readout_layer_component> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal as multi-graph and builds graph convolutional neural network; PDF page 3: 3 graph convolutional layers followed by 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#graph_convolutional_layers> >> prov:wasDerivedFrom "PDF page 3: architecture search considered range of parameters; PDF page 3: 3 graph convolutional layers, 6 hidden layers with 64 neurons each; PDF page 2: softplus activation function in convolution; remaining hyperparameters set to values in Ref [23]" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_layers> >> prov:wasDerivedFrom "PDF page 3: architecture search considered range of parameters; PDF page 3: 3 graph convolutional layers, 6 hidden layers with 64 neurons each; PDF page 2: softplus activation function in convolution; remaining hyperparameters set to values in Ref [23]" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_neurons> >> prov:wasDerivedFrom "PDF page 3: architecture search considered range of parameters; PDF page 3: 3 graph convolutional layers, 6 hidden layers with 64 neurons each; PDF page 2: softplus activation function in convolution; remaining hyperparameters set to values in Ref [23]" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#activation_function> >> prov:wasDerivedFrom "PDF page 3: architecture search considered range of parameters; PDF page 3: 3 graph convolutional layers, 6 hidden layers with 64 neurons each; PDF page 2: softplus activation function in convolution; remaining hyperparameters set to values in Ref [23]" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_learning_rate_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#learning_rate> >> prov:wasDerivedFrom "PDF page 3: architecture search considered range of parameters; PDF page 3: 3 graph convolutional layers, 6 hidden layers with 64 neurons each; PDF page 2: softplus activation function in convolution; remaining hyperparameters set to values in Ref [23]" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_model_variant> >> prov:wasDerivedFrom "CGCNN-HD is a variant of CGCNN with regularization; ontology_mapping: GraphConvolutionArchitecture" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture> >> prov:wasDerivedFrom "CGCNN-HD is a variant of CGCNN with regularization; ontology_mapping: GraphConvolutionArchitecture" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasLayerCount> "9"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF page 3: same architecture as CGCNN with 3 graph convolutional layers + 6 hidden layers" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasHiddenDimension> "64"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF page 3: 6 hidden layers with 64 neurons each" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_hd_graph_convolutional_layers_component> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD adds dropout layers between each fully connected layer; PDF page 3: same base architecture as CGCNN" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_hd_hidden_layers_component> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD adds dropout layers between each fully connected layer; PDF page 3: same base architecture as CGCNN" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_hd_dropout_layers_component> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD adds dropout layers between each fully connected layer; PDF page 3: same base architecture as CGCNN" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_hd_pooling_layer_component> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD adds dropout layers between each fully connected layer; PDF page 3: same base architecture as CGCNN" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_hd_readout_layer_component> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD adds dropout layers between each fully connected layer; PDF page 3: same base architecture as CGCNN" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#graph_convolutional_layers> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_layers> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_neurons> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#activation_function> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#dropout> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_learning_rate_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#learning_rate> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_model_variant> >> prov:wasDerivedFrom "PDF page 3: CGCNN architecture trained on MP database" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_graph_convolutional_layers_value> >> prov:wasDerivedFrom "PDF page 3: architecture search considered range of parameters; PDF page 3: 3 graph convolutional layers, 6 hidden layers with 64 neurons each; PDF page 2: softplus activation function in convolution; remaining hyperparameters set to values in Ref [23]" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_layers_value> >> prov:wasDerivedFrom "PDF page 3: architecture search considered range of parameters; PDF page 3: 3 graph convolutional layers, 6 hidden layers with 64 neurons each; PDF page 2: softplus activation function in convolution; remaining hyperparameters set to values in Ref [23]" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hidden_neurons_value> >> prov:wasDerivedFrom "PDF page 3: architecture search considered range of parameters; PDF page 3: 3 graph convolutional layers, 6 hidden layers with 64 neurons each; PDF page 2: softplus activation function in convolution; remaining hyperparameters set to values in Ref [23]" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_activation_function_value> >> prov:wasDerivedFrom "PDF page 3: architecture search considered range of parameters; PDF page 3: 3 graph convolutional layers, 6 hidden layers with 64 neurons each; PDF page 2: softplus activation function in convolution; remaining hyperparameters set to values in Ref [23]" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_learning_rate_value> >> prov:wasDerivedFrom "PDF page 3: architecture search considered range of parameters; PDF page 3: 3 graph convolutional layers, 6 hidden layers with 64 neurons each; PDF page 2: softplus activation function in convolution; remaining hyperparameters set to values in Ref [23]" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> >> prov:wasDerivedFrom "PDF page 3: training on MP database with 126k relaxed structures" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_materialization> <https://k.loria.fr/ontologies/trainingonto#generatedBy> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> >> prov:wasDerivedFrom "PDF page 3: resulting CGCNN models trained on relaxed and augmented data; YAML model_name: CGCNN+P is the augmented variant" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_materialization> <https://k.loria.fr/ontologies/trainingonto#generatedBy> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> >> prov:wasDerivedFrom "PDF page 3: resulting CGCNN models trained on relaxed and augmented data; YAML model_name: CGCNN+P is the augmented variant" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "Pretraining of CGCNN on Materials Project database of relaxed crystal structures for formation energy prediction"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF page 2-3: CGCNN trained on MP database to predict formation energy of crystal structures" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#cgcnn_p_cgcnn_hd_model_variant> >> prov:wasDerivedFrom "PDF page 3: CGCNN-HD architecture trained on MP database" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_graph_convolutional_layers_value> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_layers_value> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_hidden_neurons_value> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_activation_function_value> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_dropout_value> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_p_cgcnn_hd_learning_rate_value> >> prov:wasDerivedFrom "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> >> prov:wasDerivedFrom "PDF page 3: CGCNN-HD trained on same MP database" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_materialization> <https://k.loria.fr/ontologies/trainingonto#generatedBy> <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> >> prov:wasDerivedFrom "PDF page 3: resulting CGCNN-HD models trained on relaxed and augmented data" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#cgcnn_hd_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "Pretraining of CGCNN-HD with dropout and hyperbolic tangent activation on Materials Project database"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF page 2-3: CGCNN-HD adds regularization (dropout, tanh activation) to CGCNN and trained on MP database" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> <https://k.loria.fr/ontologies/datasetonto#hasNumberOfSamples> "126000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF page 3: relaxed dataset consists of 126k relaxed structures from MP database" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> <https://k.loria.fr/ontologies/datasetonto#hasDataRepresentation> <https://k.loria.fr/ontologies/dataset-individuals#crystal_graph_representation> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents a crystal structure as a multi-graph" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> <https://k.loria.fr/ontologies/datasetonto#hasLabellingMethod> <https://k.loria.fr/ontologies/dataset-individuals#dft_labelling_method> >> prov:wasDerivedFrom "PDF page 3: structures evaluated by density functional theory (DFT); PDF page 4: VASP with PBE functional used for DFT calculations" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_coordinates_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal as multi-graph with atomic features; PDF page 3: perturbations applied to atomic coordinates" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#lattice_vectors_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal as multi-graph with atomic features; PDF page 3: perturbations applied to atomic coordinates" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_numbers_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal as multi-graph with atomic features; PDF page 3: perturbations applied to atomic coordinates" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#crystal_graph_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal as multi-graph with atomic features; PDF page 3: perturbations applied to atomic coordinates" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#formation_energy_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN predicts formation energy; PDF page 3: formation energy prediction MAE reported" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#relaxed_dataset> <https://k.loria.fr/ontologies/datasetonto#hasNumberOfSamples> "126000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF page 3: relaxed dataset consists of 126k relaxed structures from MP database" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#relaxed_dataset> <https://k.loria.fr/ontologies/datasetonto#hasDataRepresentation> <https://k.loria.fr/ontologies/dataset-individuals#crystal_graph_representation> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal structures as multi-graphs" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#relaxed_dataset> <https://k.loria.fr/ontologies/datasetonto#hasLabellingMethod> <https://k.loria.fr/ontologies/dataset-individuals#dft_labelling_method> >> prov:wasDerivedFrom "PDF page 3: structures from MP database evaluated by DFT" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#relaxed_dataset> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_coordinates_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN uses crystal graph representation with atomic features" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#relaxed_dataset> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#lattice_vectors_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN uses crystal graph representation with atomic features" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#relaxed_dataset> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_numbers_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN uses crystal graph representation with atomic features" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#relaxed_dataset> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#crystal_graph_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN uses crystal graph representation with atomic features" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#relaxed_dataset> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#formation_energy_attribute> >> prov:wasDerivedFrom "PDF page 3: formation energy is the prediction target" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#relaxed_dataset> <https://k.loria.fr/ontologies/datasetonto#wasDerivedFromDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project_database> >> prov:wasDerivedFrom "PDF page 3: relaxed dataset derived from MP database" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#augmented_dataset> <https://k.loria.fr/ontologies/datasetonto#hasNumberOfSamples> "252000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF page 3: augmented dataset consists of relaxed set (126k) plus one perturbed structure for every relaxed structure (126k), totaling 252k" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#augmented_dataset> <https://k.loria.fr/ontologies/datasetonto#hasDataRepresentation> <https://k.loria.fr/ontologies/dataset-individuals#crystal_graph_representation> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal structures as multi-graphs" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#augmented_dataset> <https://k.loria.fr/ontologies/datasetonto#hasLabellingMethod> <https://k.loria.fr/ontologies/dataset-individuals#dft_labelling_method> >> prov:wasDerivedFrom "PDF page 3: perturbed structures mapped to DFT energy of relaxed structure, no additional DFT calculations needed" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#augmented_dataset> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#perturbed_atomic_coordinates_attribute> >> prov:wasDerivedFrom "PDF page 3: data augmentation perturbs atomic coordinates of relaxed structures" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#augmented_dataset> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#lattice_vectors_attribute> >> prov:wasDerivedFrom "PDF page 3: data augmentation perturbs atomic coordinates of relaxed structures" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#augmented_dataset> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_numbers_attribute> >> prov:wasDerivedFrom "PDF page 3: data augmentation perturbs atomic coordinates of relaxed structures" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#augmented_dataset> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#crystal_graph_attribute> >> prov:wasDerivedFrom "PDF page 3: data augmentation perturbs atomic coordinates of relaxed structures" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#augmented_dataset> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#formation_energy_attribute> >> prov:wasDerivedFrom "PDF page 3: perturbed structures mapped to formation energy of corresponding relaxed structure" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#augmented_dataset> <https://k.loria.fr/ontologies/datasetonto#wasDerivedFromDataset> <https://k.loria.fr/ontologies/dataset-individuals#relaxed_dataset> >> prov:wasDerivedFrom "PDF page 3: augmented dataset consists of relaxed set plus perturbed structures" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_relaxed> <https://k.loria.fr/ontologies/datasetonto#hasDataRepresentation> <https://k.loria.fr/ontologies/dataset-individuals#crystal_graph_representation> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal structures as multi-graphs" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_relaxed> <https://k.loria.fr/ontologies/datasetonto#hasLabellingMethod> <https://k.loria.fr/ontologies/dataset-individuals#dft_labelling_method> >> prov:wasDerivedFrom "PDF page 3-4: structures relaxed and evaluated using VASP with PBE functional" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_relaxed> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_coordinates_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN uses crystal graph representation" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_relaxed> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#lattice_vectors_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN uses crystal graph representation" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_relaxed> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_numbers_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN uses crystal graph representation" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_relaxed> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#crystal_graph_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN uses crystal graph representation" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_relaxed> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#formation_energy_attribute> >> prov:wasDerivedFrom "PDF page 5: formation energy predictions compared to DFT-computed formation energies" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_relaxed> <https://k.loria.fr/ontologies/datasetonto#wasDerivedFromDataset> <https://k.loria.fr/ontologies/dataset-individuals#nb_sr_h_hydride_structures> >> prov:wasDerivedFrom "PDF page 3: H-Relaxed is a partition of the GA-generated hydride test set" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_unrelaxed> <https://k.loria.fr/ontologies/datasetonto#hasDataRepresentation> <https://k.loria.fr/ontologies/dataset-individuals#crystal_graph_representation> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal structures as multi-graphs" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_unrelaxed> <https://k.loria.fr/ontologies/datasetonto#hasLabellingMethod> <https://k.loria.fr/ontologies/dataset-individuals#dft_labelling_method> >> prov:wasDerivedFrom "PDF page 3-4: DFT relaxation performed to obtain reference energies" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_unrelaxed> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#unrelaxed_atomic_coordinates_attribute> >> prov:wasDerivedFrom "PDF page 3: unrelaxed structures from GA search; PDF page 2: CGCNN uses crystal graph representation" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_unrelaxed> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#lattice_vectors_attribute> >> prov:wasDerivedFrom "PDF page 3: unrelaxed structures from GA search; PDF page 2: CGCNN uses crystal graph representation" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_unrelaxed> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_numbers_attribute> >> prov:wasDerivedFrom "PDF page 3: unrelaxed structures from GA search; PDF page 2: CGCNN uses crystal graph representation" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_unrelaxed> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#crystal_graph_attribute> >> prov:wasDerivedFrom "PDF page 3: unrelaxed structures from GA search; PDF page 2: CGCNN uses crystal graph representation" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_unrelaxed> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#formation_energy_attribute> >> prov:wasDerivedFrom "PDF page 5: formation energy predictions on unrelaxed structures compared to DFT values" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#h_unrelaxed> <https://k.loria.fr/ontologies/datasetonto#wasDerivedFromDataset> <https://k.loria.fr/ontologies/dataset-individuals#nb_sr_h_hydride_structures> >> prov:wasDerivedFrom "PDF page 3: H-Unrelaxed is a partition of the GA-generated hydride test set" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#nb_sr_h_hydride_structures> <https://k.loria.fr/ontologies/datasetonto#hasNumberOfSamples> "623"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF page 2: test set consisting of 623 Nb-Sr-H hydride structures" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#nb_sr_h_hydride_structures> <https://k.loria.fr/ontologies/datasetonto#hasDataRepresentation> <https://k.loria.fr/ontologies/dataset-individuals#crystal_graph_representation> >> prov:wasDerivedFrom "PDF page 2: CGCNN represents crystal structures as multi-graphs" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#nb_sr_h_hydride_structures> <https://k.loria.fr/ontologies/datasetonto#hasLabellingMethod> <https://k.loria.fr/ontologies/dataset-individuals#dft_labelling_method> >> prov:wasDerivedFrom "PDF page 3-4: structures relaxed and evaluated using VASP DFT calculations" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#nb_sr_h_hydride_structures> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_coordinates_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN uses crystal graph representation with atomic features" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#nb_sr_h_hydride_structures> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#lattice_vectors_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN uses crystal graph representation with atomic features" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#nb_sr_h_hydride_structures> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_numbers_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN uses crystal graph representation with atomic features" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#nb_sr_h_hydride_structures> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#crystal_graph_attribute> >> prov:wasDerivedFrom "PDF page 2: CGCNN uses crystal graph representation with atomic features" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#nb_sr_h_hydride_structures> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#formation_energy_attribute> >> prov:wasDerivedFrom "PDF page 5: formation energy is the predicted target" ; dcterms:source <https://arxiv.org/pdf/2202.13947.pdf> .

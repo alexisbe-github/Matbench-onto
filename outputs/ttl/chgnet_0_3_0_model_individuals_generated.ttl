@@ -4,12 +4,142 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 archind:chgnet_family a owl:NamedIndividual,
         arch:ModelFamily ;
     rdfs:label "CHGNet"^^xsd:string ;
-    arch:hasVariant archind:chgnet_0_3_0_variant .
+    arch:hasVariant archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_model_variant,
+        archind:chgnet_0_3_0_variant .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_bond_graph_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network bond_graph_cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:bond_graph_cutoff .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:cutoff .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:epochs .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_feature_dimensions_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network feature_dimensions value"^^xsd:string ;
+    train:ofHyperparameter trind:feature_dimensions .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_force_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network force_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:force_loss_weight .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_graph_cutoff_radius_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network graph_cutoff_radius value"^^xsd:string ;
+    train:ofHyperparameter trind:graph_cutoff_radius .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_huber_delta_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network huber_delta value"^^xsd:string ;
+    train:ofHyperparameter trind:huber_delta .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_interaction_blocks_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network interaction_blocks value"^^xsd:string ;
+    train:ofHyperparameter trind:interaction_blocks .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_function .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_magmom_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network magmom_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:magmom_loss_weight .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_max_expansion_order_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network max_expansion_order value"^^xsd:string ;
+    train:ofHyperparameter trind:max_expansion_order .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_rcut_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network rcut value"^^xsd:string ;
+    train:ofHyperparameter trind:rcut .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_scheduler_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network scheduler value"^^xsd:string ;
+    train:ofHyperparameter trind:scheduler .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_stress_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network stress_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:stress_loss_weight .
+
+trind:dataset_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "dataset_details"^^xsd:string .
+
+trind:datasets a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "datasets"^^xsd:string .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture a owl:NamedIndividual,
+        arch:GraphNeuralNetworkArchitecture ;
+    rdfs:label "Crystal Hamiltonian Graph Neural Network"^^xsd:string ;
+    arch:hasBackboneArchitecture archind:crystal_hamiltonian_graph_neural_network_graphneuralnetwork_component ;
+    arch:hasComponent archind:crystal_hamiltonian_graph_neural_network_angleupdate_component,
+        archind:crystal_hamiltonian_graph_neural_network_atomconvolution_component,
+        archind:crystal_hamiltonian_graph_neural_network_autodifferentiation_component,
+        archind:crystal_hamiltonian_graph_neural_network_bondconvolution_component,
+        archind:crystal_hamiltonian_graph_neural_network_embeddinglayer_component,
+        archind:crystal_hamiltonian_graph_neural_network_fourierbasis_component,
+        archind:crystal_hamiltonian_graph_neural_network_gatedmlp_component,
+        archind:crystal_hamiltonian_graph_neural_network_interactionblock_component,
+        archind:crystal_hamiltonian_graph_neural_network_linearprojection_component,
+        archind:crystal_hamiltonian_graph_neural_network_smoothrbf_component,
+        archind:crystal_hamiltonian_graph_neural_network_weightedmessagepassing_component ;
+    arch:hasHeadArchitecture archind:crystal_hamiltonian_graph_neural_network_linearprojection_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture_configuration ;
+    arch:hasParameterNumber 400438 .
+
+archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Crystal Hamiltonian Graph Neural Network architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 64 ;
+    arch:hasLayerCount 4 .
+
+archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture .
 
 archind:chgnet_0_3_0_variant a owl:NamedIndividual,
         arch:ModelVariant ;
@@ -18,7 +148,218 @@ archind:chgnet_0_3_0_variant a owl:NamedIndividual,
     prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\chgnet_0_3_0.yml" ;
     arch:hasParameterNumber 412525 .
 
+archind:crystal_hamiltonian_graph_neural_network_angleupdate_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "AngleUpdate"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_angleupdate_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_angleupdate_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AngleUpdate component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_atomconvolution_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "AtomConvolution"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_atomconvolution_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_atomconvolution_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AtomConvolution component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_autodifferentiation_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "AutoDifferentiation"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_autodifferentiation_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_autodifferentiation_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AutoDifferentiation component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_bondconvolution_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "BondConvolution"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_bondconvolution_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_bondconvolution_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "BondConvolution component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_embeddinglayer_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "EmbeddingLayer"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_embeddinglayer_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_embeddinglayer_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EmbeddingLayer component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_fourierbasis_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "FourierBasis"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_fourierbasis_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_fourierbasis_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "FourierBasis component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_gatedmlp_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "GatedMLP"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_gatedmlp_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_gatedmlp_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "GatedMLP component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_graphneuralnetwork_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "GraphNeuralNetwork"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_graphneuralnetwork_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_graphneuralnetwork_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "GraphNeuralNetwork component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_interactionblock_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "InteractionBlock"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_interactionblock_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_interactionblock_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "InteractionBlock component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_linearprojection_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "LinearProjection component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_smoothrbf_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "SmoothRBF"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_smoothrbf_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_smoothrbf_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "SmoothRBF component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_weightedmessagepassing_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "WeightedMessagePassing"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_weightedmessagepassing_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_weightedmessagepassing_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "WeightedMessagePassing component configuration"^^xsd:string .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:bond_graph_cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "bond_graph_cutoff"^^xsd:string .
+
+trind:cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "cutoff"^^xsd:string .
+
+trind:epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "epochs"^^xsd:string .
+
+trind:feature_dimensions a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "feature_dimensions"^^xsd:string .
+
+trind:force_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "force_loss_weight"^^xsd:string .
+
+trind:graph_cutoff_radius a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "graph_cutoff_radius"^^xsd:string .
+
+trind:huber_delta a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "huber_delta"^^xsd:string .
+
+trind:interaction_blocks a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "interaction_blocks"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:loss_function a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_function"^^xsd:string .
+
+trind:magmom_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "magmom_loss_weight"^^xsd:string .
+
+trind:max_expansion_order a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_expansion_order"^^xsd:string .
+
+trind:optimizer a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "optimizer"^^xsd:string .
+
+trind:rcut a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "rcut"^^xsd:string .
+
+trind:scheduler a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "scheduler"^^xsd:string .
+
+trind:stress_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "stress_loss_weight"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_linearprojection_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "LinearProjection"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_linearprojection_component_configuration .
 
 
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_variant> >> prov:wasDerivedFrom "model_key in YAML summary" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "412525"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params in YAML summary" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_variant> >> prov:wasDerivedFrom "YAML model_key: chgnet-0.3.0, lowercased and hyphens replaced by underscores" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "412525"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 412525" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_model_variant> >> prov:wasDerivedFrom "PDF: CHGNet is described as a graph-neural-network-based force field (page 1). Ontology: GraphNeuralNetworkArchitecture is a subclass of NeuralNetworkArchitecture." ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> >> prov:wasDerivedFrom "PDF: CHGNet is described as a graph-neural-network-based force field (page 1). Ontology: GraphNeuralNetworkArchitecture is a subclass of NeuralNetworkArchitecture." ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "400438"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF: CHGNet with 400,438 trainable parameters (page 3)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasLayerCount> "4"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF: four atom convolution layers (page 10), three interaction blocks plus one final convolution layer (page 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasHiddenDimension> "64"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF: all have 64 feature dimensions by default (page 9)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_smoothrbf_component> >> prov:wasDerivedFrom "PDF: Figures 1(c), 1(d), 1(e) and Methods describe SmoothRBF basis expansion, Fourier basis for angles, embedding layers, interaction blocks with atom/bond/angle updates, gatedMLP, linear projection for magmoms, weighted message passing, auto-differentiation for forces/stress (pages 2, 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_fourierbasis_component> >> prov:wasDerivedFrom "PDF: Figures 1(c), 1(d), 1(e) and Methods describe SmoothRBF basis expansion, Fourier basis for angles, embedding layers, interaction blocks with atom/bond/angle updates, gatedMLP, linear projection for magmoms, weighted message passing, auto-differentiation for forces/stress (pages 2, 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_embeddinglayer_component> >> prov:wasDerivedFrom "PDF: Figures 1(c), 1(d), 1(e) and Methods describe SmoothRBF basis expansion, Fourier basis for angles, embedding layers, interaction blocks with atom/bond/angle updates, gatedMLP, linear projection for magmoms, weighted message passing, auto-differentiation for forces/stress (pages 2, 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_interactionblock_component> >> prov:wasDerivedFrom "PDF: Figures 1(c), 1(d), 1(e) and Methods describe SmoothRBF basis expansion, Fourier basis for angles, embedding layers, interaction blocks with atom/bond/angle updates, gatedMLP, linear projection for magmoms, weighted message passing, auto-differentiation for forces/stress (pages 2, 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_atomconvolution_component> >> prov:wasDerivedFrom "PDF: Figures 1(c), 1(d), 1(e) and Methods describe SmoothRBF basis expansion, Fourier basis for angles, embedding layers, interaction blocks with atom/bond/angle updates, gatedMLP, linear projection for magmoms, weighted message passing, auto-differentiation for forces/stress (pages 2, 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_bondconvolution_component> >> prov:wasDerivedFrom "PDF: Figures 1(c), 1(d), 1(e) and Methods describe SmoothRBF basis expansion, Fourier basis for angles, embedding layers, interaction blocks with atom/bond/angle updates, gatedMLP, linear projection for magmoms, weighted message passing, auto-differentiation for forces/stress (pages 2, 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_angleupdate_component> >> prov:wasDerivedFrom "PDF: Figures 1(c), 1(d), 1(e) and Methods describe SmoothRBF basis expansion, Fourier basis for angles, embedding layers, interaction blocks with atom/bond/angle updates, gatedMLP, linear projection for magmoms, weighted message passing, auto-differentiation for forces/stress (pages 2, 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_gatedmlp_component> >> prov:wasDerivedFrom "PDF: Figures 1(c), 1(d), 1(e) and Methods describe SmoothRBF basis expansion, Fourier basis for angles, embedding layers, interaction blocks with atom/bond/angle updates, gatedMLP, linear projection for magmoms, weighted message passing, auto-differentiation for forces/stress (pages 2, 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_linearprojection_component> >> prov:wasDerivedFrom "PDF: Figures 1(c), 1(d), 1(e) and Methods describe SmoothRBF basis expansion, Fourier basis for angles, embedding layers, interaction blocks with atom/bond/angle updates, gatedMLP, linear projection for magmoms, weighted message passing, auto-differentiation for forces/stress (pages 2, 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_weightedmessagepassing_component> >> prov:wasDerivedFrom "PDF: Figures 1(c), 1(d), 1(e) and Methods describe SmoothRBF basis expansion, Fourier basis for angles, embedding layers, interaction blocks with atom/bond/angle updates, gatedMLP, linear projection for magmoms, weighted message passing, auto-differentiation for forces/stress (pages 2, 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_autodifferentiation_component> >> prov:wasDerivedFrom "PDF: Figures 1(c), 1(d), 1(e) and Methods describe SmoothRBF basis expansion, Fourier basis for angles, embedding layers, interaction blocks with atom/bond/angle updates, gatedMLP, linear projection for magmoms, weighted message passing, auto-differentiation for forces/stress (pages 2, 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasBackboneArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_graphneuralnetwork_component> >> prov:wasDerivedFrom "PDF: CHGNet foundation is a GNN with atom graph and bond graph, using graph convolution layers (pages 2, 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture> <https://k.loria.fr/ontologies/architectureonto#hasHeadArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#crystal_hamiltonian_graph_neural_network_linearprojection_component> >> prov:wasDerivedFrom "PDF: magnetic moments predicted by linear projection of atom features; energy by non-linear projection of site-wise averaged features; forces and stress via auto-differentiation (page 10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_learning_rate_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#learning_rate> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_batch_size_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#batch_size> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_optimizer_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#optimizer> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_loss_function_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#loss_function> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_scheduler_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#scheduler> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_rcut_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#rcut> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_cutoff_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#cutoff> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_epochs_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#epochs> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_force_loss_weight_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#force_loss_weight> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_stress_loss_weight_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#stress_loss_weight> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_magmom_loss_weight_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#magmom_loss_weight> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_huber_delta_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#huber_delta> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_feature_dimensions_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#feature_dimensions> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_max_expansion_order_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#max_expansion_order> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_interaction_blocks_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#interaction_blocks> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_graph_cutoff_radius_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#graph_cutoff_radius> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_bond_graph_cutoff_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#bond_graph_cutoff> >> prov:wasDerivedFrom "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)" ; dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> .

@@ -1,0 +1,868 @@
+{
+  "model": {
+    "family": {
+      "value": "Equiformer",
+      "evidence": "PDF context: Abstract and Introduction sections refer to 'EquiformerV3, the third generation of SE(3)-equivariant graph attention Transformer (or Equiformer)'"
+    },
+    "variant": {
+      "value": "equiformer_v3_mp",
+      "evidence": "YAML summary: model_key = equiformer_v3_mp"
+    },
+    "parameter_number": {
+      "value": 30278113,
+      "evidence": "YAML summary: model_params = 30278113"
+    }
+  },
+  "architectures": {
+    "EquiformerV3": {
+      "ontology_class": {
+        "value": "GraphTransformerArchitecture",
+        "evidence": "PDF context: EquiformerV3 is described as an SE(3)-equivariant graph attention Transformer. Ontology: GraphTransformerArchitecture is a subclass of TransformerArchitecture which is a subclass of AttentionBasedArchitecture."
+      },
+      "parameter_number": {
+        "value": 30278113,
+        "evidence": "YAML summary: model_params = 30278113"
+      },
+      "datasets": {
+        "value": [
+          "OC20",
+          "OMat24",
+          "Matbench Discovery",
+          "MPtrj",
+          "Alexandria"
+        ],
+        "evidence": "PDF context: Experiments sections 5.1, 5.2, 5.3 describe training on OC20, OMat24, Matbench Discovery, MPtrj, and subsampled Alexandria datasets"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "number_of_epochs",
+          "weight_decay",
+          "dropout_rate",
+          "stochastic_depth",
+          "energy_coefficient",
+          "force_coefficient",
+          "stress_coefficient",
+          "gradient_clipping_norm_threshold",
+          "model_EMA_decay",
+          "cutoff_radius",
+          "maximum_number_of_neighbors",
+          "number_of_radial_bases",
+          "maximum_degree",
+          "maximum_order",
+          "number_of_Transformer_blocks",
+          "embedding_dimension",
+          "number_of_attention_heads",
+          "value_dimension",
+          "hidden_dimension_in_feedforward_networks",
+          "resolution_of_grid_points_in_attention",
+          "resolution_of_grid_points_in_feedforward_networks",
+          "warmup_epochs",
+          "maximum_learning_rate",
+          "optimizer",
+          "learning_rate_scheduling",
+          "radial_basis_function",
+          "DeNS_coefficient",
+          "standard_deviation_of_Gaussian_noise",
+          "corruption_ratio",
+          "probability_of_optimizing_DeNS"
+        ],
+        "evidence": "PDF context: Tables 8, 9, 10, 11 in Appendix list all hyperparameters used in experiments"
+      },
+      "hyperparameters_details": {
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "2e-4",
+            "evidence": "PDF context: Table 8 (OC20) shows maximum_learning_rate = 2×10^-4"
+          }
+        },
+        "batch_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "64",
+            "evidence": "PDF context: Table 8 (OC20) shows batch_size = 64"
+          }
+        },
+        "number_of_epochs": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "12",
+            "evidence": "PDF context: Table 8 (OC20) shows number_of_epochs = 12"
+          }
+        },
+        "weight_decay": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "1e-3",
+            "evidence": "PDF context: Table 8 (OC20) shows weight_decay = 1×10^-3"
+          }
+        },
+        "dropout_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "0.1",
+            "evidence": "PDF context: Table 8 (OC20) shows dropout_rate = 0.1"
+          }
+        },
+        "stochastic_depth": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "0.05",
+            "evidence": "PDF context: Table 8 (OC20) shows stochastic_depth = 0.05"
+          }
+        },
+        "energy_coefficient": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "4",
+            "evidence": "PDF context: Table 8 (OC20) shows energy_coefficient λE = 4"
+          }
+        },
+        "force_coefficient": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "100",
+            "evidence": "PDF context: Table 8 (OC20) shows force_coefficient λF = 100"
+          }
+        },
+        "cutoff_radius": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "12",
+            "evidence": "PDF context: Table 8 (OC20) shows cutoff_radius = 12 Angstroms"
+          }
+        },
+        "maximum_degree": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "6",
+            "evidence": "PDF context: Table 8 (OC20) shows Lmax = 6"
+          }
+        },
+        "maximum_order": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "2",
+            "evidence": "PDF context: Table 8 (OC20) shows Mmax = 2"
+          }
+        },
+        "number_of_Transformer_blocks": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "8",
+            "evidence": "PDF context: Table 8 (OC20) shows number_of_Transformer_blocks = 8"
+          }
+        },
+        "number_of_attention_heads": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "8",
+            "evidence": "PDF context: Table 8 (OC20) shows number_of_attention_heads h = 8"
+          }
+        },
+        "hidden_dimension_in_feedforward_networks": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter is the class for hyperparameters"
+          },
+          "value": {
+            "value": "512",
+            "evidence": "PDF context: Table 8 (OC20) shows dffn = (6,512)"
+          }
+        }
+      },
+      "components": {
+        "value": [
+          "EquivariantMergedLayerNormalization",
+          "EquivariantGraphAttention",
+          "FeedforwardNetwork",
+          "SwiGLU-S2Activation",
+          "EmbeddingModule",
+          "OutputHead",
+          "eSCNConvolution",
+          "SmoothRadiusCutoffAttention"
+        ],
+        "evidence": "PDF context: Section 4 and Figure 1 describe the architectural components including equivariant merged layer normalization, equivariant graph attention, feedforward networks, SwiGLU-S2 activation, embedding module, output head, eSCN convolutions, and smooth radius cutoff attention"
+      },
+      "backbone_architecture": {
+        "value": "EquiformerV2",
+        "evidence": "PDF context: Section 4 states 'Starting from EquiformerV2, we describe the improvements leading to EquiformerV3'"
+      },
+      "head_architecture": {
+        "value": "GateActivationOutputHead",
+        "evidence": "PDF context: Appendix A states 'For graph-level predictions such as energy and stress, we apply feedforward networks with an intermediate gate activation... For node-wise predictions like forces and noise, we use equivariant graph attention with an intermediate gate activation'"
+      },
+      "layer_count": {
+        "value": 8,
+        "evidence": "PDF context: Table 8 (OC20) shows number_of_Transformer_blocks = 8"
+      },
+      "hidden_dimension": {
+        "value": 512,
+        "evidence": "PDF context: Table 8 (OC20) shows dffn = (6,512), indicating hidden dimension of 512 channels after SwiGLU-S2"
+      }
+    },
+    "eSCN": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF context: Section 3.2 and 4.1 mention eSCN convolutions. Ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "PDF context: eSCN is used as a convolution operation within EquiformerV3, no separate parameter count is given"
+      },
+      "datasets": {
+        "value": [],
+        "evidence": "PDF context: eSCN is a component, not independently trained"
+      },
+      "hyperparameters": {
+        "value": [],
+        "evidence": "PDF context: eSCN is used as a building block with no separately reported hyperparameters"
+      },
+      "components": {
+        "value": [],
+        "evidence": "PDF context: eSCN is a low-level convolution operation"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "PDF context: eSCN is a component, not built on a backbone"
+      },
+      "head_architecture": {
+        "value": null,
+        "evidence": "PDF context: eSCN is a component, does not have a head"
+      },
+      "layer_count": {
+        "value": null,
+        "evidence": "PDF context: eSCN is a convolution operation, not a layered architecture"
+      },
+      "hidden_dimension": {
+        "value": null,
+        "evidence": "PDF context: No separate hidden dimension reported for eSCN"
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "direct_pretraining_omat24",
+        "gradient_finetuning_omat24",
+        "direct_pretraining_mptrj",
+        "gradient_finetuning_mptrj",
+        "gradient_finetuning_omat24_pretrained_on_mptrj_alexandria",
+        "oc20_s2ef_training"
+      ],
+      "evidence": "PDF context: Sections 5.1, 5.2, 5.3 and Appendix D, E, F describe multiple training runs including direct pre-training and gradient fine-tuning on OMat24, MPtrj, and OC20 datasets"
+    },
+    "training_runs_details": {
+      "direct_pretraining_omat24": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF context: Section 5.2 and Appendix E describe direct pre-training on OMat24 dataset"
+        },
+        "architectures": {
+          "value": [
+            "EquiformerV3"
+          ],
+          "evidence": "PDF context: Section 5.2 describes training EquiformerV3 on OMat24"
+        },
+        "datasets": {
+          "value": [
+            "OMat24"
+          ],
+          "evidence": "PDF context: Section 5.2 and Appendix E describe training on OMat24 dataset (around 100M structures from AIMD and rattled subsets)"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "PDF context: Table 9 in Appendix E shows optimizer = AdamW"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "PDF context: No explicit loss function name specified; energy, force, and stress losses are combined with coefficients"
+        },
+        "description": {
+          "value": "Direct pre-training of EquiformerV3 on OMat24 dataset with denoising auxiliary task (DeNS), dropout, and stochastic depth regularization. Uses FP32 precision on AIMD and rattled subsets.",
+          "evidence": "PDF context: Appendix E describes direct pre-training procedure with DeNS auxiliary task"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "PDF context: Combined energy, force, and stress loss with coefficients, no specific named objective function"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "PDF context: No specific sampling method mentioned for this training run"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "PDF context: Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "PDF context: Direct pre-training starts from scratch/random initialization"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "PDF context: Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "PDF context: Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "equiformer_v3_omat24_lmax4_direct",
+            "equiformer_v3_omat24_lmax6_direct"
+          ],
+          "evidence": "PDF context: Table 2 in Section 5.2 shows EquiformerV3 with Lmax=4 and Lmax=6 trained with direct methods on OMat24"
+        }
+      },
+      "gradient_finetuning_omat24": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "PDF context: Section 5.2 and Appendix E describe gradient fine-tuning on OMat24 initialized from direct pre-training checkpoint"
+        },
+        "architectures": {
+          "value": [
+            "EquiformerV3"
+          ],
+          "evidence": "PDF context: Section 5.2 describes fine-tuning EquiformerV3 on OMat24"
+        },
+        "datasets": {
+          "value": [
+            "OMat24"
+          ],
+          "evidence": "PDF context: Section 5.2 and Appendix E describe fine-tuning on OMat24 dataset"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "PDF context: Table 9 in Appendix E shows optimizer = AdamW for gradient fine-tuning"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "PDF context: No explicit loss function name specified"
+        },
+        "description": {
+          "value": "Gradient fine-tuning of EquiformerV3 on OMat24 dataset, initialized from direct pre-training checkpoint. No regularization or DeNS. Uses gradient methods to predict forces and stress.",
+          "evidence": "PDF context: Appendix E describes gradient fine-tuning procedure"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "PDF context: Combined energy, force, and stress loss with coefficients"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "PDF context: No specific sampling method mentioned"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "PDF context: Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": "equiformer_v3_omat24_lmax4_direct",
+          "evidence": "PDF context: Appendix E states 'all model weights are initialized from the direct pre-training checkpoint'"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "PDF context: Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "PDF context: Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "equiformer_v3_omat24_lmax4_grad_ft",
+            "equiformer_v3_omat24_lmax6_grad_ft"
+          ],
+          "evidence": "PDF context: Table 2 in Section 5.2 shows EquiformerV3 with Lmax=4 and Lmax=6 with gradient fine-tuning"
+        }
+      },
+      "direct_pretraining_mptrj": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF context: Section 5.3 and Appendix F describe direct pre-training on MPtrj dataset"
+        },
+        "architectures": {
+          "value": [
+            "EquiformerV3"
+          ],
+          "evidence": "PDF context: Section 5.3 describes training EquiformerV3 on MPtrj"
+        },
+        "datasets": {
+          "value": [
+            "MPtrj"
+          ],
+          "evidence": "PDF context: Section 5.3 and Appendix F describe training on MPtrj dataset"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "PDF context: Table 10 in Appendix F shows optimizer = AdamW"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "PDF context: No explicit loss function name specified"
+        },
+        "description": {
+          "value": "Direct pre-training of EquiformerV3 with Lmax=4 on MPtrj dataset with DeNS auxiliary task, dropout, and stochastic depth. Uses FP16 precision. Excludes structures with more than 24000 edges.",
+          "evidence": "PDF context: Appendix F describes direct pre-training on MPtrj"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "PDF context: Combined energy, force, and stress loss with coefficients"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "PDF context: No specific sampling method mentioned"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "PDF context: Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "PDF context: Direct pre-training starts from scratch"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "PDF context: Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "PDF context: Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "equiformer_v3_mptrj_lmax4_direct"
+          ],
+          "evidence": "PDF context: Section 5.3 and Appendix F describe direct pre-training on MPtrj with Lmax=4"
+        }
+      },
+      "gradient_finetuning_mptrj": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "PDF context: Section 5.3 and Appendix F describe gradient fine-tuning on MPtrj"
+        },
+        "architectures": {
+          "value": [
+            "EquiformerV3"
+          ],
+          "evidence": "PDF context: Section 5.3 describes fine-tuning EquiformerV3 on MPtrj"
+        },
+        "datasets": {
+          "value": [
+            "MPtrj"
+          ],
+          "evidence": "PDF context: Section 5.3 and Appendix F describe fine-tuning on MPtrj dataset"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "PDF context: Table 10 in Appendix F shows optimizer = AdamW for gradient fine-tuning"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "PDF context: No explicit loss function name specified"
+        },
+        "description": {
+          "value": "Gradient fine-tuning of EquiformerV3 on MPtrj dataset, initialized from direct pre-training checkpoint. Uses FP32 precision. Energy prediction head randomly initialized. Excludes structures with more than 24000 edges.",
+          "evidence": "PDF context: Appendix F describes gradient fine-tuning on MPtrj"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "PDF context: Combined energy, force, and stress loss with coefficients"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "PDF context: No specific sampling method mentioned"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "PDF context: Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": "equiformer_v3_mptrj_lmax4_direct",
+          "evidence": "PDF context: Appendix F states model weights initialized from direct pre-training checkpoint (except energy head)"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "PDF context: Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "PDF context: Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "equiformer_v3_mptrj_lmax4_grad_ft"
+          ],
+          "evidence": "PDF context: Section 5.3 and Table 3 show EquiformerV3 trained on MPtrj with gradient methods"
+        }
+      },
+      "gradient_finetuning_omat24_pretrained_on_mptrj_alexandria": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "PDF context: Section 5.3 and Appendix F describe fine-tuning OMat24-pretrained model on MPtrj and subsampled Alexandria"
+        },
+        "architectures": {
+          "value": [
+            "EquiformerV3"
+          ],
+          "evidence": "PDF context: Section 5.3 describes fine-tuning EquiformerV3"
+        },
+        "datasets": {
+          "value": [
+            "MPtrj",
+            "Alexandria"
+          ],
+          "evidence": "PDF context: Section 5.3 and Appendix F describe fine-tuning on MPtrj and subsampled Alexandria datasets"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "PDF context: Table 11 in Appendix F shows optimizer = AdamW"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "PDF context: No explicit loss function name specified"
+        },
+        "description": {
+          "value": "Gradient fine-tuning of OMat24-pretrained EquiformerV3 (Lmax=4) on MPtrj and subsampled Alexandria datasets. One epoch consists of 8 copies of MPtrj and 1 copy of subsampled Alexandria. No regularization or DeNS. Small epsilon added to softmax denominator for stability.",
+          "evidence": "PDF context: Appendix F describes fine-tuning procedure"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "PDF context: Combined energy, force, and stress loss with coefficients"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "PDF context: No specific sampling method mentioned"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "PDF context: Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": "equiformer_v3_omat24_lmax4_direct",
+          "evidence": "PDF context: Appendix F states 'All model weights are initialized from the checkpoint trained on OMat24'"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "PDF context: Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "PDF context: Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "equiformer_v3_omat24_pretrained_mptrj_alexandria"
+          ],
+          "evidence": "PDF context: Table 4 in Section 5.3 shows EquiformerV3 trained on larger datasets (OMat24 + sAlex)"
+        }
+      },
+      "oc20_s2ef_training": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF context: Section 5.1 describes training on OC20 S2EF-2M dataset"
+        },
+        "architectures": {
+          "value": [
+            "EquiformerV3"
+          ],
+          "evidence": "PDF context: Section 5.1 describes training EquiformerV3 on OC20"
+        },
+        "datasets": {
+          "value": [
+            "OC20"
+          ],
+          "evidence": "PDF context: Section 5.1 describes training on OC20 S2EF-2M dataset"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "PDF context: Table 8 in Appendix D shows optimizer = AdamW"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "PDF context: No explicit loss function name specified"
+        },
+        "description": {
+          "value": "Training EquiformerV3 on OC20 S2EF-2M dataset for structure to energy and forces prediction. Uses 8 Transformer blocks, Lmax=6, predicts total energy instead of adsorption energy.",
+          "evidence": "PDF context: Section 5.1 and Appendix D describe OC20 training"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "PDF context: Combined energy and force loss with coefficients λE=4, λF=100"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "PDF context: No specific sampling method mentioned"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "PDF context: Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "PDF context: Training starts from scratch"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "PDF context: Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "PDF context: Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "equiformer_v3_oc20_s2ef"
+          ],
+          "evidence": "PDF context: Section 5.1 and Table 1 show EquiformerV3 trained on OC20 S2EF-2M"
+        }
+      }
+    },
+    "datasets": {
+      "value": [
+        "OC20",
+        "OMat24",
+        "MPtrj",
+        "Alexandria",
+        "Matbench Discovery"
+      ],
+      "evidence": "PDF context: Sections 5.1, 5.2, 5.3 describe experiments on OC20, OMat24, MPtrj, Alexandria, and Matbench Discovery datasets"
+    },
+    "datasets_details": {
+      "OC20": {
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF context: OC20 is a dataset. Ontology: Dataset is the base class for datasets"
+        },
+        "number_of_samples": {
+          "value": 1200000,
+          "evidence": "PDF context: Section 5.1 states OC20 'consists of about 1.2M Density Functional Theory (DFT) relaxation trajectories'"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF context: Section 1 describes representing atomistic systems as graphs"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF context: Section 5.1 states 'DFT relaxation trajectories computed with the revised Perdew-Burke-Ernzerhof (RPBE) functional'"
+        },
+        "input_features": {
+          "value": [
+            "atom_type",
+            "relative_position",
+            "edge_vector"
+          ],
+          "evidence": "PDF context: Section 3.1 and Appendix A describe input features including atom embeddings and edge-degree embeddings from relative positions"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces"
+          ],
+          "evidence": "PDF context: Section 5.1 states the S2EF task is to predict 'energy and per-atom forces given a structure'"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "PDF context: OC20 is a primary dataset, not derived from another"
+        }
+      },
+      "OMat24": {
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF context: OMat24 is a dataset. Ontology: Dataset is the base class for datasets"
+        },
+        "number_of_samples": {
+          "value": 110000000,
+          "evidence": "PDF context: Section 5.2 states OMat24 'generates more than 110M diverse non-equilibrium crystal structures'"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF context: Section 1 describes representing atomistic systems as graphs"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF context: Section 5.2 states 'Energies, forces and stresses are calculated with the Perdew-Burke-Ernzerhof density functional in VASP'"
+        },
+        "input_features": {
+          "value": [
+            "atom_type",
+            "relative_position",
+            "edge_vector"
+          ],
+          "evidence": "PDF context: Section 3.1 and Appendix A describe input features"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces",
+            "stress"
+          ],
+          "evidence": "PDF context: Section 5.2 states 'predicting energy, forces and stress given a structure'"
+        },
+        "derived_from_dataset": {
+          "value": "Alexandria",
+          "evidence": "PDF context: Section 5.2 states OMat24 'samples relaxed structures from Alexandria dataset'"
+        }
+      },
+      "MPtrj": {
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF context: MPtrj is a dataset. Ontology: Dataset is the base class for datasets"
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "PDF context: No explicit sample count given for MPtrj in the paper"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF context: Section 1 describes representing atomistic systems as graphs"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF context: Section 5.3 references MPtrj as a dataset used for training, implied to be DFT-based"
+        },
+        "input_features": {
+          "value": [
+            "atom_type",
+            "relative_position",
+            "edge_vector"
+          ],
+          "evidence": "PDF context: Section 3.1 and Appendix A describe input features"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces",
+            "stress"
+          ],
+          "evidence": "PDF context: Section 5.3 describes predicting energy, forces, and stress"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "PDF context: No derivation information given for MPtrj"
+        }
+      },
+      "Alexandria": {
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF context: Alexandria is a dataset. Ontology: Dataset is the base class for datasets"
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "PDF context: No explicit sample count given for subsampled Alexandria in the paper"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF context: Section 1 describes representing atomistic systems as graphs"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF context: Section 5.2 references Alexandria dataset, implied to be DFT-based"
+        },
+        "input_features": {
+          "value": [
+            "atom_type",
+            "relative_position",
+            "edge_vector"
+          ],
+          "evidence": "PDF context: Section 3.1 and Appendix A describe input features"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces",
+            "stress"
+          ],
+          "evidence": "PDF context: Section 5.3 describes predicting energy, forces, and stress"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "PDF context: Alexandria is referenced as a source dataset, not derived"
+        }
+      },
+      "Matbench Discovery": {
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF context: Matbench Discovery is a benchmark dataset. Ontology: Dataset is the base class for datasets"
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "PDF context: No explicit sample count given for Matbench Discovery in the paper"
+        },
+        "data_representation": {
+          "value": "crystal structure",
+          "evidence": "PDF context: Section 5.3 describes Matbench Discovery as evaluating 'crystal structures'"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF context: Section 5.3 mentions 'DFT-relaxed reference structures'"
+        },
+        "input_features": {
+          "value": [
+            "crystal_structure",
+            "atom_type",
+            "lattice_parameters"
+          ],
+          "evidence": "PDF context: Section 5.3 describes tasks involving crystal structure prediction"
+        },
+        "target_features": {
+          "value": [
+            "thermodynamic_stability",
+            "energy",
+            "thermal_conductivity"
+          ],
+          "evidence": "PDF context: Section 5.3 describes metrics including F1 score for stability, RMSD, and κSRME for thermal conductivity"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "PDF context: Matbench Discovery is a benchmark, not derived from a single dataset"
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\equiformer_v3_oam.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2604.09130.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\equiformer_v3_oam.yml"
+  }
+}

@@ -1,0 +1,172 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:nequip_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "NequIP"^^xsd:string ;
+    arch:hasVariant archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_model_variant,
+        archind:nequip_mp_l_variant .
+
+trind:nequip_mp_l_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "NequIP-MP-L"^^xsd:string ;
+    train:generatedBy trind:allegro_spice2_training .
+
+archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture a owl:NamedIndividual,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "EquivariantMessagePassingNeuralNetworkArchitecture"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture_configuration ;
+    arch:hasParameterNumber 9600000 .
+
+archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EquivariantMessagePassingNeuralNetworkArchitecture architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 128 ;
+    arch:hasLayerCount 3 .
+
+archind:nequip_mp_l_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "nequip_mp_l"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\nequip_mp_l_0_1.yml" ;
+    arch:hasParameterNumber 9600000 .
+
+dataind:atomic_positions_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic_positions"^^xsd:string .
+
+dataind:atomic_species_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic_species"^^xsd:string .
+
+dataind:atomic_structure_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "atomic structure"^^xsd:string .
+
+dataind:dft_labelling_method a owl:NamedIndividual,
+        data:LabellingMethod ;
+    rdfs:label "DFT"^^xsd:string .
+
+dataind:edge_vectors_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "edge_vectors"^^xsd:string .
+
+dataind:energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "energy"^^xsd:string .
+
+dataind:forces_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "forces"^^xsd:string .
+
+dataind:spice_2 a owl:NamedIndividual,
+        data:Dataset,
+        data:LabeledDataset ;
+    rdfs:label "SPICE 2"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 2000000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_positions_attribute,
+        dataind:atomic_species_attribute,
+        dataind:edge_vectors_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute .
+
+trind:allegro_spice2_training a owl:NamedIndividual,
+        train:PretrainingRun ;
+    rdfs:label "allegro_spice2_training"^^xsd:string ;
+    rdfs:comment "Training of Allegro models on the SPICE 2 dataset containing over two million atomic configurations of organic systems with energies and forces calculated using DFT with the ωB97M-D3(BJ) functional. Models were trained on a subset limited to systems with neutral total charge."^^xsd:string ;
+    train:hasHyperparameterValue trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_maximum_rotation_order_value,
+        trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_allegro_layers_value,
+        trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_tensor_features_value,
+        trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_radial_cutoff_value ;
+    train:trainsModelVariant archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_model_variant ;
+    train:usesDataset dataind:spice_2 .
+
+trind:maximum_rotation_order a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "maximum_rotation_order"^^xsd:string .
+
+trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_maximum_rotation_order_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequip_mp_l EquivariantMessagePassingNeuralNetworkArchitecture maximum_rotation_order value"^^xsd:string ;
+    prov:value 3 ;
+    train:ofHyperparameter trind:maximum_rotation_order .
+
+trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_allegro_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequip_mp_l EquivariantMessagePassingNeuralNetworkArchitecture number_of_allegro_layers value"^^xsd:string ;
+    prov:value 3 ;
+    train:ofHyperparameter trind:number_of_allegro_layers .
+
+trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_tensor_features_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequip_mp_l EquivariantMessagePassingNeuralNetworkArchitecture number_of_tensor_features value"^^xsd:string ;
+    prov:value 128 ;
+    train:ofHyperparameter trind:number_of_tensor_features .
+
+trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_radial_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequip_mp_l EquivariantMessagePassingNeuralNetworkArchitecture radial_cutoff value"^^xsd:string ;
+    prov:value "6.0"^^xsd:float ;
+    train:ofHyperparameter trind:radial_cutoff .
+
+trind:number_of_allegro_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_allegro_layers"^^xsd:string .
+
+trind:number_of_tensor_features a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_tensor_features"^^xsd:string .
+
+trind:radial_cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial_cutoff"^^xsd:string .
+
+archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "nequip_mp_l EquivariantMessagePassingNeuralNetworkArchitecture"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_variant> >> prov:wasDerivedFrom "YAML model_name: NequIP-MP-L, lowercased and spaces/hyphens replaced by underscores" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "9600000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 9600000" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_model_variant> >> prov:wasDerivedFrom "architectureonto.ttl: EquivariantMessagePassingNeuralNetworkArchitecture rdfs:subClassOf EquivariantGraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture> >> prov:wasDerivedFrom "architectureonto.ttl: EquivariantMessagePassingNeuralNetworkArchitecture rdfs:subClassOf EquivariantGraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "9600000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 9600000" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasLayerCount> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Table 1: large model Allegro Layers = 3" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasHiddenDimension> "128"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Table 1: large model Tensor Features = 128" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_maximum_rotation_order_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#maximum_rotation_order> >> prov:wasDerivedFrom "trainingonto.ttl: MachineLearningHyperparameter rdf:type owl:Class" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_maximum_rotation_order_value> <http://www.w3.org/ns/prov#value> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "3" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_tensor_features_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#number_of_tensor_features> >> prov:wasDerivedFrom "trainingonto.ttl: MachineLearningHyperparameter rdf:type owl:Class" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_tensor_features_value> <http://www.w3.org/ns/prov#value> "128"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "128" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_allegro_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#number_of_allegro_layers> >> prov:wasDerivedFrom "trainingonto.ttl: MachineLearningHyperparameter rdf:type owl:Class" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_allegro_layers_value> <http://www.w3.org/ns/prov#value> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "3" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_radial_cutoff_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#radial_cutoff> >> prov:wasDerivedFrom "trainingonto.ttl: MachineLearningHyperparameter rdf:type owl:Class" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_radial_cutoff_value> <http://www.w3.org/ns/prov#value> "6.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "6.0" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_training> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_model_variant> >> prov:wasDerivedFrom "['EquivariantMessagePassingNeuralNetworkArchitecture']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_training> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_maximum_rotation_order_value> >> prov:wasDerivedFrom "PDF Table 1: large model ℓmax = 3" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_training> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_tensor_features_value> >> prov:wasDerivedFrom "PDF Table 1: large model Tensor Features = 128" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_training> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_allegro_layers_value> >> prov:wasDerivedFrom "PDF Table 1: large model Allegro Layers = 3" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_training> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_radial_cutoff_value> >> prov:wasDerivedFrom "PDF Section III: All models employ a radial cutoff rmax of 6.0 Å" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_training> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#spice_2> >> prov:wasDerivedFrom "['SPICE 2']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequip_mp_l_materialization> <https://k.loria.fr/ontologies/trainingonto#generatedBy> <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_training> >> prov:wasDerivedFrom "['NequIP-MP-L']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_training> <http://www.w3.org/2000/01/rdf-schema#comment> "Training of Allegro models on the SPICE 2 dataset containing over two million atomic configurations of organic systems with energies and forces calculated using DFT with the ωB97M-D3(BJ) functional. Models were trained on a subset limited to systems with neutral total charge."^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF Section III: trained Allegro models on the SPICE 2 dataset" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#spice_2> <https://k.loria.fr/ontologies/datasetonto#hasNumberOfSamples> "2000000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Section III: SPICE 2 dataset contains more than two million atomic configurations" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#spice_2> <https://k.loria.fr/ontologies/datasetonto#hasDataRepresentation> <https://k.loria.fr/ontologies/dataset-individuals#atomic_structure_representation> >> prov:wasDerivedFrom "PDF Section III: atomic configurations of organic systems" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#spice_2> <https://k.loria.fr/ontologies/datasetonto#hasLabellingMethod> <https://k.loria.fr/ontologies/dataset-individuals#dft_labelling_method> >> prov:wasDerivedFrom "PDF Section III: energies and forces calculated using density functional theory (DFT) with the ωB97M-D3(BJ) functional" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#spice_2> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_species_attribute> >> prov:wasDerivedFrom "['atomic_species', 'atomic_positions', 'edge_vectors']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#spice_2> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_positions_attribute> >> prov:wasDerivedFrom "['atomic_species', 'atomic_positions', 'edge_vectors']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#spice_2> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#edge_vectors_attribute> >> prov:wasDerivedFrom "['atomic_species', 'atomic_positions', 'edge_vectors']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#spice_2> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#energy_attribute> >> prov:wasDerivedFrom "['energy', 'forces']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#spice_2> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#forces_attribute> >> prov:wasDerivedFrom "['energy', 'forces']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .

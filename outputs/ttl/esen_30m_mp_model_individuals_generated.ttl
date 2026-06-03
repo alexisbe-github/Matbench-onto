@@ -1,7 +1,5 @@
 @prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
 @prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
-@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
-@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
@@ -16,6 +14,109 @@ archind:esen_family a owl:NamedIndividual,
     arch:hasVariant archind:esen_30m_mp_esen_model_variant,
         archind:esen_30m_mp_variant .
 
+trind:dataset_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "dataset_details"^^xsd:string .
+
+trind:datasets a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "datasets"^^xsd:string .
+
+trind:esen_30m_mp_esen_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:esen_30m_mp_esen_cutoff_radius_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN cutoff_radius value"^^xsd:string ;
+    train:ofHyperparameter trind:cutoff_radius .
+
+trind:esen_30m_mp_esen_energy_loss_coefficient_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN energy_loss_coefficient value"^^xsd:string ;
+    train:ofHyperparameter trind:energy_loss_coefficient .
+
+trind:esen_30m_mp_esen_force_loss_coefficient_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN force_loss_coefficient value"^^xsd:string ;
+    train:ofHyperparameter trind:force_loss_coefficient .
+
+trind:esen_30m_mp_esen_gradient_clipping_norm_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN gradient_clipping_norm value"^^xsd:string ;
+    train:ofHyperparameter trind:gradient_clipping_norm .
+
+trind:esen_30m_mp_esen_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:esen_30m_mp_esen_max_degree_lmax_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN max_degree_Lmax value"^^xsd:string ;
+    train:ofHyperparameter trind:max_degree_lmax .
+
+trind:esen_30m_mp_esen_max_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN max_learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:max_learning_rate .
+
+trind:esen_30m_mp_esen_max_order_mmax_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN max_order_Mmax value"^^xsd:string ;
+    train:ofHyperparameter trind:max_order_mmax .
+
+trind:esen_30m_mp_esen_model_ema_decay_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN model_ema_decay value"^^xsd:string ;
+    train:ofHyperparameter trind:model_ema_decay .
+
+trind:esen_30m_mp_esen_number_of_channels_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN number_of_channels value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_channels .
+
+trind:esen_30m_mp_esen_number_of_esen_layer_blocks_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN number_of_eSEN_layer_blocks value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_esen_layer_blocks .
+
+trind:esen_30m_mp_esen_number_of_radial_basis_functions_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN number_of_radial_basis_functions value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_radial_basis_functions .
+
+trind:esen_30m_mp_esen_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:esen_30m_mp_esen_radial_basis_function_type_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN radial_basis_function_type value"^^xsd:string ;
+    train:ofHyperparameter trind:radial_basis_function_type .
+
+trind:esen_30m_mp_esen_stress_loss_coefficient_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN stress_loss_coefficient value"^^xsd:string ;
+    train:ofHyperparameter trind:stress_loss_coefficient .
+
+trind:esen_30m_mp_esen_warmup_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN warmup_epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:warmup_epochs .
+
+trind:esen_30m_mp_esen_warmup_factor_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN warmup_factor value"^^xsd:string ;
+    train:ofHyperparameter trind:warmup_factor .
+
+trind:esen_30m_mp_esen_weight_decay_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN weight_decay value"^^xsd:string ;
+    train:ofHyperparameter trind:weight_decay .
+
 trind:training_run_details a owl:NamedIndividual,
         train:MachineLearningTrainingRun ;
     rdfs:label "training_run_details"^^xsd:string .
@@ -23,14 +124,19 @@ trind:training_run_details a owl:NamedIndividual,
 archind:esen_30m_mp_esen_architecture a owl:NamedIndividual,
         arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
     rdfs:label "eSEN"^^xsd:string ;
+    arch:hasComponent archind:esen_edgewiseconvolution_component,
+        archind:esen_equivariantlayernormalization_component,
+        archind:esen_gatednonlinearity_component,
+        archind:esen_nodewisefeedforward_component,
+        archind:esen_so2convolution_component ;
     arch:hasMachineLearningArchitectureConfiguration archind:esen_30m_mp_esen_architecture_configuration ;
-    arch:hasParameterNumber 30085121 ;
-    train:usesDataset dataind:mptrj,
-        dataind:spice_mace_off .
+    arch:hasParameterNumber 30085121 .
 
 archind:esen_30m_mp_esen_architecture_configuration a owl:NamedIndividual,
         arch:MachineLearningArchitectureConfiguration ;
-    rdfs:label "eSEN architecture configuration"^^xsd:string .
+    rdfs:label "eSEN architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 128 ;
+    arch:hasLayerCount 10 .
 
 archind:esen_30m_mp_esen_model_variant a owl:NamedIndividual,
         arch:ModelVariant ;
@@ -44,20 +150,157 @@ archind:esen_30m_mp_variant a owl:NamedIndividual,
     prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\esen_30m_mp.yml" ;
     arch:hasParameterNumber 30085121 .
 
-dataind:mptrj a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "MPTrj"^^xsd:string .
+archind:esen_edgewiseconvolution_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "EdgewiseConvolution"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:esen_edgewiseconvolution_component_configuration .
 
-dataind:spice_mace_off a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "SPICE-MACE-OFF"^^xsd:string .
+archind:esen_edgewiseconvolution_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EdgewiseConvolution component configuration"^^xsd:string .
+
+archind:esen_equivariantlayernormalization_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "EquivariantLayerNormalization"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:esen_equivariantlayernormalization_component_configuration .
+
+archind:esen_equivariantlayernormalization_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EquivariantLayerNormalization component configuration"^^xsd:string .
+
+archind:esen_gatednonlinearity_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "GatedNonLinearity"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:esen_gatednonlinearity_component_configuration .
+
+archind:esen_gatednonlinearity_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "GatedNonLinearity component configuration"^^xsd:string .
+
+archind:esen_nodewisefeedforward_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "NodewiseFeedForward"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:esen_nodewisefeedforward_component_configuration .
+
+archind:esen_nodewisefeedforward_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "NodewiseFeedForward component configuration"^^xsd:string .
+
+archind:esen_so2convolution_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "SO2Convolution"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:esen_so2convolution_component_configuration .
+
+archind:esen_so2convolution_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "SO2Convolution component configuration"^^xsd:string .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:cutoff_radius a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "cutoff_radius"^^xsd:string .
+
+trind:energy_loss_coefficient a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "energy_loss_coefficient"^^xsd:string .
+
+trind:force_loss_coefficient a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "force_loss_coefficient"^^xsd:string .
+
+trind:gradient_clipping_norm a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "gradient_clipping_norm"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:max_degree_lmax a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_degree_Lmax"^^xsd:string .
+
+trind:max_learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_learning_rate"^^xsd:string .
+
+trind:max_order_mmax a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_order_Mmax"^^xsd:string .
+
+trind:model_ema_decay a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "model_ema_decay"^^xsd:string .
+
+trind:number_of_channels a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_channels"^^xsd:string .
+
+trind:number_of_esen_layer_blocks a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_eSEN_layer_blocks"^^xsd:string .
+
+trind:number_of_radial_basis_functions a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_radial_basis_functions"^^xsd:string .
+
+trind:optimizer a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "optimizer"^^xsd:string .
+
+trind:radial_basis_function_type a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial_basis_function_type"^^xsd:string .
+
+trind:stress_loss_coefficient a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "stress_loss_coefficient"^^xsd:string .
+
+trind:warmup_epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "warmup_epochs"^^xsd:string .
+
+trind:warmup_factor a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "warmup_factor"^^xsd:string .
+
+trind:weight_decay a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "weight_decay"^^xsd:string .
 
 
 
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_variant> >> prov:wasDerivedFrom "model_name: eSEN-30M-MP" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_variant> >> prov:wasDerivedFrom "model_name: eSEN-30M-MP; model_key: eSEN-30m-mp" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
 << <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "30085121"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params: 30085121" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_model_variant> >> prov:wasDerivedFrom "Section 4: 'eSEN is a message-passing neural network'; Section 4: 'eSEN utilizes the same SO2 convolution layer from the equivariant spherical channel network (eSCN) architecture'; architecture ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture which is a subclass of EquivariantNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> >> prov:wasDerivedFrom "Section 4: 'eSEN is a message-passing neural network'; Section 4: 'eSEN utilizes the same SO2 convolution layer from the equivariant spherical channel network (eSCN) architecture'; architecture ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture which is a subclass of EquivariantNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "30085121"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params: 30085121; Section 6.1: 'We train an eSEN with 30M parameters on MPTrj'" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptrj> >> prov:wasDerivedFrom "Section 5: 'models trained on the MPTrj and the SPICE-MACE-OFF datasets'; Section 6.1: 'We train an eSEN with 30M parameters on MPTrj'; Section 6.3: 'We train and evaluate eSEN models on the SPICE-MACE-OFF dataset'" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#spice_mace_off> >> prov:wasDerivedFrom "Section 5: 'models trained on the MPTrj and the SPICE-MACE-OFF datasets'; Section 6.1: 'We train an eSEN with 30M parameters on MPTrj'; Section 6.3: 'We train and evaluate eSEN models on the SPICE-MACE-OFF dataset'" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_model_variant> >> prov:wasDerivedFrom "PDF Section 4: 'eSEN is a message-passing neural network' using SO2 convolution from eSCN; architectureonto: EquivariantMessagePassingNeuralNetworkArchitecture rdfs:subClassOf EquivariantGraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> >> prov:wasDerivedFrom "PDF Section 4: 'eSEN is a message-passing neural network' using SO2 convolution from eSCN; architectureonto: EquivariantMessagePassingNeuralNetworkArchitecture rdfs:subClassOf EquivariantGraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "30085121"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params: 30085121; PDF Table 6: MPTrj-30M configuration" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasLayerCount> "10"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Table 6: Number of eSEN layer blocks 10 for MPTrj-30M" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasHiddenDimension> "128"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Table 6: Number of channels Nchannel 128" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_so2convolution_component> >> prov:wasDerivedFrom "PDF Figure 2, Section 4: edgewise convolution with SO2 convolution layers, nodewise feed-forward with SiLU-based gated non-linearity, equivariant layer normalization" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_edgewiseconvolution_component> >> prov:wasDerivedFrom "PDF Figure 2, Section 4: edgewise convolution with SO2 convolution layers, nodewise feed-forward with SiLU-based gated non-linearity, equivariant layer normalization" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_nodewisefeedforward_component> >> prov:wasDerivedFrom "PDF Figure 2, Section 4: edgewise convolution with SO2 convolution layers, nodewise feed-forward with SiLU-based gated non-linearity, equivariant layer normalization" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_equivariantlayernormalization_component> >> prov:wasDerivedFrom "PDF Figure 2, Section 4: edgewise convolution with SO2 convolution layers, nodewise feed-forward with SiLU-based gated non-linearity, equivariant layer normalization" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#esen_30m_mp_esen_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#esen_gatednonlinearity_component> >> prov:wasDerivedFrom "PDF Figure 2, Section 4: edgewise convolution with SO2 convolution layers, nodewise feed-forward with SiLU-based gated non-linearity, equivariant layer normalization" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_learning_rate_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#learning_rate> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_warmup_epochs_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#warmup_epochs> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_warmup_factor_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#warmup_factor> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_max_learning_rate_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#max_learning_rate> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_batch_size_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#batch_size> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_optimizer_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#optimizer> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_weight_decay_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#weight_decay> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_gradient_clipping_norm_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#gradient_clipping_norm> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_model_ema_decay_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#model_ema_decay> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_energy_loss_coefficient_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#energy_loss_coefficient> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_force_loss_coefficient_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#force_loss_coefficient> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_stress_loss_coefficient_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#stress_loss_coefficient> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_cutoff_radius_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#cutoff_radius> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_number_of_radial_basis_functions_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#number_of_radial_basis_functions> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_radial_basis_function_type_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#radial_basis_function_type> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_max_degree_lmax_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#max_degree_lmax> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_max_order_mmax_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#max_order_mmax> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_number_of_channels_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#number_of_channels> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#esen_30m_mp_esen_number_of_esen_layer_blocks_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#number_of_esen_layer_blocks> >> prov:wasDerivedFrom "PDF Table 6: Hyper-parameters for eSEN variants" ; dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> .

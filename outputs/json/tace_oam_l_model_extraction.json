@@ -1,0 +1,361 @@
+{
+  "model": {
+    "family": {
+      "value": "TACE",
+      "evidence": "PDF: 'we introduce the Tensor Atomic Cluster Expansion (TACE)' (Abstract, page 1)"
+    },
+    "variant": {
+      "value": "tace-oam-l",
+      "evidence": "YAML: model_name = TACE-OAM-L; lowercased and underscored"
+    },
+    "parameter_number": {
+      "value": 82899905,
+      "evidence": "YAML: model_params = 82899905"
+    }
+  },
+  "architectures": {
+    "Tensor Atomic Cluster Expansion": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF: TACE is an equivariant message-passing neural network based on atomic cluster expansion; ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "PDF: total model params are 82,899,905 but no per-architecture breakdown given"
+      },
+      "datasets": {
+        "value": [
+          "3BPA",
+          "QeMFi",
+          "revPBE0-D3 water",
+          "GAP17",
+          "GAP20",
+          "BaTiO3",
+          "Ko charged systems",
+          "RECIO-AgPdCHO",
+          "MatPES-PBE"
+        ],
+        "evidence": "PDF: Sections 2.4–2.11 describe benchmarks on these datasets (pages 9–16)"
+      },
+      "hyperparameters": {
+        "value": [
+          "cutoff_radius",
+          "max_tensor_rank",
+          "max_angular_momentum",
+          "correlation_order",
+          "num_channels",
+          "num_layers",
+          "radial_basis_size",
+          "learning_rate",
+          "batch_size",
+          "loss_function",
+          "optimizer",
+          "activation_function",
+          "envelope_function"
+        ],
+        "evidence": "PDF: Section 5 Methods and Section 2.3 describe these hyperparameters (pages 18–19)"
+      },
+      "hyperparameter_details": {
+        "cutoff_radius": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: trainingonto.ttl MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "5.0-6.0 Angstrom",
+            "evidence": "PDF: Section 5 Methods lists cutoffs per dataset: 5A for 3BPA, 6A for water, 5A for GAP17, 6A for BaTiO3, 6A for PdAgCHO (page 18)"
+          }
+        },
+        "max_tensor_rank": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: trainingonto.ttl MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "3",
+            "evidence": "PDF: Section 2.3.6 'In practice, we typically set ellmax = 3' (page 7)"
+          }
+        },
+        "max_angular_momentum": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: trainingonto.ttl MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "3",
+            "evidence": "PDF: Section 5 'edge attributes were truncated at lmax = 3' (page 19)"
+          }
+        },
+        "correlation_order": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: trainingonto.ttl MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "2 or 3",
+            "evidence": "PDF: Table 1 caption 'the first three TACE models use correlation order 2, while the last model uses correlation order 3' (page 10)"
+          }
+        },
+        "num_channels": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: trainingonto.ttl MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "64 or 128",
+            "evidence": "PDF: Section 5 'All models were trained with either the 64-0 or 64-2 configuration, except for rMD17 which employed the 128-2 setting' (page 19)"
+          }
+        },
+        "num_layers": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: trainingonto.ttl MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "2",
+            "evidence": "PDF: Section 5 'the number of layers was set to T=2' (page 19)"
+          }
+        },
+        "radial_basis_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: trainingonto.ttl MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "8 or 10",
+            "evidence": "PDF: Section 5 'The radial basis was constructed with 8 or 10 functions' (page 19)"
+          }
+        },
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: trainingonto.ttl MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "ReduceLROnPlateau scheduler",
+            "evidence": "PDF: Section 5 'ReduceLROnPlateau learning-rate scheduler' (page 19)"
+          }
+        },
+        "batch_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: trainingonto.ttl MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "16",
+            "evidence": "PDF: Table 7 caption 'batch size of 16' (page 15)"
+          }
+        },
+        "loss_function": {
+          "ontology_class": {
+            "value": "LossFunction",
+            "evidence": "ontology: trainingonto.ttl LossFunction class"
+          },
+          "value": {
+            "value": "weighted sum of MSE for energy per atom, forces, virials; huber loss for TACE-MatPES",
+            "evidence": "PDF: Section 5 'The loss function is defined as the weighted sum of the mean squared errors (MSE) for energy per atom, forces, virials, with task-specific weighting hyperparameters and huber loss for TACE-MatPES' (page 19)"
+          }
+        },
+        "optimizer": {
+          "ontology_class": {
+            "value": "Optimizer",
+            "evidence": "ontology: trainingonto.ttl Optimizer class"
+          },
+          "value": {
+            "value": "Adam with AMSGrad variant",
+            "evidence": "PDF: Section 5 'All models were optimized using Adam with the AMSGrad variant' (page 19)"
+          }
+        },
+        "activation_function": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: trainingonto.ttl MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "SiLU",
+            "evidence": "PDF: Section 5 'The SiLU activation function was consistently applied to all nonlinear operations' (page 19)"
+          }
+        },
+        "envelope_function": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: trainingonto.ttl MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "C2Polynomial or C3Polynomial cutoff",
+            "evidence": "PDF: Section 2.3.5 describes C2Polynomial and proposed C3Polynomial cutoff functions (page 6)"
+          }
+        }
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "pretraining",
+        "multi_fidelity_training",
+        "multi_head_training",
+        "from_scratch_training",
+        "fine_tuning"
+      ],
+      "evidence": "PDF: Section 2.5 describes multi-fidelity and multi-head training; Section 2.10 describes from-scratch and fine-tuning training (pages 10, 15)"
+    },
+    "training_run_details": {
+      "pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "ontology: trainingonto.ttl PretrainingRun class; PDF: Section 2.11 references pretrained models (page 16)"
+        },
+        "architectures": {
+          "value": [
+            "Tensor Atomic Cluster Expansion"
+          ],
+          "evidence": "PDF: TACE architecture used throughout (page 3)"
+        },
+        "datasets": {
+          "value": [
+            "OMat24"
+          ],
+          "evidence": "PDF: Table 10 footnote mentions MACE-MATPES-PBE-0 pretrained on OMat24 (page 17)"
+        },
+        "optimizer": {
+          "value": "Adam with AMSGrad variant",
+          "evidence": "PDF: Section 5 'All models were optimized using Adam with the AMSGrad variant' (page 19)"
+        },
+        "loss_function": {
+          "value": "weighted sum of MSE for energy per atom, forces, virials",
+          "evidence": "PDF: Section 5 loss function description (page 19)"
+        },
+        "description": {
+          "value": "Pretraining on large-scale materials datasets such as OMat24 to learn general atomic representations before fine-tuning on specific tasks",
+          "evidence": "PDF: Section 2.11 and Table 10 footnote (page 16)"
+        }
+      },
+      "multi_fidelity_training": {
+        "type": {
+          "value": "MachineLearningTrainingRun",
+          "evidence": "ontology: trainingonto.ttl MachineLearningTrainingRun class; PDF: Section 2.5 describes multi-fidelity training as a unified training approach (page 10)"
+        },
+        "architectures": {
+          "value": [
+            "Tensor Atomic Cluster Expansion"
+          ],
+          "evidence": "PDF: TACE architecture (page 3)"
+        },
+        "datasets": {
+          "value": [
+            "QeMFi"
+          ],
+          "evidence": "PDF: Section 2.5 evaluates on QeMFi dataset with five basis set levels (page 10)"
+        },
+        "optimizer": {
+          "value": "Adam with AMSGrad variant",
+          "evidence": "PDF: Section 5 (page 19)"
+        },
+        "loss_function": {
+          "value": "weighted sum of MSE for energy per atom, forces, virials",
+          "evidence": "PDF: Section 5 (page 19)"
+        },
+        "description": {
+          "value": "Training on the QeMFi dataset with five DFT fidelity levels (STO-3G, 3-21G, 6-31G, def2-SVP, def2-TZVP) simultaneously using universal invariant embeddings for fidelity tags, enabling cross-fidelity generalization",
+          "evidence": "PDF: Section 2.5 'we treat the fidelity tag as an additional discrete label using the universal invariant embedding framework' (page 10)"
+        }
+      },
+      "multi_head_training": {
+        "type": {
+          "value": "MachineLearningTrainingRun",
+          "evidence": "ontology: trainingonto.ttl MachineLearningTrainingRun class; PDF: Section 2.5 compares multi-head training with multi-fidelity training (page 10)"
+        },
+        "architectures": {
+          "value": [
+            "Tensor Atomic Cluster Expansion"
+          ],
+          "evidence": "PDF: TACE architecture (page 3)"
+        },
+        "datasets": {
+          "value": [
+            "QeMFi"
+          ],
+          "evidence": "PDF: Section 2.5 (page 10)"
+        },
+        "optimizer": {
+          "value": "Adam with AMSGrad variant",
+          "evidence": "PDF: Section 5 (page 19)"
+        },
+        "loss_function": {
+          "value": "weighted sum of MSE for energy per atom, forces, virials",
+          "evidence": "PDF: Section 5 (page 19)"
+        },
+        "description": {
+          "value": "Training with separate output heads for each fidelity level while sharing a common representation, evaluated on the QeMFi dataset and compared against multi-fidelity TACE and multi-head MACE",
+          "evidence": "PDF: Section 2.5 'In multi-head training, separate output heads are attached for each fidelity level while sharing a common representation' (page 10)"
+        }
+      },
+      "from_scratch_training": {
+        "type": {
+          "value": "MachineLearningTrainingRun",
+          "evidence": "ontology: trainingonto.ttl MachineLearningTrainingRun class; PDF: Section 2.10 describes from-scratch training on RECIO-AgPdCHO (page 15)"
+        },
+        "architectures": {
+          "value": [
+            "Tensor Atomic Cluster Expansion"
+          ],
+          "evidence": "PDF: TACE architecture (page 3)"
+        },
+        "datasets": {
+          "value": [
+            "RECIO-AgPdCHO"
+          ],
+          "evidence": "PDF: Section 2.10 'PdAgCHO dataset was generated using the RECIO method' (page 15)"
+        },
+        "optimizer": {
+          "value": "Adam with AMSGrad variant",
+          "evidence": "PDF: Section 5 (page 19)"
+        },
+        "loss_function": {
+          "value": "weighted sum of MSE for energy per atom, forces, virials",
+          "evidence": "PDF: Section 5 (page 19)"
+        },
+        "description": {
+          "value": "Training from scratch on the RECIO-AgPdCHO dataset containing 116,516 structures with a cutoff of 6A, using warmup followed by cosine annealing learning rate scheduler, for heterogeneous catalysis benchmarks",
+          "evidence": "PDF: Section 2.10 and Section 5 (pages 15, 19)"
+        }
+      },
+      "fine_tuning": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "ontology: trainingonto.ttl MachineLearningFinetuningRun class; PDF: Section 2.10 describes fine-tuning on RECIO-AgPdCHO (page 15)"
+        },
+        "architectures": {
+          "value": [
+            "Tensor Atomic Cluster Expansion"
+          ],
+          "evidence": "PDF: TACE architecture (page 3)"
+        },
+        "datasets": {
+          "value": [
+            "RECIO-AgPdCHO"
+          ],
+          "evidence": "PDF: Section 2.10 'For fine-tuning, 100,000 structures were randomly selected' (page 15)"
+        },
+        "optimizer": {
+          "value": "Adam with AMSGrad variant",
+          "evidence": "PDF: Section 5 (page 19)"
+        },
+        "loss_function": {
+          "value": "weighted sum of MSE for energy per atom, forces, virials",
+          "evidence": "PDF: Section 5 (page 19)"
+        },
+        "description": {
+          "value": "Fine-tuning pretrained TACE models on the RECIO-AgPdCHO dataset with 100,000 randomly selected structures for heterogeneous catalysis applications including adsorption and transition state searches",
+          "evidence": "PDF: Section 2.10 (page 15)"
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\tace_oam_l.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2509.14961.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\tace_oam_l.yml"
+  }
+}

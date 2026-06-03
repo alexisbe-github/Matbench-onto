@@ -1,0 +1,43 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:nequix_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "Nequix"^^xsd:string ;
+    arch:hasVariant archind:nequix_mp_pft_nequix_model_variant,
+        archind:nequix_mp_pft_variant .
+
+archind:nequix_mp_pft_nequix_architecture a owl:NamedIndividual,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "Nequix"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:nequix_mp_pft_nequix_architecture_configuration ;
+    arch:hasParameterNumber 708000 .
+
+archind:nequix_mp_pft_nequix_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Nequix architecture configuration"^^xsd:string .
+
+archind:nequix_mp_pft_nequix_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "nequix_mp_pft Nequix"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:nequix_mp_pft_nequix_architecture .
+
+archind:nequix_mp_pft_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "nequix_mp_pft"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2508.16067.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\nequix_mp_1.yml" ;
+    arch:hasParameterNumber 707658 .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_variant> >> prov:wasDerivedFrom "YAML model_name: 'Nequix MP PFT' — lowercased and spaces/hyphens replaced with underscores" ; dcterms:source <https://arxiv.org/pdf/2508.16067.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "707658"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 707658" ; dcterms:source <https://arxiv.org/pdf/2508.16067.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_nequix_model_variant> >> prov:wasDerivedFrom "PDF: 'Nequix follows a simplified version of the NequIP architecture' — NequIP is an E(3)-equivariant graph neural network using message passing; ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2508.16067.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_nequix_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_nequix_architecture> >> prov:wasDerivedFrom "PDF: 'Nequix follows a simplified version of the NequIP architecture' — NequIP is an E(3)-equivariant graph neural network using message passing; ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2508.16067.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_nequix_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "708000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Table 1: 'Nequix 708K'; PDF Sec 1: 'Nequix has 700K parameters'" ; dcterms:source <https://arxiv.org/pdf/2508.16067.pdf> .

@@ -1,0 +1,174 @@
+Looking at the SHACL violations, I need to fix 4 issues:
+
+1. `archind:alphanet_v1_mptrj_alphanet_model_variant` → `arch:hasMachineLearningArchitecture` → `archind:alphanet_v1_mptrj_alphanet_architecture` — the architecture is typed as `arch:EquivariantMessagePassingNeuralNetworkArchitecture` but not as `arch:MachineLearningArchitecture`.
+2. `archind:alphanet_v1_mptrj_alphanet_architecture` has `arch:hasMachineLearningArchitectureConfiguration` but is not typed as `arch:MachineLearningArchitecture`.
+3. Same as #1 — the object of `arch:hasMachineLearningArchitecture` must be `arch:MachineLearningArchitecture`.
+4. `archind:alphanet_v1_mptrj_variant` lacks `arch:hasMachineLearningArchitecture` (minCount 1).
+
+The fix: add `arch:MachineLearningArchitecture` as an additional type on the architecture individual, and add the missing `arch:hasMachineLearningArchitecture` link to the second variant.
+
+```turtle
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:alphanet_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "AlphaNet"^^xsd:string ;
+    arch:hasVariant archind:alphanet_v1_mptrj_alphanet_model_variant,
+        archind:alphanet_v1_mptrj_variant .
+
+trind:alphanet_v1_mptrj_alphanet_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:alphanet_v1_mptrj_alphanet_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:cutoff .
+
+trind:alphanet_v1_mptrj_alphanet_energy_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet energy_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:energy_loss_weight .
+
+trind:alphanet_v1_mptrj_alphanet_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:epochs .
+
+trind:alphanet_v1_mptrj_alphanet_force_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet force_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:force_loss_weight .
+
+trind:alphanet_v1_mptrj_alphanet_grad_clip_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet grad_clip value"^^xsd:string ;
+    train:ofHyperparameter trind:grad_clip .
+
+trind:alphanet_v1_mptrj_alphanet_heads_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet heads value"^^xsd:string ;
+    train:ofHyperparameter trind:heads .
+
+trind:alphanet_v1_mptrj_alphanet_hidden_channels_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet hidden_channels value"^^xsd:string ;
+    train:ofHyperparameter trind:hidden_channels .
+
+trind:alphanet_v1_mptrj_alphanet_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:alphanet_v1_mptrj_alphanet_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_function .
+
+trind:alphanet_v1_mptrj_alphanet_num_basis_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet num_basis value"^^xsd:string ;
+    train:ofHyperparameter trind:num_basis .
+
+trind:alphanet_v1_mptrj_alphanet_num_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet num_layers value"^^xsd:string ;
+    train:ofHyperparameter trind:num_layers .
+
+trind:alphanet_v1_mptrj_alphanet_scheduler_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet scheduler value"^^xsd:string ;
+    train:ofHyperparameter trind:scheduler .
+
+trind:evidence a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "evidence"^^xsd:string .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:alphanet_v1_mptrj_alphanet_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "AlphaNet"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:alphanet_v1_mptrj_alphanet_architecture_configuration ;
+    arch:hasParameterNumber 16234332 .
+
+archind:alphanet_v1_mptrj_alphanet_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AlphaNet architecture configuration"^^xsd:string .
+
+archind:alphanet_v1_mptrj_alphanet_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:alphanet_v1_mptrj_alphanet_architecture .
+
+archind:alphanet_v1_mptrj_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "alphanet-v1-mptrj"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\alphanet_v1_oam.yml" ;
+    arch:hasMachineLearningArchitecture archind:alphanet_v1_mptrj_alphanet_architecture ;
+    arch:hasParameterNumber 16234332 .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "cutoff"^^xsd:string .
+
+trind:energy_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "energy_loss_weight"^^xsd:string .
+
+trind:epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "epochs"^^xsd:string .
+
+trind:force_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "force_loss_weight"^^xsd:string .
+
+trind:grad_clip a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "grad_clip"^^xsd:string .
+
+trind:heads a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "heads"^^xsd:string .
+
+trind:hidden_channels a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "hidden_channels"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:loss_function a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_function"^^xsd:string .
+
+trind:num_basis a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "num_basis"^^xsd:string .
+
+trind:num_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "num_layers"^^xsd:string .
+
+trind:scheduler a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "scheduler"^^xsd:string .

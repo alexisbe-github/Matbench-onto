@@ -1,0 +1,263 @@
+{
+  "model": {
+    "family": {
+      "value": "Nequix",
+      "evidence": "YAML model_name: Nequix MP PFT; PDF: Nequix MP foundation model (Koker et al., 2025)"
+    },
+    "variant": {
+      "value": "nequix_mp_pft",
+      "evidence": "YAML model_name: Nequix MP PFT; lowercased and spaces/hyphens replaced by underscores"
+    },
+    "parameter_number": {
+      "value": 707658,
+      "evidence": "YAML model_params: 707658; PDF Table 2: Nequix MP PFT 707K"
+    }
+  },
+  "architectures": {
+    "architectures": [
+      "EquivariantMessagePassingNeuralNetworkArchitecture"
+    ],
+    "EquivariantMessagePassingNeuralNetworkArchitecture": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "ontology architecture.ttl: EquivariantMessagePassingNeuralNetworkArchitecture rdfs:subClassOf EquivariantGraphNeuralNetworkArchitecture; PDF: symmetry-aware E(3)-equivariant architecture"
+      },
+      "parameter_number": {
+        "value": 707658,
+        "evidence": "YAML model_params: 707658; PDF Table 2: Nequix MP PFT 707K"
+      },
+      "datasets": [
+        "MPtrj",
+        "MDR Phonon PBE"
+      ],
+      "hyperparameters": [
+        "learning_rate",
+        "weight_decay",
+        "batch_size",
+        "num_epochs",
+        "co_train_ratio",
+        "loss_weight_energy",
+        "loss_weight_force",
+        "loss_weight_stress",
+        "loss_weight_force_constants"
+      ],
+      "hyperparameters_detail": {
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 0.0001,
+            "evidence": "PDF Table A.2: Learning rate 0.0001"
+          }
+        },
+        "weight_decay": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 0.001,
+            "evidence": "PDF Table A.2: Weight decay 0.001"
+          }
+        },
+        "batch_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 16,
+            "evidence": "PDF Table A.2: Batch size 16"
+          }
+        },
+        "num_epochs": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 200,
+            "evidence": "PDF Table A.2: # of epochs 200"
+          }
+        },
+        "co_train_ratio": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 4,
+            "evidence": "PDF Table A.2: Co-train ratio K 4; PDF Algorithm 1: co-training ratio K"
+          }
+        },
+        "loss_weight_energy": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 0,
+            "evidence": "PDF Table A.2: PFT λ_E 0"
+          }
+        },
+        "loss_weight_force": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 20,
+            "evidence": "PDF Table A.2: PFT λ_F 20"
+          }
+        },
+        "loss_weight_stress": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 5,
+            "evidence": "PDF Table A.2: PFT λ_σ 5"
+          }
+        },
+        "loss_weight_force_constants": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 100,
+            "evidence": "PDF Table A.2: PFT λ_Φ 100"
+          }
+        }
+      },
+      "components": [],
+      "backbone_architecture": null,
+      "head_architecture": null,
+      "layer_count": null,
+      "hidden_dimension": null
+    }
+  },
+  "training": {
+    "training_runs": [
+      "pft_fine_tuning"
+    ],
+    "pft_fine_tuning": {
+      "type": {
+        "value": "MachineLearningFinetuningRun",
+        "evidence": "ontology trainingonto.ttl: MachineLearningFinetuningRun rdfs:subClassOf MachineLearningAdaptationRun; PDF: PFT is a fine-tuning procedure"
+      },
+      "architectures": [
+        "EquivariantMessagePassingNeuralNetworkArchitecture"
+      ],
+      "datasets": [
+        "MDR Phonon PBE",
+        "MPtrj"
+      ],
+      "optimizer": {
+        "value": "AdamW",
+        "evidence": "PDF Table A.2: Optimizer AdamW"
+      },
+      "loss_function": {
+        "value": "PFT loss",
+        "evidence": "PDF Eq. 8: LPFT = λ_E LE + λ_F LF + λ_σ Lσ + λ_Φ LΦ"
+      },
+      "description": {
+        "value": "Phonon fine-tuning of Nequix MP on MDR Phonon PBE dataset with co-training on MPtrj",
+        "evidence": "PDF: PFT fine-tunes Nequix MP using phonon data with co-training on upstream MPtrj data"
+      },
+      "objective_function": {
+        "value": "PFT loss",
+        "evidence": "PDF Eq. 8: LPFT combines energy, force, stress, and force constant losses"
+      },
+      "sampling_method": {
+        "value": "stochastic Hessian column sampling",
+        "evidence": "PDF Eq. 9: uniformly sample one atom and Cartesian direction; PDF Sec. 3.2: stochastically samples Hessian columns"
+      },
+      "uses_batched_selection": {
+        "value": null,
+        "evidence": "Not specified as active learning run"
+      },
+      "initialized_from_model_materialization": {
+        "value": "Nequix MP",
+        "evidence": "PDF: start with the Nequix MP; PDF Sec. 4.1: Nequix MP was trained on MPtrj"
+      },
+      "teacher_model": null,
+      "student_model": null,
+      "model_materializations": [
+        "Nequix MP PFT"
+      ]
+    }
+  },
+  "datasets": {
+    "datasets": [
+      "MPtrj",
+      "MDR Phonon PBE"
+    ],
+    "MPtrj": {
+      "ontology_class": {
+        "value": "TrainingDataset",
+        "evidence": "ontology trainingonto.ttl: TrainingDataset rdfs:subClassOf Dataset; PDF: MPtrj used for pretraining"
+      },
+      "number_of_samples": {
+        "value": 145923,
+        "evidence": "PDF Sec. 4.1: 145,923 unique materials"
+      },
+      "data_representation": {
+        "value": "atomic structure",
+        "evidence": "PDF: relaxation trajectories from Materials Project"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF: trained on MPtrj, a dataset of relaxation trajectories from Materials Project"
+      },
+      "input_features": [
+        "atomic positions",
+        "atomic species"
+      ],
+      "target_features": [
+        "energy",
+        "forces",
+        "stress"
+      ],
+      "derived_from_dataset": null
+    },
+    "MDR Phonon PBE": {
+      "ontology_class": {
+        "value": "LabeledDataset",
+        "evidence": "ontology datasetonto.ttl: LabeledDataset rdfs:subClassOf TrainingDataset; PDF: phonon dataset with force constant labels"
+      },
+      "number_of_samples": {
+        "value": 9959,
+        "evidence": "PDF Sec. 4.1: 9,959 materials within the dataset"
+      },
+      "data_representation": {
+        "value": "crystal structure",
+        "evidence": "PDF: phonon calculations using finite displacement in supercells"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF: recalculated using the PBE exchange correlation functional"
+      },
+      "input_features": [
+        "atomic positions",
+        "atomic species",
+        "supercell structure"
+      ],
+      "target_features": [
+        "energy",
+        "forces",
+        "stress",
+        "force constants"
+      ],
+      "derived_from_dataset": null
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\nequix_mp_1_pft.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2601.07742.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\nequix_mp_1_pft.yml"
+  }
+}

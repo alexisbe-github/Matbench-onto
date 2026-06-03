@@ -1,0 +1,120 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:allegro_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "Allegro"^^xsd:string ;
+    arch:hasVariant archind:allegro_mp_l_allegro_model_variant,
+        archind:allegro_mp_l_variant .
+
+trind:allegro_mp_l_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "Allegro-MP-L"^^xsd:string ;
+    train:generatedBy trind:allegro_spice2_pretraining .
+
+trind:allegro_mp_m_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "Allegro-MP-M"^^xsd:string ;
+    train:generatedBy trind:allegro_spice2_pretraining .
+
+trind:allegro_mp_s_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "Allegro-MP-S"^^xsd:string ;
+    train:generatedBy trind:allegro_spice2_pretraining .
+
+trind:spice_2 a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "SPICE 2"^^xsd:string .
+
+trind:spice_2_test_set a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "SPICE 2 test set"^^xsd:string .
+
+trind:torsionnet_500 a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "TorsionNet 500"^^xsd:string .
+
+archind:allegro_mp_l_allegro_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "Allegro"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:allegro_mp_l_allegro_architecture_configuration ;
+    arch:hasParameterNumber 18700000 .
+
+archind:allegro_mp_l_allegro_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Allegro architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 128 ;
+    arch:hasLayerCount 3 .
+
+archind:allegro_mp_l_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "allegro_mp_l"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\allegro_oam_l_0_1.yml" ;
+    arch:hasMachineLearningArchitecture archind:allegro_mp_l_allegro_architecture ;
+    arch:hasParameterNumber 18700000 .
+
+dataind:spice_2 a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "SPICE 2"^^xsd:string .
+
+trind:allegro_mp_l_allegro_maximum_rotation_order_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "allegro_mp_l Allegro maximum rotation order value"^^xsd:string ;
+    train:ofHyperparameter trind:maximum_rotation_order .
+
+trind:allegro_mp_l_allegro_number_of_allegro_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "allegro_mp_l Allegro number of Allegro layers value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_allegro_layers .
+
+trind:allegro_mp_l_allegro_number_of_tensor_features_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "allegro_mp_l Allegro number of tensor features value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_tensor_features .
+
+trind:allegro_mp_l_allegro_radial_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "allegro_mp_l Allegro radial cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:radial_cutoff .
+
+trind:maximum_rotation_order a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "maximum rotation order"^^xsd:string .
+
+trind:number_of_allegro_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number of Allegro layers"^^xsd:string .
+
+trind:number_of_tensor_features a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number of tensor features"^^xsd:string .
+
+trind:radial_cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial cutoff"^^xsd:string .
+
+archind:allegro_mp_l_allegro_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "allegro_mp_l Allegro"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:allegro_mp_l_allegro_architecture .
+
+trind:allegro_spice2_pretraining a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "allegro_spice2_pretraining"^^xsd:string ;
+    rdfs:comment "Training of Allegro models on SPICE 2 dataset with neutral total charge subset using distributed multi-GPU training with TorchInductor compilation"^^xsd:string ;
+    train:hasHyperparameterValue trind:allegro_mp_l_allegro_maximum_rotation_order_value,
+        trind:allegro_mp_l_allegro_number_of_allegro_layers_value,
+        trind:allegro_mp_l_allegro_number_of_tensor_features_value,
+        trind:allegro_mp_l_allegro_radial_cutoff_value ;
+    train:trainsModelVariant archind:allegro_mp_l_allegro_model_variant ;
+    train:usesDataset dataind:spice_2 .

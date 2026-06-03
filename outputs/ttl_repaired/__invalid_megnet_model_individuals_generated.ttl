@@ -1,0 +1,208 @@
+Looking at the SHACL violations, I need to fix 4 issues:
+
+1. **Violation 1 & 3**: `archind:megnet_megnet_architecture` is `arch:GraphNeuralNetworkArchitecture` but not explicitly typed as `arch:MachineLearningArchitecture`. The SHACL shapes require it to be `arch:MachineLearningArchitecture`.
+
+2. **Violation 2**: `archind:megnet_megnet_architecture` has `arch:hasMachineLearningArchitectureConfiguration` but is not typed as `arch:MachineLearningArchitecture` (same root cause as above).
+
+3. **Violation 4**: `archind:megnet_variant` is missing `arch:hasMachineLearningArchitecture` (minCount 1).
+
+The fixes:
+- Add `arch:MachineLearningArchitecture` as an additional type to `archind:megnet_megnet_architecture` (since `GraphNeuralNetworkArchitecture` is likely a subclass, but the SHACL shape requires explicit `MachineLearningArchitecture` class membership).
+- Add `arch:hasMachineLearningArchitecture archind:megnet_megnet_architecture` to `archind:megnet_variant`.
+
+```turtle
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:megnet_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "MEGNet"^^xsd:string ;
+    arch:hasVariant archind:megnet_megnet_model_variant,
+        archind:megnet_variant .
+
+trind:dataset_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "dataset_details"^^xsd:string .
+
+trind:datasets a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "datasets"^^xsd:string .
+
+trind:megnet_megnet_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "megnet MEGNet batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:megnet_megnet_dense_layer_units_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "megnet MEGNet dense_layer_units value"^^xsd:string ;
+    train:ofHyperparameter trind:dense_layer_units .
+
+trind:megnet_megnet_early_stopping_patience_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "megnet MEGNet early_stopping_patience value"^^xsd:string ;
+    train:ofHyperparameter trind:early_stopping_patience .
+
+trind:megnet_megnet_embedding_dimension_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "megnet MEGNet embedding_dimension value"^^xsd:string ;
+    train:ofHyperparameter trind:embedding_dimension .
+
+trind:megnet_megnet_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "megnet MEGNet learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:megnet_megnet_number_of_megnet_blocks_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "megnet MEGNet number_of_megnet_blocks value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_megnet_blocks .
+
+trind:megnet_megnet_radius_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "megnet MEGNet radius_cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:radius_cutoff .
+
+trind:megnet_megnet_set2set_hidden_units_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "megnet MEGNet set2set_hidden_units value"^^xsd:string ;
+    train:ofHyperparameter trind:set2set_hidden_units .
+
+trind:runs a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "runs"^^xsd:string .
+
+archind:megnet_denselayer_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "DenseLayer"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:megnet_denselayer_component_configuration .
+
+archind:megnet_denselayer_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "DenseLayer component configuration"^^xsd:string .
+
+archind:megnet_embeddinglayer_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "EmbeddingLayer"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:megnet_embeddinglayer_component_configuration .
+
+archind:megnet_embeddinglayer_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EmbeddingLayer component configuration"^^xsd:string .
+
+archind:megnet_graphnetworkmodule_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "GraphNetworkModule"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:megnet_graphnetworkmodule_component_configuration .
+
+archind:megnet_graphnetworkmodule_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "GraphNetworkModule component configuration"^^xsd:string .
+
+archind:megnet_megnet_architecture a owl:NamedIndividual,
+        arch:GraphNeuralNetworkArchitecture,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "MEGNet"^^xsd:string ;
+    arch:hasBackboneArchitecture archind:megnet_graphnetworkmodule_component ;
+    arch:hasComponent archind:megnet_denselayer_component,
+        archind:megnet_embeddinglayer_component,
+        archind:megnet_megnetblock_component,
+        archind:megnet_residualskipconnection_component,
+        archind:megnet_set2setreadout_component ;
+    arch:hasHeadArchitecture archind:megnet_multilayerperceptron_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:megnet_megnet_architecture_configuration ;
+    arch:hasParameterNumber 167761 .
+
+archind:megnet_megnet_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "MEGNet architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 64 ;
+    arch:hasLayerCount 3 .
+
+archind:megnet_megnet_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "megnet MEGNet"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:megnet_megnet_architecture .
+
+archind:megnet_megnetblock_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "MEGNetBlock"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:megnet_megnetblock_component_configuration .
+
+archind:megnet_megnetblock_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "MEGNetBlock component configuration"^^xsd:string .
+
+archind:megnet_multilayerperceptron_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "MultiLayerPerceptron"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:megnet_multilayerperceptron_component_configuration .
+
+archind:megnet_multilayerperceptron_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "MultiLayerPerceptron component configuration"^^xsd:string .
+
+archind:megnet_residualskipconnection_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "ResidualSkipConnection"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:megnet_residualskipconnection_component_configuration .
+
+archind:megnet_residualskipconnection_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "ResidualSkipConnection component configuration"^^xsd:string .
+
+archind:megnet_set2setreadout_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "Set2SetReadout"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:megnet_set2setreadout_component_configuration .
+
+archind:megnet_set2setreadout_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Set2SetReadout component configuration"^^xsd:string .
+
+archind:megnet_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "megnet"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/1812.05055.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\megnet.yml" ;
+    arch:hasMachineLearningArchitecture archind:megnet_megnet_architecture ;
+    arch:hasParameterNumber 167761 .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:dense_layer_units a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "dense_layer_units"^^xsd:string .
+
+trind:early_stopping_patience a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "early_stopping_patience"^^xsd:string .
+
+trind:embedding_dimension a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "embedding_dimension"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:number_of_megnet_blocks a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_megnet_blocks"^^xsd:string .
+
+trind:radius_cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radius_cutoff"^^xsd:string .
+
+trind:set2set_hidden_units a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "set2set_hidden_units"^^xsd:string .

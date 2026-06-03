@@ -1,0 +1,54 @@
+Looking at the SHACL violations, I need to fix 4 issues:
+
+1. **`archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_model_variant`** → `arch:hasMachineLearningArchitecture` → `archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture` — the value node is typed as `arch:EquivariantGraphNeuralNetworkArchitecture` but SHACL requires it to be `arch:MachineLearningArchitecture`. Need to add `arch:MachineLearningArchitecture` type.
+
+2. **`archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture`** has `arch:hasMachineLearningArchitectureConfiguration` but SHACL says the subject must be `arch:MachineLearningArchitecture`. Need to add that type.
+
+3. **`archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture`** is the object of `arch:hasMachineLearningArchitecture` but SHACL requires it to be `arch:MachineLearningArchitecture`. Same fix as #2.
+
+4. **`archind:orb_v2_mptrj_variant`** has no `arch:hasMachineLearningArchitecture` (minCount violation). Need to add the link.
+
+```turtle
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:orb_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "ORB"^^xsd:string ;
+    arch:hasVariant archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_model_variant,
+        archind:orb_v2_mptrj_variant .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture,
+        arch:EquivariantGraphNeuralNetworkArchitecture ;
+    rdfs:label "EquivariantGraphNeuralNetworkArchitecture"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture_configuration ;
+    arch:hasParameterNumber 25161727 .
+
+archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EquivariantGraphNeuralNetworkArchitecture architecture configuration"^^xsd:string .
+
+archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "orb_v2_mptrj EquivariantGraphNeuralNetworkArchitecture"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture .
+
+archind:orb_v2_mptrj_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "orb_v2_mptrj"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2504.06231.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\orb_v3.yml" ;
+    arch:hasMachineLearningArchitecture archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture ;
+    arch:hasParameterNumber 25161727 .

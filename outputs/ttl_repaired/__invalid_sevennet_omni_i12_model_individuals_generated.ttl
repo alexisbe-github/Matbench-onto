@@ -1,0 +1,134 @@
+Looking at the SHACL violations, I need to fix 4 issues:
+
+1. `archind:sevennet_0_nequip_model_variant` → `arch:hasMachineLearningArchitecture` → `archind:sevennet_0_nequip_architecture` — the object is typed as `arch:EquivariantMessagePassingNeuralNetworkArchitecture` but needs to be `arch:MachineLearningArchitecture`.
+2. `archind:sevennet_0_nequip_architecture` has `arch:hasMachineLearningArchitectureConfiguration` but is not typed as `arch:MachineLearningArchitecture`.
+3. `archind:sevennet_0_nequip_architecture` is the object of `arch:hasMachineLearningArchitecture` but is not typed as `arch:MachineLearningArchitecture`.
+4. `archind:sevennet_0_variant` lacks `arch:hasMachineLearningArchitecture` (minCount 1).
+
+The root cause is that `archind:sevennet_0_nequip_architecture` is typed as `arch:EquivariantMessagePassingNeuralNetworkArchitecture` but not as `arch:MachineLearningArchitecture`. I need to add the missing class. For violation 4, I need to add the architecture link to `archind:sevennet_0_variant`.
+
+```turtle
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:sevennet_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "SevenNet"^^xsd:string ;
+    arch:hasVariant archind:sevennet_0_nequip_model_variant,
+        archind:sevennet_0_variant .
+
+trind:sevennet_0_nequip_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:sevennet_0_nequip_loss_weight_energy_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP loss_weight_energy value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_weight_energy .
+
+trind:sevennet_0_nequip_loss_weight_force_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP loss_weight_force value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_weight_force .
+
+trind:sevennet_0_nequip_loss_weight_regularization_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP loss_weight_regularization value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_weight_regularization .
+
+trind:sevennet_0_nequip_loss_weight_stress_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP loss_weight_stress value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_weight_stress .
+
+trind:sevennet_0_nequip_max_spherical_harmonics_order_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP max_spherical_harmonics_order value"^^xsd:string ;
+    train:ofHyperparameter trind:max_spherical_harmonics_order .
+
+trind:sevennet_0_nequip_node_feature_dimensions_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP node_feature_dimensions value"^^xsd:string ;
+    train:ofHyperparameter trind:node_feature_dimensions .
+
+trind:sevennet_0_nequip_num_convolution_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP num_convolution_layers value"^^xsd:string ;
+    train:ofHyperparameter trind:num_convolution_layers .
+
+trind:sevennet_0_nequip_optimizer_type_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP optimizer_type value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer_type .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:sevennet_0_nequip_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "NequIP"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:sevennet_0_nequip_architecture_configuration ;
+    arch:hasParameterNumber 842440 .
+
+archind:sevennet_0_nequip_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "NequIP architecture configuration"^^xsd:string .
+
+archind:sevennet_0_nequip_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "sevennet_0 NequIP"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:sevennet_0_nequip_architecture .
+
+archind:sevennet_0_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "sevennet_0"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2510.11241.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\sevennet_omni_i12.yml" ;
+    arch:hasMachineLearningArchitecture archind:sevennet_0_nequip_architecture ;
+    arch:hasParameterNumber 842440 .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:loss_weight_energy a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_weight_energy"^^xsd:string .
+
+trind:loss_weight_force a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_weight_force"^^xsd:string .
+
+trind:loss_weight_regularization a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_weight_regularization"^^xsd:string .
+
+trind:loss_weight_stress a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_weight_stress"^^xsd:string .
+
+trind:max_spherical_harmonics_order a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_spherical_harmonics_order"^^xsd:string .
+
+trind:node_feature_dimensions a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "node_feature_dimensions"^^xsd:string .
+
+trind:num_convolution_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "num_convolution_layers"^^xsd:string .
+
+trind:optimizer_type a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "optimizer_type"^^xsd:string .

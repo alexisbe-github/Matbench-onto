@@ -1,0 +1,197 @@
+{
+  "model": {
+    "family": {
+      "value": "NequIP",
+      "evidence": "YAML model_name: NequIP-MP-L"
+    },
+    "variant": {
+      "value": "nequip_mp_l",
+      "evidence": "YAML model_name lowercased and normalized: NequIP-MP-L -> nequip_mp_l"
+    },
+    "parameter_number": {
+      "value": 9600000,
+      "evidence": "YAML model_params: 9600000"
+    }
+  },
+  "architectures": {
+    "architectures": [
+      "EquivariantMessagePassingNeuralNetworkArchitecture"
+    ],
+    "EquivariantMessagePassingNeuralNetworkArchitecture": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "architectureonto.ttl defines EquivariantMessagePassingNeuralNetworkArchitecture as a subclass of EquivariantGraphNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 9600000,
+        "evidence": "YAML model_params: 9600000"
+      },
+      "datasets": [
+        "SPICE 2"
+      ],
+      "hyperparameters": [
+        "maximum rotation order",
+        "number of tensor features",
+        "number of Allegro layers",
+        "radial cutoff"
+      ],
+      "maximum rotation order": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "trainingonto.ttl defines MachineLearningHyperparameter"
+        },
+        "value": {
+          "value": "3",
+          "evidence": "Table 1: large model lmax = 3"
+        },
+        "components": [],
+        "backbone_architecture": null,
+        "head_architecture": null,
+        "layer_count": null,
+        "hidden_dimension": null
+      },
+      "number of tensor features": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "trainingonto.ttl defines MachineLearningHyperparameter"
+        },
+        "value": {
+          "value": "128",
+          "evidence": "Table 1: large model tensor features = 128"
+        },
+        "components": [],
+        "backbone_architecture": null,
+        "head_architecture": null,
+        "layer_count": null,
+        "hidden_dimension": null
+      },
+      "number of Allegro layers": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "trainingonto.ttl defines MachineLearningHyperparameter"
+        },
+        "value": {
+          "value": "3",
+          "evidence": "Table 1: large model Allegro layers = 3"
+        },
+        "components": [],
+        "backbone_architecture": null,
+        "head_architecture": null,
+        "layer_count": null,
+        "hidden_dimension": null
+      },
+      "radial cutoff": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "trainingonto.ttl defines MachineLearningHyperparameter"
+        },
+        "value": {
+          "value": "6.0 Å",
+          "evidence": "Section III: All models employ a radial cutoff rmax of 6.0 Å"
+        },
+        "components": [],
+        "backbone_architecture": null,
+        "head_architecture": null,
+        "layer_count": null,
+        "hidden_dimension": null
+      }
+    }
+  },
+  "training": {
+    "training_runs": [
+      "allegro_spice2_pretraining"
+    ],
+    "allegro_spice2_pretraining": {
+      "type": {
+        "value": "PretrainingRun",
+        "evidence": "trainingonto.ttl defines PretrainingRun as a subclass of MachineLearningTrainingRun"
+      },
+      "architectures": [
+        "EquivariantMessagePassingNeuralNetworkArchitecture"
+      ],
+      "datasets": [
+        "SPICE 2"
+      ],
+      "optimizer": {
+        "value": null,
+        "evidence": "Optimizer not specified in paper"
+      },
+      "loss_function": {
+        "value": null,
+        "evidence": "Loss function not explicitly specified in paper"
+      },
+      "description": {
+        "value": "Training of Allegro models on SPICE 2 dataset with neutral total charge subset using distributed multi-GPU training with TorchInductor compilation",
+        "evidence": "Section III: Case study training Allegro models on SPICE 2 dataset"
+      },
+      "objective_function": {
+        "value": null,
+        "evidence": "Objective function not explicitly specified"
+      },
+      "sampling_method": {
+        "value": null,
+        "evidence": "Sampling method not specified"
+      },
+      "uses_batched_selection": {
+        "value": null,
+        "evidence": "Not an active learning run"
+      },
+      "initialized_from_model_materialization": {
+        "value": null,
+        "evidence": "No pretrained checkpoint mentioned for initialization"
+      },
+      "teacher_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "student_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "model_materializations": [
+        "NequIP-MP-L"
+      ]
+    }
+  },
+  "datasets": {
+    "datasets": [
+      "SPICE 2"
+    ],
+    "SPICE 2": {
+      "ontology_class": {
+        "value": "LabeledDataset",
+        "evidence": "datasetonto.ttl defines LabeledDataset as a subclass of TrainingDataset"
+      },
+      "number_of_samples": {
+        "value": 2000000,
+        "evidence": "Section III: SPICE 2 dataset contains more than two million atomic configurations"
+      },
+      "data_representation": {
+        "value": "atomic structure",
+        "evidence": "Section III: Dataset contains atomic configurations of organic systems"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "Section III: Energies and forces calculated using density functional theory (DFT) with ωB97M-D3(BJ) functional"
+      },
+      "input_features": [
+        "atomic positions",
+        "atomic species",
+        "total charge"
+      ],
+      "target_features": [
+        "energy",
+        "forces"
+      ],
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "No source dataset mentioned for SPICE 2"
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\nequip_oam_l_0_1.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2504.16068.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\nequip_oam_l_0_1.yml"
+  }
+}

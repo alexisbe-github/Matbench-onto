@@ -1,0 +1,59 @@
+Validation Report
+Conforms: False
+Results (9):
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:cgcnn_p_cgcnn_hd_model_variant
+	Value Node: archind:cgcnn_p_cgcnn_hd_architecture
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every ModelVariant should link to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:cgcnn_p_cgcnn_model_variant
+	Value Node: archind:cgcnn_p_cgcnn_architecture
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every ModelVariant should link to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureConfigurationSubjectShape
+	Focus Node: archind:cgcnn_p_cgcnn_architecture
+	Value Node: archind:cgcnn_p_cgcnn_architecture
+	Message: only a MachineLearningArchitecture should have an architecture configuration.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureConfigurationSubjectShape
+	Focus Node: archind:cgcnn_p_cgcnn_hd_architecture
+	Value Node: archind:cgcnn_p_cgcnn_hd_architecture
+	Message: only a MachineLearningArchitecture should have an architecture configuration.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureObjectShape
+	Focus Node: archind:cgcnn_p_cgcnn_architecture
+	Value Node: archind:cgcnn_p_cgcnn_architecture
+	Message: arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureObjectShape
+	Focus Node: archind:cgcnn_p_cgcnn_hd_architecture
+	Value Node: archind:cgcnn_p_cgcnn_hd_architecture
+	Message: arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: train:UsesDatasetSubjectShape
+	Focus Node: trind:cgcnn_hd_pretraining
+	Value Node: trind:cgcnn_hd_pretraining
+	Message: train:usesDataset must have a MachineLearningTrainingRun as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: train:UsesDatasetSubjectShape
+	Focus Node: trind:cgcnn_pretraining
+	Value Node: trind:cgcnn_pretraining
+	Message: train:usesDataset must have a MachineLearningTrainingRun as subject.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:cgcnn_p_variant
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every ModelVariant should link to a MachineLearningArchitecture.

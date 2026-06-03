@@ -1,0 +1,940 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:gnome_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "GNoME"^^xsd:string ;
+    arch:hasVariant archind:gnome_equivariant_graph_neural_network_model_variant,
+        archind:gnome_equivariant_message_passing_neural_network_model_variant,
+        archind:gnome_graph_neural_network_model_variant,
+        archind:gnome_message_passing_neural_network_model_variant,
+        archind:gnome_nequip_model_variant,
+        archind:gnome_variant .
+
+trind:gnome_equivariant_message_passing_neural_network_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:gnome_equivariant_message_passing_neural_network_distance_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network distance_cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:distance_cutoff .
+
+trind:gnome_equivariant_message_passing_neural_network_edge_featurizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network edge_featurizer value"^^xsd:string ;
+    train:ofHyperparameter trind:edge_featurizer .
+
+trind:gnome_equivariant_message_passing_neural_network_embedding_dimension_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network embedding_dimension value"^^xsd:string ;
+    train:ofHyperparameter trind:embedding_dimension .
+
+trind:gnome_equivariant_message_passing_neural_network_ensemble_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network ensemble_size value"^^xsd:string ;
+    train:ofHyperparameter trind:ensemble_size .
+
+trind:gnome_equivariant_message_passing_neural_network_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:epochs .
+
+trind:gnome_equivariant_message_passing_neural_network_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:gnome_equivariant_message_passing_neural_network_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_function .
+
+trind:gnome_equivariant_message_passing_neural_network_message_passing_iterations_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network message_passing_iterations value"^^xsd:string ;
+    train:ofHyperparameter trind:message_passing_iterations .
+
+trind:gnome_equivariant_message_passing_neural_network_nonlinearity_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network nonlinearity value"^^xsd:string ;
+    train:ofHyperparameter trind:nonlinearity .
+
+trind:gnome_equivariant_message_passing_neural_network_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:gnome_equivariant_message_passing_neural_network_test_time_augmentation_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network test_time_augmentation value"^^xsd:string ;
+    train:ofHyperparameter trind:test_time_augmentation .
+
+trind:gnome_message_passing_neural_network_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Message Passing Neural Network batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:gnome_message_passing_neural_network_distance_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Message Passing Neural Network distance_cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:distance_cutoff .
+
+trind:gnome_message_passing_neural_network_edge_featurizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Message Passing Neural Network edge_featurizer value"^^xsd:string ;
+    train:ofHyperparameter trind:edge_featurizer .
+
+trind:gnome_message_passing_neural_network_embedding_dimension_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Message Passing Neural Network embedding_dimension value"^^xsd:string ;
+    train:ofHyperparameter trind:embedding_dimension .
+
+trind:gnome_message_passing_neural_network_ensemble_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Message Passing Neural Network ensemble_size value"^^xsd:string ;
+    train:ofHyperparameter trind:ensemble_size .
+
+trind:gnome_message_passing_neural_network_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Message Passing Neural Network epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:epochs .
+
+trind:gnome_message_passing_neural_network_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Message Passing Neural Network learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:gnome_message_passing_neural_network_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Message Passing Neural Network loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_function .
+
+trind:gnome_message_passing_neural_network_message_passing_iterations_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Message Passing Neural Network message_passing_iterations value"^^xsd:string ;
+    train:ofHyperparameter trind:message_passing_iterations .
+
+trind:gnome_message_passing_neural_network_nonlinearity_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Message Passing Neural Network nonlinearity value"^^xsd:string ;
+    train:ofHyperparameter trind:nonlinearity .
+
+trind:gnome_message_passing_neural_network_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Message Passing Neural Network optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:gnome_message_passing_neural_network_test_time_augmentation_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Message Passing Neural Network test_time_augmentation value"^^xsd:string ;
+    train:ofHyperparameter trind:test_time_augmentation .
+
+trind:gnome_pretrained_potential_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GNoME pretrained potential"^^xsd:string ;
+    train:generatedBy trind:pretraining .
+
+trind:gnome_stable_crystals_database_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GNoME stable crystals database"^^xsd:string ;
+    train:generatedBy trind:active_learning .
+
+archind:equivariant_graph_neural_network_edge_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "edge_embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:equivariant_graph_neural_network_edge_embedding_component_configuration .
+
+archind:equivariant_graph_neural_network_edge_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "edge_embedding component configuration"^^xsd:string .
+
+archind:equivariant_graph_neural_network_linear_readout_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "linear_readout"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:equivariant_graph_neural_network_linear_readout_component_configuration .
+
+archind:equivariant_graph_neural_network_linear_readout_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "linear_readout component configuration"^^xsd:string .
+
+archind:equivariant_graph_neural_network_message_passing_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "message_passing"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:equivariant_graph_neural_network_message_passing_component_configuration .
+
+archind:equivariant_graph_neural_network_message_passing_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "message_passing component configuration"^^xsd:string .
+
+archind:equivariant_graph_neural_network_node_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "node_embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:equivariant_graph_neural_network_node_embedding_component_configuration .
+
+archind:equivariant_graph_neural_network_node_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "node_embedding component configuration"^^xsd:string .
+
+archind:equivariant_graph_neural_network_readout_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "readout"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:equivariant_graph_neural_network_readout_component_configuration .
+
+archind:equivariant_graph_neural_network_readout_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "readout component configuration"^^xsd:string .
+
+archind:equivariant_message_passing_neural_network_edge_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "edge_embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:equivariant_message_passing_neural_network_edge_embedding_component_configuration .
+
+archind:equivariant_message_passing_neural_network_edge_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "edge_embedding component configuration"^^xsd:string .
+
+archind:equivariant_message_passing_neural_network_linear_readout_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "linear_readout"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:equivariant_message_passing_neural_network_linear_readout_component_configuration .
+
+archind:equivariant_message_passing_neural_network_linear_readout_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "linear_readout component configuration"^^xsd:string .
+
+archind:equivariant_message_passing_neural_network_message_passing_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "message_passing"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:equivariant_message_passing_neural_network_message_passing_component_configuration .
+
+archind:equivariant_message_passing_neural_network_message_passing_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "message_passing component configuration"^^xsd:string .
+
+archind:equivariant_message_passing_neural_network_node_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "node_embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:equivariant_message_passing_neural_network_node_embedding_component_configuration .
+
+archind:equivariant_message_passing_neural_network_node_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "node_embedding component configuration"^^xsd:string .
+
+archind:equivariant_message_passing_neural_network_readout_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "readout"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:equivariant_message_passing_neural_network_readout_component_configuration .
+
+archind:equivariant_message_passing_neural_network_readout_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "readout component configuration"^^xsd:string .
+
+archind:gnome_equivariant_graph_neural_network_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture,
+        arch:EquivariantGraphNeuralNetworkArchitecture ;
+    rdfs:label "Equivariant Graph Neural Network"^^xsd:string ;
+    arch:hasComponent archind:equivariant_graph_neural_network_edge_embedding_component,
+        archind:equivariant_graph_neural_network_message_passing_component,
+        archind:equivariant_graph_neural_network_node_embedding_component,
+        archind:equivariant_graph_neural_network_readout_component ;
+    arch:hasHeadArchitecture archind:equivariant_graph_neural_network_linear_readout_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:gnome_equivariant_graph_neural_network_architecture_configuration .
+
+archind:gnome_equivariant_graph_neural_network_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Equivariant Graph Neural Network architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 256 ;
+    arch:hasLayerCount 3 .
+
+archind:gnome_equivariant_message_passing_neural_network_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "Equivariant Message Passing Neural Network"^^xsd:string ;
+    arch:hasComponent archind:equivariant_message_passing_neural_network_edge_embedding_component,
+        archind:equivariant_message_passing_neural_network_message_passing_component,
+        archind:equivariant_message_passing_neural_network_node_embedding_component,
+        archind:equivariant_message_passing_neural_network_readout_component ;
+    arch:hasHeadArchitecture archind:equivariant_message_passing_neural_network_linear_readout_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:gnome_equivariant_message_passing_neural_network_architecture_configuration .
+
+archind:gnome_equivariant_message_passing_neural_network_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Equivariant Message Passing Neural Network architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 256 ;
+    arch:hasLayerCount 3 .
+
+archind:gnome_equivariant_message_passing_neural_network_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "gnome Equivariant Message Passing Neural Network"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:gnome_equivariant_message_passing_neural_network_architecture .
+
+archind:gnome_graph_neural_network_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture,
+        arch:GraphNeuralNetworkArchitecture ;
+    rdfs:label "Graph Neural Network"^^xsd:string ;
+    arch:hasComponent archind:graph_neural_network_edge_embedding_component,
+        archind:graph_neural_network_message_passing_component,
+        archind:graph_neural_network_node_embedding_component,
+        archind:graph_neural_network_readout_component ;
+    arch:hasHeadArchitecture archind:graph_neural_network_linear_readout_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:gnome_graph_neural_network_architecture_configuration .
+
+archind:gnome_graph_neural_network_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Graph Neural Network architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 256 ;
+    arch:hasLayerCount 3 .
+
+archind:gnome_message_passing_neural_network_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture,
+        arch:MessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "Message Passing Neural Network"^^xsd:string ;
+    arch:hasComponent archind:message_passing_neural_network_edge_embedding_component,
+        archind:message_passing_neural_network_message_passing_component,
+        archind:message_passing_neural_network_node_embedding_component,
+        archind:message_passing_neural_network_readout_component ;
+    arch:hasHeadArchitecture archind:message_passing_neural_network_linear_readout_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:gnome_message_passing_neural_network_architecture_configuration .
+
+archind:gnome_message_passing_neural_network_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Message Passing Neural Network architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 256 ;
+    arch:hasLayerCount 3 .
+
+archind:gnome_message_passing_neural_network_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "gnome Message Passing Neural Network"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:gnome_message_passing_neural_network_architecture .
+
+archind:gnome_nequip_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "NequIP"^^xsd:string ;
+    arch:hasComponent archind:nequip_convolution_component,
+        archind:nequip_edge_embedding_component,
+        archind:nequip_node_embedding_component,
+        archind:nequip_readout_component ;
+    arch:hasHeadArchitecture archind:nequip_energy_sum_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:gnome_nequip_architecture_configuration ;
+    arch:hasParameterNumber 16240000 .
+
+archind:gnome_nequip_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "NequIP architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 128 ;
+    arch:hasLayerCount 5 .
+
+archind:gnome_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "gnome"^^xsd:string ;
+    dcterms:source <https://nature.com/articles/s41586-023-06735-9.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\gnome.yml" ;
+    arch:hasParameterNumber 16240000 ;
+    arch:hasMachineLearningArchitecture archind:gnome_nequip_architecture .
+
+archind:graph_neural_network_edge_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "edge_embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:graph_neural_network_edge_embedding_component_configuration .
+
+archind:graph_neural_network_edge_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "edge_embedding component configuration"^^xsd:string .
+
+archind:graph_neural_network_linear_readout_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "linear_readout"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:graph_neural_network_linear_readout_component_configuration .
+
+archind:graph_neural_network_linear_readout_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "linear_readout component configuration"^^xsd:string .
+
+archind:graph_neural_network_message_passing_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "message_passing"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:graph_neural_network_message_passing_component_configuration .
+
+archind:graph_neural_network_message_passing_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "message_passing component configuration"^^xsd:string .
+
+archind:graph_neural_network_node_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "node_embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:graph_neural_network_node_embedding_component_configuration .
+
+archind:graph_neural_network_node_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "node_embedding component configuration"^^xsd:string .
+
+archind:graph_neural_network_readout_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "readout"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:graph_neural_network_readout_component_configuration .
+
+archind:graph_neural_network_readout_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "readout component configuration"^^xsd:string .
+
+archind:message_passing_neural_network_edge_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "edge_embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:message_passing_neural_network_edge_embedding_component_configuration .
+
+archind:message_passing_neural_network_edge_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "edge_embedding component configuration"^^xsd:string .
+
+archind:message_passing_neural_network_linear_readout_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "linear_readout"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:message_passing_neural_network_linear_readout_component_configuration .
+
+archind:message_passing_neural_network_linear_readout_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "linear_readout component configuration"^^xsd:string .
+
+archind:message_passing_neural_network_message_passing_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "message_passing"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:message_passing_neural_network_message_passing_component_configuration .
+
+archind:message_passing_neural_network_message_passing_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "message_passing component configuration"^^xsd:string .
+
+archind:message_passing_neural_network_node_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "node_embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:message_passing_neural_network_node_embedding_component_configuration .
+
+archind:message_passing_neural_network_node_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "node_embedding component configuration"^^xsd:string .
+
+archind:message_passing_neural_network_readout_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "readout"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:message_passing_neural_network_readout_component_configuration .
+
+archind:message_passing_neural_network_readout_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "readout component configuration"^^xsd:string .
+
+archind:nequip_convolution_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "convolution"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:nequip_convolution_component_configuration .
+
+archind:nequip_convolution_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "convolution component configuration"^^xsd:string .
+
+archind:nequip_edge_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "edge_embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:nequip_edge_embedding_component_configuration .
+
+archind:nequip_edge_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "edge_embedding component configuration"^^xsd:string .
+
+archind:nequip_energy_sum_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "energy_sum"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:nequip_energy_sum_component_configuration .
+
+archind:nequip_energy_sum_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "energy_sum component configuration"^^xsd:string .
+
+archind:nequip_node_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "node_embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:nequip_node_embedding_component_configuration .
+
+archind:nequip_node_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "node_embedding component configuration"^^xsd:string .
+
+archind:nequip_readout_component a owl:NamedIndividual,
+        arch:MachineLearningArchitectureComponent ;
+    rdfs:label "readout"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:nequip_readout_component_configuration .
+
+archind:nequip_readout_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "readout component configuration"^^xsd:string .
+
+dataind:crystal_structure_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "crystal_structure"^^xsd:string .
+
+dataind:experimental_measurement_labelling_method a owl:NamedIndividual,
+        data:LabellingMethod ;
+    rdfs:label "experimental_measurement"^^xsd:string .
+
+dataind:icsd a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "ICSD"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_structure_representation ;
+    data:hasLabellingMethod dataind:experimental_measurement_labelling_method ;
+    data:hasNumberOfSamples 200000 ;
+    data:usesAttributeAsInputFeature dataind:atom_type_attribute,
+        dataind:lattice_attribute,
+        dataind:structure_attribute ;
+    data:usesAttributeAsTargetFeature dataind:stability_attribute .
+
+dataind:stability_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "stability"^^xsd:string .
+
+dataind:wbm a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "WBM"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_graph_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:usesAttributeAsInputFeature dataind:atom_type_attribute,
+        dataind:interatomic_distance_attribute,
+        dataind:lattice_attribute,
+        dataind:structure_attribute ;
+    data:usesAttributeAsTargetFeature dataind:formation_energy_attribute,
+        dataind:total_energy_attribute .
+
+trind:active_learning a owl:NamedIndividual,
+        train:MachineLearningTrainingRun,
+        train:MachineLearningActiveLearningRun ;
+    rdfs:label "active_learning"^^xsd:string ;
+    rdfs:comment "Active learning with six rounds of generation, filtration, and DFT evaluation to discover stable crystals"^^xsd:string ;
+    train:hasHyperparameterValue trind:gnome_equivariant_graph_neural_network_batch_size_value,
+        trind:gnome_equivariant_graph_neural_network_distance_cutoff_value,
+        trind:gnome_equivariant_graph_neural_network_edge_featurizer_value,
+        trind:gnome_equivariant_graph_neural_network_embedding_dimension_value,
+        trind:gnome_equivariant_graph_neural_network_ensemble_size_value,
+        trind:gnome_equivariant_graph_neural_network_epochs_value,
+        trind:gnome_equivariant_graph_neural_network_learning_rate_value,
+        trind:gnome_equivariant_graph_neural_network_loss_function_value,
+        trind:gnome_equivariant_graph_neural_network_message_passing_iterations_value,
+        trind:gnome_equivariant_graph_neural_network_nonlinearity_value,
+        trind:gnome_equivariant_graph_neural_network_optimizer_value,
+        trind:gnome_equivariant_graph_neural_network_test_time_augmentation_value,
+        trind:gnome_graph_neural_network_batch_size_value,
+        trind:gnome_graph_neural_network_distance_cutoff_value,
+        trind:gnome_graph_neural_network_edge_featurizer_value,
+        trind:gnome_graph_neural_network_embedding_dimension_value,
+        trind:gnome_graph_neural_network_ensemble_size_value,
+        trind:gnome_graph_neural_network_epochs_value,
+        trind:gnome_graph_neural_network_learning_rate_value,
+        trind:gnome_graph_neural_network_loss_function_value,
+        trind:gnome_graph_neural_network_message_passing_iterations_value,
+        trind:gnome_graph_neural_network_nonlinearity_value,
+        trind:gnome_graph_neural_network_optimizer_value,
+        trind:gnome_graph_neural_network_test_time_augmentation_value ;
+    train:initializedFromModelMaterialization trind:materials_project_2018_snapshot_materialization ;
+    train:trainsModelVariant archind:gnome_equivariant_graph_neural_network_model_variant,
+        archind:gnome_graph_neural_network_model_variant ;
+    train:usesBatchedSelection true ;
+    train:usesDataset dataind:icsd,
+        dataind:materials_project,
+        dataind:oqmd,
+        dataind:wbm ;
+    train:usesLoss trind:huber ;
+    train:usesObjectiveFunction trind:energy_prediction ;
+    train:usesOptimizer trind:adam ;
+    train:usesSamplingMethod trind:uncertainty_sampling .
+
+trind:edge_irreducible_representations a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "edge_irreducible_representations"^^xsd:string .
+
+trind:energy_prediction a owl:NamedIndividual,
+        train:ObjectiveFunction ;
+    rdfs:label "energy_prediction"^^xsd:string .
+
+trind:force_prediction a owl:NamedIndividual,
+        train:ObjectiveFunction ;
+    rdfs:label "force_prediction"^^xsd:string .
+
+trind:gnome_equivariant_graph_neural_network_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Graph Neural Network batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:gnome_equivariant_graph_neural_network_distance_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Graph Neural Network distance_cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:distance_cutoff .
+
+trind:gnome_equivariant_graph_neural_network_edge_featurizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Graph Neural Network edge_featurizer value"^^xsd:string ;
+    train:ofHyperparameter trind:edge_featurizer .
+
+trind:gnome_equivariant_graph_neural_network_embedding_dimension_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Graph Neural Network embedding_dimension value"^^xsd:string ;
+    train:ofHyperparameter trind:embedding_dimension .
+
+trind:gnome_equivariant_graph_neural_network_ensemble_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Graph Neural Network ensemble_size value"^^xsd:string ;
+    train:ofHyperparameter trind:ensemble_size .
+
+trind:gnome_equivariant_graph_neural_network_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Graph Neural Network epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:epochs .
+
+trind:gnome_equivariant_graph_neural_network_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Graph Neural Network learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:gnome_equivariant_graph_neural_network_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Graph Neural Network loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_function .
+
+trind:gnome_equivariant_graph_neural_network_message_passing_iterations_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Graph Neural Network message_passing_iterations value"^^xsd:string ;
+    train:ofHyperparameter trind:message_passing_iterations .
+
+trind:gnome_equivariant_graph_neural_network_nonlinearity_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Graph Neural Network nonlinearity value"^^xsd:string ;
+    train:ofHyperparameter trind:nonlinearity .
+
+trind:gnome_equivariant_graph_neural_network_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Graph Neural Network optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:gnome_equivariant_graph_neural_network_test_time_augmentation_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Equivariant Graph Neural Network test_time_augmentation value"^^xsd:string ;
+    train:ofHyperparameter trind:test_time_augmentation .
+
+trind:gnome_graph_neural_network_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Graph Neural Network batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:gnome_graph_neural_network_distance_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Graph Neural Network distance_cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:distance_cutoff .
+
+trind:gnome_graph_neural_network_edge_featurizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Graph Neural Network edge_featurizer value"^^xsd:string ;
+    train:ofHyperparameter trind:edge_featurizer .
+
+trind:gnome_graph_neural_network_embedding_dimension_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Graph Neural Network embedding_dimension value"^^xsd:string ;
+    train:ofHyperparameter trind:embedding_dimension .
+
+trind:gnome_graph_neural_network_ensemble_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Graph Neural Network ensemble_size value"^^xsd:string ;
+    train:ofHyperparameter trind:ensemble_size .
+
+trind:gnome_graph_neural_network_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Graph Neural Network epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:epochs .
+
+trind:gnome_graph_neural_network_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Graph Neural Network learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:gnome_graph_neural_network_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Graph Neural Network loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_function .
+
+trind:gnome_graph_neural_network_message_passing_iterations_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Graph Neural Network message_passing_iterations value"^^xsd:string ;
+    train:ofHyperparameter trind:message_passing_iterations .
+
+trind:gnome_graph_neural_network_nonlinearity_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Graph Neural Network nonlinearity value"^^xsd:string ;
+    train:ofHyperparameter trind:nonlinearity .
+
+trind:gnome_graph_neural_network_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Graph Neural Network optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:gnome_graph_neural_network_test_time_augmentation_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome Graph Neural Network test_time_augmentation value"^^xsd:string ;
+    train:ofHyperparameter trind:test_time_augmentation .
+
+trind:gnome_nequip_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:gnome_nequip_distance_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP distance_cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:distance_cutoff .
+
+trind:gnome_nequip_edge_irreducible_representations_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP edge_irreducible_representations value"^^xsd:string ;
+    train:ofHyperparameter trind:edge_irreducible_representations .
+
+trind:gnome_nequip_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:epochs .
+
+trind:gnome_nequip_hidden_features_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP hidden_features value"^^xsd:string ;
+    train:ofHyperparameter trind:hidden_features .
+
+trind:gnome_nequip_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP layers value"^^xsd:string ;
+    train:ofHyperparameter trind:layers .
+
+trind:gnome_nequip_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:gnome_nequip_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_function .
+
+trind:gnome_nequip_nonlinearity_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP nonlinearity value"^^xsd:string ;
+    train:ofHyperparameter trind:nonlinearity .
+
+trind:gnome_nequip_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:gnome_nequip_radial_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP radial_cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:radial_cutoff .
+
+trind:gnome_nequip_radial_mlp_hidden_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP radial_mlp_hidden_layers value"^^xsd:string ;
+    train:ofHyperparameter trind:radial_mlp_hidden_layers .
+
+trind:gnome_nequip_radial_mlp_neurons_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "gnome NequIP radial_mlp_neurons value"^^xsd:string ;
+    train:ofHyperparameter trind:radial_mlp_neurons .
+
+trind:hidden_features a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "hidden_features"^^xsd:string .
+
+trind:layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "layers"^^xsd:string .
+
+trind:materials_project_2018_snapshot_materialization a owl:NamedIndividual,
+        train:ModelMaterialization ;
+    rdfs:label "Materials Project 2018 snapshot"^^xsd:string .
+
+trind:oversampling a owl:NamedIndividual,
+        train:SamplingMethod ;
+    rdfs:label "oversampling"^^xsd:string .
+
+trind:pretraining a owl:NamedIndividual,
+        train:MachineLearningTrainingRun,
+        train:PretrainingRun ;
+    rdfs:label "pretraining"^^xsd:string ;
+    rdfs:comment "Pretraining NequIP potential on ionic relaxation data for interatomic potential"^^xsd:string ;
+    train:hasHyperparameterValue trind:gnome_nequip_batch_size_value,
+        trind:gnome_nequip_distance_cutoff_value,
+        trind:gnome_nequip_edge_irreducible_representations_value,
+        trind:gnome_nequip_epochs_value,
+        trind:gnome_nequip_hidden_features_value,
+        trind:gnome_nequip_layers_value,
+        trind:gnome_nequip_learning_rate_value,
+        trind:gnome_nequip_loss_function_value,
+        trind:gnome_nequip_nonlinearity_value,
+        trind:gnome_nequip_optimizer_value,
+        trind:gnome_nequip_radial_cutoff_value,
+        trind:gnome_nequip_radial_mlp_hidden_layers_value,
+        trind:gnome_nequip_radial_mlp_neurons_value ;
+    train:trainsModelVariant archind:gnome_nequip_model_variant ;
+    train:usesDataset dataind:materials_project,
+        dataind:oqmd ;
+    train:usesLoss trind:huber ;
+    train:usesObjectiveFunction trind:force_prediction ;
+    train:usesOptimizer trind:adam ;
+    train:usesSamplingMethod trind:oversampling .
+
+trind:radial_cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial_cutoff"^^xsd:string .
+
+trind:radial_mlp_hidden_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial_mlp_hidden_layers"^^xsd:string .
+
+trind:radial_mlp_neurons a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial_mlp_neurons"^^xsd:string .
+
+trind:uncertainty_sampling a owl:NamedIndividual,
+        train:SamplingMethod ;
+    rdfs:label "uncertainty_sampling"^^xsd:string .
+
+archind:gnome_equivariant_graph_neural_network_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "gnome Equivariant Graph Neural Network"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:gnome_equivariant_graph_neural_network_architecture .
+
+archind:gnome_graph_neural_network_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "gnome Graph Neural Network"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:gnome_graph_neural_network_architecture .
+
+archind:gnome_nequip_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "gnome NequIP"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:gnome_nequip_architecture .
+
+dataind:materials_project a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Materials Project"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_graph_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 69000 ;
+    data:usesAttributeAsInputFeature dataind:atom_type_attribute,
+        dataind:interatomic_distance_attribute,
+        dataind:lattice_attribute,
+        dataind:structure_attribute ;
+    data:usesAttributeAsTargetFeature dataind:formation_energy_attribute,
+        dataind:total_energy_attribute .
+
+dataind:oqmd a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "OQMD"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_graph_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:usesAttributeAsInputFeature dataind:atom_type_attribute,
+        dataind:interatomic_distance_attribute,
+        dataind:lattice_attribute,
+        dataind:structure_attribute ;
+    data:usesAttributeAsTargetFeature dataind:formation_energy_attribute,
+        dataind:total_energy_attribute .
+
+trind:adam a owl:NamedIndividual,
+        train:Optimizer ;
+    rdfs:label "Adam"^^xsd:string .
+
+trind:huber a owl:NamedIndividual,
+        train:LossFunction ;
+    rdfs:label "Huber"^^xsd:string .
+
+dataind:crystal_graph_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "crystal_graph"^^xsd:string .
+
+dataind:dft_labelling_method a owl:NamedIndividual,
+        data:LabellingMethod ;
+    rdfs:label "DFT"^^xsd:string .
+
+dataind:formation_energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "formation_energy"^^xsd:string .
+
+dataind:interatomic_distance_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "interatomic_distance"^^xsd:string .
+
+dataind:total_energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "total_energy"^^xsd:string .
+
+dataind:atom_type_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atom_type"^^xsd:string .
+
+dataind:lattice_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "lattice"^^xsd:string .
+
+dataind:structure_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "structure"^^xsd:string .
+
+trind:edge_featurizer a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "edge_featurizer"^^xsd:string .
+
+trind:embedding_dimension a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "embedding_dimension"^^xsd:string .
+
+trind:ensemble_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "ensemble_size"^^xsd:string .
+
+trind:message_passing_iterations a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "message_passing_iterations"^^xsd:string .
+
+trind:test_time_augmentation a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "test_time_augmentation"^^xsd:string .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:distance_cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "distance_cutoff"^^xsd:string .
+
+trind:epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "epochs"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:loss_function a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_function"^^xsd:string .
+
+trind:nonlinearity a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "nonlinearity"^^xsd:string .
+
+trind:optimizer a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "optimizer"^^xsd:string .

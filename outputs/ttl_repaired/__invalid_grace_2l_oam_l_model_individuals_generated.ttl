@@ -1,0 +1,696 @@
+Looking at the SHACL violations, I need to fix:
+
+1. **Violations 1-2**: `archind:grace_1l_oam_grace_1l_model_variant` and `archind:grace_1l_oam_grace_2l_model_variant` link to architectures that are typed as `arch:EquivariantMessagePassingNeuralNetworkArchitecture` but not explicitly as `arch:MachineLearningArchitecture`. Need to add `arch:MachineLearningArchitecture` type to the architecture individuals.
+
+2. **Violations 3-4**: `archind:grace_1l_oam_grace_1l_architecture` and `archind:grace_1l_oam_grace_2l_architecture` have `arch:hasMachineLearningArchitectureConfiguration` but are not typed as `arch:MachineLearningArchitecture`. Same root cause — need to add the type.
+
+3. **Violations 5-6**: `arch:HasArchitectureObjectShape` — the objects of `arch:hasMachineLearningArchitecture` must be `arch:MachineLearningArchitecture`. Same fix as above.
+
+4. **Violations 7-9**: `trind:oam_finetuning`, `trind:omat24_pretraining`, `trind:omat_finetune_e` use `train:usesDataset` but are not typed as `train:MachineLearningTrainingRun`. Need to add that type.
+
+5. **Violation 10**: `archind:grace_1l_oam_variant` has no `arch:hasMachineLearningArchitecture` link. Need to add one.
+
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:grace_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "GRACE"^^xsd:string ;
+    arch:hasVariant archind:grace_1l_oam_grace_1l_model_variant,
+        archind:grace_1l_oam_grace_2l_model_variant,
+        archind:grace_1l_oam_variant .
+
+trind:grace_1l_oam_l_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-1L-OAM-L"^^xsd:string ;
+    train:generatedBy trind:oam_finetuning .
+
+trind:grace_1l_oam_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-1L-OAM"^^xsd:string ;
+    train:generatedBy trind:oam_finetuning .
+
+trind:grace_1l_omat_base_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-1L-OMAT-base"^^xsd:string ;
+    train:generatedBy trind:omat24_pretraining .
+
+trind:grace_1l_omat_ft_e_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-1L-OMAT-ft-E"^^xsd:string ;
+    train:generatedBy trind:omat_finetune_e .
+
+trind:grace_1l_omat_l_base_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-1L-OMAT-L-base"^^xsd:string ;
+    train:generatedBy trind:omat24_pretraining .
+
+trind:grace_1l_omat_l_ft_e_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-1L-OMAT-L-ft-E"^^xsd:string ;
+    train:generatedBy trind:omat_finetune_e .
+
+trind:grace_1l_omat_m_base_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-1L-OMAT-M-base"^^xsd:string ;
+    train:generatedBy trind:omat24_pretraining .
+
+trind:grace_2l_oam_l_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-2L-OAM-L"^^xsd:string ;
+    train:generatedBy trind:oam_finetuning .
+
+trind:grace_2l_oam_m_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-2L-OAM-M"^^xsd:string ;
+    train:generatedBy trind:oam_finetuning .
+
+trind:grace_2l_oam_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-2L-OAM"^^xsd:string ;
+    train:generatedBy trind:oam_finetuning .
+
+trind:grace_2l_omat_base_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-2L-OMAT-base"^^xsd:string ;
+    train:generatedBy trind:omat24_pretraining .
+
+trind:grace_2l_omat_ft_e_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-2L-OMAT-ft-E"^^xsd:string ;
+    train:generatedBy trind:omat_finetune_e .
+
+trind:grace_2l_omat_l_base_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-2L-OMAT-L-base"^^xsd:string ;
+    train:generatedBy trind:omat24_pretraining .
+
+trind:grace_2l_omat_l_ft_e_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-2L-OMAT-L-ft-E"^^xsd:string ;
+    train:generatedBy trind:omat_finetune_e .
+
+trind:grace_2l_omat_m_base_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-2L-OMAT-M-base"^^xsd:string ;
+    train:generatedBy trind:omat24_pretraining .
+
+trind:grace_2l_omat_m_ft_e_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "GRACE-2L-OMAT-M-ft-E"^^xsd:string ;
+    train:generatedBy trind:omat_finetune_e .
+
+archind:grace_1l_ace_star_graph_basis_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "ACE_star_graph_basis"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_1l_ace_star_graph_basis_component_configuration .
+
+archind:grace_1l_ace_star_graph_basis_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "ACE_star_graph_basis component configuration"^^xsd:string .
+
+archind:grace_1l_atomic_energy_readout_mlp_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "atomic_energy_readout_MLP"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_1l_atomic_energy_readout_mlp_component_configuration .
+
+archind:grace_1l_atomic_energy_readout_mlp_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "atomic_energy_readout_MLP component configuration"^^xsd:string .
+
+archind:grace_1l_atomicclusterexpansion_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "AtomicClusterExpansion"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_1l_atomicclusterexpansion_component_configuration .
+
+archind:grace_1l_atomicclusterexpansion_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AtomicClusterExpansion component configuration"^^xsd:string .
+
+archind:grace_1l_atomicenergyreadoutmlp_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "AtomicEnergyReadoutMLP"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_1l_atomicenergyreadoutmlp_component_configuration .
+
+archind:grace_1l_atomicenergyreadoutmlp_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AtomicEnergyReadoutMLP component configuration"^^xsd:string .
+
+archind:grace_1l_chemical_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "chemical_embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_1l_chemical_embedding_component_configuration .
+
+archind:grace_1l_chemical_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "chemical_embedding component configuration"^^xsd:string .
+
+archind:grace_1l_oam_grace_1l_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "GRACE-1L"^^xsd:string ;
+    arch:hasBackboneArchitecture archind:grace_1l_atomicclusterexpansion_component ;
+    arch:hasComponent archind:grace_1l_ace_star_graph_basis_component,
+        archind:grace_1l_atomic_energy_readout_mlp_component,
+        archind:grace_1l_chemical_embedding_component,
+        archind:grace_1l_radial_basis_mlp_component,
+        archind:grace_1l_recursive_ace_evaluation_component ;
+    arch:hasHeadArchitecture archind:grace_1l_atomicenergyreadoutmlp_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_1l_oam_grace_1l_architecture_configuration ;
+    arch:hasParameterNumber 3447148 .
+
+archind:grace_1l_oam_grace_1l_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "GRACE-1L architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 128 ;
+    arch:hasLayerCount 1 .
+
+archind:grace_1l_oam_grace_2l_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "GRACE-2L"^^xsd:string ;
+    arch:hasBackboneArchitecture archind:grace_2l_atomicclusterexpansion_component ;
+    arch:hasComponent archind:grace_2l_ace_star_graph_basis_layer1_component,
+        archind:grace_2l_ace_tree_graph_basis_layer2_component,
+        archind:grace_2l_atomic_energy_readout_mlp_component,
+        archind:grace_2l_chemical_embedding_component,
+        archind:grace_2l_equivariant_atomic_representations_component,
+        archind:grace_2l_radial_basis_mlp_component,
+        archind:grace_2l_recursive_ace_evaluation_component ;
+    arch:hasHeadArchitecture archind:grace_2l_atomicenergyreadoutmlp_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_1l_oam_grace_2l_architecture_configuration ;
+    arch:hasParameterNumber 12597516 .
+
+archind:grace_1l_oam_grace_2l_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "GRACE-2L architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 128 ;
+    arch:hasLayerCount 2 .
+
+archind:grace_1l_oam_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "grace_1l_oam"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2508.17936.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\grace_2l_oam_l.yml" ;
+    arch:hasMachineLearningArchitecture archind:grace_1l_oam_grace_1l_architecture ;
+    arch:hasParameterNumber 3447148 .
+
+archind:grace_1l_radial_basis_mlp_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "radial_basis_MLP"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_1l_radial_basis_mlp_component_configuration .
+
+archind:grace_1l_radial_basis_mlp_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "radial_basis_MLP component configuration"^^xsd:string .
+
+archind:grace_1l_recursive_ace_evaluation_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "recursive_ACE_evaluation"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_1l_recursive_ace_evaluation_component_configuration .
+
+archind:grace_1l_recursive_ace_evaluation_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "recursive_ACE_evaluation component configuration"^^xsd:string .
+
+archind:grace_2l_ace_star_graph_basis_layer1_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "ACE_star_graph_basis_layer1"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_2l_ace_star_graph_basis_layer1_component_configuration .
+
+archind:grace_2l_ace_star_graph_basis_layer1_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "ACE_star_graph_basis_layer1 component configuration"^^xsd:string .
+
+archind:grace_2l_ace_tree_graph_basis_layer2_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "ACE_tree_graph_basis_layer2"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_2l_ace_tree_graph_basis_layer2_component_configuration .
+
+archind:grace_2l_ace_tree_graph_basis_layer2_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "ACE_tree_graph_basis_layer2 component configuration"^^xsd:string .
+
+archind:grace_2l_atomic_energy_readout_mlp_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "atomic_energy_readout_MLP"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_2l_atomic_energy_readout_mlp_component_configuration .
+
+archind:grace_2l_atomic_energy_readout_mlp_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "atomic_energy_readout_MLP component configuration"^^xsd:string .
+
+archind:grace_2l_atomicclusterexpansion_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "AtomicClusterExpansion"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_2l_atomicclusterexpansion_component_configuration .
+
+archind:grace_2l_atomicclusterexpansion_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AtomicClusterExpansion component configuration"^^xsd:string .
+
+archind:grace_2l_atomicenergyreadoutmlp_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "AtomicEnergyReadoutMLP"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_2l_atomicenergyreadoutmlp_component_configuration .
+
+archind:grace_2l_atomicenergyreadoutmlp_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AtomicEnergyReadoutMLP component configuration"^^xsd:string .
+
+archind:grace_2l_chemical_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "chemical_embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_2l_chemical_embedding_component_configuration .
+
+archind:grace_2l_chemical_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "chemical_embedding component configuration"^^xsd:string .
+
+archind:grace_2l_equivariant_atomic_representations_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "equivariant_atomic_representations"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_2l_equivariant_atomic_representations_component_configuration .
+
+archind:grace_2l_equivariant_atomic_representations_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "equivariant_atomic_representations component configuration"^^xsd:string .
+
+archind:grace_2l_radial_basis_mlp_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "radial_basis_MLP"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_2l_radial_basis_mlp_component_configuration .
+
+archind:grace_2l_radial_basis_mlp_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "radial_basis_MLP component configuration"^^xsd:string .
+
+archind:grace_2l_recursive_ace_evaluation_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "recursive_ACE_evaluation"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:grace_2l_recursive_ace_evaluation_component_configuration .
+
+archind:grace_2l_recursive_ace_evaluation_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "recursive_ACE_evaluation component configuration"^^xsd:string .
+
+dataind:alexandria a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Alexandria"^^xsd:string .
+
+dataind:materials_project a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Materials Project"^^xsd:string .
+
+dataind:mptraj a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MPTraj"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:usesAttributeAsInputFeature dataind:atomic_positions_attribute,
+        dataind:atomic_species_attribute,
+        dataind:bond_vectors_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute,
+        dataind:stresses_attribute ;
+    data:wasDerivedFromDataset dataind:materials_project .
+
+dataind:salex a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "sAlex"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:usesAttributeAsInputFeature dataind:atomic_positions_attribute,
+        dataind:atomic_species_attribute,
+        dataind:bond_vectors_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute,
+        dataind:stresses_attribute ;
+    data:wasDerivedFromDataset dataind:alexandria .
+
+trind:lmax_per_product_order a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "Lmax_per_product_order"^^xsd:string .
+
+trind:lmax_per_product_order_layer1 a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "Lmax_per_product_order_layer1"^^xsd:string .
+
+trind:lmax_per_product_order_layer2 a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "Lmax_per_product_order_layer2"^^xsd:string .
+
+trind:num_equivariant_functions a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "num_equivariant_functions"^^xsd:string .
+
+dataind:omat24 a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "OMat24"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 110000000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_positions_attribute,
+        dataind:atomic_species_attribute,
+        dataind:bond_vectors_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute,
+        dataind:stresses_attribute .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:chemical_embedding_dimension a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "chemical_embedding_dimension"^^xsd:string .
+
+trind:cutoff_radius a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "cutoff_radius"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:loss_weights a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_weights"^^xsd:string .
+
+trind:max_angular_momentum a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_angular_momentum"^^xsd:string .
+
+trind:num_densities a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "num_densities"^^xsd:string .
+
+trind:num_radial_functions a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "num_radial_functions"^^xsd:string .
+
+trind:omat_base_models_materialization a owl:NamedIndividual,
+        train:ModelMaterialization ;
+    rdfs:label "OMat-base models"^^xsd:string .
+
+trind:product_order a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "product_order"^^xsd:string .
+
+trind:radial_basis_functions a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial_basis_functions"^^xsd:string .
+
+dataind:atomic_positions_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic_positions"^^xsd:string .
+
+dataind:atomic_species_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic_species"^^xsd:string .
+
+dataind:atomic_structure_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "atomic_structure"^^xsd:string .
+
+dataind:bond_vectors_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "bond_vectors"^^xsd:string .
+
+dataind:dft_labelling_method a owl:NamedIndividual,
+        data:LabellingMethod ;
+    rdfs:label "DFT"^^xsd:string .
+
+dataind:energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "energy"^^xsd:string .
+
+dataind:forces_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "forces"^^xsd:string .
+
+dataind:stresses_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "stresses"^^xsd:string .
+
+trind:adam a owl:NamedIndividual,
+        train:Optimizer ;
+    rdfs:label "Adam"^^xsd:string .
+
+trind:grace_1l_oam_grace_1l_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-1L batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:grace_1l_oam_grace_1l_chemical_embedding_dimension_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-1L chemical_embedding_dimension value"^^xsd:string ;
+    train:ofHyperparameter trind:chemical_embedding_dimension .
+
+trind:grace_1l_oam_grace_1l_cutoff_radius_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-1L cutoff_radius value"^^xsd:string ;
+    train:ofHyperparameter trind:cutoff_radius .
+
+trind:grace_1l_oam_grace_1l_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-1L learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:grace_1l_oam_grace_1l_lmax_per_product_order_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-1L Lmax_per_product_order value"^^xsd:string ;
+    train:ofHyperparameter trind:lmax_per_product_order .
+
+trind:grace_1l_oam_grace_1l_loss_weights_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-1L loss_weights value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_weights .
+
+trind:grace_1l_oam_grace_1l_max_angular_momentum_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-1L max_angular_momentum value"^^xsd:string ;
+    train:ofHyperparameter trind:max_angular_momentum .
+
+trind:grace_1l_oam_grace_1l_num_densities_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-1L num_densities value"^^xsd:string ;
+    train:ofHyperparameter trind:num_densities .
+
+trind:grace_1l_oam_grace_1l_num_radial_functions_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-1L num_radial_functions value"^^xsd:string ;
+    train:ofHyperparameter trind:num_radial_functions .
+
+trind:grace_1l_oam_grace_1l_product_order_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-1L product_order value"^^xsd:string ;
+    train:ofHyperparameter trind:product_order .
+
+trind:grace_1l_oam_grace_1l_radial_basis_functions_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-1L radial_basis_functions value"^^xsd:string ;
+    train:ofHyperparameter trind:radial_basis_functions .
+
+trind:grace_1l_oam_grace_2l_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:grace_1l_oam_grace_2l_chemical_embedding_dimension_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L chemical_embedding_dimension value"^^xsd:string ;
+    train:ofHyperparameter trind:chemical_embedding_dimension .
+
+trind:grace_1l_oam_grace_2l_cutoff_radius_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L cutoff_radius value"^^xsd:string ;
+    train:ofHyperparameter trind:cutoff_radius .
+
+trind:grace_1l_oam_grace_2l_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:grace_1l_oam_grace_2l_lmax_per_product_order_layer1_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L Lmax_per_product_order_layer1 value"^^xsd:string ;
+    train:ofHyperparameter trind:lmax_per_product_order_layer1 .
+
+trind:grace_1l_oam_grace_2l_lmax_per_product_order_layer2_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L Lmax_per_product_order_layer2 value"^^xsd:string ;
+    train:ofHyperparameter trind:lmax_per_product_order_layer2 .
+
+trind:grace_1l_oam_grace_2l_loss_weights_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L loss_weights value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_weights .
+
+trind:grace_1l_oam_grace_2l_max_angular_momentum_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L max_angular_momentum value"^^xsd:string ;
+    train:ofHyperparameter trind:max_angular_momentum .
+
+trind:grace_1l_oam_grace_2l_num_densities_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L num_densities value"^^xsd:string ;
+    train:ofHyperparameter trind:num_densities .
+
+trind:grace_1l_oam_grace_2l_num_equivariant_functions_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L num_equivariant_functions value"^^xsd:string ;
+    train:ofHyperparameter trind:num_equivariant_functions .
+
+trind:grace_1l_oam_grace_2l_num_radial_functions_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L num_radial_functions value"^^xsd:string ;
+    train:ofHyperparameter trind:num_radial_functions .
+
+trind:grace_1l_oam_grace_2l_product_order_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L product_order value"^^xsd:string ;
+    train:ofHyperparameter trind:product_order .
+
+trind:grace_1l_oam_grace_2l_radial_basis_functions_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "grace_1l_oam GRACE-2L radial_basis_functions value"^^xsd:string ;
+    train:ofHyperparameter trind:radial_basis_functions .
+
+trind:huberloss a owl:NamedIndividual,
+        train:LossFunction ;
+    rdfs:label "HuberLoss"^^xsd:string .
+
+trind:multicomponentloss a owl:NamedIndividual,
+        train:ObjectiveFunction ;
+    rdfs:label "MultiComponentLoss"^^xsd:string .
+
+archind:grace_1l_oam_grace_1l_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "grace_1l_oam GRACE-1L"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:grace_1l_oam_grace_1l_architecture .
+
+archind:grace_1l_oam_grace_2l_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "grace_1l_oam GRACE-2L"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:grace_1l_oam_grace_2l_architecture .
+
+trind:oam_finetuning a owl:NamedIndividual,
+        train:MachineLearningTrainingRun,
+        train:MachineLearningFinetuningRun ;
+    rdfs:label "oam_finetuning"^^xsd:string ;
+    rdfs:comment "Fine-tuning of OMat-base models on combined MPTraj and sAlex datasets with increased energy loss weight"^^xsd:string ;
+    train:hasHyperparameterValue trind:grace_1l_oam_grace_1l_batch_size_value,
+        trind:grace_1l_oam_grace_1l_chemical_embedding_dimension_value,
+        trind:grace_1l_oam_grace_1l_cutoff_radius_value,
+        trind:grace_1l_oam_grace_1l_learning_rate_value,
+        trind:grace_1l_oam_grace_1l_lmax_per_product_order_value,
+        trind:grace_1l_oam_grace_1l_loss_weights_value,
+        trind:grace_1l_oam_grace_1l_max_angular_momentum_value,
+        trind:grace_1l_oam_grace_1l_num_densities_value,
+        trind:grace_1l_oam_grace_1l_num_radial_functions_value,
+        trind:grace_1l_oam_grace_1l_product_order_value,
+        trind:grace_1l_oam_grace_1l_radial_basis_functions_value,
+        trind:grace_1l_oam_grace_2l_batch_size_value,
+        trind:grace_1l_oam_grace_2l_chemical_embedding_dimension_value,
+        trind:grace_1l_oam_grace_2l_cutoff_radius_value,
+        trind:grace_1l_oam_grace_2l_learning_rate_value,
+        trind:grace_1l_oam_grace_2l_lmax_per_product_order_layer1_value,
+        trind:grace_1l_oam_grace_2l_lmax_per_product_order_layer2_value,
+        trind:grace_1l_oam_grace_2l_loss_weights_value,
+        trind:grace_1l_oam_grace_2l_max_angular_momentum_value,
+        trind:grace_1l_oam_grace_2l_num_densities_value,
+        trind:grace_1l_oam_grace_2l_num_equivariant_functions_value,
+        trind:grace_1l_oam_grace_2l_num_radial_functions_value,
+        trind:grace_1l_oam_grace_2l_product_order_value,
+        trind:grace_1l_oam_grace_2l_radial_basis_functions_value ;
+    train:initializedFromModelMaterialization trind:omat_base_models_materialization ;
+    train:trainsModelVariant archind:grace_1l_oam_grace_1l_model_variant,
+        archind:grace_1l_oam_grace_2l_model_variant ;
+    train:usesDataset dataind:mptraj,
+        dataind:salex ;
+    train:usesLoss trind:huberloss ;
+    train:usesObjectiveFunction trind:multicomponentloss ;
+    train:usesOptimizer trind:adam .
+
+trind:omat_finetune_e a owl:NamedIndividual,
+        train:MachineLearningTrainingRun,
+        train:MachineLearningFinetuningRun ;
+    rdfs:label "omat_finetune_E"^^xsd:string ;
+    rdfs:comment "Energy-weighted fine-tuning of OMat-base models on OMat24 with more weight on energy loss"^^xsd:string ;
+    train:hasHyperparameterValue trind:grace_1l_oam_grace_1l_batch_size_value,
+        trind:grace_1l_oam_grace_1l_chemical_embedding_dimension_value,
+        trind:grace_1l_oam_grace_1l_cutoff_radius_value,
+        trind:grace_1l_oam_grace_1l_learning_rate_value,
+        trind:grace_1l_oam_grace_1l_lmax_per_product_order_value,
+        trind:grace_1l_oam_grace_1l_loss_weights_value,
+        trind:grace_1l_oam_grace_1l_max_angular_momentum_value,
+        trind:grace_1l_oam_grace_1l_num_densities_value,
+        trind:grace_1l_oam_grace_1l_num_radial_functions_value,
+        trind:grace_1l_oam_grace_1l_product_order_value,
+        trind:grace_1l_oam_grace_1l_radial_basis_functions_value,
+        trind:grace_1l_oam_grace_2l_batch_size_value,
+        trind:grace_1l_oam_grace_2l_chemical_embedding_dimension_value,
+        trind:grace_1l_oam_grace_2l_cutoff_radius_value,
+        trind:grace_1l_oam_grace_2l_learning_rate_value,
+        trind:grace_1l_oam_grace_2l_lmax_per_product_order_layer1_value,
+        trind:grace_1l_oam_grace_2l_lmax_per_product_order_layer2_value,
+        trind:grace_1l_oam_grace_2l_loss_weights_value,
+        trind:grace_1l_oam_grace_2l_max_angular_momentum_value,
+        trind:grace_1l_oam_grace_2l_num_densities_value,
+        trind:grace_1l_oam_grace_2l_num_equivariant_functions_value,
+        trind:grace_1l_oam_grace_2l_num_radial_functions_value,
+        trind:grace_1l_oam_grace_2l_product_order_value,
+        trind:grace_1l_oam_grace_2l_radial_basis_functions_value ;
+    train:initializedFromModelMaterialization trind:omat_base_models_materialization ;
+    train:trainsModelVariant archind:grace_1l_oam_grace_1l_model_variant,
+        archind:grace_1l_oam_grace_2l_model_variant ;
+    train:usesDataset dataind:omat24 ;
+    train:usesLoss trind:huberloss ;
+    train:usesObjectiveFunction trind:multicomponentloss ;
+    train:usesOptimizer trind:adam .
+
+trind:omat24_pretraining a owl:NamedIndividual,
+        train:MachineLearningTrainingRun,
+        train:PretrainingRun ;
+    rdfs:label "omat24_pretraining"^^xsd:string ;
+    rdfs:comment "Initial pretraining of GRACE 1L and 2L models on OMat24 dataset with equal weighting of energy, force, and stress loss components"^^xsd:string ;
+    train:hasHyperparameterValue trind:grace_1l_oam_grace_1l_batch_size_value,
+        trind:grace_1l_oam_grace_1l_chemical_embedding_dimension_value,
+        trind:grace_1l_oam_grace_1l_cutoff_radius_value,
+        trind:grace_1l_oam_grace_1l_learning_rate_value,
+        trind:grace_1l_oam_grace_1l_lmax_per_product_order_value,
+        trind:grace_1l_oam_grace_1l_loss_weights_value,
+        trind:grace_1l_oam_grace_1l_max_angular_momentum_value,
+        trind:grace_1l_oam_grace_1l_num_densities_value,
+        trind:grace_1l_oam_grace_1l_num_radial_functions_value,
+        trind:grace_1l_oam_grace_1l_product_order_value,
+        trind:grace_1l_oam_grace_1l_radial_basis_functions_value,
+        trind:grace_1l_oam_grace_2l_batch_size_value,
+        trind:grace_1l_oam_grace_2l_chemical_embedding_dimension_value,
+        trind:grace_1l_oam_grace_2l_cutoff_radius_value,
+        trind:grace_1l_oam_grace_2l_learning_rate_value,
+        trind:grace_1l_oam_grace_2l_lmax_per_product_order_layer1_value,
+        trind:grace_1l_oam_grace_2l_lmax_per_product_order_layer2_value,
+        trind:grace_1l_oam_grace_2l_loss_weights_value,
+        trind:grace_1l_oam_grace_2l_max_angular_momentum_value,
+        trind:grace_1l_oam_grace_2l_num_densities_value,
+        trind:grace_1l_oam_grace_2l_num_equivariant_functions_value,
+        trind:grace_1l_oam_grace_2l_num_radial_functions_value,
+        trind:grace_1l_oam_grace_2l_product_order_value,
+        trind:grace_1l_oam_grace_2l_radial_basis_functions_value ;
+    train:trainsModelVariant archind:grace_1l_oam_grace_1l_model_variant,
+        archind:grace_1l_oam_grace_2l_model_variant ;
+    train:usesDataset dataind:omat24 ;
+    train:usesLoss trind:huberloss ;
+    train:usesObjectiveFunction trind:multicomponentloss ;
+    train:usesOptimizer trind:adam .

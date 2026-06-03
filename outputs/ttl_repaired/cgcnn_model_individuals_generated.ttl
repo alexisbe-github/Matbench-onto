@@ -1,0 +1,37 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:cgcnn_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "CGCNN"^^xsd:string ;
+    arch:hasVariant archind:cgcnn_p_cgcnn_model_variant,
+        archind:cgcnn_p_variant .
+
+archind:cgcnn_p_cgcnn_architecture a owl:NamedIndividual,
+        arch:GraphConvolutionArchitecture,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "CGCNN"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:cgcnn_p_cgcnn_architecture_configuration ;
+    arch:hasParameterNumber 128450 .
+
+archind:cgcnn_p_cgcnn_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "CGCNN architecture configuration"^^xsd:string .
+
+archind:cgcnn_p_cgcnn_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "cgcnn+p CGCNN"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:cgcnn_p_cgcnn_architecture .
+
+archind:cgcnn_p_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "cgcnn+p"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/1710.10324.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\cgcnn.yml" ;
+    arch:hasMachineLearningArchitecture archind:cgcnn_p_cgcnn_architecture ;
+    arch:hasParameterNumber 128450 .

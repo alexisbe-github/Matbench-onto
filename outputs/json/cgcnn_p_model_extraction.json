@@ -2,185 +2,485 @@
   "model": {
     "family": {
       "value": "CGCNN",
-      "evidence": "model_name: CGCNN+P; PDF refers to CGCNN as the base crystal graph convolutional neural network model"
+      "evidence": "model_name in YAML: CGCNN+P; PDF refers to CGCNN as the base crystal graph convolutional neural network model"
     },
     "variant": {
       "value": "cgcnn+p",
-      "evidence": "model_key: cgcnn+p"
+      "evidence": "model_name in YAML: CGCNN+P, lowercased and spaces replaced with underscores"
     },
     "parameter_number": {
       "value": 128450,
-      "evidence": "model_params: 128450"
+      "evidence": "model_params in YAML: 128450"
     }
   },
   "architectures": {
-    "architectures": [
-      "CGCNN",
-      "CGCNN-HD"
-    ],
     "CGCNN": {
       "ontology_class": {
         "value": "GraphConvolutionArchitecture",
-        "evidence": "PDF: CGCNN is a crystal graph convolutional neural network; ontology: GraphConvolutionArchitecture is a subclass of GraphNeuralNetworkArchitecture"
+        "evidence": "CGCNN is a crystal graph convolutional neural network; ontology_mapping: GraphConvolutionArchitecture is a subclass of GraphNeuralNetworkArchitecture"
       },
       "parameter_number": {
         "value": null,
-        "evidence": "PDF does not specify parameter count separately for CGCNN; model_params 128450 refers to the overall CGCNN+P model"
+        "evidence": "PDF does not specify parameter count for CGCNN separately from CGCNN+P"
       },
-      "datasets": [
-        "Materials Project database"
-      ],
-      "hyperparameters": [
-        "graph_convolutional_layers",
-        "hidden_layers",
-        "hidden_neurons",
-        "activation_function"
-      ],
-      "graph_convolutional_layers": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology: hasLayerCount is a data property of MachineLearningArchitectureConfiguration"
-        },
-        "value": "3",
-        "evidence": "PDF section RESULTS: architecture consists of 3 graph convolutional layers"
+      "datasets": {
+        "value": [
+          "Materials Project database"
+        ],
+        "evidence": "PDF page 2: Xie et al. trained CGCNN on the Materials Project (MP) database; PDF page 3: training uses MP database with 126k relaxed structures"
       },
-      "hidden_layers": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology: hasLayerCount is a data property of MachineLearningArchitectureConfiguration"
-        },
-        "value": "6",
-        "evidence": "PDF section RESULTS: 6 hidden layers with 64 neurons each"
+      "hyperparameters": {
+        "value": [
+          "graph_convolutional_layers",
+          "hidden_layers",
+          "hidden_neurons",
+          "activation_function",
+          "learning_rate"
+        ],
+        "evidence": "PDF page 3: architecture search considered range of parameters; PDF page 3: 3 graph convolutional layers, 6 hidden layers with 64 neurons each; PDF page 2: softplus activation function in convolution; remaining hyperparameters set to values in Ref [23]"
       },
-      "hidden_neurons": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology: hasHiddenDimension is a data property of MachineLearningArchitectureConfiguration"
-        },
-        "value": "64",
-        "evidence": "PDF section RESULTS: 6 hidden layers with 64 neurons each"
+      "components": {
+        "value": [
+          "graph_convolutional_layers",
+          "hidden_layers",
+          "pooling_layer",
+          "readout_layer"
+        ],
+        "evidence": "PDF page 2: CGCNN represents crystal as multi-graph and builds graph convolutional neural network; PDF page 3: 3 graph convolutional layers followed by 6 hidden layers with 64 neurons each"
       },
-      "activation_function": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "PDF: softplus activation function used in convolution function"
-        },
-        "value": "softplus",
-        "evidence": "PDF section INTRODUCTION: softplus activation function in the convolution function"
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "No explicit backbone architecture mentioned for CGCNN"
+      },
+      "head_architecture": {
+        "value": null,
+        "evidence": "No explicit prediction head architecture mentioned for CGCNN"
+      },
+      "layer_count": {
+        "value": 9,
+        "evidence": "PDF page 3: 3 graph convolutional layers + 6 hidden layers = 9 layers total"
+      },
+      "hidden_dimension": {
+        "value": 64,
+        "evidence": "PDF page 3: 6 hidden layers with 64 neurons each"
       }
     },
     "CGCNN-HD": {
       "ontology_class": {
         "value": "GraphConvolutionArchitecture",
-        "evidence": "PDF: CGCNN-HD is a variant of CGCNN with regularization; ontology: GraphConvolutionArchitecture"
+        "evidence": "CGCNN-HD is a variant of CGCNN with regularization; ontology_mapping: GraphConvolutionArchitecture"
       },
       "parameter_number": {
         "value": null,
-        "evidence": "PDF does not specify parameter count separately for CGCNN-HD"
+        "evidence": "PDF does not specify parameter count for CGCNN-HD separately"
       },
-      "datasets": [
-        "Materials Project database"
-      ],
-      "hyperparameters": [
-        "graph_convolutional_layers",
-        "hidden_layers",
-        "hidden_neurons",
-        "activation_function",
-        "dropout"
-      ],
-      "graph_convolutional_layers": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology: hasLayerCount"
-        },
-        "value": "3",
-        "evidence": "PDF section RESULTS: same architecture as CGCNN with 3 graph convolutional layers"
+      "datasets": {
+        "value": [
+          "Materials Project database"
+        ],
+        "evidence": "PDF page 3: CGCNN-HD trained on same MP database"
       },
-      "hidden_layers": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology: hasLayerCount"
-        },
-        "value": "6",
-        "evidence": "PDF section RESULTS: 6 hidden layers with 64 neurons each"
+      "hyperparameters": {
+        "value": [
+          "graph_convolutional_layers",
+          "hidden_layers",
+          "hidden_neurons",
+          "activation_function",
+          "dropout",
+          "learning_rate"
+        ],
+        "evidence": "PDF page 2: CGCNN-HD replaces softplus with hyperbolic tangent activation and adds dropout layers between fully connected layers; PDF page 3: same architecture as CGCNN with 3 conv layers and 6 hidden layers of 64 neurons"
       },
-      "hidden_neurons": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology: hasHiddenDimension"
-        },
-        "value": "64",
-        "evidence": "PDF section RESULTS: 6 hidden layers with 64 neurons each"
+      "components": {
+        "value": [
+          "graph_convolutional_layers",
+          "hidden_layers",
+          "dropout_layers",
+          "pooling_layer",
+          "readout_layer"
+        ],
+        "evidence": "PDF page 2: CGCNN-HD adds dropout layers between each fully connected layer; PDF page 3: same base architecture as CGCNN"
       },
-      "activation_function": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "PDF: hyperbolic tangent replaces softplus in convolution function"
-        },
-        "value": "hyperbolic tangent",
-        "evidence": "PDF section INTRODUCTION: replacing softplus with hyperbolic tangent"
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "No explicit backbone architecture mentioned for CGCNN-HD"
       },
-      "dropout": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "PDF: dropout layers added between fully connected layers"
-        },
-        "value": "between each fully connected layer",
-        "evidence": "PDF section INTRODUCTION: adding dropout layers between each fully connected layer"
+      "head_architecture": {
+        "value": null,
+        "evidence": "No explicit prediction head architecture mentioned for CGCNN-HD"
+      },
+      "layer_count": {
+        "value": 9,
+        "evidence": "PDF page 3: same architecture as CGCNN with 3 graph convolutional layers + 6 hidden layers"
+      },
+      "hidden_dimension": {
+        "value": 64,
+        "evidence": "PDF page 3: 6 hidden layers with 64 neurons each"
       }
     }
   },
   "training": {
-    "training_runs": [
-      "cgcnn_pretraining",
-      "cgcnn_hd_pretraining"
-    ],
+    "training_runs": {
+      "value": [
+        "cgcnn_pretraining",
+        "cgcnn_hd_pretraining"
+      ],
+      "evidence": "PDF page 3: CGCNN and CGCNN-HD trained on relaxed and augmented data from MP database; these are pretraining runs on the MP database"
+    },
     "cgcnn_pretraining": {
       "type": {
         "value": "PretrainingRun",
-        "evidence": "PDF: CGCNN trained on Materials Project database; ontology: PretrainingRun is a subclass of MachineLearningTrainingRun"
+        "evidence": "PDF page 3: CGCNN trained on MP database; ontology_mapping: PretrainingRun is a subclass of MachineLearningTrainingRun"
       },
-      "architectures": [
-        "CGCNN"
-      ],
-      "datasets": [
-        "Materials Project database"
-      ],
+      "architectures": {
+        "value": [
+          "CGCNN"
+        ],
+        "evidence": "PDF page 3: CGCNN architecture trained on MP database"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project database"
+        ],
+        "evidence": "PDF page 3: training on MP database with 126k relaxed structures"
+      },
       "optimizer": {
         "value": null,
-        "evidence": "PDF does not specify optimizer for CGCNN training"
+        "evidence": "PDF page 3: remaining hyperparameters set to values in Ref [23], optimizer not explicitly specified in provided context"
       },
       "loss_function": {
         "value": null,
-        "evidence": "PDF does not specify loss function explicitly; RMSE shown in learning curves but not named as a specific loss"
+        "evidence": "PDF does not explicitly specify loss function for CGCNN training"
       },
       "description": {
-        "value": "CGCNN trained on relaxed structures from the Materials Project database, with data augmentation using perturbed structures mapped to DFT final energies",
-        "evidence": "PDF section METHODS: training on relaxed and augmented data from MP database"
+        "value": "Pretraining of CGCNN on Materials Project database of relaxed crystal structures for formation energy prediction",
+        "evidence": "PDF page 2-3: CGCNN trained on MP database to predict formation energy of crystal structures"
+      },
+      "objective_function": {
+        "value": null,
+        "evidence": "PDF does not explicitly specify objective function"
+      },
+      "sampling_method": {
+        "value": null,
+        "evidence": "No explicit sampling method mentioned for pretraining"
+      },
+      "uses_batched_selection": {
+        "value": null,
+        "evidence": "Not an active learning run"
+      },
+      "initialized_from_model_materialization": {
+        "value": null,
+        "evidence": "No mention of initialization from previous checkpoint for pretraining"
+      },
+      "teacher_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "student_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "model_materializations": {
+        "value": [
+          "CGCNN",
+          "CGCNN+P"
+        ],
+        "evidence": "PDF page 3: resulting CGCNN models trained on relaxed and augmented data; YAML model_name: CGCNN+P is the augmented variant"
       }
     },
     "cgcnn_hd_pretraining": {
       "type": {
         "value": "PretrainingRun",
-        "evidence": "PDF: CGCNN-HD trained on Materials Project database; ontology: PretrainingRun"
+        "evidence": "PDF page 3: CGCNN-HD trained on MP database; ontology_mapping: PretrainingRun"
       },
-      "architectures": [
-        "CGCNN-HD"
-      ],
-      "datasets": [
-        "Materials Project database"
-      ],
+      "architectures": {
+        "value": [
+          "CGCNN-HD"
+        ],
+        "evidence": "PDF page 3: CGCNN-HD architecture trained on MP database"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project database"
+        ],
+        "evidence": "PDF page 3: CGCNN-HD trained on same MP database"
+      },
       "optimizer": {
         "value": null,
-        "evidence": "PDF does not specify optimizer for CGCNN-HD training"
+        "evidence": "PDF page 3: remaining hyperparameters set to values in Ref [29], optimizer not explicitly specified"
       },
       "loss_function": {
         "value": null,
-        "evidence": "PDF does not specify loss function explicitly"
+        "evidence": "PDF does not explicitly specify loss function for CGCNN-HD training"
       },
       "description": {
-        "value": "CGCNN-HD with hyperbolic tangent activation and dropout regularization, trained on relaxed and augmented structures from the Materials Project database",
-        "evidence": "PDF section METHODS: CGCNN-HD trained on relaxed and augmented data"
+        "value": "Pretraining of CGCNN-HD with dropout and hyperbolic tangent activation on Materials Project database",
+        "evidence": "PDF page 2-3: CGCNN-HD adds regularization (dropout, tanh activation) to CGCNN and trained on MP database"
+      },
+      "objective_function": {
+        "value": null,
+        "evidence": "PDF does not explicitly specify objective function"
+      },
+      "sampling_method": {
+        "value": null,
+        "evidence": "No explicit sampling method mentioned"
+      },
+      "uses_batched_selection": {
+        "value": null,
+        "evidence": "Not an active learning run"
+      },
+      "initialized_from_model_materialization": {
+        "value": null,
+        "evidence": "No mention of initialization from previous checkpoint"
+      },
+      "teacher_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "student_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "model_materializations": {
+        "value": [
+          "CGCNN-HD"
+        ],
+        "evidence": "PDF page 3: resulting CGCNN-HD models trained on relaxed and augmented data"
+      }
+    }
+  },
+  "datasets": {
+    "datasets": {
+      "value": [
+        "Materials Project database",
+        "relaxed dataset",
+        "augmented dataset",
+        "H-Relaxed",
+        "H-Unrelaxed",
+        "Nb-Sr-H hydride structures"
+      ],
+      "evidence": "PDF page 3: relaxed dataset (126k structures from MP), augmented dataset (relaxed + perturbed), H-Relaxed and H-Unrelaxed test sets from GA search; PDF page 2: 623 Nb-Sr-H hydride structures"
+    },
+    "Materials Project database": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "PDF page 2: MP database is a crystal structure database; ontology_mapping: Dataset"
+      },
+      "number_of_samples": {
+        "value": 126000,
+        "evidence": "PDF page 3: relaxed dataset consists of 126k relaxed structures from MP database"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF page 2: CGCNN represents a crystal structure as a multi-graph"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF page 3: structures evaluated by density functional theory (DFT); PDF page 4: VASP with PBE functional used for DFT calculations"
+      },
+      "input_features": {
+        "value": [
+          "atomic_coordinates",
+          "lattice_vectors",
+          "atomic_numbers",
+          "crystal_graph"
+        ],
+        "evidence": "PDF page 2: CGCNN represents crystal as multi-graph with atomic features; PDF page 3: perturbations applied to atomic coordinates"
+      },
+      "target_features": {
+        "value": [
+          "formation_energy"
+        ],
+        "evidence": "PDF page 2: CGCNN predicts formation energy; PDF page 3: formation energy prediction MAE reported"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "MP database is a source database, not derived from another dataset in this context"
+      }
+    },
+    "relaxed dataset": {
+      "ontology_class": {
+        "value": "TrainingDataset",
+        "evidence": "PDF page 3: relaxed dataset used for training with 20% held out for validation; ontology_mapping: TrainingDataset"
+      },
+      "number_of_samples": {
+        "value": 126000,
+        "evidence": "PDF page 3: relaxed dataset consists of 126k relaxed structures from MP database"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF page 2: CGCNN represents crystal structures as multi-graphs"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF page 3: structures from MP database evaluated by DFT"
+      },
+      "input_features": {
+        "value": [
+          "atomic_coordinates",
+          "lattice_vectors",
+          "atomic_numbers",
+          "crystal_graph"
+        ],
+        "evidence": "PDF page 2: CGCNN uses crystal graph representation with atomic features"
+      },
+      "target_features": {
+        "value": [
+          "formation_energy"
+        ],
+        "evidence": "PDF page 3: formation energy is the prediction target"
+      },
+      "derived_from_dataset": {
+        "value": "Materials Project database",
+        "evidence": "PDF page 3: relaxed dataset derived from MP database"
+      }
+    },
+    "augmented dataset": {
+      "ontology_class": {
+        "value": "TrainingDataset",
+        "evidence": "PDF page 3: augmented dataset used for training; ontology_mapping: TrainingDataset"
+      },
+      "number_of_samples": {
+        "value": 252000,
+        "evidence": "PDF page 3: augmented dataset consists of relaxed set (126k) plus one perturbed structure for every relaxed structure (126k), totaling 252k"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF page 2: CGCNN represents crystal structures as multi-graphs"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF page 3: perturbed structures mapped to DFT energy of relaxed structure, no additional DFT calculations needed"
+      },
+      "input_features": {
+        "value": [
+          "perturbed_atomic_coordinates",
+          "lattice_vectors",
+          "atomic_numbers",
+          "crystal_graph"
+        ],
+        "evidence": "PDF page 3: data augmentation perturbs atomic coordinates of relaxed structures"
+      },
+      "target_features": {
+        "value": [
+          "formation_energy"
+        ],
+        "evidence": "PDF page 3: perturbed structures mapped to formation energy of corresponding relaxed structure"
+      },
+      "derived_from_dataset": {
+        "value": "relaxed dataset",
+        "evidence": "PDF page 3: augmented dataset consists of relaxed set plus perturbed structures"
+      }
+    },
+    "H-Relaxed": {
+      "ontology_class": {
+        "value": "DatasetSplit",
+        "evidence": "PDF page 3: H-Relaxed is a test set of relaxed hydrides; ontology_mapping: DatasetSplit"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF page 3: test set consists of 623 Nb-Sr-H hydride structures, split into H-Relaxed and H-Unrelaxed, exact count for H-Relaxed not specified"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF page 2: CGCNN represents crystal structures as multi-graphs"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF page 3-4: structures relaxed and evaluated using VASP with PBE functional"
+      },
+      "input_features": {
+        "value": [
+          "atomic_coordinates",
+          "lattice_vectors",
+          "atomic_numbers",
+          "crystal_graph"
+        ],
+        "evidence": "PDF page 2: CGCNN uses crystal graph representation"
+      },
+      "target_features": {
+        "value": [
+          "formation_energy"
+        ],
+        "evidence": "PDF page 5: formation energy predictions compared to DFT-computed formation energies"
+      },
+      "derived_from_dataset": {
+        "value": "Nb-Sr-H hydride structures",
+        "evidence": "PDF page 3: H-Relaxed is a partition of the GA-generated hydride test set"
+      }
+    },
+    "H-Unrelaxed": {
+      "ontology_class": {
+        "value": "DatasetSplit",
+        "evidence": "PDF page 3: H-Unrelaxed is a test set of unrelaxed hydrides; ontology_mapping: DatasetSplit"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF page 3: test set consists of 623 Nb-Sr-H hydride structures, split into H-Relaxed and H-Unrelaxed, exact count for H-Unrelaxed not specified"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF page 2: CGCNN represents crystal structures as multi-graphs"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF page 3-4: DFT relaxation performed to obtain reference energies"
+      },
+      "input_features": {
+        "value": [
+          "unrelaxed_atomic_coordinates",
+          "lattice_vectors",
+          "atomic_numbers",
+          "crystal_graph"
+        ],
+        "evidence": "PDF page 3: unrelaxed structures from GA search; PDF page 2: CGCNN uses crystal graph representation"
+      },
+      "target_features": {
+        "value": [
+          "formation_energy"
+        ],
+        "evidence": "PDF page 5: formation energy predictions on unrelaxed structures compared to DFT values"
+      },
+      "derived_from_dataset": {
+        "value": "Nb-Sr-H hydride structures",
+        "evidence": "PDF page 3: H-Unrelaxed is a partition of the GA-generated hydride test set"
+      }
+    },
+    "Nb-Sr-H hydride structures": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "PDF page 2: test set of 623 Nb-Sr-H hydride structures; ontology_mapping: Dataset"
+      },
+      "number_of_samples": {
+        "value": 623,
+        "evidence": "PDF page 2: test set consisting of 623 Nb-Sr-H hydride structures"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF page 2: CGCNN represents crystal structures as multi-graphs"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF page 3-4: structures relaxed and evaluated using VASP DFT calculations"
+      },
+      "input_features": {
+        "value": [
+          "atomic_coordinates",
+          "lattice_vectors",
+          "atomic_numbers",
+          "crystal_graph"
+        ],
+        "evidence": "PDF page 2: CGCNN uses crystal graph representation with atomic features"
+      },
+      "target_features": {
+        "value": [
+          "formation_energy"
+        ],
+        "evidence": "PDF page 5: formation energy is the predicted target"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "PDF page 3: generated by GA search over ternary Nb-Sr-H system, not derived from another dataset"
       }
     }
   },

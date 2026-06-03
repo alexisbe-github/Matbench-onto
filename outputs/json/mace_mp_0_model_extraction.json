@@ -1,0 +1,352 @@
+{
+  "model": {
+    "family": {
+      "value": "MACE",
+      "evidence": "YAML model_name: MACE-MP-0; PDF section 1: MACE-MP-0 uses the MACE architecture"
+    },
+    "variant": {
+      "value": "mace_mp_0",
+      "evidence": "YAML model_name: MACE-MP-0 lowercased and spaces/hyphens replaced by underscores"
+    },
+    "parameter_number": {
+      "value": 4688656,
+      "evidence": "YAML model_params: 4688656"
+    }
+  },
+  "architectures": {
+    "architectures": [
+      {
+        "name": "MACE",
+        "ontology_class": {
+          "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+          "evidence": "PDF section 1: MACE is a higher-order equivariant message-passing neural network; ontology architecture.ttl: EquivariantMessagePassingNeuralNetworkArchitecture"
+        },
+        "parameter_number": {
+          "value": 4688656,
+          "evidence": "YAML model_params: 4688656"
+        },
+        "datasets": {
+          "value": [
+            "MPtrj"
+          ],
+          "evidence": "PDF section 6: MACE-MP-0b3 model was trained on the MPtrj dataset"
+        },
+        "hyperparameters": {
+          "value": [
+            "number_of_layers",
+            "max_angular_momentum",
+            "correlation_order",
+            "channel_dimension",
+            "radial_cutoff",
+            "radial_basis_functions",
+            "hidden_layer_size",
+            "hidden_layer_count",
+            "loss_energy_weight",
+            "loss_force_weight",
+            "loss_stress_weight",
+            "learning_rate",
+            "optimizer",
+            "batch_size",
+            "epochs",
+            "gradient_clipping"
+          ],
+          "evidence": "PDF section 6 Hyper-parameters and Training loss subsections"
+        },
+        "hyperparameter_details": {
+          "number_of_layers": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 2,
+              "evidence": "PDF section 6: The model referred to in this work uses two MACE layers"
+            }
+          },
+          "max_angular_momentum": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 3,
+              "evidence": "PDF section 6: a spherical expansion of up to lmax = 3"
+            }
+          },
+          "correlation_order": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 3,
+              "evidence": "PDF section 6: 4-body messages in each layer (correlation order 3)"
+            }
+          },
+          "channel_dimension": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 128,
+              "evidence": "PDF section 6: 128-channel dimension for tensor decomposition"
+            }
+          },
+          "radial_cutoff": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 6.0,
+              "evidence": "PDF section 6: We use a radial cutoff of 6Å"
+            }
+          },
+          "radial_basis_functions": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 10,
+              "evidence": "PDF section 6: expand the interatomic distances into 10 Bessel functions"
+            }
+          },
+          "hidden_layer_size": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 64,
+              "evidence": "PDF section 6: three hidden layers of 64 hidden units"
+            }
+          },
+          "hidden_layer_count": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 3,
+              "evidence": "PDF section 6: fully-connected feed-forward neural network with three hidden layers"
+            }
+          },
+          "loss_energy_weight": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 1,
+              "evidence": "PDF section 6: (λE, λF, λσ) = (1, 10, 10)"
+            }
+          },
+          "loss_force_weight": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 10,
+              "evidence": "PDF section 6: (λE, λF, λσ) = (1, 10, 10)"
+            }
+          },
+          "loss_stress_weight": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 10,
+              "evidence": "PDF section 6: (λE, λF, λσ) = (1, 10, 10)"
+            }
+          },
+          "learning_rate": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 0.001,
+              "evidence": "PDF section 6: We use a learning rate of 0.001"
+            }
+          },
+          "optimizer": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": "AMSGrad",
+              "evidence": "PDF section 6: The models are trained with the AMSGrad variant of Adam"
+            }
+          },
+          "batch_size": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": null,
+              "evidence": "PDF section 6: Nb is the batch size but no specific value given"
+            }
+          },
+          "epochs": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 100,
+              "evidence": "PDF section 6: Model is trained for 100 epochs"
+            }
+          },
+          "gradient_clipping": {
+            "ontology_class": {
+              "value": "MachineLearningHyperparameter",
+              "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter"
+            },
+            "value": {
+              "value": 100,
+              "evidence": "PDF section 6: We employ a gradient clipping of 100"
+            }
+          }
+        },
+        "components": {
+          "value": [],
+          "evidence": "PDF section 6: MACE architecture described as unified architecture with element embedding and equivariant messages"
+        },
+        "backbone_architecture": {
+          "value": null,
+          "evidence": "PDF section 6: MACE is described as a unified architecture, no separate backbone mentioned"
+        },
+        "head_architecture": {
+          "value": null,
+          "evidence": "PDF section 6: Final output is energy contribution via readout layer, no separate head architecture mentioned"
+        },
+        "layer_count": {
+          "value": 2,
+          "evidence": "PDF section 6: two MACE layers"
+        },
+        "hidden_dimension": {
+          "value": 128,
+          "evidence": "PDF section 6: 128-channel dimension for tensor decomposition"
+        }
+      }
+    ]
+  },
+  "training": {
+    "training_runs": [
+      {
+        "id": "mptrj_pretraining",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF section 6: MACE-MP-0b3 model was trained on the MPtrj dataset; ontology trainingonto.ttl: PretrainingRun"
+        },
+        "architectures": {
+          "value": [
+            "MACE"
+          ],
+          "evidence": "PDF section 6: MACE All models trained in the paper use the MACE architecture"
+        },
+        "datasets": {
+          "value": [
+            "MPtrj"
+          ],
+          "evidence": "PDF section 6: MACE-MP-0b3 model was trained on the MPtrj dataset"
+        },
+        "optimizer": {
+          "value": "AMSGrad",
+          "evidence": "PDF section 6: The models are trained with the AMSGrad variant of Adam"
+        },
+        "loss_function": {
+          "value": "Huber loss",
+          "evidence": "PDF section 6: The models were trained using a weighted sum of Huber losses of energy, forces, and stress"
+        },
+        "description": {
+          "value": "Pretraining of MACE-MP-0b3 on MPtrj dataset consisting of approximately 1.5M configurations from Materials Project DFT relaxation trajectories using PBE functional",
+          "evidence": "PDF section 6 Training data: MPtrj dataset consists of approx. 1.5M configurations from Materials Project"
+        },
+        "objective_function": {
+          "value": "weighted sum of Huber losses",
+          "evidence": "PDF section 6: weighted sum of Huber losses of energy, forces, and stress"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "PDF section 6: No specific sampling method mentioned for pretraining"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "PDF section 6: Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "PDF section 6: Pretrained from scratch on MPtrj"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "PDF section 6: Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "PDF section 6: Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "MACE-MP-0a",
+            "MACE-MP-0b3"
+          ],
+          "evidence": "PDF section 6 Model versions: Different model versions released including MACE-MP-0a and MACE-MP-0b3"
+        }
+      }
+    ],
+    "datasets": [
+      {
+        "name": "MPtrj",
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF section 6: MPtrj dataset; ontology datasetonto.ttl: Dataset"
+        },
+        "number_of_samples": {
+          "value": 1500000,
+          "evidence": "PDF section 6: approx. 1.5M configurations"
+        },
+        "data_representation": {
+          "value": "atomic structure",
+          "evidence": "PDF section 6: structural optimization trajectories from the Materials Project"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF section 6: DFT calculations use the PBE exchange-correlation functional"
+        },
+        "input_features": {
+          "value": [
+            "atomic positions",
+            "atomic numbers",
+            "cell parameters"
+          ],
+          "evidence": "PDF section 6: structural information including atomic positions and cell parameters"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces",
+            "stress"
+          ],
+          "evidence": "PDF section 6: trained using a weighted sum of Huber losses of energy, forces, and stress"
+        },
+        "derived_from_dataset": {
+          "value": "Materials Project",
+          "evidence": "PDF section 6: compiled originally for CHGNet from Materials Project"
+        }
+      }
+    ]
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\mace_mp_0.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2401.00096.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\mace_mp_0.yml"
+  }
+}

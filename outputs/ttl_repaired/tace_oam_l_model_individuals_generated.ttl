@@ -1,0 +1,159 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:tace_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "TACE"^^xsd:string ;
+    arch:hasVariant archind:tace_oam_l_tensor_atomic_cluster_expansion_model_variant,
+        archind:tace_oam_l_variant .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_activation_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion activation_function value"^^xsd:string ;
+    train:ofHyperparameter trind:activation_function .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_correlation_order_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion correlation_order value"^^xsd:string ;
+    train:ofHyperparameter trind:correlation_order .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_cutoff_radius_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion cutoff_radius value"^^xsd:string ;
+    train:ofHyperparameter trind:cutoff_radius .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_envelope_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion envelope_function value"^^xsd:string ;
+    train:ofHyperparameter trind:envelope_function .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_function .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_max_angular_momentum_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion max_angular_momentum value"^^xsd:string ;
+    train:ofHyperparameter trind:max_angular_momentum .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_max_tensor_rank_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion max_tensor_rank value"^^xsd:string ;
+    train:ofHyperparameter trind:max_tensor_rank .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_num_channels_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion num_channels value"^^xsd:string ;
+    train:ofHyperparameter trind:num_channels .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_num_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion num_layers value"^^xsd:string ;
+    train:ofHyperparameter trind:num_layers .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:tace_oam_l_tensor_atomic_cluster_expansion_radial_basis_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion radial_basis_size value"^^xsd:string ;
+    train:ofHyperparameter trind:radial_basis_size .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:tace_oam_l_tensor_atomic_cluster_expansion_architecture a owl:NamedIndividual,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "Tensor Atomic Cluster Expansion"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:tace_oam_l_tensor_atomic_cluster_expansion_architecture_configuration .
+
+archind:tace_oam_l_tensor_atomic_cluster_expansion_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Tensor Atomic Cluster Expansion architecture configuration"^^xsd:string .
+
+archind:tace_oam_l_tensor_atomic_cluster_expansion_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "tace-oam-l Tensor Atomic Cluster Expansion"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:tace_oam_l_tensor_atomic_cluster_expansion_architecture .
+
+archind:tace_oam_l_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "tace-oam-l"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2509.14961.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\tace_oam_l.yml" ;
+    arch:hasParameterNumber 82899905 ;
+    arch:hasMachineLearningArchitecture archind:tace_oam_l_tensor_atomic_cluster_expansion_architecture .
+
+trind:activation_function a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "activation_function"^^xsd:string .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:correlation_order a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "correlation_order"^^xsd:string .
+
+trind:cutoff_radius a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "cutoff_radius"^^xsd:string .
+
+trind:envelope_function a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "envelope_function"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:loss_function a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_function"^^xsd:string .
+
+trind:max_angular_momentum a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_angular_momentum"^^xsd:string .
+
+trind:max_tensor_rank a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_tensor_rank"^^xsd:string .
+
+trind:num_channels a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "num_channels"^^xsd:string .
+
+trind:num_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "num_layers"^^xsd:string .
+
+trind:optimizer a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "optimizer"^^xsd:string .
+
+trind:radial_basis_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial_basis_size"^^xsd:string .

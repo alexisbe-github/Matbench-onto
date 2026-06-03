@@ -1,0 +1,187 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:orb_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "ORB"^^xsd:string ;
+    arch:hasVariant archind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_model_variant,
+        archind:orb_v2_mptrj_variant .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_batch_size_edges_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention batch_size_edges value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size_edges .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_batch_size_graphs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention batch_size_graphs value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size_graphs .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_batch_size_nodes_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention batch_size_nodes value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size_nodes .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_beta_1_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention beta_1 value"^^xsd:string ;
+    train:ofHyperparameter trind:beta_1 .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_beta_2_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention beta_2 value"^^xsd:string ;
+    train:ofHyperparameter trind:beta_2 .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_ema_decay_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention ema_decay_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:ema_decay_rate .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_lr_schedule_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention lr_schedule value"^^xsd:string ;
+    train:ofHyperparameter trind:lr_schedule .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_max_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention max_epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:max_epochs .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_max_radius_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention max_radius value"^^xsd:string ;
+    train:ofHyperparameter trind:max_radius .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_nearest_neighbors_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention nearest_neighbors value"^^xsd:string ;
+    train:ofHyperparameter trind:nearest_neighbors .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_noise_sampler_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention noise_sampler value"^^xsd:string ;
+    train:ofHyperparameter trind:noise_sampler .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_warmup_percentage_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention warmup_percentage value"^^xsd:string ;
+    train:ofHyperparameter trind:warmup_percentage .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_architecture a owl:NamedIndividual,
+        arch:GraphNeuralNetworkArchitecture ;
+    rdfs:label "Graph Network Simulator with smoothed graph attention"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_architecture_configuration .
+
+archind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Graph Network Simulator with smoothed graph attention architecture configuration"^^xsd:string .
+
+archind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "orb_v2_mptrj Graph Network Simulator with smoothed graph attention"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_architecture .
+
+archind:orb_v2_mptrj_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "orb_v2_mptrj"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\orb_v2_mptrj.yml" ;
+    arch:hasParameterNumber 25161727 .
+
+trind:batch_size_edges a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size_edges"^^xsd:string .
+
+trind:batch_size_graphs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size_graphs"^^xsd:string .
+
+trind:batch_size_nodes a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size_nodes"^^xsd:string .
+
+trind:beta_1 a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "beta_1"^^xsd:string .
+
+trind:beta_2 a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "beta_2"^^xsd:string .
+
+trind:ema_decay_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "ema_decay_rate"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:lr_schedule a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "lr_schedule"^^xsd:string .
+
+trind:max_epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_epochs"^^xsd:string .
+
+trind:max_radius a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_radius"^^xsd:string .
+
+trind:nearest_neighbors a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "nearest_neighbors"^^xsd:string .
+
+trind:noise_sampler a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "noise_sampler"^^xsd:string .
+
+trind:optimizer a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "optimizer"^^xsd:string .
+
+trind:warmup_percentage a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "warmup_percentage"^^xsd:string .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#orb_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#orb_v2_mptrj_variant> >> prov:wasDerivedFrom "orb_v2_mptrj" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#orb_v2_mptrj_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "25161727"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "25161727" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#orb_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_model_variant> >> prov:wasDerivedFrom "GraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_architecture> >> prov:wasDerivedFrom "GraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_learning_rate_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#learning_rate> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_beta_1_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#beta_1> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_beta_2_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#beta_2> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_ema_decay_rate_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#ema_decay_rate> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_max_radius_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#max_radius> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_nearest_neighbors_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#nearest_neighbors> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_batch_size_nodes_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#batch_size_nodes> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_batch_size_edges_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#batch_size_edges> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_batch_size_graphs_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#batch_size_graphs> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_warmup_percentage_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#warmup_percentage> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_max_epochs_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#max_epochs> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_noise_sampler_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#noise_sampler> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_optimizer_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#optimizer> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#orb_v2_mptrj_graph_network_simulator_with_smoothed_graph_attention_lr_schedule_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#lr_schedule> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2410.22570.pdf> .

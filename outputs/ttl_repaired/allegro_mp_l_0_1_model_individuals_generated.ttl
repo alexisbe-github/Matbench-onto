@@ -1,0 +1,180 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:allegro_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "Allegro"^^xsd:string ;
+    arch:hasVariant archind:allegro_mp_l_allegro_model_variant,
+        archind:allegro_mp_l_variant .
+
+dataind:spice_2_test_set a owl:NamedIndividual,
+        data:DatasetSplit ;
+    rdfs:label "SPICE 2 test set"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:usesAttributeAsInputFeature dataind:atomic_positions_attribute,
+        dataind:atomic_species_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute ;
+    data:wasDerivedFromDataset dataind:spice_2 .
+
+dataind:torsionnet_500 a owl:NamedIndividual,
+        data:LabeledDataset ;
+    rdfs:label "TorsionNet 500"^^xsd:string ;
+    data:hasDataRepresentation dataind:molecular_conformers_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 12000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_positions_attribute,
+        dataind:atomic_species_attribute,
+        dataind:torsion_angles_attribute ;
+    data:usesAttributeAsTargetFeature dataind:relative_energy_attribute,
+        dataind:torsion_barrier_height_attribute .
+
+trind:allegro_mp_l_0_1_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "Allegro-MP-L-0.1"^^xsd:string ;
+    train:generatedBy trind:allegro_spice2_pretraining .
+
+archind:allegro_mp_l_allegro_architecture a owl:NamedIndividual,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "Allegro"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:allegro_mp_l_allegro_architecture_configuration ;
+    arch:hasParameterNumber 18700000 .
+
+archind:allegro_mp_l_allegro_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Allegro architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 128 ;
+    arch:hasLayerCount 3 .
+
+archind:allegro_mp_l_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "allegro_mp_l"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\allegro_mp_l_0_1.yml" ;
+    arch:hasParameterNumber 18700000 ;
+    arch:hasMachineLearningArchitecture archind:allegro_mp_l_allegro_architecture .
+
+dataind:molecular_conformers_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "molecular conformers"^^xsd:string .
+
+dataind:relative_energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "relative energy"^^xsd:string .
+
+dataind:torsion_angles_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "torsion angles"^^xsd:string .
+
+dataind:torsion_barrier_height_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "torsion barrier height"^^xsd:string .
+
+dataind:total_charge_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "total charge"^^xsd:string .
+
+trind:allegro_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "allegro_layers"^^xsd:string .
+
+trind:allegro_mp_l_allegro_allegro_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "allegro_mp_l Allegro allegro_layers value"^^xsd:string ;
+    prov:value 3 ;
+    train:ofHyperparameter trind:allegro_layers .
+
+trind:allegro_mp_l_allegro_lmax_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "allegro_mp_l Allegro lmax value"^^xsd:string ;
+    prov:value 3 ;
+    train:ofHyperparameter trind:lmax .
+
+trind:allegro_mp_l_allegro_radial_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "allegro_mp_l Allegro radial_cutoff value"^^xsd:string ;
+    prov:value "6.0 Å"^^xsd:string ;
+    train:ofHyperparameter trind:radial_cutoff .
+
+trind:allegro_mp_l_allegro_tensor_features_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "allegro_mp_l Allegro tensor_features value"^^xsd:string ;
+    prov:value 128 ;
+    train:ofHyperparameter trind:tensor_features .
+
+trind:allegro_spice2_pretraining a owl:NamedIndividual,
+        train:MachineLearningTrainingRun,
+        train:PretrainingRun ;
+    rdfs:label "allegro_spice2_pretraining"^^xsd:string ;
+    rdfs:comment "Training of Allegro large model on neutral total charge subset of SPICE 2 dataset using distributed multi-GPU training with TorchInductor compilation"^^xsd:string ;
+    train:hasHyperparameterValue trind:allegro_mp_l_allegro_allegro_layers_value,
+        trind:allegro_mp_l_allegro_lmax_value,
+        trind:allegro_mp_l_allegro_radial_cutoff_value,
+        trind:allegro_mp_l_allegro_tensor_features_value ;
+    train:trainsModelVariant archind:allegro_mp_l_allegro_model_variant ;
+    train:usesDataset dataind:spice_2 .
+
+trind:lmax a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "lmax"^^xsd:string .
+
+trind:radial_cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial_cutoff"^^xsd:string .
+
+trind:tensor_features a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "tensor_features"^^xsd:string .
+
+archind:allegro_mp_l_allegro_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "allegro_mp_l Allegro"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:allegro_mp_l_allegro_architecture .
+
+dataind:atomic_structure_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "atomic structure"^^xsd:string .
+
+dataind:energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "energy"^^xsd:string .
+
+dataind:forces_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "forces"^^xsd:string .
+
+dataind:spice_2 a owl:NamedIndividual,
+        data:Dataset,
+        data:LabeledDataset ;
+    rdfs:label "SPICE 2"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 2000000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_positions_attribute,
+        dataind:atomic_species_attribute,
+        dataind:total_charge_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute .
+
+dataind:atomic_positions_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic positions"^^xsd:string .
+
+dataind:atomic_species_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic species"^^xsd:string .
+
+dataind:dft_labelling_method a owl:NamedIndividual,
+        data:LabellingMethod ;
+    rdfs:label "DFT"^^xsd:string .

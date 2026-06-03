@@ -1,0 +1,411 @@
+{
+  "model": {
+    "family": {
+      "value": "MACE",
+      "evidence": "YAML model_name: MACE-MP-0; PDF Introduction: 'MACE is a higher-order equivariant message-passing neural network'"
+    },
+    "variant": {
+      "value": "mace_mp_0",
+      "evidence": "YAML model_name: MACE-MP-0 lowercased and spaces/hyphens replaced by underscores"
+    },
+    "parameter_number": {
+      "value": 4688656,
+      "evidence": "YAML model_params: 4688656"
+    }
+  },
+  "architectures": {
+    "EquivariantMessagePassingNeuralNetworkArchitecture": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF Introduction: 'MACE is a higher-order equivariant message-passing neural network'; ontology architecture.ttl defines EquivariantMessagePassingNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 4688656,
+        "evidence": "YAML model_params: 4688656"
+      },
+      "datasets": {
+        "value": [
+          "MPtrj"
+        ],
+        "evidence": "PDF Methods section: 'The MACE-MP-0b3 model was trained on the MPtrj dataset'"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "max_epochs",
+          "optimizer",
+          "loss_function",
+          "gradient_clipping",
+          "ema_decay",
+          "radial_cutoff",
+          "lmax",
+          "correlation_order",
+          "channel_dimension",
+          "num_layers",
+          "num_bessel_functions",
+          "hidden_units",
+          "huber_delta_energy",
+          "huber_delta_force",
+          "huber_delta_stress",
+          "loss_weight_energy",
+          "loss_weight_force",
+          "loss_weight_stress"
+        ],
+        "evidence": "PDF Methods section details training hyperparameters"
+      },
+      "hyperparameter_details": {
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.001,
+            "evidence": "PDF Methods Optimization: 'We use a learning rate of 0.001'"
+          }
+        },
+        "batch_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": null,
+            "evidence": "PDF Methods mentions Nb as batch size but no specific value given"
+          }
+        },
+        "max_epochs": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 100,
+            "evidence": "PDF Methods Optimization: 'Model is trained for 100 epochs'"
+          }
+        },
+        "optimizer": {
+          "ontology_class": {
+            "value": "Optimizer",
+            "evidence": "ontology trainingonto.ttl defines Optimizer"
+          },
+          "value": {
+            "value": "AMSGrad",
+            "evidence": "PDF Methods Optimization: 'The models are trained with the AMSGrad variant of Adam'"
+          }
+        },
+        "loss_function": {
+          "ontology_class": {
+            "value": "LossFunction",
+            "evidence": "ontology trainingonto.ttl defines LossFunction"
+          },
+          "value": {
+            "value": "Huber loss",
+            "evidence": "PDF Methods Training loss: 'The models were trained using a weighted sum of Huber losses of energy, forces, and stress'"
+          }
+        },
+        "gradient_clipping": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 100,
+            "evidence": "PDF Methods Optimization: 'We employ a gradient clipping of 100'"
+          }
+        },
+        "ema_decay": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.99999,
+            "evidence": "PDF Methods Optimization: 'exponential moving average (EMA) learning scheduler with decaying factor of 0.99999'"
+          }
+        },
+        "radial_cutoff": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": "6 Angstrom",
+            "evidence": "PDF Methods Hyper-parameters: 'We use a radial cutoff of 6Å'"
+          }
+        },
+        "lmax": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 3,
+            "evidence": "PDF Methods Hyper-parameters: 'a spherical expansion of up to lmax = 3'"
+          }
+        },
+        "correlation_order": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 3,
+            "evidence": "PDF Methods Hyper-parameters: '4-body messages in each layer (correlation order 3)'"
+          }
+        },
+        "channel_dimension": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 128,
+            "evidence": "PDF Methods Hyper-parameters: '128-channel dimension for tensor decomposition'"
+          }
+        },
+        "num_layers": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 2,
+            "evidence": "PDF Methods Hyper-parameters: 'The model referred to in this work uses two MACE layers'"
+          }
+        },
+        "num_bessel_functions": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 10,
+            "evidence": "PDF Methods Hyper-parameters: 'expand the interatomic distances into 10 Bessel functions'"
+          }
+        },
+        "hidden_units": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 64,
+            "evidence": "PDF Methods Hyper-parameters: 'three hidden layers of 64 hidden units'"
+          }
+        },
+        "huber_delta_energy": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.01,
+            "evidence": "PDF Methods Training loss: 'Huber deltas of δE = 0.01'"
+          }
+        },
+        "huber_delta_force": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.01,
+            "evidence": "PDF Methods Training loss: 'δF = 0.01'"
+          }
+        },
+        "huber_delta_stress": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.01,
+            "evidence": "PDF Methods Training loss: 'δσ = 0.01'"
+          }
+        },
+        "loss_weight_energy": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 1,
+            "evidence": "PDF Methods Training loss: '(λE, λF, λσ) = (1, 10, 10)'"
+          }
+        },
+        "loss_weight_force": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 10,
+            "evidence": "PDF Methods Training loss: '(λE, λF, λσ) = (1, 10, 10)'"
+          }
+        },
+        "loss_weight_stress": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 10,
+            "evidence": "PDF Methods Training loss: '(λE, λF, λσ) = (1, 10, 10)'"
+          }
+        }
+      },
+      "components": {
+        "value": [
+          "ElementEmbedding",
+          "TensorProductBasis",
+          "SymmetricTensorProduct",
+          "RadialBasis",
+          "FeedForwardNeuralNetwork",
+          "DensityNormalization",
+          "ZBLRepulsion",
+          "AgnesiDistanceTransform"
+        ],
+        "evidence": "PDF Methods and Introduction describe MACE components including element embedding, tensor product basis, symmetric tensor product, radial basis, feed-forward neural network, density normalization, ZBL repulsion, and Agnesi distance transform"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "No explicit backbone architecture mentioned; MACE is a standalone architecture"
+      },
+      "head_architecture": {
+        "value": null,
+        "evidence": "No explicit prediction head mentioned; energy readout is integrated into the architecture"
+      },
+      "layer_count": {
+        "value": 2,
+        "evidence": "PDF Methods Hyper-parameters: 'two MACE layers'"
+      },
+      "hidden_dimension": {
+        "value": 128,
+        "evidence": "PDF Methods Hyper-parameters: '128-channel dimension for tensor decomposition'"
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "mace_mp_0b3_pretraining"
+      ],
+      "evidence": "PDF Methods describes training of MACE-MP-0b3 on MPtrj dataset"
+    },
+    "training_run_details": {
+      "mace_mp_0b3_pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF Methods: model trained on MPtrj dataset from scratch; ontology trainingonto.ttl defines PretrainingRun"
+        },
+        "architectures": {
+          "value": [
+            "EquivariantMessagePassingNeuralNetworkArchitecture"
+          ],
+          "evidence": "PDF Introduction and Methods: MACE architecture used"
+        },
+        "datasets": {
+          "value": [
+            "MPtrj"
+          ],
+          "evidence": "PDF Methods Training data: 'The MACE-MP-0b3 model was trained on the MPtrj dataset'"
+        },
+        "optimizer": {
+          "value": "AMSGrad",
+          "evidence": "PDF Methods Optimization: 'The models are trained with the AMSGrad variant of Adam'"
+        },
+        "loss_function": {
+          "value": "Huber loss",
+          "evidence": "PDF Methods Training loss: 'weighted sum of Huber losses of energy, forces, and stress'"
+        },
+        "description": {
+          "value": "Pretraining of MACE-MP-0b3 on the MPtrj dataset consisting of approximately 1.5M configurations from the Materials Project, including static calculations and structural optimization trajectories of inorganic crystals with some molecular components, using PBE exchange-correlation functional with Hubbard U terms for some transition metal oxide systems",
+          "evidence": "PDF Methods Training data section"
+        },
+        "objective_function": {
+          "value": "Huber loss",
+          "evidence": "PDF Methods Training loss: 'weighted sum of Huber losses of energy, forces, and stress'"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No specific sampling method mentioned for pretraining"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "PDF Methods: model trained from scratch on MPtrj, not initialized from previous checkpoint"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "MACE-MP-0b3"
+          ],
+          "evidence": "PDF Methods Model versions: 'the model used in the present version, named MACE-MP-0b3'"
+        }
+      }
+    },
+    "datasets": {
+      "value": [
+        "MPtrj"
+      ],
+      "evidence": "PDF Methods Training data: 'The MACE-MP-0b3 model was trained on the MPtrj dataset'"
+    },
+    "dataset_details": {
+      "MPtrj": {
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "ontology datasetonto.ttl defines Dataset; MPtrj is a collection of DFT calculations"
+        },
+        "number_of_samples": {
+          "value": 1500000,
+          "evidence": "PDF Methods Training data: 'approximately 1.5M configurations'"
+        },
+        "data_representation": {
+          "value": "crystal structure",
+          "evidence": "PDF Methods Training data: 'mainly small periodic unit cells describing inorganic crystals with some molecular components'"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF Methods Training data: 'DFT calculations use the PBE exchange-correlation functional'"
+        },
+        "input_features": {
+          "value": [
+            "atomic positions",
+            "atomic numbers",
+            "cell parameters"
+          ],
+          "evidence": "PDF Methods: MACE uses atomic positions and structural information as input"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces",
+            "stress"
+          ],
+          "evidence": "PDF Methods Training loss: 'weighted sum of Huber losses of energy, forces, and stress'"
+        },
+        "derived_from_dataset": {
+          "value": "Materials Project",
+          "evidence": "PDF Methods Training data: 'compiled originally for CHGNet... from the Materials Project (MP)'"
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\mace_mpa_0.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2401.00096.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\mace_mpa_0.yml"
+  }
+}

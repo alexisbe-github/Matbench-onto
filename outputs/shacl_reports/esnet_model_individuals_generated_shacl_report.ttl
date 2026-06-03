@@ -1,0 +1,93 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a sh:ValidationReport ;
+    sh:conforms false ;
+    sh:result [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/trainingonto-individuals#esnet_pretraining> ;
+            sh:resultMessage "train:usesDataset must have a MachineLearningTrainingRun as subject." ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape train:UsesDatasetSubjectShape ;
+            sh:value <https://k.loria.fr/ontologies/trainingonto-individuals#esnet_pretraining> ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_content_guided_attention_model_variant> ;
+            sh:resultMessage "every ModelVariant should link to a MachineLearningArchitecture." ;
+            sh:resultPath arch:hasMachineLearningArchitecture ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape _:nf1f1a1fa3f5c445eaea64bd2a7bdff5eb1 ;
+            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_content_guided_attention_architecture> ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_esnet_model_variant> ;
+            sh:resultMessage "every ModelVariant should link to a MachineLearningArchitecture." ;
+            sh:resultPath arch:hasMachineLearningArchitecture ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape _:nf1f1a1fa3f5c445eaea64bd2a7bdff5eb1 ;
+            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_esnet_architecture> ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_content_guided_attention_architecture> ;
+            sh:resultMessage "only a MachineLearningArchitecture should have an architecture configuration." ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape arch:HasArchitectureConfigurationSubjectShape ;
+            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_content_guided_attention_architecture> ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_icomformer_model_variant> ;
+            sh:resultMessage "every ModelVariant should link to a MachineLearningArchitecture." ;
+            sh:resultPath arch:hasMachineLearningArchitecture ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape _:nf1f1a1fa3f5c445eaea64bd2a7bdff5eb1 ;
+            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_icomformer_architecture> ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_esnet_architecture> ;
+            sh:resultMessage "arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture." ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape arch:HasArchitectureObjectShape ;
+            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_esnet_architecture> ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_icomformer_architecture> ;
+            sh:resultMessage "arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture." ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape arch:HasArchitectureObjectShape ;
+            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_icomformer_architecture> ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_icomformer_architecture> ;
+            sh:resultMessage "only a MachineLearningArchitecture should have an architecture configuration." ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape arch:HasArchitectureConfigurationSubjectShape ;
+            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_icomformer_architecture> ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_variant> ;
+            sh:resultMessage "every ModelVariant should link to a MachineLearningArchitecture." ;
+            sh:resultPath arch:hasMachineLearningArchitecture ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape _:nf1f1a1fa3f5c445eaea64bd2a7bdff5eb1 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_content_guided_attention_architecture> ;
+            sh:resultMessage "arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture." ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape arch:HasArchitectureObjectShape ;
+            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_content_guided_attention_architecture> ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_esnet_architecture> ;
+            sh:resultMessage "only a MachineLearningArchitecture should have an architecture configuration." ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape arch:HasArchitectureConfigurationSubjectShape ;
+            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_esnet_architecture> ] .
+
+_:nf1f1a1fa3f5c445eaea64bd2a7bdff5eb1 sh:class arch:MachineLearningArchitecture ;
+    sh:message "every ModelVariant should link to a MachineLearningArchitecture." ;
+    sh:minCount 1 ;
+    sh:path arch:hasMachineLearningArchitecture .
+

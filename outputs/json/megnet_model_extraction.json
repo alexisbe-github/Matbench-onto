@@ -1,0 +1,562 @@
+{
+  "model": {
+    "family": {
+      "value": "MEGNet",
+      "evidence": "YAML model_name: MEGNet"
+    },
+    "variant": {
+      "value": "megnet",
+      "evidence": "YAML model_name: MEGNet; lowercased and underscored per instructions"
+    },
+    "parameter_number": {
+      "value": 167761,
+      "evidence": "YAML model_params: 167761"
+    }
+  },
+  "architectures": {
+    "MEGNet": {
+      "ontology_class": {
+        "value": "GraphNeuralNetworkArchitecture",
+        "evidence": "MEGNet is a graph neural network (GNN) model; ontology has GraphNeuralNetworkArchitecture as the matching class"
+      },
+      "parameter_number": {
+        "value": 167761,
+        "evidence": "YAML model_params: 167761"
+      },
+      "datasets": {
+        "value": [
+          "QM9",
+          "MP-crystals-2018.6.1"
+        ],
+        "evidence": "PDF: QM9 molecule dataset (page 10); MP-crystals-2018.6.1 crystal dataset from Materials Project (page 10)"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "embedding_dimension",
+          "number_of_megnet_blocks",
+          "radius_cutoff",
+          "batch_size",
+          "dense_layer_units",
+          "set2set_hidden_units",
+          "early_stopping_patience"
+        ],
+        "evidence": "PDF: Adam optimizer with initial learning rate 0.001 reduced to 0.0001 (page 10); embedding dimension set to 16 for crystals (page 11); number of MEGNet blocks varies (1-5) depending on property (page 12); radius cutoff of 4 angstroms for crystals (page 10); batch training via single graph assembly (page 10); dense layers with 64 and 32 hidden units (page 8); set2set readout (page 7); early stopping with 500 epochs patience (page 11)"
+      },
+      "components": {
+        "value": [
+          "MEGNetBlock",
+          "DenseLayer",
+          "Set2SetReadout",
+          "EmbeddingLayer",
+          "ResidualSkipConnection"
+        ],
+        "evidence": "PDF: MEGNet block contains MEGNet layer plus two dense layers (page 7); set2set readout on atomic and bond attributes (page 7); embedding layer for atomic numbers (page 7); residual skip connections (page 7)"
+      },
+      "backbone_architecture": {
+        "value": "GraphNetworkModule",
+        "evidence": "PDF: MEGNet module with bond, atom, and state update operations (page 4-6)"
+      },
+      "head_architecture": {
+        "value": "MultiLayerPerceptron",
+        "evidence": "PDF: After readout, concatenated vectors passed through multi-layer perceptrons to generate final output (page 7)"
+      },
+      "layer_count": {
+        "value": 3,
+        "evidence": "PDF: Crystal models use three MEGNet blocks (page 11); each block has 2 dense layers + 1 MEGNet layer"
+      },
+      "hidden_dimension": {
+        "value": 64,
+        "evidence": "PDF: Dense layers have 64 and 32 hidden units (page 8); embedding dimension is 16 for crystals (page 11)"
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "qm9_pretraining",
+        "crystal_formation_energy_pretraining",
+        "crystal_bandgap_finetuning",
+        "crystal_elastic_moduli_finetuning",
+        "crystal_metal_classifier_training",
+        "unified_free_energy_training"
+      ],
+      "evidence": "PDF: QM9 molecule models trained (page 10); crystal formation energy model trained on 60,000 crystals (page 10); band gap and elastic moduli models with transfer learning (page 11); metal/non-metal classifier (page 14); unified free energy model for U0, U, H, G (page 13)"
+    },
+    "runs": {
+      "qm9_pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF: MEGNet models trained on QM9 dataset from scratch (page 10)"
+        },
+        "architectures": {
+          "value": [
+            "MEGNet"
+          ],
+          "evidence": "PDF: MEGNet models for QM9 (page 10)"
+        },
+        "datasets": {
+          "value": [
+            "QM9"
+          ],
+          "evidence": "PDF: QM9 dataset with ~131,000 molecules (page 3)"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF: Adam optimizer with initial learning rate 0.001 (page 10)"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "Not explicitly specified in paper"
+        },
+        "description": {
+          "value": "Pretraining of MEGNet models on QM9 molecular dataset for 13 property predictions",
+          "evidence": "PDF: Models trained on QM9 for properties including U0, U, H, G, band gap, etc. (page 11-12)"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "Not explicitly specified; likely mean absolute error minimization"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "Standard random train/validation/test split (90/5/5) used (page 10)"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "Trained from scratch"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "MEGNet-QM9-Full",
+            "MEGNet-QM9-Simple"
+          ],
+          "evidence": "PDF: Full and Simple MEGNet models for QM9 (page 12)"
+        }
+      },
+      "crystal_formation_energy_pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF: Formation energy model trained on 60,000 crystals from Materials Project (page 10)"
+        },
+        "architectures": {
+          "value": [
+            "MEGNet"
+          ],
+          "evidence": "PDF: MEGNet crystal models (page 10)"
+        },
+        "datasets": {
+          "value": [
+            "MP-crystals-2018.6.1"
+          ],
+          "evidence": "PDF: 69,640 crystals from Materials Project (page 10)"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF: Adam optimizer (page 10)"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "Not explicitly specified"
+        },
+        "description": {
+          "value": "Pretraining of MEGNet on crystal formation energies from Materials Project; elemental embeddings learned here are transferred to other crystal property models",
+          "evidence": "PDF: Formation energy model trained on 60,000 crystals; embeddings transferred to band gap and elastic moduli models (page 11, 15)"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "Not explicitly specified"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "Standard train/validation/test split (page 10)"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "Trained from scratch"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "MEGNet-crystal-formation-energy"
+          ],
+          "evidence": "PDF: Formation energy MEGNet model (page 14)"
+        }
+      },
+      "crystal_bandgap_finetuning": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "PDF: Transfer learning from formation energy model to band gap model using transferred elemental embeddings (page 11, 15)"
+        },
+        "architectures": {
+          "value": [
+            "MEGNet"
+          ],
+          "evidence": "PDF: MEGNet band gap model (page 14)"
+        },
+        "datasets": {
+          "value": [
+            "MP-crystals-2018.6.1"
+          ],
+          "evidence": "PDF: Subset of 45,901 crystals with finite band gap (page 10)"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF: Adam optimizer used for all models (page 10)"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "Not explicitly specified"
+        },
+        "description": {
+          "value": "Band gap prediction model using transfer learning from formation energy elemental embeddings",
+          "evidence": "PDF: Elemental embeddings from Ef model transferred to Eg model (page 15)"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "Not explicitly specified"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "80:10:10 train/validation/test split (page 10)"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": "MEGNet-crystal-formation-energy",
+          "evidence": "PDF: Elemental embeddings transferred from formation energy model (page 11)"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "MEGNet-crystal-bandgap"
+          ],
+          "evidence": "PDF: Band gap MEGNet model (page 14)"
+        }
+      },
+      "crystal_elastic_moduli_finetuning": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "PDF: Transfer learning from formation energy model to elastic moduli models (page 15)"
+        },
+        "architectures": {
+          "value": [
+            "MEGNet"
+          ],
+          "evidence": "PDF: MEGNet elastic moduli models (page 14)"
+        },
+        "datasets": {
+          "value": [
+            "MP-crystals-2018.6.1"
+          ],
+          "evidence": "PDF: Subset of 5,830 structures with elasticity data (page 10)"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF: Adam optimizer (page 10)"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "Not explicitly specified"
+        },
+        "description": {
+          "value": "Bulk and shear modulus prediction models using transfer learning from formation energy elemental embeddings",
+          "evidence": "PDF: Transfer learning improves KV RH and GV RH models (page 15)"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "Not explicitly specified"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "80:10:10 train/validation/test split (page 10)"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": "MEGNet-crystal-formation-energy",
+          "evidence": "PDF: Elemental embeddings transferred from formation energy model (page 11)"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "MEGNet-crystal-bulk-modulus",
+            "MEGNet-crystal-shear-modulus"
+          ],
+          "evidence": "PDF: KV RH and GV RH MEGNet models (page 14)"
+        }
+      },
+      "crystal_metal_classifier_training": {
+        "type": {
+          "value": "MachineLearningTrainingRun",
+          "evidence": "PDF: Metal/non-metal classifier trained on Materials Project data (page 14)"
+        },
+        "architectures": {
+          "value": [
+            "MEGNet"
+          ],
+          "evidence": "PDF: MEGNet classifier model (page 14)"
+        },
+        "datasets": {
+          "value": [
+            "MP-crystals-2018.6.1"
+          ],
+          "evidence": "PDF: 55,391 crystals for metal/non-metal classification (page 14)"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF: Adam optimizer (page 10)"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "Not explicitly specified"
+        },
+        "description": {
+          "value": "Binary classification model to distinguish metals from non-metals in crystals",
+          "evidence": "PDF: Metal/non-metal classifier with 86.9% test accuracy (page 14, 16)"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "Not explicitly specified"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "Standard train/validation/test split"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "Not specified if transfer learning was used"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "MEGNet-crystal-metal-classifier"
+          ],
+          "evidence": "PDF: Metal/non-metal classifier model (page 14)"
+        }
+      },
+      "unified_free_energy_training": {
+        "type": {
+          "value": "MachineLearningTrainingRun",
+          "evidence": "PDF: Unified free energy model trained on multiple thermodynamic targets (page 13)"
+        },
+        "architectures": {
+          "value": [
+            "MEGNet"
+          ],
+          "evidence": "PDF: Unified MEGNet model (page 13)"
+        },
+        "datasets": {
+          "value": [
+            "QM9"
+          ],
+          "evidence": "PDF: QM9 dataset for U0, U, H, G targets (page 13)"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF: Adam optimizer (page 10)"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "Not explicitly specified"
+        },
+        "description": {
+          "value": "Unified model predicting internal energy at 0K and room temperature, enthalpy, and Gibbs free energy using temperature, pressure, and entropy as global state inputs",
+          "evidence": "PDF: Combined free energy model for U0, U, H, G with state variables (page 13)"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "Not explicitly specified"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "Standard train/validation/test split"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "Trained from scratch"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "MEGNet-unified-free-energy"
+          ],
+          "evidence": "PDF: Unified free energy MEGNet model (page 13)"
+        }
+      }
+    },
+    "datasets": {
+      "value": [
+        "QM9",
+        "MP-crystals-2018.6.1"
+      ],
+      "evidence": "PDF: QM9 molecule dataset (page 10); MP-crystals-2018.6.1 crystal dataset (page 10)"
+    },
+    "dataset_details": {
+      "QM9": {
+        "ontology_class": {
+          "value": "LabeledDataset",
+          "evidence": "QM9 is a labeled dataset with DFT-computed properties; ontology has LabeledDataset"
+        },
+        "number_of_samples": {
+          "value": 130462,
+          "evidence": "PDF: 130,462 small organic molecules in QM9 (page 10)"
+        },
+        "data_representation": {
+          "value": "molecular graph",
+          "evidence": "PDF: Graph-based representation for molecules (page 2)"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF: B3LYP/6-31G(2df,p)-level DFT calculations (page 10)"
+        },
+        "input_features": {
+          "value": [
+            "atom_type",
+            "chirality",
+            "ring_sizes",
+            "hybridization",
+            "electron_acceptor",
+            "electron_donor",
+            "aromaticity",
+            "bond_type",
+            "same_ring",
+            "graph_distance",
+            "expanded_distance",
+            "average_atomic_weight",
+            "bonds_per_atom"
+          ],
+          "evidence": "PDF: Table 1 - Atomic, bond and state attributes for molecules (page 9)"
+        },
+        "target_features": {
+          "value": [
+            "epsilon_HOMO",
+            "epsilon_LUMO",
+            "delta_epsilon",
+            "ZPVE",
+            "dipole_moment",
+            "isotropic_polarizability",
+            "electronic_spatial_extent",
+            "U0",
+            "U",
+            "H",
+            "G",
+            "Cv",
+            "omega1"
+          ],
+          "evidence": "PDF: Table 2 - 13 properties predicted (page 12)"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "QM9 is a primary dataset from Ramakrishnan et al. 2014"
+        }
+      },
+      "MP-crystals-2018.6.1": {
+        "ontology_class": {
+          "value": "LabeledDataset",
+          "evidence": "Materials Project crystal dataset with DFT-computed properties; ontology has LabeledDataset"
+        },
+        "number_of_samples": {
+          "value": 69640,
+          "evidence": "PDF: 69,640 crystals from Materials Project (page 10)"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF: Crystal graph representation with radius cutoff (page 10)"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF: DFT-computed energies and band gaps (page 10)"
+        },
+        "input_features": {
+          "value": [
+            "atomic_number",
+            "spatial_distance"
+          ],
+          "evidence": "PDF: Table 1 - Crystal atom and bond attributes (page 9)"
+        },
+        "target_features": {
+          "value": [
+            "formation_energy",
+            "band_gap",
+            "bulk_modulus",
+            "shear_modulus",
+            "metal_nonmetal_classification"
+          ],
+          "evidence": "PDF: Table 3 - Properties predicted on Materials Project (page 14)"
+        },
+        "derived_from_dataset": {
+          "value": "Materials Project",
+          "evidence": "PDF: Data obtained from Materials Project via pymatgen API (page 10)"
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\megnet.pdf",
+    "pdf_url": "https://arxiv.org/pdf/1812.05055.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\megnet.yml"
+  }
+}

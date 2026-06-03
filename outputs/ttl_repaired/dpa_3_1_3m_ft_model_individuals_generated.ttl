@@ -1,0 +1,41 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:dpa_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "DPA"^^xsd:string ;
+    arch:hasVariant archind:dpa_3_1_3m_ft_variant .
+
+trind:dataset_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "dataset_details"^^xsd:string .
+
+trind:datasets a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "datasets"^^xsd:string .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:dpa3_architecture a owl:NamedIndividual,
+        arch:MessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "DPA3"^^xsd:string ;
+    arch:hasLayerCount 16 ;
+    arch:hasHiddenDimension 128 ;
+    arch:hasParameterNumber 3268838 .
+
+archind:dpa_3_1_3m_ft_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "dpa_3.1_3m_ft"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\dpa_3_1_3m_ft.yml" ;
+    arch:hasParameterNumber 3268838 ;
+    arch:hasMachineLearningArchitecture archind:dpa3_architecture .

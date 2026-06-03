@@ -1,0 +1,487 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:hienet_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "HIENet"^^xsd:string ;
+    arch:hasVariant archind:hienet_hienet_model_variant,
+        archind:hienet_variant .
+
+dataind:aupt_sqs a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "AuPt_SQS"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:usesAttributeAsInputFeature dataind:composition_attribute,
+        dataind:crystal_structure_attribute ;
+    data:usesAttributeAsTargetFeature dataind:formation_energy_attribute .
+
+dataind:crmov a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "CrMoV"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:usesAttributeAsInputFeature dataind:composition_attribute,
+        dataind:crystal_structure_attribute,
+        dataind:temperature_attribute ;
+    data:usesAttributeAsTargetFeature dataind:miscibility_gap_attribute,
+        dataind:phase_stability_attribute .
+
+dataind:matbench_discovery a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Matbench_Discovery"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:usesAttributeAsInputFeature dataind:crystal_structure_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_above_hull_attribute,
+        dataind:thermodynamic_stability_attribute .
+
+dataind:materials_project_elasticity a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Materials_Project_Elasticity"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 1763 ;
+    data:usesAttributeAsInputFeature dataind:crystal_structure_attribute ;
+    data:usesAttributeAsTargetFeature dataind:bulk_modulus_attribute,
+        dataind:elastic_tensor_attribute ;
+    data:wasDerivedFromDataset dataind:materials_project .
+
+dataind:mptrj_train a owl:NamedIndividual,
+        data:DatasetSplit ;
+    rdfs:label "MPtrj_train"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_graph_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 1501000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_number_attribute,
+        dataind:atomic_positions_attribute,
+        dataind:edge_vectors_attribute,
+        dataind:interatomic_distances_attribute,
+        dataind:lattice_vectors_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute,
+        dataind:stress_tensor_attribute ;
+    data:wasDerivedFromDataset dataind:mptrj .
+
+dataind:mptrj_validation a owl:NamedIndividual,
+        data:DatasetSplit ;
+    rdfs:label "MPtrj_validation"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_graph_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 79000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_number_attribute,
+        dataind:atomic_positions_attribute,
+        dataind:edge_vectors_attribute,
+        dataind:interatomic_distances_attribute,
+        dataind:lattice_vectors_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute,
+        dataind:stress_tensor_attribute ;
+    data:wasDerivedFromDataset dataind:mptrj .
+
+dataind:phonondb a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "PhononDB"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 10000 ;
+    data:usesAttributeAsInputFeature dataind:crystal_structure_attribute,
+        dataind:supercell_matrices_attribute,
+        dataind:unit_cell_attribute ;
+    data:usesAttributeAsTargetFeature dataind:phonon_band_structure_attribute,
+        dataind:phonon_frequencies_attribute .
+
+dataind:si_aimd a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Si_AIMD"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 4000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_numbers_attribute,
+        dataind:atomic_positions_attribute,
+        dataind:supercell_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute,
+        dataind:stress_tensor_attribute .
+
+trind:hienet_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "hienet"^^xsd:string ;
+    train:generatedBy trind:hienet_mptrj_training .
+
+archind:hienet_e_3_invariant_message_passing_layer_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "E(3)-Invariant Message Passing Layer"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:hienet_e_3_invariant_message_passing_layer_component_configuration .
+
+archind:hienet_e_3_invariant_message_passing_layer_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "E(3)-Invariant Message Passing Layer component configuration"^^xsd:string .
+
+archind:hienet_hienet_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture,
+        arch:MessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "HIENet"^^xsd:string ;
+    arch:hasComponent archind:hienet_e_3_invariant_message_passing_layer_component,
+        archind:hienet_o_3_equivariant_message_passing_layer_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:hienet_hienet_architecture_configuration ;
+    arch:hasParameterNumber 7510280 .
+
+archind:hienet_hienet_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "HIENet architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 512 ;
+    arch:hasLayerCount 4 .
+
+archind:hienet_o_3_equivariant_message_passing_layer_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "O(3)-Equivariant Message Passing Layer"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:hienet_o_3_equivariant_message_passing_layer_component_configuration .
+
+archind:hienet_o_3_equivariant_message_passing_layer_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "O(3)-Equivariant Message Passing Layer component configuration"^^xsd:string .
+
+archind:hienet_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "hienet"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2503.05771> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\hienet.yml" ;
+    arch:hasMachineLearningArchitecture archind:hienet_hienet_architecture ;
+    arch:hasParameterNumber 7510280 .
+
+dataind:atomic_numbers_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic_numbers"^^xsd:string .
+
+dataind:atomic_structure_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "atomic structure"^^xsd:string .
+
+dataind:bulk_modulus_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "bulk_modulus"^^xsd:string .
+
+dataind:elastic_tensor_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "elastic_tensor"^^xsd:string .
+
+dataind:energy_above_hull_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "energy_above_hull"^^xsd:string .
+
+dataind:formation_energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "formation_energy"^^xsd:string .
+
+dataind:miscibility_gap_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "miscibility_gap"^^xsd:string .
+
+dataind:phase_stability_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "phase_stability"^^xsd:string .
+
+dataind:phonon_band_structure_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "phonon_band_structure"^^xsd:string .
+
+dataind:phonon_frequencies_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "phonon_frequencies"^^xsd:string .
+
+dataind:supercell_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "supercell"^^xsd:string .
+
+dataind:supercell_matrices_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "supercell_matrices"^^xsd:string .
+
+dataind:temperature_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "temperature"^^xsd:string .
+
+dataind:thermodynamic_stability_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "thermodynamic_stability"^^xsd:string .
+
+dataind:unit_cell_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "unit_cell"^^xsd:string .
+
+trind:adamw a owl:NamedIndividual,
+        train:Optimizer ;
+    rdfs:label "AdamW"^^xsd:string .
+
+trind:attention_dropout_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "attention_dropout_rate"^^xsd:string .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:dropout_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "dropout_rate"^^xsd:string .
+
+trind:ema_decay a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "ema_decay"^^xsd:string .
+
+trind:energy_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "energy_loss_weight"^^xsd:string .
+
+trind:force_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "force_loss_weight"^^xsd:string .
+
+trind:hienet_hienet_attention_dropout_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet attention_dropout_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:attention_dropout_rate .
+
+trind:hienet_hienet_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:hienet_hienet_dropout_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet dropout_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:dropout_rate .
+
+trind:hienet_hienet_ema_decay_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet ema_decay value"^^xsd:string ;
+    train:ofHyperparameter trind:ema_decay .
+
+trind:hienet_hienet_energy_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet energy_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:energy_loss_weight .
+
+trind:hienet_hienet_force_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet force_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:force_loss_weight .
+
+trind:hienet_hienet_huber_delta_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet huber_delta value"^^xsd:string ;
+    train:ofHyperparameter trind:huber_delta .
+
+trind:hienet_hienet_learning_rate_scheduler_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet learning_rate_scheduler value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate_scheduler .
+
+trind:hienet_hienet_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:hienet_hienet_max_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet max_learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:max_learning_rate .
+
+trind:hienet_hienet_min_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet min_learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:min_learning_rate .
+
+trind:hienet_hienet_number_of_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet number_of_epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_epochs .
+
+trind:hienet_hienet_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:hienet_hienet_stress_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet stress_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:stress_loss_weight .
+
+trind:hienet_hienet_warmup_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet warmup_epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:warmup_epochs .
+
+trind:hienet_hienet_warmup_factor_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet warmup_factor value"^^xsd:string ;
+    train:ofHyperparameter trind:warmup_factor .
+
+trind:hienet_hienet_weight_decay_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "hienet HIENet weight_decay value"^^xsd:string ;
+    train:ofHyperparameter trind:weight_decay .
+
+trind:hienet_mptrj_training a owl:NamedIndividual,
+        train:MachineLearningTrainingRun,
+        train:PretrainingRun ;
+    rdfs:label "hienet_mptrj_training"^^xsd:string ;
+    rdfs:comment "HIENet was trained on the MPtrj dataset (1.58M crystal structures) with a 95%/5% train/validation split for 250 epochs using the AdamW optimizer with cosine annealing learning rate schedule. The loss function combines Huber losses for energy, force, and stress predictions with weights λE=1.0, λF=1.0, λσ=0.01. An exponential moving average (EMA) of model parameters with decay 0.999 was maintained."^^xsd:string ;
+    train:hasHyperparameterValue trind:hienet_hienet_attention_dropout_rate_value,
+        trind:hienet_hienet_batch_size_value,
+        trind:hienet_hienet_dropout_rate_value,
+        trind:hienet_hienet_ema_decay_value,
+        trind:hienet_hienet_energy_loss_weight_value,
+        trind:hienet_hienet_force_loss_weight_value,
+        trind:hienet_hienet_huber_delta_value,
+        trind:hienet_hienet_learning_rate_scheduler_value,
+        trind:hienet_hienet_learning_rate_value,
+        trind:hienet_hienet_max_learning_rate_value,
+        trind:hienet_hienet_min_learning_rate_value,
+        trind:hienet_hienet_number_of_epochs_value,
+        trind:hienet_hienet_optimizer_value,
+        trind:hienet_hienet_stress_loss_weight_value,
+        trind:hienet_hienet_warmup_epochs_value,
+        trind:hienet_hienet_warmup_factor_value,
+        trind:hienet_hienet_weight_decay_value ;
+    train:trainsModelVariant archind:hienet_hienet_model_variant ;
+    train:usesDataset dataind:mptrj ;
+    train:usesLoss trind:huberloss ;
+    train:usesObjectiveFunction trind:huberloss ;
+    train:usesOptimizer trind:adamw .
+
+trind:huber_delta a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "huber_delta"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:learning_rate_scheduler a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate_scheduler"^^xsd:string .
+
+trind:max_learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_learning_rate"^^xsd:string .
+
+trind:min_learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "min_learning_rate"^^xsd:string .
+
+trind:number_of_epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_epochs"^^xsd:string .
+
+trind:optimizer a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "optimizer"^^xsd:string .
+
+trind:stress_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "stress_loss_weight"^^xsd:string .
+
+trind:warmup_epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "warmup_epochs"^^xsd:string .
+
+trind:warmup_factor a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "warmup_factor"^^xsd:string .
+
+trind:weight_decay a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "weight_decay"^^xsd:string .
+
+archind:hienet_hienet_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "hienet HIENet"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:hienet_hienet_architecture .
+
+dataind:composition_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "composition"^^xsd:string .
+
+dataind:materials_project a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Materials_Project"^^xsd:string .
+
+trind:huberloss a owl:NamedIndividual,
+        train:LossFunction,
+        train:ObjectiveFunction ;
+    rdfs:label "HuberLoss"^^xsd:string .
+
+dataind:atomic_number_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic_number"^^xsd:string .
+
+dataind:crystal_graph_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "crystal graph"^^xsd:string .
+
+dataind:edge_vectors_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "edge_vectors"^^xsd:string .
+
+dataind:interatomic_distances_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "interatomic_distances"^^xsd:string .
+
+dataind:lattice_vectors_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "lattice_vectors"^^xsd:string .
+
+dataind:mptrj a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MPtrj"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_graph_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 1580000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_number_attribute,
+        dataind:atomic_positions_attribute,
+        dataind:edge_vectors_attribute,
+        dataind:interatomic_distances_attribute,
+        dataind:lattice_vectors_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute,
+        dataind:stress_tensor_attribute ;
+    data:wasDerivedFromDataset dataind:materials_project .
+
+dataind:atomic_positions_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic_positions"^^xsd:string .
+
+dataind:energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "energy"^^xsd:string .
+
+dataind:forces_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "forces"^^xsd:string .
+
+dataind:stress_tensor_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "stress_tensor"^^xsd:string .
+
+dataind:crystal_structure_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "crystal_structure"^^xsd:string .
+
+dataind:crystal_structure_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "crystal structure"^^xsd:string .
+
+dataind:dft_labelling_method a owl:NamedIndividual,
+        data:LabellingMethod ;
+    rdfs:label "DFT"^^xsd:string .

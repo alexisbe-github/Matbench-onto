@@ -2,41 +2,359 @@
   "model": {
     "family": {
       "value": "ESNet",
-      "evidence": "yaml:model_name"
+      "evidence": "YAML model_name: ESNet"
     },
     "variant": {
       "value": "esnet",
-      "evidence": "yaml:model_key"
+      "evidence": "YAML model_name: ESNet, lowercased and underscored"
     },
     "parameter_number": {
       "value": 5429033,
-      "evidence": "yaml:model_params"
+      "evidence": "YAML model_params: 5429033"
     }
   },
-  "architectures": [
-    {
-      "name": {
-        "value": "Graph Neural Network",
-        "evidence": "pdf:notes_description - 'ESNet is a graph neural network model designed for predicting the energy.'"
-      },
+  "architectures": {
+    "ESNet": {
       "ontology_class": {
         "value": "GraphNeuralNetworkArchitecture",
-        "evidence": "ontology:architecture.ttl - GraphNeuralNetworkArchitecture is a subclass of NeuralNetworkArchitecture"
+        "evidence": "PDF lines 8-10: ESNet builds on existing models based on crystal structure graph; PDF lines 46-47: graph neural network encoders based on SE(3) invariance; ontology: GraphNeuralNetworkArchitecture is a subclass of NeuralNetworkArchitecture"
       },
       "parameter_number": {
         "value": 5429033,
-        "evidence": "yaml:model_params"
+        "evidence": "YAML model_params: 5429033"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "JARVIS"
+        ],
+        "evidence": "PDF lines 23-24: Materials Project and Jarvis datasets; PDF lines 366-367: evaluate on Materials Project and Jarvis"
+      },
+      "hyperparameters": {
+        "value": [],
+        "evidence": "No explicit hyperparameters listed for ESNet as a whole in the paper"
+      },
+      "components": {
+        "value": [
+          "Elemental Composition Encoding Module",
+          "Crystal Structure Encoding Module",
+          "Feature Fusion Module"
+        ],
+        "evidence": "PDF lines 82-95: three modules described; PDF lines 202-205: three main modules listed"
+      },
+      "backbone_architecture": {
+        "value": "iComFormer",
+        "evidence": "PDF lines 303-325: iComFormer used as crystal structure encoder within ESNet"
+      },
+      "head_architecture": {
+        "value": null,
+        "evidence": "No explicit prediction head architecture named separately from the fusion module"
+      },
+      "layer_count": {
+        "value": null,
+        "evidence": "PDF line 319 mentions N=3 or N=4 for iComFormer node-wise transformer layers depending on task, but total ESNet layer count not specified"
+      },
+      "hidden_dimension": {
+        "value": null,
+        "evidence": "No explicit hidden dimension reported for ESNet"
+      }
+    },
+    "iComFormer": {
+      "ontology_class": {
+        "value": "GraphTransformerArchitecture",
+        "evidence": "PDF lines 168-173: iComformer is a Transformer-based crystal graph encoder; PDF lines 303-304: iComFormer processes graph-structured data; ontology: GraphTransformerArchitecture is a subclass of TransformerArchitecture"
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "Parameter count for iComFormer alone not specified"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "JARVIS"
+        ],
+        "evidence": "PDF lines 372-378: iComFormer evaluated on Materials Project and Jarvis datasets"
+      },
+      "hyperparameters": {
+        "value": [
+          "node_wise_transformer_layers"
+        ],
+        "evidence": "PDF line 319: N = 3 for bulk/shear modulus, N = 4 for other properties"
+      },
+      "components": {
+        "value": [
+          "Node-wise Transformer Layer",
+          "Edge-wise Transformer Layer"
+        ],
+        "evidence": "PDF lines 310-319: Node-wise transformer layer and Edge-wise transformer layer described"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "iComFormer itself is the backbone; no sub-backbone mentioned"
+      },
+      "head_architecture": {
+        "value": null,
+        "evidence": "No explicit head architecture mentioned for iComFormer"
+      },
+      "layer_count": {
+        "value": 4,
+        "evidence": "PDF line 319: N = 4 for other properties (default); N = 3 for bulk/shear modulus"
+      },
+      "hidden_dimension": {
+        "value": null,
+        "evidence": "No explicit hidden dimension reported for iComFormer"
+      }
+    },
+    "RotatE": {
+      "ontology_class": {
+        "value": "MachineLearningArchitecture",
+        "evidence": "PDF lines 232-233: RotatE model for knowledge graph embedding; ontology: MachineLearningArchitecture is the most general class for ML architectures"
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "No parameter count specified for RotatE"
+      },
+      "datasets": {
+        "value": [
+          "Element Property Knowledge Graph"
+        ],
+        "evidence": "PDF lines 214-227: element knowledge graph constructed from periodic table data"
+      },
+      "hyperparameters": {
+        "value": [
+          "sampling_temperature"
+        ],
+        "evidence": "PDF line 241: α defined as the sampling temperature"
+      },
+      "components": {
+        "value": [],
+        "evidence": "No sub-components described for RotatE"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "No backbone architecture mentioned for RotatE"
+      },
+      "head_architecture": {
+        "value": null,
+        "evidence": "No head architecture mentioned for RotatE"
+      },
+      "layer_count": {
+        "value": null,
+        "evidence": "No layer count specified for RotatE"
+      },
+      "hidden_dimension": {
+        "value": null,
+        "evidence": "No hidden dimension specified for RotatE"
+      }
+    },
+    "Content-Guided Attention": {
+      "ontology_class": {
+        "value": "AttentionBasedArchitecture",
+        "evidence": "PDF lines 328-330: content-guided attention (CGA) feature fusion method; PDF lines 331-333: two-step attention mechanism; ontology: AttentionBasedArchitecture is a subclass of NeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "No parameter count specified for CGA"
       },
       "datasets": {
         "value": [],
-        "evidence": "No specific training datasets mentioned in the YAML or PDF context for ESNet"
+        "evidence": "CGA is a fusion method, not directly associated with a specific dataset"
       },
-      "hyperparameters": [],
-      "hyperparameter_details": []
+      "hyperparameters": {
+        "value": [
+          "convolutional_kernel_size",
+          "number_of_groups"
+        ],
+        "evidence": "PDF lines 346, 361: C1×1, C7×7 convolutional layers; PDF line 362: number of groups set to C"
+      },
+      "components": {
+        "value": [
+          "Global Average Pooling",
+          "Global Maximum Pooling",
+          "Group Convolutional Layer"
+        ],
+        "evidence": "PDF lines 347-350: GAP, GMP operations; PDF line 361: group convolutional layer"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "No backbone architecture mentioned for CGA"
+      },
+      "head_architecture": {
+        "value": null,
+        "evidence": "No head architecture mentioned for CGA"
+      },
+      "layer_count": {
+        "value": null,
+        "evidence": "No layer count specified for CGA"
+      },
+      "hidden_dimension": {
+        "value": null,
+        "evidence": "No hidden dimension specified for CGA"
+      }
     }
-  ],
+  },
   "training": {
-    "training_runs": [],
-    "training_run_details": []
+    "training_runs": {
+      "value": [
+        "esnet_pretraining"
+      ],
+      "evidence": "PDF lines 366-369: ESNet evaluated on Materials Project and Jarvis benchmark datasets, implying a training run"
+    },
+    "esnet_pretraining": {
+      "type": {
+        "value": "PretrainingRun",
+        "evidence": "PDF lines 366-369: ESNet trained on Materials Project and Jarvis datasets for material property prediction; ontology: PretrainingRun is a subclass of MachineLearningTrainingRun"
+      },
+      "architectures": {
+        "value": [
+          "ESNet"
+        ],
+        "evidence": "PDF lines 8-10: ESNet is the proposed framework"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "JARVIS"
+        ],
+        "evidence": "PDF lines 366-367: evaluate on Materials Project and Jarvis"
+      },
+      "optimizer": {
+        "value": null,
+        "evidence": "No optimizer specified in the paper"
+      },
+      "loss_function": {
+        "value": null,
+        "evidence": "No explicit loss function named; PDF line 373 mentions MAE as evaluation metric, not loss"
+      },
+      "description": {
+        "value": "ESNet trained on Materials Project and Jarvis datasets for predicting material properties including formation energy, band gap, bulk modulus, shear modulus, total energy, and Ehull.",
+        "evidence": "PDF lines 366-418: experimental evaluation on Materials Project and Jarvis datasets"
+      },
+      "objective_function": {
+        "value": null,
+        "evidence": "No explicit objective function specified"
+      },
+      "sampling_method": {
+        "value": null,
+        "evidence": "No sampling method specified"
+      },
+      "uses_batched_selection": {
+        "value": null,
+        "evidence": "No active learning or batched selection mentioned"
+      },
+      "initialized_from_model_materialization": {
+        "value": null,
+        "evidence": "No checkpoint or pretrained initialization mentioned"
+      },
+      "teacher_model": {
+        "value": null,
+        "evidence": "No distillation setup described"
+      },
+      "student_model": {
+        "value": null,
+        "evidence": "No distillation setup described"
+      },
+      "model_materializations": {
+        "value": [
+          "ESNet"
+        ],
+        "evidence": "PDF lines 8-10: ESNet is the resulting trained model"
+      }
+    }
+  },
+  "datasets": {
+    "dataset_names": {
+      "value": [
+        "Materials Project",
+        "JARVIS"
+      ],
+      "evidence": "PDF lines 23-24, 366-367: Materials Project and Jarvis datasets used"
+    },
+    "Materials Project": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "PDF lines 382-383: Materials Project-2018.6.1 dataset; ontology: Dataset is the base class"
+      },
+      "number_of_samples": {
+        "value": 69239,
+        "evidence": "PDF lines 389-391: 60000 + 5000 + 4239 = 69239 crystals for formation energy and bandgap; PDF lines 391-392: 4664 + 393 + 393 = 5450 for bulk/shear moduli"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF lines 88-91: crystal graph with SE(3) invariance and SO(3) equivariance"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF lines 382-383: Materials Project data from density functional theory calculations"
+      },
+      "input_features": {
+        "value": [
+          "atomic_position",
+          "lattice_matrix",
+          "elemental_composition",
+          "atomic_properties"
+        ],
+        "evidence": "PDF lines 122-124: A (atom features), P (positions), L (lattice matrix); PDF lines 283-298: atomic properties one-hot encoded"
+      },
+      "target_features": {
+        "value": [
+          "formation_energy",
+          "band_gap",
+          "bulk_modulus",
+          "shear_modulus"
+        ],
+        "evidence": "PDF lines 388-392: formation energy, bandgap, bulk moduli, shear moduli prediction tasks"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "No derivation mentioned for Materials Project dataset"
+      }
+    },
+    "JARVIS": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "PDF lines 396-397: JARVIS dataset; ontology: Dataset is the base class"
+      },
+      "number_of_samples": {
+        "value": 55722,
+        "evidence": "PDF lines 412-416: 44578 + 5572 + 5572 = 55722 for formation energy, total energy, band gap (OPT); 44296 + 5537 + 5537 = 55370 for Ehull; 14537 + 1817 + 1817 = 18171 for band gap (MBJ)"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF lines 88-91: crystal graph representation used for JARVIS"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF lines 404-406: JARVIS-DFT computed using Density Functional Theory with OptB88vdW and TBmBJ methods"
+      },
+      "input_features": {
+        "value": [
+          "atomic_position",
+          "lattice_matrix",
+          "elemental_composition",
+          "atomic_properties"
+        ],
+        "evidence": "PDF lines 122-124: A, P, L inputs; PDF lines 283-298: atomic properties"
+      },
+      "target_features": {
+        "value": [
+          "formation_energy",
+          "band_gap_opt",
+          "total_energy",
+          "band_gap_mbj",
+          "ehull"
+        ],
+        "evidence": "PDF lines 410-416: formation energy, band gap (OPT), band gap (MBJ), total energy, Ehull prediction tasks"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "No derivation mentioned for JARVIS dataset"
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\esnet.pdf",
+    "pdf_url": "https://www.researchsquare.com/article/rs-5979703/v1.pdf?c=1744393806000",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\esnet.yml"
   }
 }

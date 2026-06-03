@@ -2,11 +2,11 @@
   "model": {
     "family": {
       "value": "eSEN",
-      "evidence": "model_name: eSEN-30M-MP"
+      "evidence": "model_name: eSEN-30M-MP; PDF: 'we present a novel MLIP called eSEN'"
     },
     "variant": {
       "value": "esen_30m_mp",
-      "evidence": "model_name: eSEN-30M-MP"
+      "evidence": "model_name: eSEN-30M-MP; model_key: eSEN-30m-mp"
     },
     "parameter_number": {
       "value": 30085121,
@@ -17,20 +17,20 @@
     "eSEN": {
       "ontology_class": {
         "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
-        "evidence": "eSEN is a message-passing neural network with SO2 convolution layers from eSCN, equivariant; architectureonto defines EquivariantMessagePassingNeuralNetworkArchitecture as subclass of EquivariantGraphNeuralNetworkArchitecture"
+        "evidence": "PDF Section 4: 'eSEN is a message-passing neural network'; PDF: 'equivariant Smooth Energy Network'; architectureonto: EquivariantMessagePassingNeuralNetworkArchitecture rdfs:subClassOf EquivariantGraphNeuralNetworkArchitecture"
       },
       "parameter_number": {
         "value": 30085121,
-        "evidence": "model_params: 30085121; Section 6.1: eSEN with 30M parameters"
+        "evidence": "model_params: 30085121; PDF Table 6: MPTrj-30M configuration"
       },
       "datasets": {
         "value": [
           "MPTrj",
+          "SPICE-MACE-OFF",
           "OMat24",
-          "sAlex",
-          "SPICE-MACE-OFF"
+          "sAlex"
         ],
-        "evidence": "Section 6.1: trained on MPTrj; Section 6.1: eSEN-30M-OAM pre-trained on OMat24 then fine-tuned on sAlex and MPTrj; Section 6.3: trained on SPICE-MACE-OFF"
+        "evidence": "PDF Section 5: 'models trained on the MPTrj and the SPICE-MACE-OFF datasets'; PDF Section 6.1: 'pre-trained on the OMat24 dataset then fine-tuned on the subsampled Alexandria (sAlex) dataset and MPTrj dataset'"
       },
       "hyperparameters": {
         "value": [
@@ -40,235 +40,241 @@
           "max_learning_rate",
           "batch_size",
           "optimizer",
-          "learning_rate_schedule",
+          "weight_decay",
           "gradient_clipping_norm",
           "model_ema_decay",
-          "weight_decay",
           "energy_loss_coefficient",
           "force_loss_coefficient",
           "stress_loss_coefficient",
-          "num_epochs",
           "cutoff_radius",
-          "num_radial_basis_functions",
+          "number_of_radial_basis_functions",
           "radial_basis_function_type",
           "max_degree_Lmax",
           "max_order_Mmax",
-          "num_channels",
-          "num_eSEN_layer_blocks"
+          "number_of_channels",
+          "number_of_eSEN_layer_blocks"
         ],
-        "evidence": "Table 6: Hyper-parameters for eSEN variants"
+        "evidence": "PDF Table 6: Hyper-parameters for eSEN variants"
       },
       "hyperparameter_details": {
         "learning_rate": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "4e-4",
-            "evidence": "Table 6: Maximum learning rate 4×10−4"
+            "evidence": "PDF Table 6: Maximum learning rate 4×10−4"
           }
         },
         "warmup_epochs": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "0.1",
-            "evidence": "Table 6: Warmup epochs 0.1"
+            "evidence": "PDF Table 6: Warmup epochs 0.1"
           }
         },
         "warmup_factor": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "0.2",
-            "evidence": "Table 6: Warmup factor 0.2"
+            "evidence": "PDF Table 6: Warmup factor 0.2"
           }
         },
         "max_learning_rate": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "4e-4",
-            "evidence": "Table 6: Maximum learning rate 4×10−4"
+            "evidence": "PDF Table 6: Maximum learning rate 4×10−4"
           }
         },
         "batch_size": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "512",
-            "evidence": "Table 6: Batch size 512 for MPTrj-30M"
+            "evidence": "PDF Table 6: Batch size 512 for MPTrj-30M"
           }
         },
         "optimizer": {
           "ontology_class": {
-            "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "value": "Optimizer",
+            "evidence": "trainingonto: Optimizer"
           },
           "value": {
             "value": "AdamW",
-            "evidence": "Table 6: Optimizer AdamW"
-          }
-        },
-        "learning_rate_schedule": {
-          "ontology_class": {
-            "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
-          },
-          "value": {
-            "value": "Cosine",
-            "evidence": "Table 6: Learning rate scheduling Cosine"
-          }
-        },
-        "gradient_clipping_norm": {
-          "ontology_class": {
-            "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
-          },
-          "value": {
-            "value": "100",
-            "evidence": "Table 6: Gradient clipping norm 100"
-          }
-        },
-        "model_ema_decay": {
-          "ontology_class": {
-            "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
-          },
-          "value": {
-            "value": "0.999",
-            "evidence": "Table 6: Model EMA decay 0.999"
+            "evidence": "PDF Table 6: Optimizer AdamW"
           }
         },
         "weight_decay": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "1e-3",
-            "evidence": "Table 6: Weight decay 1×10−3"
+            "evidence": "PDF Table 6: Weight decay 1×10−3"
+          }
+        },
+        "gradient_clipping_norm": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": "100",
+            "evidence": "PDF Table 6: Gradient clipping norm 100"
+          }
+        },
+        "model_ema_decay": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": "0.999",
+            "evidence": "PDF Table 6: Model EMA decay 0.999"
           }
         },
         "energy_loss_coefficient": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "20",
-            "evidence": "Table 6: Energy loss coefficient 20 for MPTrj-30M"
+            "evidence": "PDF Table 6: Energy loss coefficient 20 for MPTrj-30M"
           }
         },
         "force_loss_coefficient": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "20",
-            "evidence": "Table 6: Force loss coefficient 20 for MPTrj-30M"
+            "evidence": "PDF Table 6: Force loss coefficient 20 for MPTrj-30M"
           }
         },
         "stress_loss_coefficient": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "5",
-            "evidence": "Table 6: Stress loss coefficient 5 for MPTrj-30M"
-          }
-        },
-        "num_epochs": {
-          "ontology_class": {
-            "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
-          },
-          "value": {
-            "value": "100",
-            "evidence": "Table 6: Number of epochs 100 (60+40 for MPTrj-30M)"
+            "evidence": "PDF Table 6: Stress loss coefficient 5 for MPTrj-30M"
           }
         },
         "cutoff_radius": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "6",
-            "evidence": "Table 6: Cutoff radius (Å) 6 for MPTrj-30M"
+            "evidence": "PDF Table 6: Cutoff radius (Å) 6 for MPTrj-30M; PDF Section 5.3: 'distance cutoff (6Å)'"
           }
         },
-        "num_radial_basis_functions": {
+        "number_of_radial_basis_functions": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "10",
-            "evidence": "Table 6: Number of radial basis functions 10 for MPTrj-30M"
+            "evidence": "PDF Table 6: Number of radial basis functions 10 for MPTrj-30M; PDF Section 5.3: '10 in eSEN's default setting'"
           }
         },
         "radial_basis_function_type": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "Gaussian",
-            "evidence": "Table 6: Radial basis function Gaussian for MPTrj-30M"
+            "evidence": "PDF Table 6: Radial basis function Gaussian for MPTrj-30M; PDF Section 5.3: 'Gaussian radial basis in the default setting'"
           }
         },
         "max_degree_Lmax": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "3",
-            "evidence": "Table 6: Maximum degree Lmax 3 for MPTrj-30M"
+            "evidence": "PDF Table 6: Maximum degree Lmax 3 for MPTrj-30M"
           }
         },
         "max_order_Mmax": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "2",
-            "evidence": "Table 6: Maximum order Mmax 2 for MPTrj-30M"
+            "evidence": "PDF Table 6: Maximum order Mmax 2 for MPTrj-30M"
           }
         },
-        "num_channels": {
+        "number_of_channels": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "128",
-            "evidence": "Table 6: Number of channels Nchannel 128"
+            "evidence": "PDF Table 6: Number of channels Nchannel 128"
           }
         },
-        "num_eSEN_layer_blocks": {
+        "number_of_eSEN_layer_blocks": {
           "ontology_class": {
             "value": "MachineLearningHyperparameter",
-            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class"
+            "evidence": "trainingonto: MachineLearningHyperparameter"
           },
           "value": {
             "value": "10",
-            "evidence": "Table 6: Number of eSEN layer blocks 10 for MPTrj-30M"
+            "evidence": "PDF Table 6: Number of eSEN layer blocks 10 for MPTrj-30M"
           }
         }
+      },
+      "components": {
+        "value": [
+          "SO2 convolution",
+          "equivariant spherical channel network",
+          "edgewise convolution",
+          "nodewise feed-forward network",
+          "equivariant layer normalization",
+          "gated non-linearity",
+          "envelope function"
+        ],
+        "evidence": "PDF Section 4: 'eSEN utilizes the same SO2 convolution layer from the equivariant spherical channel network (eSCN) architecture'; PDF Figure 2: Edgewise Convolution, Nodewise Feed-Forward; PDF Section 4: 'equivariant layer normalization', 'SiLU-based gated non-linearity'; PDF Section 5.3: 'envelope function'"
+      },
+      "backbone_architecture": {
+        "value": "eSCN",
+        "evidence": "PDF Section 4: 'eSEN utilizes the same SO2 convolution layer from the equivariant spherical channel network (eSCN) architecture'"
+      },
+      "head_architecture": {
+        "value": null,
+        "evidence": "PDF Section 4: final-layer L=0 features used to predict nodewise energy summed for total potential energy; no separate named head architecture mentioned"
+      },
+      "layer_count": {
+        "value": 10,
+        "evidence": "PDF Table 6: Number of eSEN layer blocks 10 for MPTrj-30M"
+      },
+      "hidden_dimension": {
+        "value": 128,
+        "evidence": "PDF Table 6: Number of channels Nchannel 128"
       }
     }
   },
@@ -278,67 +284,357 @@
         "direct_force_pretraining",
         "conservative_finetuning"
       ],
-      "evidence": "Section 5.1: direct-force pre-training and conservative fine-tuning; Section 6.1: 60 epochs of direct-force pre-training and 40 epochs of conservative fine-tuning"
+      "evidence": "PDF Section 5.1: 'direct-force pre-training' and 'conservative fine-tuning from a pre-trained direct-force backbone'; PDF Section 6.1: '60 epochs of direct-force pre-training and 40 epochs of conservative fine-tuning'"
     },
     "training_run_details": {
       "direct_force_pretraining": {
         "type": {
           "value": "PretrainingRun",
-          "evidence": "Section 5.1: direct-force pre-training strategy; trainingonto.ttl: PretrainingRun class"
+          "evidence": "PDF Section 5.1: 'direct-force pre-training strategy'; trainingonto: PretrainingRun"
         },
         "architectures": {
           "value": [
             "eSEN"
           ],
-          "evidence": "Section 5.1: direct-force pre-training of eSEN models"
+          "evidence": "PDF Section 5.1: direct-force pre-training of eSEN models"
         },
         "datasets": {
           "value": [
             "MPTrj"
           ],
-          "evidence": "Section 5.1: trained on the MPTrj dataset; Section 6.1: 60 epochs of direct-force pre-training on MPTrj"
+          "evidence": "PDF Section 5.1: '2-layer eSEN models trained on the MPTrj dataset'; PDF Section 6.1: trained on MPTrj"
         },
         "optimizer": {
           "value": "AdamW",
-          "evidence": "Table 6: Optimizer AdamW"
+          "evidence": "PDF Table 6: Optimizer AdamW"
         },
         "loss_function": {
           "value": null,
-          "evidence": "Not explicitly named beyond per-atom energy MAE, force l2 loss, stress MAE loss in Table 6"
+          "evidence": "PDF Section 5.1 mentions 'direct-force prediction head' but no specific loss function name given for pre-training; PDF Table 6 lists energy, force, stress loss coefficients but not named loss functions"
         },
         "description": {
-          "value": "Direct-force pre-training of eSEN on MPTrj for 60 epochs using DeNS with noising probability 0.5, Gaussian noise std 0.1 Å, and DeNS loss coefficient 10. Uses per-atom energy MAE loss, force l2 loss, and stress MAE loss.",
-          "evidence": "Section 5.1: direct-force pre-training; Table 6: hyperparameters; Appendix D: DeNS details"
+          "value": "Direct-force pre-training of eSEN with DeNS (Denoising Non-equilibrium Structures) on MPTrj for 60 epochs using a direct-force prediction head, with Gaussian noise (std 0.1Å) and DeNS loss coefficient 10.",
+          "evidence": "PDF Section 5.1: 'Direct-force pre-training' with DeNS; PDF Table 6: DeNS with noising probability 0.5, std 0.1Å, coefficient 10; PDF Section 6.1: 60 epochs of direct-force pre-training"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "Not explicitly named beyond loss coefficients in Table 6"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No sampling method mentioned for pre-training"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "PDF Section 5.1: 'from-scratch conservative model' implies direct-force pre-training starts from scratch"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "eSEN-30M-MP-pretrained"
+          ],
+          "evidence": "PDF Section 5.1: 'start from a direct-force model trained for 60 epochs' produces a pre-trained backbone"
         }
       },
       "conservative_finetuning": {
         "type": {
           "value": "MachineLearningFinetuningRun",
-          "evidence": "Section 5.1: conservative fine-tuning from pre-trained direct-force backbone; trainingonto.ttl: MachineLearningFinetuningRun class"
+          "evidence": "PDF Section 5.1: 'conservative fine-tuning from a pre-trained direct-force backbone'; trainingonto: MachineLearningFinetuningRun"
         },
         "architectures": {
           "value": [
             "eSEN"
           ],
-          "evidence": "Section 5.1: conservative fine-tuning of eSEN"
+          "evidence": "PDF Section 5.1: conservative fine-tuning of eSEN"
         },
         "datasets": {
           "value": [
             "MPTrj"
           ],
-          "evidence": "Section 6.1: fine-tuned on MPTrj for 40 epochs"
+          "evidence": "PDF Section 5.1: '2-layer eSEN models trained on the MPTrj dataset'; PDF Section 6.1: trained on MPTrj"
         },
         "optimizer": {
           "value": "AdamW",
-          "evidence": "Table 6: Optimizer AdamW"
+          "evidence": "PDF Table 6: Optimizer AdamW"
         },
         "loss_function": {
           "value": null,
-          "evidence": "Not explicitly named beyond per-atom energy MAE, force l2 loss, stress MAE loss in Table 6"
+          "evidence": "PDF Table 6 lists per-atom energy MAE loss, force l2 loss, stress MAE loss but no specific named loss function"
         },
         "description": {
-          "value": "Conservative fine-tuning of eSEN on MPTrj for 40 epochs starting from direct-force pre-trained backbone. Forces computed as negative gradient of PES. Uses per-atom energy MAE loss, force l2 loss, and stress MAE loss.",
-          "evidence": "Section 5.1: conservative fine-tuning; Section 6.1: 40 epochs of conservative fine-tuning"
+          "value": "Conservative fine-tuning of eSEN starting from direct-force pre-trained backbone for 40 epochs on MPTrj, removing the direct-force prediction head and using conservative force prediction (forces via back-propagation).",
+          "evidence": "PDF Section 5.1: 'remove its direct-force prediction head, and fine-tune using conservative force prediction'; PDF Section 6.1: 40 epochs of conservative fine-tuning"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "Not explicitly named beyond loss coefficients"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No sampling method mentioned for fine-tuning"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": "eSEN-30M-MP-pretrained",
+          "evidence": "PDF Section 5.1: 'start from a direct-force model trained for 60 epochs, remove its direct-force prediction head, and fine-tune'"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "eSEN-30M-MP"
+          ],
+          "evidence": "PDF Section 6.1: 'eSEN-30M-MP' is the final model after fine-tuning"
+        }
+      }
+    },
+    "datasets": {
+      "value": [
+        "MPTrj",
+        "SPICE-MACE-OFF",
+        "OMat24",
+        "sAlex",
+        "TM23",
+        "MD22"
+      ],
+      "evidence": "PDF Section 5: MPTrj, SPICE-MACE-OFF; PDF Section 6.1: OMat24, sAlex; PDF Section 5: TM23, MD22 for MD simulations"
+    },
+    "dataset_details": {
+      "MPTrj": {
+        "ontology_class": {
+          "value": "TrainingDataset",
+          "evidence": "PDF Section 5: 'models trained on the MPTrj dataset'; trainingonto: TrainingDataset"
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "No explicit sample count given in paper for MPTrj"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF: MLIP context with atomic positions, lattice parameters; crystal structure relaxation trajectories"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF Section 2.1: 'training dataset of DFT calculations'; MPTrj is a DFT relaxation trajectory dataset"
+        },
+        "input_features": {
+          "value": [
+            "atomic_positions",
+            "atomic_numbers",
+            "lattice_parameters"
+          ],
+          "evidence": "PDF Section 2.1: E(r, a, l) where r=positions, a=atomic numbers, l=lattice parameters"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces",
+            "stress"
+          ],
+          "evidence": "PDF Section 2.1: 'predict the exact same properties as DFT' - energy, forces, stress"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "No explicit derivation mentioned for MPTrj"
+        }
+      },
+      "SPICE-MACE-OFF": {
+        "ontology_class": {
+          "value": "TrainingDataset",
+          "evidence": "PDF Section 6.3: 'train and evaluate eSEN models on the SPICE-MACE-OFF dataset'; trainingonto: TrainingDataset"
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "No explicit sample count given in paper"
+        },
+        "data_representation": {
+          "value": "molecule graph",
+          "evidence": "PDF Section 6.3: organic molecules dataset"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF context: DFT calculations for molecular systems"
+        },
+        "input_features": {
+          "value": [
+            "atomic_positions",
+            "atomic_numbers"
+          ],
+          "evidence": "PDF Section 2.1: E(r, a) for molecular systems"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces"
+          ],
+          "evidence": "PDF Table 5: Energy and Force MAE reported"
+        },
+        "derived_from_dataset": {
+          "value": "SPICE",
+          "evidence": "PDF Section 6.3: 'built upon the SPICE dataset'"
+        }
+      },
+      "OMat24": {
+        "ontology_class": {
+          "value": "TrainingDataset",
+          "evidence": "PDF Section 6.1: 'pre-trained on the OMat24 dataset'; trainingonto: TrainingDataset"
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "No explicit sample count given in paper"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF: inorganic materials dataset"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF context: DFT calculations"
+        },
+        "input_features": {
+          "value": [
+            "atomic_positions",
+            "atomic_numbers",
+            "lattice_parameters"
+          ],
+          "evidence": "PDF Section 2.1: E(r, a, l)"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces",
+            "stress"
+          ],
+          "evidence": "PDF Section 2.1: energy, forces, stress"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "No explicit derivation mentioned"
+        }
+      },
+      "sAlex": {
+        "ontology_class": {
+          "value": "TrainingDataset",
+          "evidence": "PDF Section 6.1: 'fine-tuned on the subsampled Alexandria (sAlex) dataset'; trainingonto: TrainingDataset"
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "No explicit sample count given; 'subsampled' mentioned"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF: materials dataset"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF context: DFT calculations"
+        },
+        "input_features": {
+          "value": [
+            "atomic_positions",
+            "atomic_numbers",
+            "lattice_parameters"
+          ],
+          "evidence": "PDF Section 2.1: E(r, a, l)"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces",
+            "stress"
+          ],
+          "evidence": "PDF Section 2.1: energy, forces, stress"
+        },
+        "derived_from_dataset": {
+          "value": "Alexandria",
+          "evidence": "PDF Section 6.1: 'subsampled Alexandria (sAlex) dataset'"
+        }
+      },
+      "TM23": {
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF Section 5: TM23 used for MD simulation evaluation tasks; datasetonto: Dataset"
+        },
+        "number_of_samples": {
+          "value": 81,
+          "evidence": "PDF Section 5: '81 NVE MD simulations' based on 27 systems × 3 temperatures"
+        },
+        "data_representation": {
+          "value": "atomic structure",
+          "evidence": "PDF Section 5: MD samples of defect systems"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF Section A.1: 'ab initio MD protocol'"
+        },
+        "input_features": {
+          "value": [
+            "atomic_positions",
+            "atomic_numbers",
+            "lattice_parameters"
+          ],
+          "evidence": "PDF: NVE MD simulation context"
+        },
+        "target_features": {
+          "value": [],
+          "evidence": "TM23 used for evaluation only, not training targets"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "No explicit derivation mentioned"
+        }
+      },
+      "MD22": {
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF Section 5: MD22 used for MD simulation evaluation tasks; datasetonto: Dataset"
+        },
+        "number_of_samples": {
+          "value": 7,
+          "evidence": "PDF Section 5: '7 NVE MD simulations' based on 7 large molecules"
+        },
+        "data_representation": {
+          "value": "atomic structure",
+          "evidence": "PDF Section 5: MD samples of organic molecules"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF Section A.1: 'MD22 ab initio MD protocol'"
+        },
+        "input_features": {
+          "value": [
+            "atomic_positions",
+            "atomic_numbers"
+          ],
+          "evidence": "PDF: molecular MD simulation context"
+        },
+        "target_features": {
+          "value": [],
+          "evidence": "MD22 used for evaluation only, not training targets"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "No explicit derivation mentioned"
         }
       }
     }

@@ -1,0 +1,286 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:nequix_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "Nequix"^^xsd:string ;
+    arch:hasVariant archind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_model_variant,
+        archind:nequix_mp_pft_variant .
+
+trind:nequix_mp_pft_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "Nequix MP PFT"^^xsd:string ;
+    train:generatedBy trind:pft_fine_tuning .
+
+archind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_architecture a owl:NamedIndividual,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "EquivariantMessagePassingNeuralNetworkArchitecture"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_architecture_configuration ;
+    arch:hasParameterNumber 707658 .
+
+archind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EquivariantMessagePassingNeuralNetworkArchitecture architecture configuration"^^xsd:string .
+
+archind:nequix_mp_pft_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "nequix_mp_pft"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\nequix_mp_1_pft.yml" ;
+    arch:hasParameterNumber 707658 .
+
+dataind:atomic_structure_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "atomic structure"^^xsd:string .
+
+dataind:crystal_structure_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "crystal structure"^^xsd:string .
+
+dataind:force_constants_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "force constants"^^xsd:string .
+
+dataind:mdr_phonon_pbe a owl:NamedIndividual,
+        data:Dataset,
+        data:LabeledDataset ;
+    rdfs:label "MDR Phonon PBE"^^xsd:string ;
+    data:hasDataRepresentation dataind:crystal_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 9959 ;
+    data:usesAttributeAsInputFeature dataind:atomic_positions_attribute,
+        dataind:atomic_species_attribute,
+        dataind:supercell_structure_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:force_constants_attribute,
+        dataind:forces_attribute,
+        dataind:stress_attribute .
+
+dataind:mptrj a owl:NamedIndividual,
+        data:Dataset,
+        train:TrainingDataset ;
+    rdfs:label "MPtrj"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 145923 ;
+    data:usesAttributeAsInputFeature dataind:atomic_positions_attribute,
+        dataind:atomic_species_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute,
+        dataind:stress_attribute .
+
+dataind:supercell_structure_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "supercell structure"^^xsd:string .
+
+trind:adamw a owl:NamedIndividual,
+        train:Optimizer ;
+    rdfs:label "AdamW"^^xsd:string .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:co_train_ratio a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "co_train_ratio"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:loss_weight_energy a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_weight_energy"^^xsd:string .
+
+trind:loss_weight_force a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_weight_force"^^xsd:string .
+
+trind:loss_weight_force_constants a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_weight_force_constants"^^xsd:string .
+
+trind:loss_weight_stress a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_weight_stress"^^xsd:string .
+
+trind:nequix_mp_materialization a owl:NamedIndividual,
+        train:ModelMaterialization ;
+    rdfs:label "Nequix MP"^^xsd:string .
+
+trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequix_mp_pft EquivariantMessagePassingNeuralNetworkArchitecture batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_co_train_ratio_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequix_mp_pft EquivariantMessagePassingNeuralNetworkArchitecture co_train_ratio value"^^xsd:string ;
+    train:ofHyperparameter trind:co_train_ratio .
+
+trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequix_mp_pft EquivariantMessagePassingNeuralNetworkArchitecture learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_energy_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequix_mp_pft EquivariantMessagePassingNeuralNetworkArchitecture loss_weight_energy value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_weight_energy .
+
+trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_force_constants_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequix_mp_pft EquivariantMessagePassingNeuralNetworkArchitecture loss_weight_force_constants value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_weight_force_constants .
+
+trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_force_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequix_mp_pft EquivariantMessagePassingNeuralNetworkArchitecture loss_weight_force value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_weight_force .
+
+trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_stress_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequix_mp_pft EquivariantMessagePassingNeuralNetworkArchitecture loss_weight_stress value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_weight_stress .
+
+trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_num_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequix_mp_pft EquivariantMessagePassingNeuralNetworkArchitecture num_epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:num_epochs .
+
+trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_weight_decay_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequix_mp_pft EquivariantMessagePassingNeuralNetworkArchitecture weight_decay value"^^xsd:string ;
+    train:ofHyperparameter trind:weight_decay .
+
+trind:num_epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "num_epochs"^^xsd:string .
+
+trind:pft_fine_tuning a owl:NamedIndividual,
+        train:MachineLearningFinetuningRun ;
+    rdfs:label "pft_fine_tuning"^^xsd:string ;
+    rdfs:comment "Phonon fine-tuning of Nequix MP on MDR Phonon PBE dataset with co-training on MPtrj"^^xsd:string ;
+    train:hasHyperparameterValue trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_batch_size_value,
+        trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_co_train_ratio_value,
+        trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_learning_rate_value,
+        trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_energy_value,
+        trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_force_constants_value,
+        trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_force_value,
+        trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_stress_value,
+        trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_num_epochs_value,
+        trind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_weight_decay_value ;
+    train:initializedFromModelMaterialization trind:nequix_mp_materialization ;
+    train:trainsModelVariant archind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_model_variant ;
+    train:usesDataset dataind:mdr_phonon_pbe,
+        dataind:mptrj ;
+    train:usesLoss trind:pft_loss ;
+    train:usesObjectiveFunction trind:pft_loss ;
+    train:usesOptimizer trind:adamw ;
+    train:usesSamplingMethod trind:stochastic_hessian_column_sampling .
+
+trind:stochastic_hessian_column_sampling a owl:NamedIndividual,
+        train:SamplingMethod ;
+    rdfs:label "stochastic Hessian column sampling"^^xsd:string .
+
+trind:weight_decay a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "weight_decay"^^xsd:string .
+
+archind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "nequix_mp_pft EquivariantMessagePassingNeuralNetworkArchitecture"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_architecture .
+
+dataind:atomic_positions_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic positions"^^xsd:string .
+
+dataind:atomic_species_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic species"^^xsd:string .
+
+dataind:dft_labelling_method a owl:NamedIndividual,
+        data:LabellingMethod ;
+    rdfs:label "DFT"^^xsd:string .
+
+dataind:energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "energy"^^xsd:string .
+
+dataind:forces_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "forces"^^xsd:string .
+
+dataind:stress_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "stress"^^xsd:string .
+
+trind:pft_loss a owl:NamedIndividual,
+        train:LossFunction,
+        train:ObjectiveFunction ;
+    rdfs:label "PFT loss"^^xsd:string .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_variant> >> prov:wasDerivedFrom "YAML model_name: Nequix MP PFT; lowercased and spaces/hyphens replaced by underscores" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "707658"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 707658; PDF Table 2: Nequix MP PFT 707K" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_model_variant> >> prov:wasDerivedFrom "ontology architecture.ttl: EquivariantMessagePassingNeuralNetworkArchitecture rdfs:subClassOf EquivariantGraphNeuralNetworkArchitecture; PDF: symmetry-aware E(3)-equivariant architecture" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_architecture> >> prov:wasDerivedFrom "ontology architecture.ttl: EquivariantMessagePassingNeuralNetworkArchitecture rdfs:subClassOf EquivariantGraphNeuralNetworkArchitecture; PDF: symmetry-aware E(3)-equivariant architecture" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "707658"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 707658; PDF Table 2: Nequix MP PFT 707K" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_learning_rate_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#learning_rate> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_weight_decay_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#weight_decay> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_batch_size_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#batch_size> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_num_epochs_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#num_epochs> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_co_train_ratio_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#co_train_ratio> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_energy_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#loss_weight_energy> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_force_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#loss_weight_force> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_stress_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#loss_weight_stress> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_force_constants_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#loss_weight_force_constants> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_model_variant> >> prov:wasDerivedFrom "['EquivariantMessagePassingNeuralNetworkArchitecture']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_learning_rate_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_weight_decay_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_batch_size_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_num_epochs_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_co_train_ratio_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_energy_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_force_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_stress_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_equivariantmessagepassingneuralnetworkarchitecture_loss_weight_force_constants_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mdr_phonon_pbe> >> prov:wasDerivedFrom "['MDR Phonon PBE', 'MPtrj']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptrj> >> prov:wasDerivedFrom "['MDR Phonon PBE', 'MPtrj']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#usesOptimizer> <https://k.loria.fr/ontologies/trainingonto-individuals#adamw> >> prov:wasDerivedFrom "PDF Table A.2: Optimizer AdamW" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#usesLoss> <https://k.loria.fr/ontologies/trainingonto-individuals#pft_loss> >> prov:wasDerivedFrom "PDF Eq. 8: LPFT = λ_E LE + λ_F LF + λ_σ Lσ + λ_Φ LΦ" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#usesObjectiveFunction> <https://k.loria.fr/ontologies/trainingonto-individuals#pft_loss> >> prov:wasDerivedFrom "PDF Eq. 8: LPFT combines energy, force, stress, and force constant losses" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#usesSamplingMethod> <https://k.loria.fr/ontologies/trainingonto-individuals#stochastic_hessian_column_sampling> >> prov:wasDerivedFrom "PDF Eq. 9: uniformly sample one atom and Cartesian direction; PDF Sec. 3.2: stochastically samples Hessian columns" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <https://k.loria.fr/ontologies/trainingonto#initializedFromModelMaterialization> <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_materialization> >> prov:wasDerivedFrom "PDF: start with the Nequix MP; PDF Sec. 4.1: Nequix MP was trained on MPtrj" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#nequix_mp_pft_materialization> <https://k.loria.fr/ontologies/trainingonto#generatedBy> <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> >> prov:wasDerivedFrom "['Nequix MP PFT']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pft_fine_tuning> <http://www.w3.org/2000/01/rdf-schema#comment> "Phonon fine-tuning of Nequix MP on MDR Phonon PBE dataset with co-training on MPtrj"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF: PFT fine-tunes Nequix MP using phonon data with co-training on upstream MPtrj data" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#hasNumberOfSamples> "145923"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Sec. 4.1: 145,923 unique materials" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#hasDataRepresentation> <https://k.loria.fr/ontologies/dataset-individuals#atomic_structure_representation> >> prov:wasDerivedFrom "PDF: relaxation trajectories from Materials Project" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#hasLabellingMethod> <https://k.loria.fr/ontologies/dataset-individuals#dft_labelling_method> >> prov:wasDerivedFrom "PDF: trained on MPtrj, a dataset of relaxation trajectories from Materials Project" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_positions_attribute> >> prov:wasDerivedFrom "['atomic positions', 'atomic species']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_species_attribute> >> prov:wasDerivedFrom "['atomic positions', 'atomic species']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#energy_attribute> >> prov:wasDerivedFrom "['energy', 'forces', 'stress']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#forces_attribute> >> prov:wasDerivedFrom "['energy', 'forces', 'stress']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#stress_attribute> >> prov:wasDerivedFrom "['energy', 'forces', 'stress']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mdr_phonon_pbe> <https://k.loria.fr/ontologies/datasetonto#hasNumberOfSamples> "9959"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Sec. 4.1: 9,959 materials within the dataset" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mdr_phonon_pbe> <https://k.loria.fr/ontologies/datasetonto#hasDataRepresentation> <https://k.loria.fr/ontologies/dataset-individuals#crystal_structure_representation> >> prov:wasDerivedFrom "PDF: phonon calculations using finite displacement in supercells" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mdr_phonon_pbe> <https://k.loria.fr/ontologies/datasetonto#hasLabellingMethod> <https://k.loria.fr/ontologies/dataset-individuals#dft_labelling_method> >> prov:wasDerivedFrom "PDF: recalculated using the PBE exchange correlation functional" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mdr_phonon_pbe> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_positions_attribute> >> prov:wasDerivedFrom "['atomic positions', 'atomic species', 'supercell structure']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mdr_phonon_pbe> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_species_attribute> >> prov:wasDerivedFrom "['atomic positions', 'atomic species', 'supercell structure']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mdr_phonon_pbe> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#supercell_structure_attribute> >> prov:wasDerivedFrom "['atomic positions', 'atomic species', 'supercell structure']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mdr_phonon_pbe> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#energy_attribute> >> prov:wasDerivedFrom "['energy', 'forces', 'stress', 'force constants']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mdr_phonon_pbe> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#forces_attribute> >> prov:wasDerivedFrom "['energy', 'forces', 'stress', 'force constants']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mdr_phonon_pbe> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#stress_attribute> >> prov:wasDerivedFrom "['energy', 'forces', 'stress', 'force constants']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mdr_phonon_pbe> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#force_constants_attribute> >> prov:wasDerivedFrom "['energy', 'forces', 'stress', 'force constants']" ; dcterms:source <https://arxiv.org/pdf/2601.07742.pdf> .

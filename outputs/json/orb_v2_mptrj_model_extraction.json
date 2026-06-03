@@ -1,0 +1,371 @@
+{
+  "model": {
+    "family": {
+      "value": "ORB",
+      "evidence": "YAML model_name: ORB v2 MPtrj"
+    },
+    "variant": {
+      "value": "orb_v2_mptrj",
+      "evidence": "YAML model_name: ORB v2 MPtrj — lowercased and spaces/hyphens replaced with underscores"
+    },
+    "parameter_number": {
+      "value": 25161727,
+      "evidence": "YAML model_params: 25161727"
+    }
+  },
+  "architectures": {
+    "GraphNetworkSimulator": {
+      "ontology_class": {
+        "value": "GraphNeuralNetworkArchitecture",
+        "evidence": "PDF Section 2: 'The backbone of Orb is a Graph Network Simulator (GNS)' — ontology: GraphNeuralNetworkArchitecture is the matching class"
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "PDF: No specific parameter count given for the GNS architecture alone; total model params are 25161727"
+      },
+      "datasets": {
+        "value": [
+          "MPtraj",
+          "Alexandria"
+        ],
+        "evidence": "PDF Section 2.3.3: 'combining MPtraj ... with Alexandria'"
+      },
+      "hyperparameters": {
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: learning rate is a hyperparameter"
+          },
+          "value": {
+            "value": "3e-4 for pretraining, 3e-3 for finetuning",
+            "evidence": "PDF Section 6.2: 'trained using ADAM with a learning rate of 3 e−4 ... Finetuning uses ... a max learning rate of 3 e−3'"
+          }
+        },
+        "beta_1": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: beta_1 is a hyperparameter"
+          },
+          "value": {
+            "value": "0.9",
+            "evidence": "PDF Section 6.2: 'β1 = 0.9'"
+          }
+        },
+        "beta_2": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: beta_2 is a hyperparameter"
+          },
+          "value": {
+            "value": "0.999",
+            "evidence": "PDF Section 6.2: 'β2 = 0.999'"
+          }
+        },
+        "ema_decay_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: EMA decay rate is a hyperparameter"
+          },
+          "value": {
+            "value": "0.999",
+            "evidence": "PDF Section 6.2: 'All models use an exponentially weighted model average (EMA) with a decay rate of 0.999'"
+          }
+        },
+        "max_neighbors": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: max neighbors is a hyperparameter"
+          },
+          "value": {
+            "value": "20",
+            "evidence": "PDF Section 6.2: 'Atomic graph edges are featurized using the 20 nearest neighbors'"
+          }
+        },
+        "max_radius": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: max radius is a hyperparameter"
+          },
+          "value": {
+            "value": "10",
+            "evidence": "PDF Section 6.2: 'of a max radius of 10'"
+          }
+        },
+        "warmup_fraction": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: warmup fraction is a hyperparameter"
+          },
+          "value": {
+            "value": "0.05",
+            "evidence": "PDF Section 6.2: 'a warmup of 5% of the total number of gradient steps'"
+          }
+        },
+        "batch_size_per_gpu": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: batch size is a hyperparameter"
+          },
+          "value": {
+            "value": "240",
+            "evidence": "PDF Section 6.2: 'resulting in an average per GPU batch size of 240 systems'"
+          }
+        },
+        "max_epochs_pretraining": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: max epochs is a hyperparameter"
+          },
+          "value": {
+            "value": "200",
+            "evidence": "PDF Section 6.2: 'trained to a max of 200 epochs or until convergence'"
+          }
+        },
+        "energy_loss_weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: energy loss weight (lambda_E) is a hyperparameter"
+          },
+          "value": {
+            "value": "lambda_E",
+            "evidence": "PDF Section 2.3.2: 'The energy loss is optionally scaled by a weight λE to balance its contribution'"
+          }
+        }
+      },
+      "components": {
+        "value": [
+          "Encoder",
+          "Processor",
+          "Decoder"
+        ],
+        "evidence": "PDF Section 2.2: 'The model is composed of three stages: an Encoder, Processor, and Decoder'"
+      },
+      "backbone_architecture": {
+        "value": "GraphNetworkSimulator",
+        "evidence": "PDF Section 2: 'The backbone of Orb is a Graph Network Simulator (GNS)'"
+      },
+      "head_architecture": {
+        "value": "MLP",
+        "evidence": "PDF Section 2.2 Decoder: 'E ∈ R = MLPenergy(...), fi ∈ R = MLPforces(vi), σ ∈ R6 = MLPstress(...)'"
+      },
+      "layer_count": {
+        "value": null,
+        "evidence": "PDF: The number of message passing layers is not explicitly stated"
+      },
+      "hidden_dimension": {
+        "value": null,
+        "evidence": "PDF: No explicit hidden dimension reported in the paper"
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF Section 2.3.1: 'Diffusion Model Pretraining' — ontology_mapping: PretrainingRun"
+        },
+        "architectures": {
+          "value": [
+            "GraphNetworkSimulator"
+          ],
+          "evidence": "PDF Section 2.3.1: diffusion pretraining uses the Orb GNS architecture"
+        },
+        "datasets": {
+          "value": [
+            "MPtraj",
+            "Alexandria"
+          ],
+          "evidence": "PDF Section 2.3.3: pretraining dataset combines disparate datasets including MPtraj and Alexandria; Figure 1 shows element distribution of full diffusion pretraining dataset"
+        },
+        "optimizer": {
+          "value": "ADAM",
+          "evidence": "PDF Section 6.2: 'trained using ADAM'"
+        },
+        "loss_function": {
+          "value": "DenoisingScoreMatchingLoss",
+          "evidence": "PDF Section 2.3.1: 'minimizing a multi-scale denoising objective' which is a score matching / epsilon prediction loss"
+        },
+        "description": {
+          "value": "Denoising diffusion model pretraining on ground state atomic positions using a multi-scale denoising objective (epsilon prediction loss). The model learns score functions for noisy atomic configurations.",
+          "evidence": "PDF Section 2.3.1: 'Given initial ground state atomic positions x0, a forward diffusion process gradually adds noise to the system... We then estimate a sequence of score functions by minimizing a multi-scale denoising objective'"
+        },
+        "objective_function": {
+          "value": "DenoisingScoreMatching",
+          "evidence": "PDF Section 2.3.1: multi-scale denoising objective / score matching objective"
+        },
+        "sampling_method": {
+          "value": "LowDiscrepancyNoiseSampler",
+          "evidence": "PDF Section 6.2: 'Diffusion models use a low discrepancy noise sampler in order to ensure a uniform distribution of noise timesteps per batch'"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "PDF: No active learning or batched selection mentioned for pretraining"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "PDF: Pretraining is trained from scratch, not initialized from a checkpoint"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "PDF: Pretraining is not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "PDF: Pretraining is not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "Orb-v2-mptrj-pretrained"
+          ],
+          "evidence": "PDF Section 2.3.2: 'The base diffusion model is finetuned' — the pretraining produces a base diffusion model"
+        }
+      },
+      "finetuning": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "PDF Section 2.3.2: 'NNP Finetuning' — ontology_mapping: MachineLearningFinetuningRun"
+        },
+        "architectures": {
+          "value": [
+            "GraphNetworkSimulator"
+          ],
+          "evidence": "PDF Section 2.3.2: finetuning the base diffusion model (GNS architecture) as a Neural Network Potential"
+        },
+        "datasets": {
+          "value": [
+            "MPtraj"
+          ],
+          "evidence": "YAML notes_description: 'This model is pretrained and fine-tuned on MPtrj only.' PDF Table 1: 'Orb (MP-trj Only)'"
+        },
+        "optimizer": {
+          "value": "ADAM",
+          "evidence": "PDF Section 6.2: 'trained using ADAM [17] with a learning rate of 3 e−4 ... Finetuning uses the CosineAnnealing learning rate schedule with a max learning rate of 3 e−3'"
+        },
+        "loss_function": {
+          "value": "WeightedEnergyForceStressMAELoss",
+          "evidence": "PDF Section 2.3.2: 'Ltotal = λELE + Lf + Lσ' where LE is energy loss, Lf is force MAE loss, Lσ is stress MAE loss"
+        },
+        "description": {
+          "value": "Supervised finetuning of the pretrained diffusion base model as a Neural Network Potential on energies, forces, and stresses from DFT optimization trajectories (MPtraj). Uses a weighted sum of energy loss (scaled by λE), force MAE, and stress MAE.",
+          "evidence": "PDF Section 2.3.2: 'The base diffusion model is finetuned on energies, forces and stresses of DFT optimization trajectories'"
+        },
+        "objective_function": {
+          "value": "WeightedEnergyForceStressMAE",
+          "evidence": "PDF Section 2.3.2: Ltotal = λELE + Lf + Lσ"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "PDF: No specific sampling method mentioned for finetuning"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "PDF: No active learning or batched selection mentioned for finetuning"
+        },
+        "initialized_from_model_materialization": {
+          "value": "Orb-v2-mptrj-pretrained",
+          "evidence": "PDF Section 2.3.2: 'The base diffusion model is finetuned' — initialized from the pretrained diffusion model checkpoint"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "PDF: Finetuning is not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "PDF: Finetuning is not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "ORB v2 MPtrj"
+          ],
+          "evidence": "YAML model_name: ORB v2 MPtrj — this is the final finetuned model"
+        }
+      }
+    },
+    "datasets": {
+      "MPtraj": {
+        "ontology_class": {
+          "value": "LabeledDataset",
+          "evidence": "PDF Section 2.3.3: MPtraj is used for supervised finetuning with energies, forces, stresses as labels — ontology_mapping: LabeledDataset"
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "PDF: Exact sample count for MPtraj not specified in the paper"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF Section 2.1: 'Atomic systems are represented as graphs G = (V, E, C)' with periodic boundary conditions and unit cell information"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF Section 2.3.2: 'finetuned on energies, forces and stresses of DFT optimization trajectories'"
+        },
+        "input_features": {
+          "value": [
+            "atomic_type",
+            "interatomic_displacement",
+            "radial_basis_function",
+            "unit_cell"
+          ],
+          "evidence": "PDF Section 2.1: Node features are atomic type embeddings; edge features include displacement vectors and Gaussian RBF; unit cell C used for PBC-aware edge construction"
+        },
+        "target_features": {
+          "value": [
+            "total_energy",
+            "per_atom_forces",
+            "unit_cell_stress"
+          ],
+          "evidence": "PDF Section 2.2 Decoder: 'E ∈ R ... the scalar total energy', 'fi ∈ R ... the per atom force vectors', 'σ ∈ R6 ... the unit cell stress in reduced Voigt notation'"
+        },
+        "derived_from_dataset": {
+          "value": "Materials Project",
+          "evidence": "PDF Section 2.3.3: 'MPtraj, the dataset constructed from the Materials Project and used to train CHGNet'"
+        }
+      },
+      "Alexandria": {
+        "ontology_class": {
+          "value": "LabeledDataset",
+          "evidence": "PDF Section 2.3.3: Alexandria is a DFT dataset with PBE functional — ontology_mapping: LabeledDataset"
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "PDF: Exact sample count for Alexandria not specified"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF Section 2.1: same graph representation as MPtraj — atomic systems as graphs with PBC"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF Section 2.3.3: 'Alexandria ... uses PBE exchange-correlation functionals ... VASP'"
+        },
+        "input_features": {
+          "value": [
+            "atomic_type",
+            "interatomic_displacement",
+            "radial_basis_function",
+            "unit_cell"
+          ],
+          "evidence": "PDF Section 2.1: same graph features as described for MPtraj"
+        },
+        "target_features": {
+          "value": [
+            "total_energy",
+            "per_atom_forces",
+            "unit_cell_stress"
+          ],
+          "evidence": "PDF Section 2.2 Decoder: energy, forces, stress predictions"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "PDF: Alexandria is a standalone dataset, not explicitly derived from another dataset in this context"
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\orb_v2_mptrj.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2410.22570.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\orb_v2_mptrj.yml"
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "model": {
+    "family": {
+      "value": "Transformer",
+      "evidence": "YAML model_type field: 'Transformer'"
+    },
+    "variant": {
+      "value": "wrenformer",
+      "evidence": "YAML model_name field: 'Wrenformer' lowercased and spaces replaced"
+    },
+    "parameter_number": {
+      "value": 5166658,
+      "evidence": "YAML model_params field: 5166658"
+    }
+  },
+  "architectures": {
+    "Transformer": {
+      "ontology_class": {
+        "value": "TransformerArchitecture",
+        "evidence": "architecture.ttl: TransformerArchitecture is a subclass of AttentionBasedArchitecture"
+      },
+      "parameter_number": {
+        "value": 5166658,
+        "evidence": "YAML model_params field: 5166658"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "WBM",
+          "TAATA"
+        ],
+        "evidence": "PDF Section II.B: 'We first assess the ability of our model... we consider two data sets: (i) The Materials Project (MP) database... (ii) The WBM dataset'; Section II.C: 'we consider the TAATA data set'"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "weight_decay",
+          "epochs",
+          "hidden_units",
+          "message_passing_layers",
+          "attention_heads"
+        ],
+        "evidence": "PDF Section IV.E: 'All the models examined in this work were trained using the AdamW optimiser with a fixed learning rate of 3×10−4. A mini-batch size of 128 and a weight decay parameter of 10−6 were used for all the experiments. The models were trained for 400 epochs'; Section IV.A: 'We use 3 message passing layers, each with a single attention head... single-hidden-layer neural networks with 256 hidden units... The output network used has 4 hidden layers containing 256, 256, 128, and 64 hidden units respectively'"
+      },
+      "hyperparameter_details": {
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
+          },
+          "value": {
+            "value": "3e-4",
+            "evidence": "PDF Section IV.E: 'fixed learning rate of 3×10−4'"
+          }
+        },
+        "batch_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
+          },
+          "value": {
+            "value": "128",
+            "evidence": "PDF Section IV.E: 'A mini-batch size of 128'"
+          }
+        },
+        "weight_decay": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
+          },
+          "value": {
+            "value": "1e-6",
+            "evidence": "PDF Section IV.E: 'weight decay parameter of 10−6'"
+          }
+        },
+        "epochs": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
+          },
+          "value": {
+            "value": "400",
+            "evidence": "PDF Section IV.E: 'The models were trained for 400 epochs'"
+          }
+        },
+        "hidden_units": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
+          },
+          "value": {
+            "value": "256",
+            "evidence": "PDF Section IV.A: 'single-hidden-layer neural networks with 256 hidden units'"
+          }
+        },
+        "message_passing_layers": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
+          },
+          "value": {
+            "value": "3",
+            "evidence": "PDF Section IV.A: 'We use 3 message passing layers'"
+          }
+        },
+        "attention_heads": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
+          },
+          "value": {
+            "value": "1",
+            "evidence": "PDF Section IV.A: 'each with a single attention head'"
+          }
+        }
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "pretraining_run",
+        "prospective_validation_run"
+      ],
+      "evidence": "PDF Section II.B: 'We first assess the ability of our model... we consider two data sets'; Section II.D: 'we deploy Wren on the prospective challenge of discovering new theoretically stable materials'"
+    },
+    "training_run_details": {
+      "pretraining_run": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "trainingonto.ttl: PretrainingRun is a subclass of MachineLearningTrainingRun"
+        },
+        "architectures": {
+          "value": [
+            "Transformer"
+          ],
+          "evidence": "PDF Section IV.A: 'The bulk of the Wren architecture directly mimics that of Roost... message-passing neural network architecture'"
+        },
+        "datasets": {
+          "value": [
+            "Materials Project",
+            "WBM"
+          ],
+          "evidence": "PDF Section II.B: 'we consider two data sets: (i) The Materials Project (MP) database... (ii) The WBM dataset'"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "PDF Section IV.E: 'All the models examined in this work were trained using the AdamW optimiser'"
+        },
+        "loss_function": {
+          "value": "robust L1 loss",
+          "evidence": "PDF Section IV.E: 'we train all models to minimise the following robust L1 loss function'"
+        },
+        "description": {
+          "value": "Pretraining of Wren model on Materials Project and WBM datasets using AdamW optimizer with robust L1 loss function for predicting formation energies of inorganic crystalline materials",
+          "evidence": "PDF Section IV.E: 'All the models examined in this work were trained using the AdamW optimiser with a fixed learning rate of 3×10−4. A mini-batch size of 128 and a weight decay parameter of 10−6 were used for all the experiments. The models were trained for 400 epochs'"
+        }
+      },
+      "prospective_validation_run": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "trainingonto.ttl: PretrainingRun is a subclass of MachineLearningTrainingRun"
+        },
+        "architectures": {
+          "value": [
+            "Transformer"
+          ],
+          "evidence": "PDF Section IV.A: 'The bulk of the Wren architecture directly mimics that of Roost... message-passing neural network architecture'"
+        },
+        "datasets": {
+          "value": [
+            "Materials Project",
+            "WBM"
+          ],
+          "evidence": "PDF Section II.D: 'we trained Wren on the union of the MP and WBM data sets'"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "PDF Section IV.E: 'All the models examined in this work were trained using the AdamW optimiser'"
+        },
+        "loss_function": {
+          "value": "robust L1 loss",
+          "evidence": "PDF Section IV.E: 'we train all models to minimise the following robust L1 loss function'"
+        },
+        "description": {
+          "value": "Prospective validation run for discovering new theoretically stable materials using Wren model trained on union of MP and WBM datasets, identifying 1,569 new materials below the known convex hull from 5,675 ab-initio calculations",
+          "evidence": "PDF Section II.D: 'we deploy Wren on the prospective challenge of discovering new theoretically stable materials... We identify 1,569 hitherto unknown materials that are below the known convex hull of previously calculated materials from just 5,675 ab-initio calculations'"
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\wrenformer.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2106.11132.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\wrenformer.yml"
+  }
+}

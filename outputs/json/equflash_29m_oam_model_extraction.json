@@ -1,0 +1,457 @@
+{
+  "model": {
+    "family": {
+      "value": "SevenNet",
+      "evidence": "YAML model_name is 'EquFlash'; PDF states 'EquFlash is an E(3)-equivariant model based on the SevenNet-0 architecture'"
+    },
+    "variant": {
+      "value": "equflash_29m_oam",
+      "evidence": "YAML model_key is 'equflash-29M-oam'; lowercased and replaced hyphens with underscores"
+    },
+    "parameter_number": {
+      "value": 28741188,
+      "evidence": "YAML model_params is 28741188"
+    }
+  },
+  "architectures": [
+    {
+      "name": "SevenNet-0",
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF describes SevenNet as an equivariant MLIP based on GNN principles with message passing; ontology has EquivariantMessagePassingNeuralNetworkArchitecture as a subclass of EquivariantGraphNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "PDF does not specify parameter count for SevenNet-0 base architecture; only EquFlash scaled version has 28.7M params"
+      },
+      "datasets": [
+        {
+          "value": "MPF",
+          "evidence": "PDF Section 6.2: training conducted using the MPF dataset (Chen & Ong, 2022)"
+        }
+      ],
+      "hyperparameters": [
+        {
+          "name": "cutoff",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 6,
+            "evidence": "PDF Table 8: Cutoff 6"
+          }
+        },
+        {
+          "name": "cutoff_function",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "XPLOR (5.5)",
+            "evidence": "PDF Table 8: Cutoff Function XPLOR (5.5)"
+          }
+        },
+        {
+          "name": "radial_basis",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "Bessel (8 basis)",
+            "evidence": "PDF Table 8: Radial Basis Bessel (8 basis)"
+          }
+        },
+        {
+          "name": "activation_even",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "SiLU",
+            "evidence": "PDF Table 8: Activation SiLU (e)"
+          }
+        },
+        {
+          "name": "activation_odd",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "tanh",
+            "evidence": "PDF Table 8: Activation tanh (o)"
+          }
+        },
+        {
+          "name": "lmax",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 2,
+            "evidence": "PDF Table 9: SevenNet-l2i5 (which is SevenNet-0) has edge features up to 1x2e, indicating lmax=2"
+          }
+        },
+        {
+          "name": "channel_count",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 128,
+            "evidence": "PDF Table 9: Layer 1 hidden starts with 128x0e, indicating 128 channels for degree-0"
+          }
+        },
+        {
+          "name": "interaction_block_count",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 5,
+            "evidence": "PDF Table 9: SevenNet-l2i5 has 5 layers listed"
+          }
+        }
+      ],
+      "components": {
+        "value": [
+          "Embedding Layer",
+          "Interaction Block",
+          "Tensor-Product Layer",
+          "Equivariant Linear Layer",
+          "Scatter Layer",
+          "Reduce Layer",
+          "Activation Layer",
+          "Eq-MLP",
+          "Energy MLP"
+        ],
+        "evidence": "PDF Figure 2 and Section 2.2 describe the architecture components: embedding layer, interaction blocks containing equivariant linear, scatter, tensor-product, reduce, activation layers, and final energy MLP"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "PDF does not mention a separate backbone architecture; SevenNet-0 is the full model architecture"
+      },
+      "head_architecture": {
+        "value": "Energy MLP",
+        "evidence": "PDF Figure 2(a): final hidden states (Xfinal) are used to predict energy through an MLP head"
+      },
+      "layer_count": {
+        "value": 5,
+        "evidence": "PDF Table 9: SevenNet-l2i5 has 5 interaction block layers"
+      },
+      "hidden_dimension": {
+        "value": 128,
+        "evidence": "PDF Table 9: Layer 1 hidden features start at 128x0e, indicating hidden dimension of 128 for degree-0"
+      }
+    },
+    {
+      "name": "EquFlash",
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF states EquFlash is an E(3)-equivariant model based on SevenNet-0 architecture with FlashTP tensor products; ontology has EquivariantMessagePassingNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 28741188,
+        "evidence": "YAML model_params is 28741188 (28.7M parameters for EquFlash)"
+      },
+      "datasets": [
+        {
+          "value": "MPF",
+          "evidence": "PDF Section 6.2: training conducted using the MPF dataset"
+        }
+      ],
+      "hyperparameters": [
+        {
+          "name": "cutoff",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 6,
+            "evidence": "PDF Table 8: Cutoff 6"
+          }
+        },
+        {
+          "name": "cutoff_function",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "XPLOR (5.5)",
+            "evidence": "PDF Table 8: Cutoff Function XPLOR (5.5)"
+          }
+        },
+        {
+          "name": "radial_basis",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "Bessel (8 basis)",
+            "evidence": "PDF Table 8: Radial Basis Bessel (8 basis)"
+          }
+        },
+        {
+          "name": "activation_even",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "SiLU",
+            "evidence": "PDF Table 8: Activation SiLU (e)"
+          }
+        },
+        {
+          "name": "activation_odd",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "tanh",
+            "evidence": "PDF Table 8: Activation tanh (o)"
+          }
+        },
+        {
+          "name": "lmax",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": 2,
+            "evidence": "PDF Section 6.2: SevenNet-l2i5 is SevenNet-0; EquFlash is based on SevenNet-0 architecture"
+          }
+        },
+        {
+          "name": "precision",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl defines MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "FP32",
+            "evidence": "PDF Table 8: Precision FP32"
+          }
+        }
+      ],
+      "components": {
+        "value": [
+          "Embedding Layer",
+          "Interaction Block",
+          "FlashTP Tensor-Product Layer",
+          "Equivariant Linear Layer",
+          "Scatter Layer",
+          "Reduce Layer",
+          "Activation Layer",
+          "Eq-MLP",
+          "Energy MLP"
+        ],
+        "evidence": "PDF description: EquFlash uses SevenNet-0 architecture with FlashTP replacing standard tensor-product layers"
+      },
+      "backbone_architecture": {
+        "value": "SevenNet-0",
+        "evidence": "YAML notes_description: 'EquFlash is an E(3)-equivariant model based on the SevenNet-0 architecture'"
+      },
+      "head_architecture": {
+        "value": "Energy MLP",
+        "evidence": "PDF Figure 2(a): final hidden states used to predict energy through MLP head"
+      },
+      "layer_count": {
+        "value": 5,
+        "evidence": "PDF Table 9: SevenNet-l2i5 (SevenNet-0 base) has 5 interaction block layers; EquFlash is based on this"
+      },
+      "hidden_dimension": {
+        "value": 128,
+        "evidence": "PDF Table 9: Layer 1 hidden features start at 128x0e"
+      }
+    }
+  ],
+  "training": {
+    "training_runs": [
+      {
+        "id": "sevennet_pretraining",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF Section 6.2 describes training SevenNet models on MPF dataset; ontology trainingonto.ttl defines PretrainingRun"
+        },
+        "architectures": [
+          {
+            "value": "SevenNet-0",
+            "evidence": "PDF Section 6.2: SevenNet-l2i5 is SevenNet-0"
+          }
+        ],
+        "datasets": [
+          {
+            "value": "MPF",
+            "evidence": "PDF Section 6.2: training conducted using the MPF dataset"
+          }
+        ],
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF Table 8: Optimizer Adam"
+        },
+        "loss_function": {
+          "value": "Huber Loss",
+          "evidence": "PDF Table 8: Loss Function Huber Loss"
+        },
+        "description": {
+          "value": "Pretraining of SevenNet-0 (l2i5) model on MPF dataset using Adam optimizer with Huber loss for energy and force predictions",
+          "evidence": "PDF Section 6.2 and Table 8: training configuration details"
+        },
+        "objective_function": {
+          "value": "Huber Loss",
+          "evidence": "PDF Table 8: Loss Function Huber Loss used as objective"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "PDF does not specify sampling method for training"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "PDF does not mention active learning or batched selection"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "PDF describes pretraining from scratch, not initialized from checkpoint"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "PDF does not describe distillation training"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "PDF does not describe distillation training"
+        },
+        "model_materializations": [
+          {
+            "value": "SevenNet-l2i5",
+            "evidence": "PDF Section 6.2: trained model is SevenNet-l2i5 (SevenNet-0)"
+          }
+        ]
+      },
+      {
+        "id": "equflash_pretraining",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF describes training EquFlash model; ontology trainingonto.ttl defines PretrainingRun"
+        },
+        "architectures": [
+          {
+            "value": "EquFlash",
+            "evidence": "PDF describes EquFlash as scaled version of SevenNet-0 with FlashTP"
+          }
+        ],
+        "datasets": [
+          {
+            "value": "MPF",
+            "evidence": "PDF Section 6.2: training conducted using the MPF dataset"
+          }
+        ],
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF Table 8: Optimizer Adam"
+        },
+        "loss_function": {
+          "value": "Huber Loss",
+          "evidence": "PDF Table 8: Loss Function Huber Loss"
+        },
+        "description": {
+          "value": "Pretraining of EquFlash model (scaled SevenNet-0 with FlashTP) on MPF dataset using Adam optimizer with Huber loss",
+          "evidence": "PDF description of EquFlash as larger capacity model leveraging FlashTP gains"
+        },
+        "objective_function": {
+          "value": "Huber Loss",
+          "evidence": "PDF Table 8: Loss Function Huber Loss"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "PDF does not specify sampling method"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "PDF does not mention active learning"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "PDF does not mention initialization from checkpoint"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "PDF does not describe distillation"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "PDF does not describe distillation"
+        },
+        "model_materializations": [
+          {
+            "value": "equflash-29M-oam",
+            "evidence": "YAML model_key: equflash-29M-oam"
+          }
+        ]
+      }
+    ],
+    "datasets": [
+      {
+        "name": "MPF",
+        "ontology_class": {
+          "value": "LabeledDataset",
+          "evidence": "PDF describes MPF as training dataset with energy and force labels; ontology datasetonto.ttl defines LabeledDataset"
+        },
+        "number_of_samples": {
+          "value": 168921,
+          "evidence": "PDF Section 6.2: MPF dataset comprises 168,921 samples"
+        },
+        "data_representation": {
+          "value": "atomic structure",
+          "evidence": "PDF Section 2.1: MLIP models take atom positions and atomic numbers as input"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF Section 2.1: 'Trained on high-accuracy data generated using quantum mechanical methods'"
+        },
+        "input_features": [
+          {
+            "value": "atom positions",
+            "evidence": "PDF Section 2.1: MLIP predicts energy and forces given atom positions"
+          },
+          {
+            "value": "atomic numbers",
+            "evidence": "PDF Section 2.1: MLIP predicts energy and forces given atom positions and atomic numbers"
+          }
+        ],
+        "target_features": [
+          {
+            "value": "energy",
+            "evidence": "PDF Section 2.1: MLIP models predict energy"
+          },
+          {
+            "value": "forces",
+            "evidence": "PDF Section 2.1: forces can be derived by computing gradients of energy"
+          }
+        ],
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "PDF does not state MPF is derived from another dataset"
+        }
+      }
+    ]
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\equflash_29m_oam.pdf",
+    "pdf_url": "https://openreview.net/pdf?id=wiQe95BPaB",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\equflash_29m_oam.yml"
+  }
+}

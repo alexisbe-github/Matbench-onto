@@ -1,0 +1,49 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:orb_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "ORB"^^xsd:string ;
+    arch:hasVariant archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_model_variant,
+        archind:orb_v2_mptrj_variant .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture a owl:NamedIndividual,
+        arch:EquivariantGraphNeuralNetworkArchitecture ;
+    rdfs:label "EquivariantGraphNeuralNetworkArchitecture"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture_configuration ;
+    arch:hasParameterNumber 25161727 .
+
+archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EquivariantGraphNeuralNetworkArchitecture architecture configuration"^^xsd:string .
+
+archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "orb_v2_mptrj EquivariantGraphNeuralNetworkArchitecture"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture .
+
+archind:orb_v2_mptrj_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "orb_v2_mptrj"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2504.06231.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\orb_v3.yml" ;
+    arch:hasParameterNumber 25161727 .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#orb_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#orb_v2_mptrj_variant> >> prov:wasDerivedFrom "YAML model_name: 'ORB v2 MPtrj'. Lowercased and spaces/hyphens replaced by underscores." ; dcterms:source <https://arxiv.org/pdf/2504.06231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#orb_v2_mptrj_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "25161727"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 25161727." ; dcterms:source <https://arxiv.org/pdf/2504.06231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#orb_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_model_variant> >> prov:wasDerivedFrom "PDF context (p.3): 'Orb-v3 is a family of models that share the same basic architecture as Orb-v2'. PDF context (p.14): 'GNS backbone' refers to Graph Network Simulator/Suite, which is a Graph Neural Network. PDF context (p.3): 'roto-equivariance' and the use of equivariant features (spherical harmonics) indicate an equivariant architecture. Ontology mapping: EquivariantGraphNeuralNetworkArchitecture is a subclass of EquivariantNeuralNetworkArchitecture and GraphNeuralNetworkArchitecture." ; dcterms:source <https://arxiv.org/pdf/2504.06231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture> >> prov:wasDerivedFrom "PDF context (p.3): 'Orb-v3 is a family of models that share the same basic architecture as Orb-v2'. PDF context (p.14): 'GNS backbone' refers to Graph Network Simulator/Suite, which is a Graph Neural Network. PDF context (p.3): 'roto-equivariance' and the use of equivariant features (spherical harmonics) indicate an equivariant architecture. Ontology mapping: EquivariantGraphNeuralNetworkArchitecture is a subclass of EquivariantNeuralNetworkArchitecture and GraphNeuralNetworkArchitecture." ; dcterms:source <https://arxiv.org/pdf/2504.06231.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#orb_v2_mptrj_equivariantgraphneuralnetworkarchitecture_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "25161727"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 25161727. PDF context (p.14): 'train a 5 layer model with approximately the same parameter count (∼ 25M) as Orb-v2'." ; dcterms:source <https://arxiv.org/pdf/2504.06231.pdf> .

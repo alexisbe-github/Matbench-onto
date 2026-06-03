@@ -1,0 +1,1064 @@
+{
+  "model": {
+    "family": {
+      "value": "MatterSim",
+      "evidence": "YAML model_name: 'MatterSim v1 5M'"
+    },
+    "variant": {
+      "value": "mattersim_v1_5m",
+      "evidence": "YAML model_name: 'MatterSim v1 5M'; lowercased and spaces/hyphens replaced by underscores"
+    },
+    "parameter_number": {
+      "value": 4549142,
+      "evidence": "YAML model_params: 4549142"
+    }
+  },
+  "architectures": {
+    "M3GNet": {
+      "ontology_class": {
+        "value": "MessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF Section S1.2: 'M3GNet is a graph neural network that explicitly incorporates two- and three-body interactions' with a message-passing framework; ontology architecture.ttl defines MessagePassingNeuralNetworkArchitecture as a subclass of GraphNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "PDF Section S1.4 mentions M3GNet parameters ranging from 880K to 4.5M as data increases, but no single fixed parameter count is given for the M3GNet variant used in MatterSim"
+      },
+      "datasets": {
+        "value": [
+          "MPF2021",
+          "MPtrj",
+          "Alexandria",
+          "Materials Project",
+          "Alexandria-MP-ICSD"
+        ],
+        "evidence": "PDF Section S3 mentions MPF2021, MPtrj, Alexandria, and Materials Project as public datasets used; Section 2.2 mentions Alexandria-MP-ICSD"
+      },
+      "hyperparameters": [
+        {
+          "name": "learning_rate",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.001,
+            "evidence": "PDF Section S1.4: 'The initial learning rate was set to be 0.001'"
+          }
+        },
+        {
+          "name": "optimizer",
+          "ontology_class": {
+            "value": "Optimizer",
+            "evidence": "ontology trainingonto.ttl defines Optimizer class"
+          },
+          "value": {
+            "value": "Adam",
+            "evidence": "PDF Section S1.4: 'Adam optimizer'"
+          }
+        },
+        {
+          "name": "force_loss_weight",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 1,
+            "evidence": "PDF Section S1.4: 'ωf = 1'"
+          }
+        },
+        {
+          "name": "stress_loss_weight",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.1,
+            "evidence": "PDF Section S1.4: 'ωσ = 0.1'"
+          }
+        },
+        {
+          "name": "loss_function",
+          "ontology_class": {
+            "value": "LossFunction",
+            "evidence": "ontology trainingonto.ttl defines LossFunction"
+          },
+          "value": {
+            "value": "Huber loss",
+            "evidence": "PDF Section S1.4: 'l(·, ·) is the Huber loss function'"
+          }
+        },
+        {
+          "name": "batch_size",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 128,
+            "evidence": "PDF Section S1.4: 'batch size of 128'"
+          }
+        },
+        {
+          "name": "epochs",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 200,
+            "evidence": "PDF Section S1.4: 'training process stops after running for 200 epochs'"
+          }
+        },
+        {
+          "name": "cutoff_radius",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": null,
+            "evidence": "PDF Section S1.2 mentions cutoff radius rc but no specific value given for M3GNet"
+          }
+        }
+      ],
+      "components": {
+        "value": [],
+        "evidence": "No named sub-components of M3GNet architecture are described in the paper"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "M3GNet is itself the backbone architecture; no separate backbone is mentioned"
+      },
+      "head_architecture": {
+        "value": "GatedNeuralNetworkArchitecture",
+        "evidence": "PDF Section S1.2: 'atom and bond features vi and eij are passed to a gated multi-layer perceptron (MLP)'; ontology architecture.ttl defines GatedNeuralNetworkArchitecture"
+      },
+      "layer_count": {
+        "value": null,
+        "evidence": "PDF Section S1.2 mentions message passing is conducted multiple times but does not specify an exact layer count"
+      },
+      "hidden_dimension": {
+        "value": null,
+        "evidence": "No hidden dimension is explicitly specified for M3GNet in the provided context"
+      }
+    },
+    "Graphormer": {
+      "ontology_class": {
+        "value": "GraphTransformerArchitecture",
+        "evidence": "PDF Section 2.1: 'Graphormer is a transformer-based model'; PDF Section S1.3 describes Graphormer with attention layers applied to material graphs; ontology architecture.ttl defines GraphTransformerArchitecture as a subclass of TransformerArchitecture"
+      },
+      "parameter_number": {
+        "value": 182000000,
+        "evidence": "PDF Section S1.4: 'The total parameters of Graphormer is 182M'"
+      },
+      "datasets": {
+        "value": [
+          "MPF2021",
+          "MPtrj",
+          "Alexandria",
+          "Materials Project",
+          "Alexandria-MP-ICSD"
+        ],
+        "evidence": "PDF Section S3 and S1.5 describe Graphormer being trained on the iteratively generated dataset covering the same sources"
+      },
+      "hyperparameters": [
+        {
+          "name": "learning_rate",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.0002,
+            "evidence": "PDF Section S1.4: 'The peak learning rate is set to 2e-4'"
+          }
+        },
+        {
+          "name": "optimizer",
+          "ontology_class": {
+            "value": "Optimizer",
+            "evidence": "ontology trainingonto.ttl defines Optimizer class"
+          },
+          "value": {
+            "value": "AdamW",
+            "evidence": "PDF Section S1.4: 'We use AdamW as the optimizer'"
+          }
+        },
+        {
+          "name": "encoder_layers",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 24,
+            "evidence": "PDF Section S1.4: 'structural encoder with 24 attention layers'"
+          }
+        },
+        {
+          "name": "decoder_layers",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 10,
+            "evidence": "PDF Section S1.4: 'property decoder with 10 layers of GeoMFormer'"
+          }
+        },
+        {
+          "name": "attention_heads",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 32,
+            "evidence": "PDF Section S1.4: 'All attention heads are set to 32'"
+          }
+        },
+        {
+          "name": "hidden_dimension",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 768,
+            "evidence": "PDF Section S1.4: 'the dimension of hidden layers and feed-forward layers is set to 768'"
+          }
+        },
+        {
+          "name": "warmup_steps",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 93750,
+            "evidence": "PDF Section S1.4: 'warm-up period of 93,750 steps'"
+          }
+        },
+        {
+          "name": "total_steps",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 1562500,
+            "evidence": "PDF Section S1.4: 'trained for a total of 1,562,500 steps'"
+          }
+        },
+        {
+          "name": "batch_size",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 256,
+            "evidence": "PDF Section S1.4: 'batch size for training is set to 256'"
+          }
+        },
+        {
+          "name": "loss_function",
+          "ontology_class": {
+            "value": "LossFunction",
+            "evidence": "ontology trainingonto.ttl defines LossFunction"
+          },
+          "value": {
+            "value": "mean absolute error (MAE)",
+            "evidence": "PDF Section S1.4: 'all labels use the mean absolute error (MAE) as the loss function'"
+          }
+        },
+        {
+          "name": "gaussian_basis_kernels",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 128,
+            "evidence": "PDF Section S1.4: 'The number of Gaussian basis kernels is set to 128'"
+          }
+        },
+        {
+          "name": "cutoff_radius",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 5.0,
+            "evidence": "PDF Section S1.4: 'the smooth function cutoff is set to 5 ˚A'"
+          }
+        },
+        {
+          "name": "expansion_cutoff",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 20.0,
+            "evidence": "PDF Section S1.4: 'The cutoff for expansion is set to 20 ˚A'"
+          }
+        },
+        {
+          "name": "energy_loss_factor",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 1.0,
+            "evidence": "PDF Section S1.4: 'energy loss factor ... set to 1.0'"
+          }
+        },
+        {
+          "name": "force_loss_factor",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 1.0,
+            "evidence": "PDF Section S1.4: 'force loss factor ... set to 1.0'"
+          }
+        },
+        {
+          "name": "stress_loss_factor",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 1.0,
+            "evidence": "PDF Section S1.4: 'stress loss factor ... set to 1.0'"
+          }
+        },
+        {
+          "name": "weight_decay",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl defines MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.0,
+            "evidence": "PDF Section S1.4: 'weight decay is set to 0.0'"
+          }
+        }
+      ],
+      "components": {
+        "value": [
+          "StructuralEncoder",
+          "PropertyDecoder",
+          "GeoMFormer",
+          "StressHead"
+        ],
+        "evidence": "PDF Section S1.3: 'Graphormer model consists of two major parts: the structural encoder and property decoder'; 'property decoder with 10 layers of GeoMFormer'; Section S1.4 mentions 'stress head'"
+      },
+      "backbone_architecture": {
+        "value": "TransformerArchitecture",
+        "evidence": "PDF Section 2.1: 'Graphormer is a transformer-based model'; ontology architecture.ttl defines TransformerArchitecture"
+      },
+      "head_architecture": {
+        "value": "GeoMFormer",
+        "evidence": "PDF Section S1.3: 'we adopted the GeoMFormer module' as the property decoder/head"
+      },
+      "layer_count": {
+        "value": 34,
+        "evidence": "PDF Section S1.4: 24 attention layers in encoder + 10 GeoMFormer layers in decoder = 34 total layers"
+      },
+      "hidden_dimension": {
+        "value": 768,
+        "evidence": "PDF Section S1.4: 'the dimension of hidden layers and feed-forward layers is set to 768'"
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "mattersim_pretraining",
+        "mattersim_finetuning",
+        "mattersim_active_learning"
+      ],
+      "evidence": "PDF describes pretraining on large-scale first-principles data (Section 2.1), fine-tuning (Section 2.4), and active learning (Section 2.3)"
+    },
+    "mattersim_pretraining": {
+      "type": {
+        "value": "PretrainingRun",
+        "evidence": "PDF Section 2.1: active learning from large-scale first-principles computations to train the base MatterSim model; ontology trainingonto.ttl defines PretrainingRun"
+      },
+      "architectures": {
+        "value": [
+          "M3GNet",
+          "Graphormer"
+        ],
+        "evidence": "PDF Section 2.1: 'we opt to use two primary architectures, M3GNet and Graphormer as the backbones for MatterSim'"
+      },
+      "datasets": {
+        "value": [
+          "MPF-TP",
+          "Random-TP",
+          "MPF2021",
+          "MPtrj",
+          "Alexandria",
+          "Materials Project",
+          "Alexandria-MP-ICSD",
+          "MatterSim curated dataset"
+        ],
+        "evidence": "PDF Section 2.1: training dataset contains ~17M structures from public datasets and in-house generated ones; Section S3 lists MPF2021, MPtrj, Alexandria, Materials Project"
+      },
+      "optimizer": {
+        "value": "Adam",
+        "evidence": "PDF Section S1.4: 'Adam optimizer' for M3GNet; 'AdamW' for Graphormer"
+      },
+      "loss_function": {
+        "value": "Huber loss",
+        "evidence": "PDF Section S1.4: 'l(·, ·) is the Huber loss function' for M3GNet; 'MAE' for Graphormer"
+      },
+      "description": {
+        "value": "Pretraining of MatterSim using active learning from large-scale first-principles computations at GGA-PBE level with Hubbard U correction, covering 0-5000 K and 0-1000 GPa, using M3GNet and Graphormer architectures on ~17M structures",
+        "evidence": "PDF Section 2.1 and Section S1.4"
+      },
+      "objective_function": {
+        "value": "Huber loss",
+        "evidence": "PDF Section S1.4: combined loss function with energy, force, and stress terms using Huber loss"
+      },
+      "sampling_method": {
+        "value": "Active learning with uncertainty-based sampling",
+        "evidence": "PDF Section 2.1: 'uncertainty-aware sampling and active learning'; Section S2: 'uncertainty-based method with ensemble models'"
+      },
+      "uses_batched_selection": {
+        "value": true,
+        "evidence": "PDF Section 2.1: 'active learning is adopted in a batched manner in the sampling process to avoid relabeling structures of high confidence'"
+      },
+      "initialized_from_model_materialization": {
+        "value": null,
+        "evidence": "Pretraining is the initial training run; no prior checkpoint mentioned"
+      },
+      "teacher_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "student_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "model_materializations": {
+        "value": [
+          "mattersim-v1-5M",
+          "MatterSim v1 5M"
+        ],
+        "evidence": "YAML model_name: 'MatterSim v1 5M'; YAML model_key: 'mattersim-v1-5M'"
+      }
+    },
+    "mattersim_finetuning": {
+      "type": {
+        "value": "MachineLearningFinetuningRun",
+        "evidence": "PDF Section 2.4: 'MatterSim can be efficiently fine-tuned' for specific levels of theory; ontology trainingonto.ttl defines MachineLearningFinetuningRun"
+      },
+      "architectures": {
+        "value": [
+          "M3GNet",
+          "Graphormer"
+        ],
+        "evidence": "PDF Section 2.4: fine-tuning MatterSim which uses both architectures"
+      },
+      "datasets": {
+        "value": [
+          "AIMD trajectory rev-PBE0-D3"
+        ],
+        "evidence": "PDF Section 2.4: '30 configurations sampled from an ab initio molecular dynamics (AIMD) trajectory with rev-PBE0-D3 level of theory'"
+      },
+      "optimizer": {
+        "value": null,
+        "evidence": "PDF Section 2.4 does not specify the optimizer used for fine-tuning"
+      },
+      "loss_function": {
+        "value": null,
+        "evidence": "PDF Section 2.4 does not specify the loss function used for fine-tuning"
+      },
+      "description": {
+        "value": "Fine-tuning of pretrained MatterSim on a small number of configurations (e.g., 30) from AIMD trajectories at a higher level of theory (rev-PBE0-D3) to customize the model for specific systems like liquid water",
+        "evidence": "PDF Section 2.4"
+      },
+      "objective_function": {
+        "value": null,
+        "evidence": "Not explicitly specified in the fine-tuning description"
+      },
+      "sampling_method": {
+        "value": null,
+        "evidence": "PDF Section 2.4 does not specify a sampling method for fine-tuning data selection"
+      },
+      "uses_batched_selection": {
+        "value": null,
+        "evidence": "Not mentioned for fine-tuning"
+      },
+      "initialized_from_model_materialization": {
+        "value": "MatterSim v1 5M",
+        "evidence": "PDF Section 2.4: fine-tuning starts from the pretrained MatterSim model"
+      },
+      "teacher_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "student_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "model_materializations": {
+        "value": [
+          "finetune-30"
+        ],
+        "evidence": "PDF Section 2.4: 'the resultant model (indicated as finetune-30 model)'"
+      }
+    },
+    "mattersim_active_learning": {
+      "type": {
+        "value": "MachineLearningActiveLearningRun",
+        "evidence": "PDF Section 2.3: 'MatterSim as an active learner' with ensemble-based uncertainty quantification; ontology trainingonto.ttl defines MachineLearningActiveLearningRun"
+      },
+      "architectures": {
+        "value": [
+          "M3GNet",
+          "Graphormer"
+        ],
+        "evidence": "PDF Section 2.3: active learning with MatterSim model ensemble"
+      },
+      "datasets": {
+        "value": [
+          "AIMD trajectory Li2B12H12",
+          "AIMD trajectory molten phosphorus",
+          "AIMD trajectory molten boron"
+        ],
+        "evidence": "PDF Section 2.3: applied to molten phosphorus, molten boron, and Li2B12H12"
+      },
+      "optimizer": {
+        "value": null,
+        "evidence": "PDF Section 2.3 does not specify optimizer for active learning runs"
+      },
+      "loss_function": {
+        "value": null,
+        "evidence": "PDF Section 2.3 does not specify loss function for active learning runs"
+      },
+      "description": {
+        "value": "Active learning from simulation trajectories where structures with high ensemble uncertainty are selected and labeled with first-principles computations to supplement the pretrained model for out-of-distribution configurations",
+        "evidence": "PDF Section 2.3"
+      },
+      "objective_function": {
+        "value": null,
+        "evidence": "Not explicitly specified"
+      },
+      "sampling_method": {
+        "value": "Uncertainty-based sampling with ensemble criterion",
+        "evidence": "PDF Section 2.3: 'MatterSim selected the structures for active learning based on an ensemble criterion'; Section S13"
+      },
+      "uses_batched_selection": {
+        "value": true,
+        "evidence": "PDF Section 2.1: 'active learning is adopted in a batched manner'; this applies to the active learning process described in Section 2.3"
+      },
+      "initialized_from_model_materialization": {
+        "value": "MatterSim v1 5M",
+        "evidence": "PDF Section 2.3: 'the pretrained MatterSim model' is the starting point for active learning"
+      },
+      "teacher_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "student_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "model_materializations": {
+        "value": [
+          "MatterSim actively learned model"
+        ],
+        "evidence": "PDF Section 2.3: produces actively learned models for specific systems"
+      }
+    }
+  },
+  "datasets": {
+    "datasets": {
+      "value": [
+        "MPF-TP",
+        "Random-TP",
+        "MPF2021",
+        "MPtrj",
+        "Alexandria",
+        "Materials Project",
+        "Alexandria-MP-ICSD",
+        "MatterSim curated dataset",
+        "PhononDB",
+        "MatBench",
+        "AIMD trajectory rev-PBE0-D3",
+        "MPF-alkali-TP"
+      ],
+      "evidence": "PDF mentions MPF-TP, Random-TP (Section 2.1), MPF2021 (Section S3), MPtrj (Section S3), Alexandria (Section S3), Materials Project (Section 2.1), Alexandria-MP-ICSD (Section 2.2), MatterSim curated dataset (~17M structures, Section 2.1), PhononDB (Section 2.2), MatBench (Section 2.5), AIMD trajectory rev-PBE0-D3 (Section 2.4), MPF-alkali-TP (Section S6)"
+    },
+    "MPF-TP": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "ontology datasetonto.ttl defines Dataset; MPF-TP is a benchmark dataset"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF mentions MPF-TP as a benchmark dataset but does not specify the number of samples"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF Section S1.1: materials graphs built upon point clouds with periodic boundary conditions"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section 2.1: first-principles computations at GGA-PBE level"
+      },
+      "input_features": {
+        "value": [
+          "atomic_number",
+          "atomic_coordinates",
+          "lattice_matrix"
+        ],
+        "evidence": "PDF Section S1.1: G = (Z, V, R, [L, S]) where Z is atomic number, R is coordinates, L is lattice matrix"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "forces",
+          "stresses"
+        ],
+        "evidence": "PDF Section 2.1: 'supervision signals relating to energies, forces, and stresses'"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "MPF-TP is described as a newly created benchmark dataset"
+      }
+    },
+    "Random-TP": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "ontology datasetonto.ttl defines Dataset"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF mentions Random-TP as a benchmark dataset but does not specify the number of samples"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF Section S1.1: materials graphs built upon point clouds with periodic boundary conditions"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section 2.1: first-principles computations at GGA-PBE level"
+      },
+      "input_features": {
+        "value": [
+          "atomic_number",
+          "atomic_coordinates",
+          "lattice_matrix"
+        ],
+        "evidence": "PDF Section S1.1: G = (Z, V, R, [L, S])"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "forces",
+          "stresses"
+        ],
+        "evidence": "PDF Section 2.1: energies, forces, and stresses"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "Random-TP is described as a newly created benchmark dataset sampled from high temperature and pressure"
+      }
+    },
+    "MPF2021": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "ontology datasetonto.ttl defines Dataset"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF Section S3 references MPF2021 but does not specify sample count"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF Section S1.1: materials graphs"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section S3: first-principles calculations"
+      },
+      "input_features": {
+        "value": [
+          "atomic_number",
+          "atomic_coordinates",
+          "lattice_matrix"
+        ],
+        "evidence": "PDF Section S1.1: G = (Z, V, R, [L, S])"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "forces",
+          "stresses"
+        ],
+        "evidence": "PDF Section S1.4: energy, force, stress predictions"
+      },
+      "derived_from_dataset": {
+        "value": "Materials Project",
+        "evidence": "PDF Section S3: MPF2021 is derived from the Materials Project"
+      }
+    },
+    "MPtrj": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "ontology datasetonto.ttl defines Dataset"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF Section S3 references MPtrj but does not specify total sample count"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF Section S1.1: materials graphs"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section S3: first-principles calculations"
+      },
+      "input_features": {
+        "value": [
+          "atomic_number",
+          "atomic_coordinates",
+          "lattice_matrix"
+        ],
+        "evidence": "PDF Section S1.1: G = (Z, V, R, [L, S])"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "forces",
+          "stresses"
+        ],
+        "evidence": "PDF Section S1.4: energy, force, stress predictions"
+      },
+      "derived_from_dataset": {
+        "value": "Materials Project",
+        "evidence": "PDF Section S3: 'MPF2021 and MPtrj are both derivatives of the Materials Project'"
+      }
+    },
+    "Alexandria": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "ontology datasetonto.ttl defines Dataset"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF Section S3 references Alexandria but does not specify total sample count"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF Section S1.1: materials graphs"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section S3: first-principles calculations"
+      },
+      "input_features": {
+        "value": [
+          "atomic_number",
+          "atomic_coordinates",
+          "lattice_matrix"
+        ],
+        "evidence": "PDF Section S1.1: G = (Z, V, R, [L, S])"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "forces",
+          "stresses"
+        ],
+        "evidence": "PDF Section S1.4: energy, force, stress predictions"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "Alexandria is referenced as a public database"
+      }
+    },
+    "Materials Project": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "ontology datasetonto.ttl defines Dataset"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF references Materials Project but does not specify sample count"
+      },
+      "data_representation": {
+        "value": "crystal structure",
+        "evidence": "PDF Section 2.1: crystal structures from Materials Project"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section 2.1: first-principles computations"
+      },
+      "input_features": {
+        "value": [
+          "atomic_number",
+          "atomic_coordinates",
+          "lattice_matrix"
+        ],
+        "evidence": "PDF Section S1.1: G = (Z, V, R, [L, S])"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "formation_energy"
+        ],
+        "evidence": "PDF Section 2.2: energy above hull, formation energy"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "Materials Project is a primary source database"
+      }
+    },
+    "Alexandria-MP-ICSD": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "ontology datasetonto.ttl defines Dataset"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF Section 2.2 mentions Alexandria-MP-ICSD but does not specify sample count"
+      },
+      "data_representation": {
+        "value": "crystal structure",
+        "evidence": "PDF Section 2.2: crystal structures"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section 2.2: first-principles computations"
+      },
+      "input_features": {
+        "value": [
+          "atomic_number",
+          "atomic_coordinates",
+          "lattice_matrix"
+        ],
+        "evidence": "PDF Section S1.1: G = (Z, V, R, [L, S])"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "formation_energy"
+        ],
+        "evidence": "PDF Section 2.2: energy convex hull, formation energy"
+      },
+      "derived_from_dataset": {
+        "value": "Alexandria",
+        "evidence": "PDF Section 2.2: 'combined convex hull formed by Alexandria-MP-ICSD dataset' - it is a combination of Alexandria, Materials Project, and ICSD"
+      }
+    },
+    "MatterSim curated dataset": {
+      "ontology_class": {
+        "value": "LabeledDataset",
+        "evidence": "ontology datasetonto.ttl defines LabeledDataset; the dataset is labeled with first-principles computations"
+      },
+      "number_of_samples": {
+        "value": 17000000,
+        "evidence": "PDF Section 2.1: 'the training dataset contains ∼17M structures labeled with first-principles computations'"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF Section S1.1: materials graphs built upon point clouds"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section 2.1: 'first-principles supervisor offers the deep learning model supervision signals relating to energies, forces, and stresses'"
+      },
+      "input_features": {
+        "value": [
+          "atomic_number",
+          "atomic_coordinates",
+          "lattice_matrix",
+          "temperature",
+          "pressure"
+        ],
+        "evidence": "PDF Section S1.1: G = (Z, V, R, [L, S]) where S includes temperature, pressure"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "forces",
+          "stresses"
+        ],
+        "evidence": "PDF Section 2.1: 'energies, forces, and stresses'"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "This is the primary curated dataset combining multiple sources with in-house generated data"
+      }
+    },
+    "PhononDB": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "ontology datasetonto.ttl defines Dataset"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF Section 2.2 mentions PhononDB but does not specify sample count"
+      },
+      "data_representation": {
+        "value": "crystal structure",
+        "evidence": "PDF Section 2.2: materials from PhononDB"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section 2.2: phonon spectra from first-principles"
+      },
+      "input_features": {
+        "value": [
+          "atomic_number",
+          "atomic_coordinates",
+          "lattice_matrix"
+        ],
+        "evidence": "PDF Section S1.1: G = (Z, V, R, [L, S])"
+      },
+      "target_features": {
+        "value": [
+          "max phonon frequency",
+          "phonon dispersion"
+        ],
+        "evidence": "PDF Section 2.2: 'maximum phonon frequency as an indicator' and phonon dispersion"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "PhononDB is a benchmark dataset"
+      }
+    },
+    "MatBench": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "ontology datasetonto.ttl defines Dataset"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF references MatBench but does not specify sample count"
+      },
+      "data_representation": {
+        "value": "crystal structure",
+        "evidence": "PDF Section 2.5: bulk crystalline materials"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section 2.5: computed properties from first-principles"
+      },
+      "input_features": {
+        "value": [
+          "atomic_number",
+          "atomic_coordinates",
+          "lattice_matrix"
+        ],
+        "evidence": "PDF Section S1.1: G = (Z, V, R, [L, S])"
+      },
+      "target_features": {
+        "value": [
+          "band gap",
+          "shear modulus",
+          "dielectric constant",
+          "max phonon frequency",
+          "exfoliation energy"
+        ],
+        "evidence": "PDF Section 2.5 and Table 1: band gaps, shear moduli, dielectric constants, max phonon frequency, exfoliation energies"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "MatBench is a benchmark suite"
+      }
+    },
+    "AIMD trajectory rev-PBE0-D3": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "ontology datasetonto.ttl defines Dataset"
+      },
+      "number_of_samples": {
+        "value": 900,
+        "evidence": "PDF Section 2.4: 'all 900 configurations from the AIMD trajectory'"
+      },
+      "data_representation": {
+        "value": "atomic structure",
+        "evidence": "PDF Section 2.4: configurations from AIMD trajectory of liquid water"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section 2.4: 'rev-PBE0-D3 level of theory'"
+      },
+      "input_features": {
+        "value": [
+          "atomic_number",
+          "atomic_coordinates"
+        ],
+        "evidence": "PDF Section 2.4: liquid water configurations"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "forces"
+        ],
+        "evidence": "PDF Section 2.4: AIMD trajectory data used for fine-tuning"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "Generated from AIMD simulations at rev-PBE0-D3 level"
+      }
+    },
+    "MPF-alkali-TP": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "ontology datasetonto.ttl defines Dataset"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF Section S6 mentions MPF-alkali-TP but does not specify sample count"
+      },
+      "data_representation": {
+        "value": "crystal graph",
+        "evidence": "PDF Section S1.1: materials graphs"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section 2.1: first-principles computations"
+      },
+      "input_features": {
+        "value": [
+          "atomic_number",
+          "atomic_coordinates",
+          "lattice_matrix"
+        ],
+        "evidence": "PDF Section S1.1: G = (Z, V, R, [L, S])"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "forces",
+          "stresses"
+        ],
+        "evidence": "PDF Section S6: energy, force predictions"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "MPF-alkali-TP is a test dataset mentioned in Section S6"
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\mattersim_v1_5m.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2405.04967.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\mattersim_v1_5m.yml"
+  }
+}

@@ -1,0 +1,65 @@
+Validation Report
+Conforms: False
+Results (10):
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:grace_1l_oam_grace_1l_model_variant
+	Value Node: archind:grace_1l_oam_grace_1l_architecture
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every ModelVariant should link to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:grace_1l_oam_grace_2l_model_variant
+	Value Node: archind:grace_1l_oam_grace_2l_architecture
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every ModelVariant should link to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureConfigurationSubjectShape
+	Focus Node: archind:grace_1l_oam_grace_1l_architecture
+	Value Node: archind:grace_1l_oam_grace_1l_architecture
+	Message: only a MachineLearningArchitecture should have an architecture configuration.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureConfigurationSubjectShape
+	Focus Node: archind:grace_1l_oam_grace_2l_architecture
+	Value Node: archind:grace_1l_oam_grace_2l_architecture
+	Message: only a MachineLearningArchitecture should have an architecture configuration.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureObjectShape
+	Focus Node: archind:grace_1l_oam_grace_1l_architecture
+	Value Node: archind:grace_1l_oam_grace_1l_architecture
+	Message: arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureObjectShape
+	Focus Node: archind:grace_1l_oam_grace_2l_architecture
+	Value Node: archind:grace_1l_oam_grace_2l_architecture
+	Message: arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: train:UsesDatasetSubjectShape
+	Focus Node: trind:oam_finetuning
+	Value Node: trind:oam_finetuning
+	Message: train:usesDataset must have a MachineLearningTrainingRun as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: train:UsesDatasetSubjectShape
+	Focus Node: trind:omat24_pretraining
+	Value Node: trind:omat24_pretraining
+	Message: train:usesDataset must have a MachineLearningTrainingRun as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: train:UsesDatasetSubjectShape
+	Focus Node: trind:omat_finetune_e
+	Value Node: trind:omat_finetune_e
+	Message: train:usesDataset must have a MachineLearningTrainingRun as subject.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:grace_1l_oam_variant
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every ModelVariant should link to a MachineLearningArchitecture.

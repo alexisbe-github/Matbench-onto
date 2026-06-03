@@ -1,0 +1,72 @@
+Validation Report
+Conforms: False
+Results (11):
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:esnet_content_guided_attention_model_variant
+	Value Node: archind:esnet_content_guided_attention_architecture
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every ModelVariant should link to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:esnet_esnet_model_variant
+	Value Node: archind:esnet_esnet_architecture
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every ModelVariant should link to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:esnet_icomformer_model_variant
+	Value Node: archind:esnet_icomformer_architecture
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every ModelVariant should link to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureConfigurationSubjectShape
+	Focus Node: archind:esnet_content_guided_attention_architecture
+	Value Node: archind:esnet_content_guided_attention_architecture
+	Message: only a MachineLearningArchitecture should have an architecture configuration.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureConfigurationSubjectShape
+	Focus Node: archind:esnet_esnet_architecture
+	Value Node: archind:esnet_esnet_architecture
+	Message: only a MachineLearningArchitecture should have an architecture configuration.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureConfigurationSubjectShape
+	Focus Node: archind:esnet_icomformer_architecture
+	Value Node: archind:esnet_icomformer_architecture
+	Message: only a MachineLearningArchitecture should have an architecture configuration.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureObjectShape
+	Focus Node: archind:esnet_content_guided_attention_architecture
+	Value Node: archind:esnet_content_guided_attention_architecture
+	Message: arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureObjectShape
+	Focus Node: archind:esnet_esnet_architecture
+	Value Node: archind:esnet_esnet_architecture
+	Message: arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureObjectShape
+	Focus Node: archind:esnet_icomformer_architecture
+	Value Node: archind:esnet_icomformer_architecture
+	Message: arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: train:UsesDatasetSubjectShape
+	Focus Node: trind:esnet_pretraining
+	Value Node: trind:esnet_pretraining
+	Message: train:usesDataset must have a MachineLearningTrainingRun as subject.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:esnet_variant
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every ModelVariant should link to a MachineLearningArchitecture.

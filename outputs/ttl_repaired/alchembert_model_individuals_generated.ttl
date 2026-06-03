@@ -1,0 +1,21 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:bert_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "BERT"^^xsd:string ;
+    arch:hasVariant archind:alchembert_variant .
+
+archind:alchembert_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "alchembert"^^xsd:string ;
+    arch:hasParameterNumber 110000000 ;
+    arch:hasMachineLearningArchitecture archind:transformer_architecture .
+
+archind:transformer_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "Transformer"^^xsd:string ;
+    arch:hasParameterNumber 110000000 .

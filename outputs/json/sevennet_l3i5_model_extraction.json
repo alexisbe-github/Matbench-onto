@@ -1,0 +1,185 @@
+{
+  "model": {
+    "family": {
+      "value": "SevenNet",
+      "evidence": "YAML model_name: SevenNet-0; PDF abstract and throughout: 'SevenNet' is the model family name."
+    },
+    "variant": {
+      "value": "sevennet_0",
+      "evidence": "YAML model_name: SevenNet-0; lowercased and hyphen replaced with underscore."
+    },
+    "parameter_number": {
+      "value": 842440,
+      "evidence": "YAML model_params: 842440; PDF Section 5.1: '0.84 million in SevenNet-0'."
+    }
+  },
+  "architectures": {
+    "NequIP": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF abstract and Section 2.2: NequIP is an E(3)-equivariant GNN-IP using message passing. Ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture."
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "The NequIP architecture itself does not have a single parameter count; SevenNet-0 modifies it and has 842440 parameters total."
+      },
+      "datasets": {
+        "value": [
+          "M3GNet dataset"
+        ],
+        "evidence": "PDF Section 5.1: 'SevenNet-0 is trained using the M3GNet dataset'."
+      },
+      "hyperparameters": {
+        "value": [
+          "number of channels",
+          "number of message-passing layers",
+          "cutoff radius",
+          "maximum degree of representation",
+          "learning rate",
+          "batch size",
+          "force loss weight",
+          "stress loss weight",
+          "Huber loss threshold"
+        ],
+        "evidence": "PDF Section 4: 'channel counts of 4, 8, 16, 32, and 64, and message-passing layer counts of 2, 3, 4, and 5, along with a maximum degree of representation (lmax) of 3 and a cutoff radius of 4.0 Å'; Section 5.1: 'rc of 5 Å', 'batch size of 16', 'initial learning rate of 0.004', 'force loss weight μf to 0.1', 'stress loss weight μs to 0.01', 'δ of 0.01'."
+      },
+      "hyperparameter_details": {
+        "number of channels": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl: MachineLearningHyperparameter is the class for hyperparameters."
+          },
+          "value": {
+            "value": "128 scalars (l=0), 64 vectors (l=1), 32 tensors (l=2)",
+            "evidence": "PDF Section 5.1: 'node features comprising irreducible representations of 128 scalars (l = 0), 64 vectors (l = 1), and 32 tensors (l = 2)'."
+          }
+        },
+        "number of message-passing layers": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl: MachineLearningHyperparameter is the class for hyperparameters."
+          },
+          "value": {
+            "value": 5,
+            "evidence": "PDF Section 5.1: '5 interaction blocks'."
+          }
+        },
+        "cutoff radius": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl: MachineLearningHyperparameter is the class for hyperparameters."
+          },
+          "value": {
+            "value": "5 Å",
+            "evidence": "PDF Section 5.1: 'convolutional filter employs rc of 5 Å'."
+          }
+        },
+        "maximum degree of representation": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl: MachineLearningHyperparameter is the class for hyperparameters."
+          },
+          "value": {
+            "value": 2,
+            "evidence": "PDF Section 5.1: 'spherical harmonics up to l = 2'."
+          }
+        },
+        "learning rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl: MachineLearningHyperparameter is the class for hyperparameters."
+          },
+          "value": {
+            "value": 0.004,
+            "evidence": "PDF Section 5.1: 'initial learning rate of 0.004'."
+          }
+        },
+        "batch size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl: MachineLearningHyperparameter is the class for hyperparameters."
+          },
+          "value": {
+            "value": 16,
+            "evidence": "PDF Section 5.1: 'batch size of 16'."
+          }
+        },
+        "force loss weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl: MachineLearningHyperparameter is the class for hyperparameters."
+          },
+          "value": {
+            "value": 0.1,
+            "evidence": "PDF Section 5.1: 'force loss weight μf to 0.1'."
+          }
+        },
+        "stress loss weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl: MachineLearningHyperparameter is the class for hyperparameters."
+          },
+          "value": {
+            "value": 0.01,
+            "evidence": "PDF Section 5.1: 'stress loss weight μs to 0.01'."
+          }
+        },
+        "Huber loss threshold": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology trainingonto.ttl: MachineLearningHyperparameter is the class for hyperparameters."
+          },
+          "value": {
+            "value": 0.01,
+            "evidence": "PDF Section 5.1: 'for which we use a value of 0.01'."
+          }
+        }
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "sevennet_0_pretraining"
+      ],
+      "evidence": "PDF Section 5.1 describes the pre-training of SevenNet-0 on the M3GNet dataset."
+    },
+    "training_run_details": {
+      "sevennet_0_pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF Section 5.1: 'SevenNet-0 is trained using the M3GNet dataset' — this is a pretraining run. Ontology: PretrainingRun is a subclass of MachineLearningTrainingRun."
+        },
+        "architectures": {
+          "value": [
+            "NequIP"
+          ],
+          "evidence": "PDF Section 2.2 and 5.1: SevenNet is based on the NequIP architecture."
+        },
+        "datasets": {
+          "value": [
+            "M3GNet dataset"
+          ],
+          "evidence": "PDF Section 5.1: 'SevenNet-0 is trained using the M3GNet dataset, which includes three relaxation steps of crystal structures obtained from the Materials Project database'."
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF Section 5.1: 'We utilize the Adam optimizer'."
+        },
+        "loss_function": {
+          "value": "Huber loss",
+          "evidence": "PDF Section 5.1: 'The loss function combines contributions from energy, force, and stress' using 'The Huber loss function, LHuber'."
+        },
+        "description": {
+          "value": "Pre-training of SevenNet-0 on the M3GNet dataset (derived from Materials Project) covering 89 elements, using 5 interaction blocks with 128 scalars, 64 vectors, and 32 tensors, cutoff radius of 5 Å, Adam optimizer with initial learning rate 0.004, batch size 16, Huber loss with δ=0.01, force loss weight 0.1, stress loss weight 0.01, trained for 450 epochs.",
+          "evidence": "PDF Section 5.1: full training details for SevenNet-0."
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\sevennet_l3i5.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2402.03789.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\sevennet_l3i5.yml"
+  }
+}

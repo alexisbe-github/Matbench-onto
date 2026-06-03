@@ -1,0 +1,137 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:sevennet_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "SevenNet"^^xsd:string ;
+    arch:hasVariant archind:sevennet_0_nequip_model_variant,
+        archind:sevennet_0_variant .
+
+trind:sevennet_0_nequip_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP batch size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:sevennet_0_nequip_cutoff_radius_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP cutoff radius value"^^xsd:string ;
+    train:ofHyperparameter trind:cutoff_radius .
+
+trind:sevennet_0_nequip_force_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP force loss weight value"^^xsd:string ;
+    train:ofHyperparameter trind:force_loss_weight .
+
+trind:sevennet_0_nequip_huber_loss_threshold_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP Huber loss threshold value"^^xsd:string ;
+    train:ofHyperparameter trind:huber_loss_threshold .
+
+trind:sevennet_0_nequip_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP learning rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:sevennet_0_nequip_maximum_degree_of_representation_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP maximum degree of representation value"^^xsd:string ;
+    train:ofHyperparameter trind:maximum_degree_of_representation .
+
+trind:sevennet_0_nequip_number_of_channels_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP number of channels value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_channels .
+
+trind:sevennet_0_nequip_number_of_message_passing_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP number of message-passing layers value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_message_passing_layers .
+
+trind:sevennet_0_nequip_stress_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "sevennet_0 NequIP stress loss weight value"^^xsd:string ;
+    train:ofHyperparameter trind:stress_loss_weight .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:sevennet_0_nequip_architecture a owl:NamedIndividual,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "NequIP"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:sevennet_0_nequip_architecture_configuration .
+
+archind:sevennet_0_nequip_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "NequIP architecture configuration"^^xsd:string .
+
+archind:sevennet_0_nequip_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "sevennet_0 NequIP"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:sevennet_0_nequip_architecture .
+
+archind:sevennet_0_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "sevennet_0"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\sevennet_l3i5.yml" ;
+    arch:hasParameterNumber 842440 .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch size"^^xsd:string .
+
+trind:cutoff_radius a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "cutoff radius"^^xsd:string .
+
+trind:force_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "force loss weight"^^xsd:string .
+
+trind:huber_loss_threshold a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "Huber loss threshold"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning rate"^^xsd:string .
+
+trind:maximum_degree_of_representation a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "maximum degree of representation"^^xsd:string .
+
+trind:number_of_channels a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number of channels"^^xsd:string .
+
+trind:number_of_message_passing_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number of message-passing layers"^^xsd:string .
+
+trind:stress_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "stress loss weight"^^xsd:string .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#sevennet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#sevennet_0_variant> >> prov:wasDerivedFrom "YAML model_name: SevenNet-0; lowercased and hyphen replaced with underscore." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#sevennet_0_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "842440"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 842440; PDF Section 5.1: '0.84 million in SevenNet-0'." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#sevennet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#sevennet_0_nequip_model_variant> >> prov:wasDerivedFrom "PDF abstract and Section 2.2: NequIP is an E(3)-equivariant GNN-IP using message passing. Ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#sevennet_0_nequip_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#sevennet_0_nequip_architecture> >> prov:wasDerivedFrom "PDF abstract and Section 2.2: NequIP is an E(3)-equivariant GNN-IP using message passing. Ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#sevennet_0_nequip_number_of_channels_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#number_of_channels> >> prov:wasDerivedFrom "PDF Section 4: 'channel counts of 4, 8, 16, 32, and 64, and message-passing layer counts of 2, 3, 4, and 5, along with a maximum degree of representation (lmax) of 3 and a cutoff radius of 4.0 Å'; Section 5.1: 'rc of 5 Å', 'batch size of 16', 'initial learning rate of 0.004', 'force loss weight μf to 0.1', 'stress loss weight μs to 0.01', 'δ of 0.01'." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#sevennet_0_nequip_number_of_message_passing_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#number_of_message_passing_layers> >> prov:wasDerivedFrom "PDF Section 4: 'channel counts of 4, 8, 16, 32, and 64, and message-passing layer counts of 2, 3, 4, and 5, along with a maximum degree of representation (lmax) of 3 and a cutoff radius of 4.0 Å'; Section 5.1: 'rc of 5 Å', 'batch size of 16', 'initial learning rate of 0.004', 'force loss weight μf to 0.1', 'stress loss weight μs to 0.01', 'δ of 0.01'." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#sevennet_0_nequip_cutoff_radius_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#cutoff_radius> >> prov:wasDerivedFrom "PDF Section 4: 'channel counts of 4, 8, 16, 32, and 64, and message-passing layer counts of 2, 3, 4, and 5, along with a maximum degree of representation (lmax) of 3 and a cutoff radius of 4.0 Å'; Section 5.1: 'rc of 5 Å', 'batch size of 16', 'initial learning rate of 0.004', 'force loss weight μf to 0.1', 'stress loss weight μs to 0.01', 'δ of 0.01'." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#sevennet_0_nequip_maximum_degree_of_representation_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#maximum_degree_of_representation> >> prov:wasDerivedFrom "PDF Section 4: 'channel counts of 4, 8, 16, 32, and 64, and message-passing layer counts of 2, 3, 4, and 5, along with a maximum degree of representation (lmax) of 3 and a cutoff radius of 4.0 Å'; Section 5.1: 'rc of 5 Å', 'batch size of 16', 'initial learning rate of 0.004', 'force loss weight μf to 0.1', 'stress loss weight μs to 0.01', 'δ of 0.01'." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#sevennet_0_nequip_learning_rate_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#learning_rate> >> prov:wasDerivedFrom "PDF Section 4: 'channel counts of 4, 8, 16, 32, and 64, and message-passing layer counts of 2, 3, 4, and 5, along with a maximum degree of representation (lmax) of 3 and a cutoff radius of 4.0 Å'; Section 5.1: 'rc of 5 Å', 'batch size of 16', 'initial learning rate of 0.004', 'force loss weight μf to 0.1', 'stress loss weight μs to 0.01', 'δ of 0.01'." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#sevennet_0_nequip_batch_size_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#batch_size> >> prov:wasDerivedFrom "PDF Section 4: 'channel counts of 4, 8, 16, 32, and 64, and message-passing layer counts of 2, 3, 4, and 5, along with a maximum degree of representation (lmax) of 3 and a cutoff radius of 4.0 Å'; Section 5.1: 'rc of 5 Å', 'batch size of 16', 'initial learning rate of 0.004', 'force loss weight μf to 0.1', 'stress loss weight μs to 0.01', 'δ of 0.01'." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#sevennet_0_nequip_force_loss_weight_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#force_loss_weight> >> prov:wasDerivedFrom "PDF Section 4: 'channel counts of 4, 8, 16, 32, and 64, and message-passing layer counts of 2, 3, 4, and 5, along with a maximum degree of representation (lmax) of 3 and a cutoff radius of 4.0 Å'; Section 5.1: 'rc of 5 Å', 'batch size of 16', 'initial learning rate of 0.004', 'force loss weight μf to 0.1', 'stress loss weight μs to 0.01', 'δ of 0.01'." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#sevennet_0_nequip_stress_loss_weight_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#stress_loss_weight> >> prov:wasDerivedFrom "PDF Section 4: 'channel counts of 4, 8, 16, 32, and 64, and message-passing layer counts of 2, 3, 4, and 5, along with a maximum degree of representation (lmax) of 3 and a cutoff radius of 4.0 Å'; Section 5.1: 'rc of 5 Å', 'batch size of 16', 'initial learning rate of 0.004', 'force loss weight μf to 0.1', 'stress loss weight μs to 0.01', 'δ of 0.01'." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#sevennet_0_nequip_huber_loss_threshold_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#huber_loss_threshold> >> prov:wasDerivedFrom "PDF Section 4: 'channel counts of 4, 8, 16, 32, and 64, and message-passing layer counts of 2, 3, 4, and 5, along with a maximum degree of representation (lmax) of 3 and a cutoff radius of 4.0 Å'; Section 5.1: 'rc of 5 Å', 'batch size of 16', 'initial learning rate of 0.004', 'force loss weight μf to 0.1', 'stress loss weight μs to 0.01', 'δ of 0.01'." ; dcterms:source <https://arxiv.org/pdf/2402.03789.pdf> .

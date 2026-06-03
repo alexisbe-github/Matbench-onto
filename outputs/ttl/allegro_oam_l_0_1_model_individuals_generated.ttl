@@ -13,14 +13,47 @@
 archind:allegro_family a owl:NamedIndividual,
         arch:ModelFamily ;
     rdfs:label "Allegro"^^xsd:string ;
-    arch:hasVariant archind:allegro_mp_l_variant .
+    arch:hasVariant archind:allegro_mp_l_allegro_model_variant,
+        archind:allegro_mp_l_variant .
 
-trind:allegro_spice2_pretraining a owl:NamedIndividual,
-        train:PretrainingRun ;
-    rdfs:label "allegro_spice2_pretraining"^^xsd:string ;
-    rdfs:comment "Pretraining of Allegro models (small, medium, large) on the SPICE 2 dataset subset with neutral total charge, using distributed multi-GPU training with TorchInductor compilation and PyTorch Lightning DDP"^^xsd:string ;
-    train:trainsModelVariant archind:allegro_mp_l_allegro_model_variant ;
-    train:usesDataset dataind:spice_2 .
+trind:allegro_mp_l_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "Allegro-MP-L"^^xsd:string ;
+    train:generatedBy trind:allegro_spice2_pretraining .
+
+trind:allegro_mp_m_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "Allegro-MP-M"^^xsd:string ;
+    train:generatedBy trind:allegro_spice2_pretraining .
+
+trind:allegro_mp_s_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "Allegro-MP-S"^^xsd:string ;
+    train:generatedBy trind:allegro_spice2_pretraining .
+
+trind:spice_2 a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "SPICE 2"^^xsd:string .
+
+trind:spice_2_test_set a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "SPICE 2 test set"^^xsd:string .
+
+trind:torsionnet_500 a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "TorsionNet 500"^^xsd:string .
+
+archind:allegro_mp_l_allegro_architecture a owl:NamedIndividual,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "Allegro"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:allegro_mp_l_allegro_architecture_configuration ;
+    arch:hasParameterNumber 18700000 .
+
+archind:allegro_mp_l_allegro_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Allegro architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 128 ;
+    arch:hasLayerCount 3 .
 
 archind:allegro_mp_l_variant a owl:NamedIndividual,
         arch:ModelVariant ;
@@ -33,10 +66,78 @@ dataind:spice_2 a owl:NamedIndividual,
         data:Dataset ;
     rdfs:label "SPICE 2"^^xsd:string .
 
+trind:allegro_mp_l_allegro_maximum_rotation_order_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "allegro_mp_l Allegro maximum rotation order value"^^xsd:string ;
+    train:ofHyperparameter trind:maximum_rotation_order .
+
+trind:allegro_mp_l_allegro_number_of_allegro_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "allegro_mp_l Allegro number of Allegro layers value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_allegro_layers .
+
+trind:allegro_mp_l_allegro_number_of_tensor_features_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "allegro_mp_l Allegro number of tensor features value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_tensor_features .
+
+trind:allegro_mp_l_allegro_radial_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "allegro_mp_l Allegro radial cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:radial_cutoff .
+
+trind:maximum_rotation_order a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "maximum rotation order"^^xsd:string .
+
+trind:number_of_allegro_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number of Allegro layers"^^xsd:string .
+
+trind:number_of_tensor_features a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number of tensor features"^^xsd:string .
+
+trind:radial_cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial cutoff"^^xsd:string .
+
+archind:allegro_mp_l_allegro_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "allegro_mp_l Allegro"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:allegro_mp_l_allegro_architecture .
+
+trind:allegro_spice2_pretraining a owl:NamedIndividual,
+        train:PretrainingRun ;
+    rdfs:label "allegro_spice2_pretraining"^^xsd:string ;
+    rdfs:comment "Training of Allegro models on SPICE 2 dataset with neutral total charge subset using distributed multi-GPU training with TorchInductor compilation"^^xsd:string ;
+    train:hasHyperparameterValue trind:allegro_mp_l_allegro_maximum_rotation_order_value,
+        trind:allegro_mp_l_allegro_number_of_allegro_layers_value,
+        trind:allegro_mp_l_allegro_number_of_tensor_features_value,
+        trind:allegro_mp_l_allegro_radial_cutoff_value ;
+    train:trainsModelVariant archind:allegro_mp_l_allegro_model_variant ;
+    train:usesDataset dataind:spice_2 .
+
 
 
 << <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_variant> >> prov:wasDerivedFrom "YAML model_name: Allegro-MP-L, lowercased and spaces/hyphens replaced by underscores" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
 << <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "18700000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 18700000" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_allegro_model_variant> >> prov:wasDerivedFrom "[{'value': 'Allegro', 'evidence': \"PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'\"}]" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#spice_2> >> prov:wasDerivedFrom "[{'value': 'SPICE 2', 'evidence': \"PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'; PDF Section III: 'subset of the SPICE 2 data limited to systems with neutral total charge'\"}]" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "Pretraining of Allegro models (small, medium, large) on the SPICE 2 dataset subset with neutral total charge, using distributed multi-GPU training with TorchInductor compilation and PyTorch Lightning DDP"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'; PDF Section III.B: 'distributed multi-GPU training'; PDF Section II.B: 'torch.compile'" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_allegro_model_variant> >> prov:wasDerivedFrom "PDF Section I: Allegro is a deep equivariant neural network; architecture ontology has EquivariantMessagePassingNeuralNetworkArchitecture as a subclass of EquivariantGraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_allegro_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_allegro_architecture> >> prov:wasDerivedFrom "PDF Section I: Allegro is a deep equivariant neural network; architecture ontology has EquivariantMessagePassingNeuralNetworkArchitecture as a subclass of EquivariantGraphNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_allegro_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "18700000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 18700000 for Allegro-MP-L" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_allegro_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasLayerCount> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Table 1: large model has 3 Allegro layers" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_allegro_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasHiddenDimension> "128"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Table 1: large model has 128 tensor features" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_mp_l_allegro_maximum_rotation_order_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#maximum_rotation_order> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_mp_l_allegro_number_of_tensor_features_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#number_of_tensor_features> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_mp_l_allegro_number_of_allegro_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#number_of_allegro_layers> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_mp_l_allegro_radial_cutoff_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#radial_cutoff> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#allegro_mp_l_allegro_model_variant> >> prov:wasDerivedFrom "['Allegro']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_mp_l_allegro_maximum_rotation_order_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_mp_l_allegro_number_of_tensor_features_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_mp_l_allegro_number_of_allegro_layers_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_mp_l_allegro_radial_cutoff_value> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#spice_2> >> prov:wasDerivedFrom "['SPICE 2']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_mp_l_materialization> <https://k.loria.fr/ontologies/trainingonto#generatedBy> <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> >> prov:wasDerivedFrom "['Allegro-MP-L', 'Allegro-MP-M', 'Allegro-MP-S']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_mp_m_materialization> <https://k.loria.fr/ontologies/trainingonto#generatedBy> <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> >> prov:wasDerivedFrom "['Allegro-MP-L', 'Allegro-MP-M', 'Allegro-MP-S']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_mp_s_materialization> <https://k.loria.fr/ontologies/trainingonto#generatedBy> <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> >> prov:wasDerivedFrom "['Allegro-MP-L', 'Allegro-MP-M', 'Allegro-MP-S']" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "Training of Allegro models on SPICE 2 dataset with neutral total charge subset using distributed multi-GPU training with TorchInductor compilation"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF Section III: trained Allegro models on SPICE 2 dataset, neutral total charge subset, distributed training" ; dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> .

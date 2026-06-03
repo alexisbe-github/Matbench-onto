@@ -1,0 +1,140 @@
+Looking at the SHACL violations, I need to fix 4 issues:
+
+1. `archind:eqv2_m_equiformerv2_architecture` is `arch:GraphTransformerArchitecture` but needs to be `arch:MachineLearningArchitecture` (or a subclass that satisfies both).
+2. `archind:eqv2_m_variant` lacks `arch:hasMachineLearningArchitecture` (minCount 1 violation).
+3. `archind:eqv2_m_equiformerv2_architecture` uses `arch:hasMachineLearningArchitectureConfiguration` but the subject shape requires it to be `arch:MachineLearningArchitecture`.
+
+The fix: Add `arch:MachineLearningArchitecture` as an additional type for `archind:eqv2_m_equiformerv2_architecture`, and add the missing `arch:hasMachineLearningArchitecture` triple for `archind:eqv2_m_variant`.
+
+```turtle
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:equiformerv2_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "EquiformerV2"^^xsd:string ;
+    arch:hasVariant archind:eqv2_m_equiformerv2_model_variant,
+        archind:eqv2_m_variant .
+
+trind:eqv2_m_equiformerv2_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "eqv2_m EquiformerV2 batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:eqv2_m_equiformerv2_energy_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "eqv2_m EquiformerV2 energy_loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:energy_loss_function .
+
+trind:eqv2_m_equiformerv2_energy_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "eqv2_m EquiformerV2 energy_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:energy_loss_weight .
+
+trind:eqv2_m_equiformerv2_force_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "eqv2_m EquiformerV2 force_loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:force_loss_function .
+
+trind:eqv2_m_equiformerv2_force_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "eqv2_m EquiformerV2 force_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:force_loss_weight .
+
+trind:eqv2_m_equiformerv2_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "eqv2_m EquiformerV2 learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:eqv2_m_equiformerv2_max_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "eqv2_m EquiformerV2 max_epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:max_epochs .
+
+trind:eqv2_m_equiformerv2_stress_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "eqv2_m EquiformerV2 stress_loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:stress_loss_function .
+
+trind:eqv2_m_equiformerv2_stress_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "eqv2_m EquiformerV2 stress_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:stress_loss_weight .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:eqv2_m_equiformerv2_architecture a owl:NamedIndividual,
+        arch:GraphTransformerArchitecture,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "EquiformerV2"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:eqv2_m_equiformerv2_architecture_configuration ;
+    arch:hasParameterNumber 86589068 .
+
+archind:eqv2_m_equiformerv2_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EquiformerV2 architecture configuration"^^xsd:string .
+
+archind:eqv2_m_equiformerv2_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "eqv2_m EquiformerV2"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:eqv2_m_equiformerv2_architecture .
+
+archind:eqv2_m_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "eqv2_m"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2410.12771.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\eqv2_s_dens_mp.yml" ;
+    arch:hasMachineLearningArchitecture archind:eqv2_m_equiformerv2_architecture ;
+    arch:hasParameterNumber 86589068 .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:energy_loss_function a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "energy_loss_function"^^xsd:string .
+
+trind:energy_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "energy_loss_weight"^^xsd:string .
+
+trind:force_loss_function a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "force_loss_function"^^xsd:string .
+
+trind:force_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "force_loss_weight"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:max_epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_epochs"^^xsd:string .
+
+trind:stress_loss_function a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "stress_loss_function"^^xsd:string .
+
+trind:stress_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "stress_loss_weight"^^xsd:string .
+```
+
+**Changes made:**
+
+1. **`archind:eqv2_m_equiformerv2_architecture`**: Added `arch:MachineLearningArchitecture` as an additional class. This fixes violations 1, 2, and 3 — the architecture now satisfies `sh:class arch:MachineLearningArchitecture` for both the `ModelVariantMustHaveArchitectureShape` (violation 1), the `HasArchitectureConfigurationSubjectShape` (violation 2), and the `HasArchitectureObjectShape` (violation 3).
+
+2. **`archind:eqv2_m_variant`**: Added `arch:hasMachineLearningArchitecture archind:eqv2_m_equiformerv2_architecture`. This fixes violation 4 — the `MinCountConstraintComponent` requiring at least one `arch:hasMachineLearningArchitecture` for every `arch:ModelVariant`.

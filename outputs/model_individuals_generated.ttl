@@ -11,7 +11,9 @@
 archind:mattersim_family a owl:NamedIndividual,
         arch:ModelFamily ;
     rdfs:label "MatterSim"^^xsd:string ;
-    arch:hasVariant archind:mattersim_v1_5m_variant .
+    arch:hasVariant archind:mattersim_v1_5m_graphormer_model_variant,
+        archind:mattersim_v1_5m_m3gnet_model_variant,
+        archind:mattersim_v1_5m_variant .
 
 trind:pretraining_run a owl:NamedIndividual,
         train:PretrainingRun ;
@@ -27,10 +29,58 @@ trind:pretraining_run a owl:NamedIndividual,
     train:usesLoss trind:huber_loss ;
     train:usesOptimizer trind:adam_m3gnet_adamw_graphormer .
 
+archind:mattersim_v1_5m_graphormer_architecture a owl:NamedIndividual,
+        arch:GraphTransformerArchitecture ;
+    rdfs:label "Graphormer"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:mattersim_v1_5m_graphormer_architecture_configuration ;
+    arch:hasParameterNumber 182000000 ;
+    train:usesDataset dataind:alexandria,
+        dataind:in_house_generated_dataset,
+        dataind:materials_project,
+        dataind:mpf2021,
+        dataind:mptrj .
+
+archind:mattersim_v1_5m_graphormer_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Graphormer architecture configuration"^^xsd:string .
+
+archind:mattersim_v1_5m_m3gnet_architecture a owl:NamedIndividual,
+        arch:MessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "M3GNet"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:mattersim_v1_5m_m3gnet_architecture_configuration ;
+    arch:hasParameterNumber 4549142 ;
+    train:usesDataset dataind:alexandria,
+        dataind:in_house_generated_dataset,
+        dataind:materials_project,
+        dataind:mpf2021,
+        dataind:mptrj .
+
+archind:mattersim_v1_5m_m3gnet_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "M3GNet architecture configuration"^^xsd:string .
+
 archind:mattersim_v1_5m_variant a owl:NamedIndividual,
         arch:ModelVariant ;
     rdfs:label "mattersim_v1_5M"^^xsd:string ;
     arch:hasParameterNumber 4549142 .
+
+trind:adam_m3gnet_adamw_graphormer a owl:NamedIndividual,
+        train:Optimizer ;
+    rdfs:label "Adam (M3GNet), AdamW (Graphormer)"^^xsd:string .
+
+trind:huber_loss a owl:NamedIndividual,
+        train:LossFunction ;
+    rdfs:label "Huber loss"^^xsd:string .
+
+archind:mattersim_v1_5m_graphormer_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "mattersim_v1_5M Graphormer"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:mattersim_v1_5m_graphormer_architecture .
+
+archind:mattersim_v1_5m_m3gnet_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "mattersim_v1_5M M3GNet"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:mattersim_v1_5m_m3gnet_architecture .
 
 dataind:alexandria a owl:NamedIndividual,
         data:Dataset ;
@@ -52,18 +102,52 @@ dataind:mptrj a owl:NamedIndividual,
         data:Dataset ;
     rdfs:label "MPtrj"^^xsd:string .
 
-trind:adam_m3gnet_adamw_graphormer a owl:NamedIndividual,
-        train:Optimizer ;
-    rdfs:label "Adam (M3GNet), AdamW (Graphormer)"^^xsd:string .
-
-trind:huber_loss a owl:NamedIndividual,
-        train:LossFunction ;
-    rdfs:label "Huber loss"^^xsd:string .
-
 
 
 << <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_variant> >> prov:wasDerivedFrom "YAML model_name: 'MatterSim v1 5M', lowercased and spaces/hyphens replaced by underscores" .
 << <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "4549142"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 4549142" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_model_variant> >> prov:wasDerivedFrom "MessagePassingNeuralNetworkArchitecture" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> >> prov:wasDerivedFrom "MessagePassingNeuralNetworkArchitecture" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "4549142"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "4549142" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mpf2021> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptrj> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#alexandria> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#in_house_generated_dataset> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_model_variant> >> prov:wasDerivedFrom "GraphTransformerArchitecture" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> >> prov:wasDerivedFrom "GraphTransformerArchitecture" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "182000000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "182000000" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mpf2021> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptrj> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#alexandria> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#in_house_generated_dataset> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_model_variant> >> prov:wasDerivedFrom "MessagePassingNeuralNetworkArchitecture" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> >> prov:wasDerivedFrom "MessagePassingNeuralNetworkArchitecture" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "4549142"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "4549142" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mpf2021> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptrj> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#alexandria> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#in_house_generated_dataset> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_model_variant> >> prov:wasDerivedFrom "GraphTransformerArchitecture" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> >> prov:wasDerivedFrom "GraphTransformerArchitecture" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "182000000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "182000000" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mpf2021> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptrj> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#alexandria> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#in_house_generated_dataset> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_model_variant> >> prov:wasDerivedFrom "['M3GNet', 'Graphormer']" .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_model_variant> >> prov:wasDerivedFrom "['M3GNet', 'Graphormer']" .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mpf2021> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptrj> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#alexandria> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#in_house_generated_dataset> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <https://k.loria.fr/ontologies/trainingonto#usesOptimizer> <https://k.loria.fr/ontologies/trainingonto-individuals#adam_m3gnet_adamw_graphormer> >> prov:wasDerivedFrom "Adam (M3GNet), AdamW (Graphormer)" .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <https://k.loria.fr/ontologies/trainingonto#usesLoss> <https://k.loria.fr/ontologies/trainingonto-individuals#huber_loss> >> prov:wasDerivedFrom "Huber loss" .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <http://www.w3.org/2000/01/rdf-schema#comment> "Pretraining of MatterSim models (M3GNet and Graphormer) on large-scale first-principles computations using active learning from a curated dataset of approximately 17M structures labeled with GGA-PBE level of theory with Hubbard U correction."^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "Pretraining of MatterSim models (M3GNet and Graphormer) on large-scale first-principles computations using active learning from a curated dataset of approximately 17M structures labeled with GGA-PBE level of theory with Hubbard U correction." .
 << <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_m3gnet_model_variant> >> prov:wasDerivedFrom "['M3GNet', 'Graphormer']" .
 << <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_graphormer_model_variant> >> prov:wasDerivedFrom "['M3GNet', 'Graphormer']" .
 << <https://k.loria.fr/ontologies/trainingonto-individuals#pretraining_run> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mpf2021> >> prov:wasDerivedFrom "['MPF2021', 'MPtrj', 'Alexandria', 'Materials Project', 'in-house generated dataset']" .

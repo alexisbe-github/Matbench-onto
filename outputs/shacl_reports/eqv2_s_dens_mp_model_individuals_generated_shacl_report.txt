@@ -1,0 +1,28 @@
+Validation Report
+Conforms: False
+Results (4):
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:eqv2_m_equiformerv2_model_variant
+	Value Node: archind:eqv2_m_equiformerv2_architecture
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every ModelVariant should link to a MachineLearningArchitecture.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureConfigurationSubjectShape
+	Focus Node: archind:eqv2_m_equiformerv2_architecture
+	Value Node: archind:eqv2_m_equiformerv2_architecture
+	Message: only a MachineLearningArchitecture should have an architecture configuration.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: arch:HasArchitectureObjectShape
+	Focus Node: archind:eqv2_m_equiformerv2_architecture
+	Value Node: archind:eqv2_m_equiformerv2_architecture
+	Message: arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:eqv2_m_variant
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every ModelVariant should link to a MachineLearningArchitecture.

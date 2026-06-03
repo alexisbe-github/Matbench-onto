@@ -1,0 +1,535 @@
+{
+  "model": {
+    "family": {
+      "value": "Nequix",
+      "evidence": "YAML model_name: 'Nequix MP PFT'; PDF: 'We introduce Nequix, a compact E(3)-equivariant potential'"
+    },
+    "variant": {
+      "value": "nequix_mp_pft",
+      "evidence": "YAML model_name: 'Nequix MP PFT' — lowercased and spaces/hyphens replaced by underscores"
+    },
+    "parameter_number": {
+      "value": 707658,
+      "evidence": "YAML model_params: 707658"
+    }
+  },
+  "architectures": {
+    "Nequix": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF: 'Nequix follows a simplified version of the NequIP architecture' — NequIP is an E(3)-equivariant graph neural network using message passing; ontology: EquivariantMessagePassingNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 707658,
+        "evidence": "YAML model_params: 707658; PDF: 'Nequix has 700K parameters'"
+      },
+      "datasets": {
+        "value": [
+          "MPtrj",
+          "MDR Phonon PBE"
+        ],
+        "evidence": "PDF: 'The final Nequix model is trained for 100 epochs on MPtrj'; YAML: 'fine-tuned using phonon fine-tuning (PFT) on a subset of the MDR Phonon PBE dataset that is contained within MPtrj'"
+      },
+      "hyperparameters": {
+        "radial_cutoff": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": "6 Å",
+            "evidence": "PDF Table A.1: Radial cutoff 6 Å"
+          }
+        },
+        "hidden_irreps": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": "128x0e + 64x1o + 32x2e + 32x3o",
+            "evidence": "PDF Table A.1: Hidden irreps 128x0e + 64x1o + 32x2e + 32x3o"
+          }
+        },
+        "lmax": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 3,
+            "evidence": "PDF Table A.1: Lmax 3"
+          }
+        },
+        "nlayers": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 4,
+            "evidence": "PDF Table A.1: Nlayers 4"
+          }
+        },
+        "radial_basis_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 8,
+            "evidence": "PDF Table A.1: Radial basis size 8"
+          }
+        },
+        "radial_mlp_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 64,
+            "evidence": "PDF Table A.1: Radial MLP size 64"
+          }
+        },
+        "radial_mlp_layers": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 2,
+            "evidence": "PDF Table A.1: Radial MLP layers 2"
+          }
+        },
+        "polynomial_cutoff_p": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 6.0,
+            "evidence": "PDF Table A.1: Polynomial cutoff p 6.0"
+          }
+        },
+        "radial_basis_function": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": "Bessel",
+            "evidence": "PDF Table A.1: Radial basis function Bessel"
+          }
+        },
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.01,
+            "evidence": "PDF Table A.1: Learning rate 0.01"
+          }
+        },
+        "warmup_epochs": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.1,
+            "evidence": "PDF Table A.1: Warmup epochs 0.1"
+          }
+        },
+        "warmup_factor": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.2,
+            "evidence": "PDF Table A.1: Warmup factor 0.2"
+          }
+        },
+        "optimizer": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": "Muon",
+            "evidence": "PDF Table A.1: Optimizer Muon"
+          }
+        },
+        "weight_decay": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 0.001,
+            "evidence": "PDF Table A.1: Weight decay 0.001"
+          }
+        },
+        "energy_weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 20,
+            "evidence": "PDF Table A.1: Energy weight 20"
+          }
+        },
+        "force_weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 20,
+            "evidence": "PDF Table A.1: Force weight 20"
+          }
+        },
+        "stress_weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 5,
+            "evidence": "PDF Table A.1: Stress weight 5"
+          }
+        },
+        "batch_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 256,
+            "evidence": "PDF Table A.1: Batch size 256 (dynamic)"
+          }
+        },
+        "number_of_epochs": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "value": 100,
+            "evidence": "PDF Table A.1: Number of epochs 100"
+          }
+        }
+      },
+      "components": {
+        "value": [
+          "Interaction Block",
+          "RMSNorm",
+          "Linear",
+          "Gate",
+          "Node Embedding",
+          "SO(3) Convolution"
+        ],
+        "evidence": "PDF Figure 1a: architecture diagram showing Interaction Block, RMSNorm, Linear, Gate, Node Embedding, SO(3) Convolution"
+      },
+      "backbone_architecture": {
+        "value": "NequIP",
+        "evidence": "PDF: 'Nequix follows a simplified version of the NequIP architecture'"
+      },
+      "head_architecture": {
+        "value": null,
+        "evidence": "No explicit prediction head architecture described beyond node energy output"
+      },
+      "layer_count": {
+        "value": 4,
+        "evidence": "PDF Table A.1: Nlayers 4"
+      },
+      "hidden_dimension": {
+        "value": 256,
+        "evidence": "PDF Table A.1: Hidden irreps 128x0e + 64x1o + 32x2e + 32x3o — total 256 features"
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "nequix_mp_pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF: 'The final Nequix model is trained for 100 epochs on MPtrj' — this is the initial training from scratch on MPtrj"
+        },
+        "architectures": {
+          "value": [
+            "Nequix"
+          ],
+          "evidence": "PDF: Nequix architecture trained on MPtrj"
+        },
+        "datasets": {
+          "value": [
+            "MPtrj"
+          ],
+          "evidence": "PDF: 'The final Nequix model is trained for 100 epochs on MPtrj'"
+        },
+        "optimizer": {
+          "value": "Muon",
+          "evidence": "PDF Table A.1: Optimizer Muon"
+        },
+        "loss_function": {
+          "value": "MAE on energy and stress, l2 on forces",
+          "evidence": "PDF Appendix A.1: 'The model is trained for 100 epochs, using an MAE loss function on energy and stress, and l2 loss on forces'"
+        },
+        "description": {
+          "value": "Pretraining of Nequix on the MPtrj dataset for 100 epochs using the Muon optimizer with RMSNorm, achieving competitive accuracy on Matbench-Discovery and MDR phonon benchmarks at 100 A100 GPU-hours.",
+          "evidence": "PDF Abstract and Section 2: training on MPtrj for 100 epochs, 100 GPU-hours"
+        },
+        "objective_function": {
+          "value": "MAE on energy and stress, l2 on forces",
+          "evidence": "PDF Appendix A.1: loss function details"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No sampling method specified"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "Trained from scratch on MPtrj"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "Nequix MP 1"
+          ],
+          "evidence": "YAML: 'Nequix MP PFT is a fine-tuned version of Nequix MP 1' — Nequix MP 1 is the output of pretraining"
+        }
+      },
+      "nequix_mp_pft_finetuning": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "YAML: 'Nequix MP PFT is a fine-tuned version of Nequix MP 1, which was fine-tuned using phonon fine-tuning (PFT)'"
+        },
+        "architectures": {
+          "value": [
+            "Nequix"
+          ],
+          "evidence": "YAML: Nequix MP PFT is based on Nequix architecture"
+        },
+        "datasets": {
+          "value": [
+            "MDR Phonon PBE"
+          ],
+          "evidence": "YAML: 'fine-tuned using phonon fine-tuning (PFT) on a subset of the MDR Phonon PBE dataset that is contained within MPtrj'"
+        },
+        "optimizer": {
+          "value": null,
+          "evidence": "YAML does not specify optimizer for PFT; PDF does not detail PFT training separately"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "Not specified for the PFT fine-tuning run"
+        },
+        "description": {
+          "value": "Phonon fine-tuning (PFT) of Nequix MP 1 on a subset of the MDR Phonon PBE dataset contained within MPtrj, producing Nequix MP PFT.",
+          "evidence": "YAML notes_description"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "Not specified"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "Not specified"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": "Nequix MP 1",
+          "evidence": "YAML: 'Nequix MP PFT is a fine-tuned version of Nequix MP 1'"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "Nequix MP PFT"
+          ],
+          "evidence": "YAML model_name: Nequix MP PFT — this is the output of the PFT fine-tuning"
+        }
+      }
+    },
+    "datasets": {
+      "MPtrj": {
+        "ontology_class": {
+          "value": "TrainingDataset",
+          "evidence": "PDF: MPtrj used for training Nequix; ontology: TrainingDataset"
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "Exact sample count not specified in provided context"
+        },
+        "data_representation": {
+          "value": "atomic structure",
+          "evidence": "PDF: MPtrj is a dataset of atomistic materials structures with DFT/PBE calculations"
+        },
+        "labelling_method": {
+          "value": "DFT/PBE",
+          "evidence": "PDF: 'Ground truth is calculated with DFT/PBE level of theory, the same as MPtrj'"
+        },
+        "input_features": {
+          "value": [
+            "atomic species",
+            "atomic positions"
+          ],
+          "evidence": "PDF: 'One-hot Encode Input Species and Positions'"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces",
+            "stress"
+          ],
+          "evidence": "PDF: 'Node Energy' output; forces as -∇rE; stress as energy derivative"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "MPtrj is a primary dataset derived from The Materials Project"
+        }
+      },
+      "MDR Phonon PBE": {
+        "ontology_class": {
+          "value": "TrainingDataset",
+          "evidence": "YAML: used for phonon fine-tuning (PFT); ontology: TrainingDataset"
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "Exact sample count for the subset used in PFT not specified"
+        },
+        "data_representation": {
+          "value": "atomic structure",
+          "evidence": "PDF: MDR phonon benchmark involves phonon calculations on atomic structures"
+        },
+        "labelling_method": {
+          "value": "DFT/PBE",
+          "evidence": "YAML: 'MDR Phonon PBE dataset'; PDF: 'DFT/PBE level of theory'"
+        },
+        "input_features": {
+          "value": [
+            "atomic species",
+            "atomic positions"
+          ],
+          "evidence": "PDF: standard MLIP inputs"
+        },
+        "target_features": {
+          "value": [
+            "phonon properties"
+          ],
+          "evidence": "YAML: 'phonon fine-tuning (PFT)'; PDF: phonon frequency, vibrational entropy, Helmholtz free energy, heat capacity"
+        },
+        "derived_from_dataset": {
+          "value": "MPtrj",
+          "evidence": "YAML: 'a subset of the MDR Phonon PBE dataset that is contained within MPtrj'"
+        }
+      },
+      "Matbench-Discovery": {
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF: Matbench-Discovery is a benchmark dataset; ontology: Dataset"
+        },
+        "number_of_samples": {
+          "value": 257590,
+          "evidence": "PDF: '257,487 generated structures' plus '103 structures' for thermal conductivity"
+        },
+        "data_representation": {
+          "value": "crystal structure",
+          "evidence": "PDF: 'geometry optimization and energy prediction on a set of 257,487 generated structures'"
+        },
+        "labelling_method": {
+          "value": "DFT/PBE",
+          "evidence": "PDF: 'Ground truth is calculated with DFT/PBE level of theory'"
+        },
+        "input_features": {
+          "value": [
+            "crystal structure",
+            "atomic species",
+            "atomic positions"
+          ],
+          "evidence": "PDF: structure relaxation and phonon calculations"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces",
+            "stability classification",
+            "thermal conductivity"
+          ],
+          "evidence": "PDF: 'F1 for stable/unstable classification', 'RMSD', 'thermal conductivity κ'"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "Independent benchmark dataset"
+        }
+      },
+      "MDR phonon benchmark": {
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF: MDR phonon benchmark; ontology: Dataset"
+        },
+        "number_of_samples": {
+          "value": 10000,
+          "evidence": "PDF: 'a set of 10,000 phonon calculations'"
+        },
+        "data_representation": {
+          "value": "atomic structure",
+          "evidence": "PDF: phonon calculations using displacements of supercells"
+        },
+        "labelling_method": {
+          "value": "DFT/PBE",
+          "evidence": "PDF: 'also done with DFT/PBE level of theory'"
+        },
+        "input_features": {
+          "value": [
+            "crystal structure",
+            "atomic species",
+            "atomic positions"
+          ],
+          "evidence": "PDF: geometry relaxation then phonon calculations"
+        },
+        "target_features": {
+          "value": [
+            "maximum phonon frequency",
+            "vibrational entropy",
+            "Helmholtz free energy",
+            "heat capacity at constant volume"
+          ],
+          "evidence": "PDF Table 2: ωmax, S, F, CV"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "Independent benchmark dataset from MDR"
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\nequix_mp_1.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2508.16067.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\nequix_mp_1.yml"
+  }
+}

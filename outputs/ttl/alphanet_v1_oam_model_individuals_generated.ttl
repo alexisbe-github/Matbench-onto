@@ -1,7 +1,5 @@
 @prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
 @prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
-@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
-@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
@@ -16,6 +14,71 @@ archind:alphanet_family a owl:NamedIndividual,
     arch:hasVariant archind:alphanet_v1_mptrj_alphanet_model_variant,
         archind:alphanet_v1_mptrj_variant .
 
+trind:alphanet_v1_mptrj_alphanet_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:alphanet_v1_mptrj_alphanet_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:cutoff .
+
+trind:alphanet_v1_mptrj_alphanet_energy_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet energy_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:energy_loss_weight .
+
+trind:alphanet_v1_mptrj_alphanet_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:epochs .
+
+trind:alphanet_v1_mptrj_alphanet_force_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet force_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:force_loss_weight .
+
+trind:alphanet_v1_mptrj_alphanet_grad_clip_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet grad_clip value"^^xsd:string ;
+    train:ofHyperparameter trind:grad_clip .
+
+trind:alphanet_v1_mptrj_alphanet_heads_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet heads value"^^xsd:string ;
+    train:ofHyperparameter trind:heads .
+
+trind:alphanet_v1_mptrj_alphanet_hidden_channels_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet hidden_channels value"^^xsd:string ;
+    train:ofHyperparameter trind:hidden_channels .
+
+trind:alphanet_v1_mptrj_alphanet_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:alphanet_v1_mptrj_alphanet_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_function .
+
+trind:alphanet_v1_mptrj_alphanet_num_basis_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet num_basis value"^^xsd:string ;
+    train:ofHyperparameter trind:num_basis .
+
+trind:alphanet_v1_mptrj_alphanet_num_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet num_layers value"^^xsd:string ;
+    train:ofHyperparameter trind:num_layers .
+
+trind:alphanet_v1_mptrj_alphanet_scheduler_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "alphanet-v1-mptrj AlphaNet scheduler value"^^xsd:string ;
+    train:ofHyperparameter trind:scheduler .
+
 trind:evidence a owl:NamedIndividual,
         train:MachineLearningTrainingRun ;
     rdfs:label "evidence"^^xsd:string .
@@ -28,14 +91,7 @@ archind:alphanet_v1_mptrj_alphanet_architecture a owl:NamedIndividual,
         arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
     rdfs:label "AlphaNet"^^xsd:string ;
     arch:hasMachineLearningArchitectureConfiguration archind:alphanet_v1_mptrj_alphanet_architecture_configuration ;
-    arch:hasParameterNumber 16234332 ;
-    train:usesDataset dataind:defected_bilayer_graphene,
-        dataind:formate_decomposition_on_cu,
-        dataind:matbench_discovery_wbm,
-        dataind:mptraj,
-        dataind:oc20,
-        dataind:oc2m,
-        dataind:zeolite .
+    arch:hasParameterNumber 16234332 .
 
 archind:alphanet_v1_mptrj_alphanet_architecture_configuration a owl:NamedIndividual,
         arch:MachineLearningArchitectureConfiguration ;
@@ -53,33 +109,57 @@ archind:alphanet_v1_mptrj_variant a owl:NamedIndividual,
     prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\alphanet_v1_oam.yml" ;
     arch:hasParameterNumber 16234332 .
 
-dataind:defected_bilayer_graphene a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "Defected Bilayer Graphene"^^xsd:string .
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
 
-dataind:formate_decomposition_on_cu a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "Formate Decomposition on Cu"^^xsd:string .
+trind:cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "cutoff"^^xsd:string .
 
-dataind:matbench_discovery_wbm a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "Matbench Discovery WBM"^^xsd:string .
+trind:energy_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "energy_loss_weight"^^xsd:string .
 
-dataind:mptraj a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "MPTraj"^^xsd:string .
+trind:epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "epochs"^^xsd:string .
 
-dataind:oc20 a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "OC20"^^xsd:string .
+trind:force_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "force_loss_weight"^^xsd:string .
 
-dataind:oc2m a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "OC2M"^^xsd:string .
+trind:grad_clip a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "grad_clip"^^xsd:string .
 
-dataind:zeolite a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "Zeolite"^^xsd:string .
+trind:heads a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "heads"^^xsd:string .
+
+trind:hidden_channels a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "hidden_channels"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:loss_function a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_function"^^xsd:string .
+
+trind:num_basis a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "num_basis"^^xsd:string .
+
+trind:num_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "num_layers"^^xsd:string .
+
+trind:scheduler a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "scheduler"^^xsd:string .
 
 
 
@@ -88,10 +168,16 @@ dataind:zeolite a owl:NamedIndividual,
 << <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_model_variant> >> prov:wasDerivedFrom "EquivariantMessagePassingNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
 << <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> >> prov:wasDerivedFrom "EquivariantMessagePassingNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
 << <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "16234332"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "16234332" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#formate_decomposition_on_cu> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#defected_bilayer_graphene> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#zeolite> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#oc20> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#oc2m> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptraj> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#alphanet_v1_mptrj_alphanet_architecture> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#matbench_discovery_wbm> >> prov:wasDerivedFrom "['Formate Decomposition on Cu', 'Defected Bilayer Graphene', 'Zeolite', 'OC20', 'OC2M', 'MPTraj', 'Matbench Discovery WBM']" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_learning_rate_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#learning_rate> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_grad_clip_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#grad_clip> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_scheduler_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#scheduler> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_epochs_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#epochs> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_loss_function_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#loss_function> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_batch_size_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#batch_size> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_num_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#num_layers> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_heads_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#heads> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_num_basis_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#num_basis> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_hidden_channels_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_channels> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_cutoff_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#cutoff> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_energy_loss_weight_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#energy_loss_weight> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#alphanet_v1_mptrj_alphanet_force_loss_weight_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#force_loss_weight> >> prov:wasDerivedFrom "{'evidence': None}" ; dcterms:source <https://arxiv.org/pdf/2501.07155.pdf> .

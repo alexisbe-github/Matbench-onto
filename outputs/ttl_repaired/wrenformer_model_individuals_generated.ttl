@@ -1,0 +1,104 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:transformer_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "Transformer"^^xsd:string ;
+    arch:hasVariant archind:wrenformer_transformer_model_variant,
+        archind:wrenformer_variant .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+trind:wrenformer_transformer_attention_heads_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "wrenformer Transformer attention_heads value"^^xsd:string ;
+    train:ofHyperparameter trind:attention_heads .
+
+trind:wrenformer_transformer_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "wrenformer Transformer batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:wrenformer_transformer_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "wrenformer Transformer epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:epochs .
+
+trind:wrenformer_transformer_hidden_units_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "wrenformer Transformer hidden_units value"^^xsd:string ;
+    train:ofHyperparameter trind:hidden_units .
+
+trind:wrenformer_transformer_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "wrenformer Transformer learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:wrenformer_transformer_message_passing_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "wrenformer Transformer message_passing_layers value"^^xsd:string ;
+    train:ofHyperparameter trind:message_passing_layers .
+
+trind:wrenformer_transformer_weight_decay_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "wrenformer Transformer weight_decay value"^^xsd:string ;
+    train:ofHyperparameter trind:weight_decay .
+
+archind:wrenformer_transformer_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "Transformer"^^xsd:string ;
+    arch:hasParameterNumber 5166658 .
+
+archind:wrenformer_transformer_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Transformer architecture configuration"^^xsd:string .
+
+archind:wrenformer_transformer_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "wrenformer Transformer"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:wrenformer_transformer_architecture .
+
+archind:wrenformer_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "wrenformer"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2106.11132.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\wrenformer.yml" ;
+    arch:hasParameterNumber 5166658 ;
+    arch:hasMachineLearningArchitecture archind:wrenformer_transformer_architecture .
+
+trind:attention_heads a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "attention_heads"^^xsd:string .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "epochs"^^xsd:string .
+
+trind:hidden_units a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "hidden_units"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:message_passing_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "message_passing_layers"^^xsd:string .
+
+trind:weight_decay a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "weight_decay"^^xsd:string .

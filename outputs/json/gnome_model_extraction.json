@@ -1,0 +1,1105 @@
+{
+  "model": {
+    "family": {
+      "value": "GNoME",
+      "evidence": "YAML model_name: GNoME"
+    },
+    "variant": {
+      "value": "gnome",
+      "evidence": "YAML model_name: GNoME; lowercased and underscored"
+    },
+    "parameter_number": {
+      "value": 16240000,
+      "evidence": "YAML model_params: 16240000"
+    }
+  },
+  "architectures": {
+    "architectures": [
+      "Equivariant Graph Neural Network",
+      "Equivariant Message Passing Neural Network",
+      "Graph Neural Network",
+      "Message Passing Neural Network",
+      "NequIP"
+    ],
+    "Equivariant Graph Neural Network": {
+      "ontology_class": "EquivariantGraphNeuralNetworkArchitecture",
+      "evidence": "ontology architecture.ttl: :EquivariantGraphNeuralNetworkArchitecture rdfs:subClassOf :EquivariantNeuralNetworkArchitecture",
+      "parameter_number": {
+        "value": null,
+        "evidence": "PDF does not specify parameter count for this architecture separately"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "OQMD",
+          "ICSD",
+          "WBM"
+        ],
+        "evidence": "PDF Methods: Datasets and candidate generation; snapshots of Materials Project, OQMD, WBM, ICSD"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "epochs",
+          "message_passing_iterations",
+          "embedding_dimension",
+          "edge_featurizer",
+          "nonlinearity",
+          "loss_function",
+          "optimizer",
+          "ensemble_size",
+          "test_time_augmentation",
+          "distance_cutoff"
+        ],
+        "evidence": "PDF Methods: Model training and evaluation; Training structural and composition models; Deep ensembles and uncertainty quantification; Test-time augmentations"
+      },
+      "hyperparameters_detail": {
+        "learning_rate": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "5.55e-4",
+            "evidence": "PDF Methods: Training structural and composition models; learning rate of 5.55 × 10^-4"
+          }
+        },
+        "batch_size": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 256,
+            "evidence": "PDF Methods: Training structural and composition models; batch size of 256"
+          }
+        },
+        "epochs": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 1000,
+            "evidence": "PDF Methods: Training structural and composition models; 1,000 epochs"
+          }
+        },
+        "message_passing_iterations": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 3,
+            "evidence": "PDF Methods: Training structural and composition models; number of message-passing iterations is 3"
+          }
+        },
+        "embedding_dimension": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 256,
+            "evidence": "PDF Methods: Training structural and composition models; embedding dimension for all nodes and edges is 256"
+          }
+        },
+        "edge_featurizer": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Gaussian",
+            "evidence": "PDF Methods: Training structural and composition models; Gaussian featurizer"
+          }
+        },
+        "nonlinearity": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "swish",
+            "evidence": "PDF Methods: Training structural and composition models; swish nonlinearities"
+          }
+        },
+        "loss_function": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Huber",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; joint loss function consisting of a weighted sum of a Huber loss on energies and forces"
+          }
+        },
+        "optimizer": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Adam",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; Adam optimizer"
+          }
+        },
+        "ensemble_size": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 10,
+            "evidence": "PDF Methods: Deep ensembles and uncertainty quantification; n = 10 graph networks"
+          }
+        },
+        "test_time_augmentation": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "isotropic_scaling",
+            "evidence": "PDF Methods: Test-time augmentations; isotropic scaling of the lattice vectors"
+          }
+        },
+        "distance_cutoff": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "4.0",
+            "evidence": "PDF Methods: Graph networks; interatomic distance cutoff 4.0 Å for structural models"
+          }
+        }
+      },
+      "components": {
+        "value": [
+          "node_embedding",
+          "edge_embedding",
+          "message_passing",
+          "readout"
+        ],
+        "evidence": "PDF Methods: Graph networks; nodes embedded by atom type, edges embedded on interatomic distance, message passing, linear readout layer"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "No backbone architecture specified"
+      },
+      "head_architecture": {
+        "value": "linear_readout",
+        "evidence": "PDF Methods: Graph networks; linear readout layer applied to global state"
+      },
+      "layer_count": {
+        "value": 3,
+        "evidence": "PDF Methods: Training structural and composition models; 3-6 layers of message passing, default 3"
+      },
+      "hidden_dimension": {
+        "value": 256,
+        "evidence": "PDF Methods: Training structural and composition models; embedding dimension 256"
+      }
+    },
+    "Equivariant Message Passing Neural Network": {
+      "ontology_class": "EquivariantMessagePassingNeuralNetworkArchitecture",
+      "evidence": "ontology architecture.ttl: :EquivariantMessagePassingNeuralNetworkArchitecture rdfs:subClassOf :EquivariantGraphNeuralNetworkArchitecture",
+      "parameter_number": {
+        "value": null,
+        "evidence": "PDF does not specify parameter count for this architecture separately"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "OQMD",
+          "ICSD",
+          "WBM"
+        ],
+        "evidence": "PDF Methods: Datasets and candidate generation"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "epochs",
+          "message_passing_iterations",
+          "embedding_dimension",
+          "edge_featurizer",
+          "nonlinearity",
+          "loss_function",
+          "optimizer",
+          "ensemble_size",
+          "test_time_augmentation",
+          "distance_cutoff"
+        ],
+        "evidence": "PDF Methods: Model training and evaluation"
+      },
+      "hyperparameters_detail": {
+        "learning_rate": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "5.55e-4",
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "batch_size": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 256,
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "epochs": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 1000,
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "message_passing_iterations": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 3,
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "embedding_dimension": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 256,
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "edge_featurizer": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Gaussian",
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "nonlinearity": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "swish",
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "loss_function": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Huber",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential"
+          }
+        },
+        "optimizer": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Adam",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential"
+          }
+        },
+        "ensemble_size": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 10,
+            "evidence": "PDF Methods: Deep ensembles and uncertainty quantification"
+          }
+        },
+        "test_time_augmentation": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "isotropic_scaling",
+            "evidence": "PDF Methods: Test-time augmentations"
+          }
+        },
+        "distance_cutoff": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "4.0",
+            "evidence": "PDF Methods: Graph networks"
+          }
+        }
+      },
+      "components": {
+        "value": [
+          "node_embedding",
+          "edge_embedding",
+          "message_passing",
+          "readout"
+        ],
+        "evidence": "PDF Methods: Graph networks"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "No backbone architecture specified"
+      },
+      "head_architecture": {
+        "value": "linear_readout",
+        "evidence": "PDF Methods: Graph networks; linear readout layer"
+      },
+      "layer_count": {
+        "value": 3,
+        "evidence": "PDF Methods: Training structural and composition models"
+      },
+      "hidden_dimension": {
+        "value": 256,
+        "evidence": "PDF Methods: Training structural and composition models"
+      }
+    },
+    "Graph Neural Network": {
+      "ontology_class": "GraphNeuralNetworkArchitecture",
+      "evidence": "ontology architecture.ttl: :GraphNeuralNetworkArchitecture rdfs:subClassOf :NeuralNetworkArchitecture",
+      "parameter_number": {
+        "value": null,
+        "evidence": "PDF does not specify parameter count for this architecture separately"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "OQMD",
+          "ICSD",
+          "WBM"
+        ],
+        "evidence": "PDF Methods: Datasets and candidate generation"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "epochs",
+          "message_passing_iterations",
+          "embedding_dimension",
+          "edge_featurizer",
+          "nonlinearity",
+          "loss_function",
+          "optimizer",
+          "ensemble_size",
+          "test_time_augmentation",
+          "distance_cutoff"
+        ],
+        "evidence": "PDF Methods: Model training and evaluation"
+      },
+      "hyperparameters_detail": {
+        "learning_rate": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "5.55e-4",
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "batch_size": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 256,
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "epochs": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 1000,
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "message_passing_iterations": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 3,
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "embedding_dimension": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 256,
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "edge_featurizer": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Gaussian",
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "nonlinearity": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "swish",
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "loss_function": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Huber",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential"
+          }
+        },
+        "optimizer": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Adam",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential"
+          }
+        },
+        "ensemble_size": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 10,
+            "evidence": "PDF Methods: Deep ensembles and uncertainty quantification"
+          }
+        },
+        "test_time_augmentation": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "isotropic_scaling",
+            "evidence": "PDF Methods: Test-time augmentations"
+          }
+        },
+        "distance_cutoff": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "4.0",
+            "evidence": "PDF Methods: Graph networks"
+          }
+        }
+      },
+      "components": {
+        "value": [
+          "node_embedding",
+          "edge_embedding",
+          "message_passing",
+          "readout"
+        ],
+        "evidence": "PDF Methods: Graph networks"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "No backbone architecture specified"
+      },
+      "head_architecture": {
+        "value": "linear_readout",
+        "evidence": "PDF Methods: Graph networks; linear readout layer"
+      },
+      "layer_count": {
+        "value": 3,
+        "evidence": "PDF Methods: Training structural and composition models"
+      },
+      "hidden_dimension": {
+        "value": 256,
+        "evidence": "PDF Methods: Training structural and composition models"
+      }
+    },
+    "Message Passing Neural Network": {
+      "ontology_class": "MessagePassingNeuralNetworkArchitecture",
+      "evidence": "ontology architecture.ttl: :MessagePassingNeuralNetworkArchitecture rdfs:subClassOf :GraphNeuralNetworkArchitecture",
+      "parameter_number": {
+        "value": null,
+        "evidence": "PDF does not specify parameter count for this architecture separately"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "OQMD",
+          "ICSD",
+          "WBM"
+        ],
+        "evidence": "PDF Methods: Datasets and candidate generation"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "epochs",
+          "message_passing_iterations",
+          "embedding_dimension",
+          "edge_featurizer",
+          "nonlinearity",
+          "loss_function",
+          "optimizer",
+          "ensemble_size",
+          "test_time_augmentation",
+          "distance_cutoff"
+        ],
+        "evidence": "PDF Methods: Model training and evaluation"
+      },
+      "hyperparameters_detail": {
+        "learning_rate": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "5.55e-4",
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "batch_size": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 256,
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "epochs": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 1000,
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "message_passing_iterations": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 3,
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "embedding_dimension": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 256,
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "edge_featurizer": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Gaussian",
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "nonlinearity": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "swish",
+            "evidence": "PDF Methods: Training structural and composition models"
+          }
+        },
+        "loss_function": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Huber",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential"
+          }
+        },
+        "optimizer": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Adam",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential"
+          }
+        },
+        "ensemble_size": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 10,
+            "evidence": "PDF Methods: Deep ensembles and uncertainty quantification"
+          }
+        },
+        "test_time_augmentation": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "isotropic_scaling",
+            "evidence": "PDF Methods: Test-time augmentations"
+          }
+        },
+        "distance_cutoff": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "4.0",
+            "evidence": "PDF Methods: Graph networks"
+          }
+        }
+      },
+      "components": {
+        "value": [
+          "node_embedding",
+          "edge_embedding",
+          "message_passing",
+          "readout"
+        ],
+        "evidence": "PDF Methods: Graph networks"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "No backbone architecture specified"
+      },
+      "head_architecture": {
+        "value": "linear_readout",
+        "evidence": "PDF Methods: Graph networks; linear readout layer"
+      },
+      "layer_count": {
+        "value": 3,
+        "evidence": "PDF Methods: Training structural and composition models"
+      },
+      "hidden_dimension": {
+        "value": 256,
+        "evidence": "PDF Methods: Training structural and composition models"
+      }
+    },
+    "NequIP": {
+      "ontology_class": "EquivariantMessagePassingNeuralNetworkArchitecture",
+      "evidence": "PDF notes_description: GNoME is an equivariant Nequip-type graph neural network; ontology architecture.ttl: :EquivariantMessagePassingNeuralNetworkArchitecture",
+      "parameter_number": {
+        "value": 16240000,
+        "evidence": "YAML model_params: 16240000; PDF MLIPs: Pretrained GNoME potential; The pretrained potential has 16.24 million parameters"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "OQMD",
+          "ICSD",
+          "WBM"
+        ],
+        "evidence": "PDF Methods: Datasets and candidate generation"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "epochs",
+          "layers",
+          "hidden_features",
+          "radial_cutoff",
+          "edge_irreducible_representations",
+          "radial_mlp_hidden_layers",
+          "radial_mlp_neurons",
+          "nonlinearity",
+          "loss_function",
+          "optimizer",
+          "distance_cutoff"
+        ],
+        "evidence": "PDF MLIPs: Pretrained GNoME potential"
+      },
+      "hyperparameters_detail": {
+        "learning_rate": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "2e-3",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; learning rate of 2 × 10^-3"
+          }
+        },
+        "batch_size": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 32,
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; batch size of 32"
+          }
+        },
+        "epochs": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": null,
+            "evidence": "PDF does not specify exact epoch count for NequIP pretraining"
+          }
+        },
+        "layers": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 5,
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; five layers"
+          }
+        },
+        "hidden_features": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "128x0e+64x1x+32x2e",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; hidden features of 128 ℓ=0 scalars, 64 ℓ=1 vectors and 32 ℓ=2 tensors"
+          }
+        },
+        "radial_cutoff": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "5.0",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; radial cutoff of 5 Å"
+          }
+        },
+        "edge_irreducible_representations": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "0e+1e+2e",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; edge-irreducible representation of 0e+1e+2e"
+          }
+        },
+        "radial_mlp_hidden_layers": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 2,
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; radial MLP R(r) with two hidden layers"
+          }
+        },
+        "radial_mlp_neurons": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": 64,
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; 64 neurons"
+          }
+        },
+        "nonlinearity": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "SiLU",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; SiLU for the gated, equivariant nonlinearities"
+          }
+        },
+        "loss_function": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Huber",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; joint loss function consisting of a weighted sum of a Huber loss on energies and forces"
+          }
+        },
+        "optimizer": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "Adam",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; Adam optimizer"
+          }
+        },
+        "distance_cutoff": {
+          "ontology_class": "MachineLearningHyperparameter",
+          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
+          "value": {
+            "value": "5.0",
+            "evidence": "PDF MLIPs: Pretrained GNoME potential; radial cutoff of 5 Å"
+          }
+        }
+      },
+      "components": {
+        "value": [
+          "node_embedding",
+          "edge_embedding",
+          "convolution",
+          "readout"
+        ],
+        "evidence": "PDF MLIPs: Pretrained GNoME potential; embed chemical species, self-connection, convolution"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "No backbone architecture specified"
+      },
+      "head_architecture": {
+        "value": "energy_sum",
+        "evidence": "PDF MLIPs: Pretrained GNoME potential; predict energy as sum over scaled and shifted atomic energies"
+      },
+      "layer_count": {
+        "value": 5,
+        "evidence": "PDF MLIPs: Pretrained GNoME potential; five layers"
+      },
+      "hidden_dimension": {
+        "value": 128,
+        "evidence": "PDF MLIPs: Pretrained GNoME potential; hidden features of 128 ℓ=0 scalars"
+      }
+    }
+  },
+  "training": {
+    "training_runs": [
+      "active_learning",
+      "pretraining"
+    ],
+    "active_learning": {
+      "type": {
+        "value": "MachineLearningActiveLearningRun",
+        "evidence": "ontology trainingonto.ttl: :MachineLearningActiveLearningRun rdfs:subClassOf :MachineLearningTrainingRun; PDF Active learning section"
+      },
+      "architectures": {
+        "value": [
+          "Equivariant Graph Neural Network",
+          "Graph Neural Network"
+        ],
+        "evidence": "PDF Active learning section; GNoME models are GNNs"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "OQMD",
+          "ICSD",
+          "WBM"
+        ],
+        "evidence": "PDF Methods: Datasets and candidate generation"
+      },
+      "optimizer": {
+        "value": "Adam",
+        "evidence": "PDF MLIPs: Pretrained GNoME potential; Adam optimizer"
+      },
+      "loss_function": {
+        "value": "Huber",
+        "evidence": "PDF MLIPs: Pretrained GNoME potential; Huber loss"
+      },
+      "description": {
+        "value": "Active learning with six rounds of generation, filtration, and DFT evaluation to discover stable crystals",
+        "evidence": "PDF Active learning section; six rounds of active learning"
+      },
+      "objective_function": {
+        "value": "energy_prediction",
+        "evidence": "PDF GNoME section; predict total energy of crystal"
+      },
+      "sampling_method": {
+        "value": "uncertainty_sampling",
+        "evidence": "PDF Methods: Deep ensembles and uncertainty quantification"
+      },
+      "uses_batched_selection": {
+        "value": true,
+        "evidence": "PDF Methods: Clustered-based reduction; batch size of 256"
+      },
+      "initialized_from_model_materialization": {
+        "value": "Materials Project 2018 snapshot",
+        "evidence": "PDF Methods: Training structural and composition models; Initial models trained on snapshot of Materials Project from 2018"
+      },
+      "teacher_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "student_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "model_materializations": {
+        "value": [
+          "GNoME stable crystals database"
+        ],
+        "evidence": "PDF Data availability; stable discoveries available at github and Materials Project"
+      }
+    },
+    "pretraining": {
+      "type": {
+        "value": "PretrainingRun",
+        "evidence": "ontology trainingonto.ttl: :PretrainingRun rdfs:subClassOf :MachineLearningTrainingRun; PDF MLIPs: Pretrained GNoME potential"
+      },
+      "architectures": {
+        "value": [
+          "NequIP"
+        ],
+        "evidence": "PDF MLIPs: Pretrained GNoME potential; NequIP potential"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "OQMD"
+        ],
+        "evidence": "PDF MLIPs: Pretrained GNoME potential; data sampled from ionic relaxations"
+      },
+      "optimizer": {
+        "value": "Adam",
+        "evidence": "PDF MLIPs: Pretrained GNoME potential; Adam optimizer"
+      },
+      "loss_function": {
+        "value": "Huber",
+        "evidence": "PDF MLIPs: Pretrained GNoME potential; Huber loss on energies and forces"
+      },
+      "description": {
+        "value": "Pretraining NequIP potential on ionic relaxation data for interatomic potential",
+        "evidence": "PDF MLIPs: Pretrained GNoME potential"
+      },
+      "objective_function": {
+        "value": "force_prediction",
+        "evidence": "PDF MLIPs: Pretrained GNoME potential; predict energies and forces"
+      },
+      "sampling_method": {
+        "value": "oversampling",
+        "evidence": "PDF MLIPs: Pretrained GNoME potential; oversampling of first-step structures"
+      },
+      "uses_batched_selection": {
+        "value": null,
+        "evidence": "Not an active learning run"
+      },
+      "initialized_from_model_materialization": {
+        "value": null,
+        "evidence": "Trained from scratch"
+      },
+      "teacher_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "student_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "model_materializations": {
+        "value": [
+          "GNoME pretrained potential"
+        ],
+        "evidence": "PDF MLIPs: Pretrained GNoME potential"
+      }
+    }
+  },
+  "datasets": {
+    "datasets": [
+      "Materials Project",
+      "OQMD",
+      "ICSD",
+      "WBM"
+    ],
+    "Materials Project": {
+      "ontology_class": "Dataset",
+      "evidence": "ontology datasetonto.ttl: :Dataset",
+      "number_of_samples": {
+        "value": 69000,
+        "evidence": "PDF Methods: Training structural and composition models; approximately 69,000 materials"
+      },
+      "data_representation": {
+        "value": "crystal_graph",
+        "evidence": "PDF Methods: Graph networks; crystal definition encoded as graph"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Methods: VASP calculations; DFT calculations"
+      },
+      "input_features": {
+        "value": [
+          "atom_type",
+          "interatomic_distance",
+          "lattice",
+          "structure"
+        ],
+        "evidence": "PDF Methods: Graph networks; nodes embedded by atom type, edges embedded on interatomic distance"
+      },
+      "target_features": {
+        "value": [
+          "formation_energy",
+          "total_energy"
+        ],
+        "evidence": "PDF GNoME section; predict total energy of crystal"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "Original dataset"
+      }
+    },
+    "OQMD": {
+      "ontology_class": "Dataset",
+      "evidence": "ontology datasetonto.ttl: :Dataset",
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF does not specify exact sample count for OQMD"
+      },
+      "data_representation": {
+        "value": "crystal_graph",
+        "evidence": "PDF Methods: Graph networks; crystal definition encoded as graph"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Methods: VASP calculations; DFT calculations"
+      },
+      "input_features": {
+        "value": [
+          "atom_type",
+          "interatomic_distance",
+          "lattice",
+          "structure"
+        ],
+        "evidence": "PDF Methods: Graph networks"
+      },
+      "target_features": {
+        "value": [
+          "formation_energy",
+          "total_energy"
+        ],
+        "evidence": "PDF GNoME section; predict total energy"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "Original dataset"
+      }
+    },
+    "ICSD": {
+      "ontology_class": "Dataset",
+      "evidence": "ontology datasetonto.ttl: :Dataset",
+      "number_of_samples": {
+        "value": 200000,
+        "evidence": "PDF Introduction; 200,000 entries in ICSD"
+      },
+      "data_representation": {
+        "value": "crystal_structure",
+        "evidence": "PDF Methods: Definition of experimental match; crystal structures"
+      },
+      "labelling_method": {
+        "value": "experimental_measurement",
+        "evidence": "PDF Introduction; experimental approaches"
+      },
+      "input_features": {
+        "value": [
+          "atom_type",
+          "lattice",
+          "structure"
+        ],
+        "evidence": "PDF Methods: Definition of experimental match"
+      },
+      "target_features": {
+        "value": [
+          "stability"
+        ],
+        "evidence": "PDF Introduction; computationally stable structures"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "Original dataset"
+      }
+    },
+    "WBM": {
+      "ontology_class": "Dataset",
+      "evidence": "ontology datasetonto.ttl: :Dataset",
+      "number_of_samples": {
+        "value": null,
+        "evidence": "PDF does not specify exact sample count for WBM"
+      },
+      "data_representation": {
+        "value": "crystal_graph",
+        "evidence": "PDF Methods: Datasets and candidate generation"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Methods: VASP calculations"
+      },
+      "input_features": {
+        "value": [
+          "atom_type",
+          "interatomic_distance",
+          "lattice",
+          "structure"
+        ],
+        "evidence": "PDF Methods: Graph networks"
+      },
+      "target_features": {
+        "value": [
+          "formation_energy",
+          "total_energy"
+        ],
+        "evidence": "PDF GNoME section"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "Original dataset"
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\gnome.pdf",
+    "pdf_url": "https://nature.com/articles/s41586-023-06735-9.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\gnome.yml"
+  }
+}

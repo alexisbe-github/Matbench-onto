@@ -1,0 +1,206 @@
+{
+  "model": {
+    "family": {
+      "value": "PET",
+      "evidence": "PDF: 'Point Edge Transformer (PET) graph neural network' and 'PET architecture' used throughout the paper"
+    },
+    "variant": {
+      "value": "pet_mad_xl",
+      "evidence": "YAML: model_name is 'PET-OAM-XL'; lowercased and spaces/hyphens replaced with underscores"
+    },
+    "parameter_number": {
+      "value": 730000000,
+      "evidence": "YAML: model_params is 730000000"
+    }
+  },
+  "architectures": [
+    {
+      "name": "PET",
+      "ontology_class": {
+        "value": "GraphNeuralNetworkArchitecture",
+        "evidence": "Ontology: PET is described as a 'graph neural network (GNN)' in PDF; maps to GraphNeuralNetworkArchitecture in architecture.ttl"
+      },
+      "parameter_number": {
+        "value": 2800000,
+        "evidence": "PDF: 'resulting in a model with approximately 2.8 million parameters in total'"
+      },
+      "datasets": [
+        "MAD"
+      ],
+      "hyperparameters": [
+        {
+          "name": "cutoff_radius",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: cutoff radius is a model configuration hyperparameter; maps to MachineLearningHyperparameter in trainingonto.ttl"
+          },
+          "value": "4.5 Å",
+          "evidence": "PDF: 'with a cutoff radius of 4.5 Å'"
+        },
+        {
+          "name": "message_passing_layers",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: number of layers is a structural hyperparameter; maps to MachineLearningHyperparameter in trainingonto.ttl"
+          },
+          "value": 2,
+          "evidence": "PDF: '2 message-passing layers'"
+        },
+        {
+          "name": "transformer_layers_per_message_passing",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: internal transformer depth is a structural hyperparameter; maps to MachineLearningHyperparameter in trainingonto.ttl"
+          },
+          "value": 2,
+          "evidence": "PDF: 'each containing 2 transformer layers'"
+        },
+        {
+          "name": "token_size",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: token/feature dimension is a model capacity hyperparameter; maps to MachineLearningHyperparameter in trainingonto.ttl"
+          },
+          "value": 256,
+          "evidence": "PDF: 'with a token size of 256'"
+        },
+        {
+          "name": "attention_heads",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: number of attention heads is a structural hyperparameter; maps to MachineLearningHyperparameter in trainingonto.ttl"
+          },
+          "value": 8,
+          "evidence": "PDF: '8 heads in the multi-head attention layer'"
+        },
+        {
+          "name": "mlp_neurons",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MLP width is a model capacity hyperparameter; maps to MachineLearningHyperparameter in trainingonto.ttl"
+          },
+          "value": 512,
+          "evidence": "PDF: '512 neurons in the output multi-layer perceptron'"
+        },
+        {
+          "name": "learning_rate",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: learning rate is a training hyperparameter; maps to MachineLearningHyperparameter in trainingonto.ttl"
+          },
+          "value": "10^-4",
+          "evidence": "PDF: 'initial learning rate (LR) of 10 −4'"
+        },
+        {
+          "name": "lr_scheduler",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: learning rate scheduling strategy is a training hyperparameter; maps to MachineLearningHyperparameter in trainingonto.ttl"
+          },
+          "value": "halved every 250 epochs",
+          "evidence": "PDF: 'applied an LR scheduler, which halved the LR every 250 epochs'"
+        },
+        {
+          "name": "batch_size",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: batch size is a training hyperparameter; maps to MachineLearningHyperparameter in trainingonto.ttl"
+          },
+          "value": "24 per GPU (8 GPUs)",
+          "evidence": "PDF: 'batch size of 24 structures per GPU' on 8 GPUs"
+        },
+        {
+          "name": "epochs",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: number of training epochs is a training hyperparameter; maps to MachineLearningHyperparameter in trainingonto.ttl"
+          },
+          "value": 1500,
+          "evidence": "PDF: 'for a total of 1500 epochs'"
+        },
+        {
+          "name": "energy_loss_weight",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: loss weighting is a training hyperparameter; maps to MachineLearningHyperparameter in trainingonto.ttl"
+          },
+          "value": 0.1,
+          "evidence": "PDF: 'with a scaling factor of 0.1 applied to the energy contribution'"
+        },
+        {
+          "name": "loss_function_type",
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: loss function type is a training hyperparameter; maps to MachineLearningHyperparameter in trainingonto.ttl"
+          },
+          "value": "root-mean-square error",
+          "evidence": "PDF: 'The loss function was based on a root-mean-square error difference'"
+        }
+      ]
+    }
+  ],
+  "training": {
+    "training_runs": [
+      {
+        "id": "pet_mad_pretraining",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "Ontology: The main training of PET-MAD on the MAD dataset from scratch maps to PretrainingRun in trainingonto.ttl"
+        },
+        "architectures": [
+          "PET"
+        ],
+        "datasets": [
+          "MAD"
+        ],
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF: 'We used the Adam optimizer'"
+        },
+        "loss_function": {
+          "value": "root-mean-square error",
+          "evidence": "PDF: 'The loss function was based on a root-mean-square error difference between the model's energy and force predictions and the corresponding target values'"
+        },
+        "description": {
+          "value": "Pretraining of PET-MAD on the MAD dataset (95,595 structures) using the PET graph neural network architecture with 2.8M parameters, trained for 1500 epochs with Adam optimizer and RMSE loss",
+          "evidence": "PDF: Training section describes the full training procedure on MAD dataset"
+        }
+      },
+      {
+        "id": "pet_mad_lora_finetuning",
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "Ontology: Fine-tuning with LoRA on specific downstream datasets maps to MachineLearningFinetuningRun (subclass of MachineLearningAdaptationRun) in trainingonto.ttl"
+        },
+        "architectures": [
+          "PET"
+        ],
+        "datasets": [
+          "LPS",
+          "GaAs",
+          "HEA25S",
+          "Water",
+          "Succinic acid",
+          "BaTiO3"
+        ],
+        "optimizer": {
+          "value": null,
+          "evidence": "PDF: Optimizer not explicitly specified for LoRA fine-tuning runs"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "PDF: Loss function not explicitly specified for LoRA fine-tuning runs"
+        },
+        "description": {
+          "value": "Fine-tuning of pre-trained PET-MAD using Low-Rank Adaptation (LoRA) with rank 8 and scaling parameter 0.5 on system-specific datasets for six case studies: lithium thiophosphate, gallium arsenide, high-entropy alloy CoCrFeMnNi, liquid water, succinic acid, and barium titanate",
+          "evidence": "PDF: Fine-tuning section describes LoRA-based fine-tuning procedure"
+        }
+      }
+    ]
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\pet_oam_xl_1_0_0.pdf",
+    "pdf_url": "https://www.nature.com/articles/s41467-025-65662-7.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\pet_oam_xl_1_0_0.yml"
+  }
+}

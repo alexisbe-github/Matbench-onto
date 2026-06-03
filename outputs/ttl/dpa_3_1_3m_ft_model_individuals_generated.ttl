@@ -1,7 +1,5 @@
 @prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
 @prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
-@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
-@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
@@ -15,31 +13,17 @@ archind:dpa_family a owl:NamedIndividual,
     rdfs:label "DPA"^^xsd:string ;
     arch:hasVariant archind:dpa_3_1_3m_ft_variant .
 
-trind:finetuning_mptrj_salex a owl:NamedIndividual,
-        train:MachineLearningFinetuningRun ;
-    rdfs:label "finetuning_mptrj_salex"^^xsd:string ;
-    rdfs:comment "Fine-tuning of the pretrained DPA-3.1-3M model on MPtrj and sAlex datasets to align the XC functional for improved performance on inorganic materials benchmarks such as Matbench Discovery."^^xsd:string ;
-    train:trainsModelVariant archind:dpa_3_1_3m_ft_dpa3_model_variant ;
-    train:usesDataset dataind:mptrj,
-        dataind:salex .
+trind:dataset_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "dataset_details"^^xsd:string .
 
-trind:multitask_pretraining_openlam_v1 a owl:NamedIndividual,
-        train:PretrainingRun ;
-    rdfs:label "multitask_pretraining_openlam_v1"^^xsd:string ;
-    rdfs:comment "Multitask pretraining of DPA-3.1-3M on the OpenLAM-v1 dataset collection using dataset encoding for multi-task training across 31 diverse datasets. Training performed for 4 million steps on 128 GPUs with Adam optimizer, exponential learning rate scheduling from 1e-3 to 1e-6, and MSE loss function."^^xsd:string ;
-    train:trainsModelVariant archind:dpa_3_1_3m_ft_dpa3_model_variant ;
-    train:usesDataset dataind:openlam_v1 ;
-    train:usesLoss trind:mse ;
-    train:usesOptimizer trind:adam .
+trind:datasets a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "datasets"^^xsd:string .
 
-trind:scaling_law_omat24 a owl:NamedIndividual,
-        train:PretrainingRun ;
-    rdfs:label "scaling_law_omat24"^^xsd:string ;
-    rdfs:comment "Scaling law investigation of DPA3 models on the OMat24 dataset. Training experiments conducted with varying model sizes (L3, L6, L9, L16, 24) under six fixed IsoFLOP settings to demonstrate power-law scaling of validation energy MAE with model parameters, dataset size, and compute budget."^^xsd:string ;
-    train:trainsModelVariant archind:dpa_3_1_3m_ft_dpa3_model_variant ;
-    train:usesDataset dataind:omat24 ;
-    train:usesLoss trind:mse ;
-    train:usesOptimizer trind:adamw .
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
 
 archind:dpa_3_1_3m_ft_variant a owl:NamedIndividual,
         arch:ModelVariant ;
@@ -48,49 +32,7 @@ archind:dpa_3_1_3m_ft_variant a owl:NamedIndividual,
     prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\dpa_3_1_3m_ft.yml" ;
     arch:hasParameterNumber 3268838 .
 
-dataind:mptrj a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "MPtrj"^^xsd:string .
-
-dataind:omat24 a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "OMat24"^^xsd:string .
-
-dataind:openlam_v1 a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "OpenLAM-v1"^^xsd:string .
-
-dataind:salex a owl:NamedIndividual,
-        data:Dataset ;
-    rdfs:label "sAlex"^^xsd:string .
-
-trind:adam a owl:NamedIndividual,
-        train:Optimizer ;
-    rdfs:label "Adam"^^xsd:string .
-
-trind:adamw a owl:NamedIndividual,
-        train:Optimizer ;
-    rdfs:label "AdamW"^^xsd:string .
-
-trind:mse a owl:NamedIndividual,
-        train:LossFunction ;
-    rdfs:label "MSE"^^xsd:string .
 
 
-
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_3_1_3m_ft_variant> >> prov:wasDerivedFrom "YAML model_name 'DPA-3.1-3M-FT' lowercased and spaces/hyphens replaced by underscores." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_3_1_3m_ft_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "3268838"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params is 3268838." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#multitask_pretraining_openlam_v1> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_3_1_3m_ft_dpa3_model_variant> >> prov:wasDerivedFrom "PDF Section 2.5 describes the DPA-3.1-3M model using the DPA3 architecture with LiGS order K=2 and L=16 layers." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#multitask_pretraining_openlam_v1> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#openlam_v1> >> prov:wasDerivedFrom "PDF Section 2.5 states DPA-3.1-3M is 'trained on the OpenLAM-v1 dataset collection'. OpenLAM-v1 consists of 31 datasets including OMat24, OC20, SPICE2, and others." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#multitask_pretraining_openlam_v1> <https://k.loria.fr/ontologies/trainingonto#usesOptimizer> <https://k.loria.fr/ontologies/trainingonto-individuals#adam> >> prov:wasDerivedFrom "Table S-9 lists the optimizer as Adam for DPA-3.1-3M training." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#multitask_pretraining_openlam_v1> <https://k.loria.fr/ontologies/trainingonto#usesLoss> <https://k.loria.fr/ontologies/trainingonto-individuals#mse> >> prov:wasDerivedFrom "Table S-9 lists the loss function as MSE for DPA-3.1-3M training." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#multitask_pretraining_openlam_v1> <http://www.w3.org/2000/01/rdf-schema#comment> "Multitask pretraining of DPA-3.1-3M on the OpenLAM-v1 dataset collection using dataset encoding for multi-task training across 31 diverse datasets. Training performed for 4 million steps on 128 GPUs with Adam optimizer, exponential learning rate scheduling from 1e-3 to 1e-6, and MSE loss function."^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF Section 2.5 and Table S-9 provide details on the training procedure, optimizer, loss function, and hyperparameters." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#finetuning_mptrj_salex> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_3_1_3m_ft_dpa3_model_variant> >> prov:wasDerivedFrom "PDF Section 2.5 describes DPA-3.1-3M-FT as a finetuned version of the DPA-3.1-3M model using the same DPA3 architecture." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#finetuning_mptrj_salex> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptrj> >> prov:wasDerivedFrom "PDF Section 2.5 states DPA-3.1-3M-FT is 'finetuned on MPTrj and sAlex' datasets." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#finetuning_mptrj_salex> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#salex> >> prov:wasDerivedFrom "PDF Section 2.5 states DPA-3.1-3M-FT is 'finetuned on MPTrj and sAlex' datasets." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#finetuning_mptrj_salex> <http://www.w3.org/2000/01/rdf-schema#comment> "Fine-tuning of the pretrained DPA-3.1-3M model on MPtrj and sAlex datasets to align the XC functional for improved performance on inorganic materials benchmarks such as Matbench Discovery."^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF Section 2.5 describes the fine-tuning procedure and results on Matbench Discovery benchmark (Table S-7)." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#scaling_law_omat24> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_3_1_3m_ft_dpa3_model_variant> >> prov:wasDerivedFrom "PDF Section 2.4 describes the scaling law experiments using DPA3 models with varying sizes (L3, L6, L9, L16, 24 layers)." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#scaling_law_omat24> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#omat24> >> prov:wasDerivedFrom "PDF Section 2.4 states 'The scaling behavior of DPA3 is examined on the OMat24 dataset' and Fig. 4 shows results from models trained on OMat24." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#scaling_law_omat24> <https://k.loria.fr/ontologies/trainingonto#usesOptimizer> <https://k.loria.fr/ontologies/trainingonto-individuals#adamw> >> prov:wasDerivedFrom "Table S-9 lists the optimizer as AdamW for scaling law experiments." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#scaling_law_omat24> <https://k.loria.fr/ontologies/trainingonto#usesLoss> <https://k.loria.fr/ontologies/trainingonto-individuals#mse> >> prov:wasDerivedFrom "Table S-9 lists the loss function as MSE for scaling law experiments." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
-<< <https://k.loria.fr/ontologies/trainingonto-individuals#scaling_law_omat24> <http://www.w3.org/2000/01/rdf-schema#comment> "Scaling law investigation of DPA3 models on the OMat24 dataset. Training experiments conducted with varying model sizes (L3, L6, L9, L16, 24) under six fixed IsoFLOP settings to demonstrate power-law scaling of validation energy MAE with model parameters, dataset size, and compute budget."^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF Section 2.4 and Fig. 4 describe the scaling law experiments and results." ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_3_1_3m_ft_variant> >> prov:wasDerivedFrom "YAML model_name: DPA-3.1-3M-FT, lowercased and spaces/hyphens replaced with underscores" ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_3_1_3m_ft_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "3268838"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 3268838" ; dcterms:source <https://arxiv.org/pdf/2506.01686.pdf> .

@@ -1,0 +1,260 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:m3gnet_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "M3GNet"^^xsd:string ;
+    arch:hasVariant archind:m3gnet_m3gnet_model_variant,
+        archind:m3gnet_variant .
+
+trind:dataset_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "dataset_details"^^xsd:string .
+
+trind:datasets a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "datasets"^^xsd:string .
+
+trind:m3gnet_m3gnet_basis_functions_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "m3gnet M3GNet basis_functions value"^^xsd:string ;
+    train:ofHyperparameter trind:basis_functions .
+
+trind:m3gnet_m3gnet_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "m3gnet M3GNet batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:m3gnet_m3gnet_cutoff_radius_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "m3gnet M3GNet cutoff_radius value"^^xsd:string ;
+    train:ofHyperparameter trind:cutoff_radius .
+
+trind:m3gnet_m3gnet_embedding_dimension_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "m3gnet M3GNet embedding_dimension value"^^xsd:string ;
+    train:ofHyperparameter trind:embedding_dimension .
+
+trind:m3gnet_m3gnet_force_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "m3gnet M3GNet force_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:force_loss_weight .
+
+trind:m3gnet_m3gnet_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "m3gnet M3GNet learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:m3gnet_m3gnet_main_block_count_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "m3gnet M3GNet main_block_count value"^^xsd:string ;
+    train:ofHyperparameter trind:main_block_count .
+
+trind:m3gnet_m3gnet_max_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "m3gnet M3GNet max_epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:max_epochs .
+
+trind:m3gnet_m3gnet_mlp_hidden_neurons_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "m3gnet M3GNet mlp_hidden_neurons value"^^xsd:string ;
+    train:ofHyperparameter trind:mlp_hidden_neurons .
+
+trind:m3gnet_m3gnet_patience_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "m3gnet M3GNet patience value"^^xsd:string ;
+    train:ofHyperparameter trind:patience .
+
+trind:m3gnet_m3gnet_stress_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "m3gnet M3GNet stress_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:stress_loss_weight .
+
+trind:m3gnet_m3gnet_three_body_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "m3gnet M3GNet three_body_cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:three_body_cutoff .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:m3gnet_atomupdate_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "AtomUpdate"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:m3gnet_atomupdate_component_configuration .
+
+archind:m3gnet_atomupdate_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AtomUpdate component configuration"^^xsd:string .
+
+archind:m3gnet_bondupdate_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "BondUpdate"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:m3gnet_bondupdate_component_configuration .
+
+archind:m3gnet_bondupdate_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "BondUpdate component configuration"^^xsd:string .
+
+archind:m3gnet_gatedmlp_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "GatedMLP component configuration"^^xsd:string .
+
+archind:m3gnet_graphfeaturizer_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "GraphFeaturizer"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:m3gnet_graphfeaturizer_component_configuration .
+
+archind:m3gnet_graphfeaturizer_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "GraphFeaturizer component configuration"^^xsd:string .
+
+archind:m3gnet_m3gnet_architecture a owl:NamedIndividual,
+        arch:GraphNeuralNetworkArchitecture ;
+    rdfs:label "M3GNet"^^xsd:string ;
+    arch:hasComponent archind:m3gnet_atomupdate_component,
+        archind:m3gnet_bondupdate_component,
+        archind:m3gnet_gatedmlp_component,
+        archind:m3gnet_graphfeaturizer_component,
+        archind:m3gnet_manybodycomputation_component,
+        archind:m3gnet_readoutmodule_component,
+        archind:m3gnet_stateupdate_component ;
+    arch:hasHeadArchitecture archind:m3gnet_gatedmlp_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:m3gnet_m3gnet_architecture_configuration ;
+    arch:hasParameterNumber 227549 .
+
+archind:m3gnet_m3gnet_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "M3GNet architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 64 ;
+    arch:hasLayerCount 3 .
+
+archind:m3gnet_m3gnet_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "m3gnet M3GNet"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:m3gnet_m3gnet_architecture .
+
+archind:m3gnet_manybodycomputation_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "ManyBodyComputation"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:m3gnet_manybodycomputation_component_configuration .
+
+archind:m3gnet_manybodycomputation_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "ManyBodyComputation component configuration"^^xsd:string .
+
+archind:m3gnet_readoutmodule_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "ReadoutModule"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:m3gnet_readoutmodule_component_configuration .
+
+archind:m3gnet_readoutmodule_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "ReadoutModule component configuration"^^xsd:string .
+
+archind:m3gnet_stateupdate_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "StateUpdate"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:m3gnet_stateupdate_component_configuration .
+
+archind:m3gnet_stateupdate_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "StateUpdate component configuration"^^xsd:string .
+
+archind:m3gnet_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "m3gnet"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\m3gnet.yml" ;
+    arch:hasParameterNumber 227549 .
+
+trind:basis_functions a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "basis_functions"^^xsd:string .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:cutoff_radius a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "cutoff_radius"^^xsd:string .
+
+trind:embedding_dimension a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "embedding_dimension"^^xsd:string .
+
+trind:force_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "force_loss_weight"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:main_block_count a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "main_block_count"^^xsd:string .
+
+trind:max_epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_epochs"^^xsd:string .
+
+trind:mlp_hidden_neurons a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "mlp_hidden_neurons"^^xsd:string .
+
+trind:patience a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "patience"^^xsd:string .
+
+trind:stress_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "stress_loss_weight"^^xsd:string .
+
+trind:three_body_cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "three_body_cutoff"^^xsd:string .
+
+archind:m3gnet_gatedmlp_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "GatedMLP"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:m3gnet_gatedmlp_component_configuration .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_variant> >> prov:wasDerivedFrom "YAML model_key: m3gnet" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "227549"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 227549; PDF Methods: 'the M3GNet model contains three main blocks with 227,549 learnable weights'" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_model_variant> >> prov:wasDerivedFrom "PDF: M3GNet is a graph neural network (GNN) based interatomic potential; ontology: GraphNeuralNetworkArchitecture is the closest matching class" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_architecture> >> prov:wasDerivedFrom "PDF: M3GNet is a graph neural network (GNN) based interatomic potential; ontology: GraphNeuralNetworkArchitecture is the closest matching class" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "227549"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Methods: 'the M3GNet model contains three main blocks with 227,549 learnable weights'" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasLayerCount> "3"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Methods: 'three three-body information exchange and graph convolutions (N = 3)'" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasHiddenDimension> "64"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF Methods: 'output dimensions of 64' and '64 neurons in each layer'" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_graphfeaturizer_component> >> prov:wasDerivedFrom "PDF Figure 1 and Methods: graph featurizer, many-body computation, bond/atom/state updates, gated MLP, readout module" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_manybodycomputation_component> >> prov:wasDerivedFrom "PDF Figure 1 and Methods: graph featurizer, many-body computation, bond/atom/state updates, gated MLP, readout module" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_bondupdate_component> >> prov:wasDerivedFrom "PDF Figure 1 and Methods: graph featurizer, many-body computation, bond/atom/state updates, gated MLP, readout module" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_atomupdate_component> >> prov:wasDerivedFrom "PDF Figure 1 and Methods: graph featurizer, many-body computation, bond/atom/state updates, gated MLP, readout module" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_stateupdate_component> >> prov:wasDerivedFrom "PDF Figure 1 and Methods: graph featurizer, many-body computation, bond/atom/state updates, gated MLP, readout module" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_gatedmlp_component> >> prov:wasDerivedFrom "PDF Figure 1 and Methods: graph featurizer, many-body computation, bond/atom/state updates, gated MLP, readout module" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_readoutmodule_component> >> prov:wasDerivedFrom "PDF Figure 1 and Methods: graph featurizer, many-body computation, bond/atom/state updates, gated MLP, readout module" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_m3gnet_architecture> <https://k.loria.fr/ontologies/architectureonto#hasHeadArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#m3gnet_gatedmlp_component> >> prov:wasDerivedFrom "PDF Methods: 'a three-layer gated MLP was used on the atom attributes after the graph convolution and sum the outputs as the final prediction'" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#m3gnet_m3gnet_learning_rate_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#learning_rate> >> prov:wasDerivedFrom "PDF Methods and training sections" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#m3gnet_m3gnet_cutoff_radius_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#cutoff_radius> >> prov:wasDerivedFrom "PDF Methods and training sections" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#m3gnet_m3gnet_three_body_cutoff_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#three_body_cutoff> >> prov:wasDerivedFrom "PDF Methods and training sections" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#m3gnet_m3gnet_batch_size_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#batch_size> >> prov:wasDerivedFrom "PDF Methods and training sections" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#m3gnet_m3gnet_force_loss_weight_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#force_loss_weight> >> prov:wasDerivedFrom "PDF Methods and training sections" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#m3gnet_m3gnet_stress_loss_weight_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#stress_loss_weight> >> prov:wasDerivedFrom "PDF Methods and training sections" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#m3gnet_m3gnet_basis_functions_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#basis_functions> >> prov:wasDerivedFrom "PDF Methods and training sections" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#m3gnet_m3gnet_embedding_dimension_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#embedding_dimension> >> prov:wasDerivedFrom "PDF Methods and training sections" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#m3gnet_m3gnet_main_block_count_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#main_block_count> >> prov:wasDerivedFrom "PDF Methods and training sections" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#m3gnet_m3gnet_mlp_hidden_neurons_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#mlp_hidden_neurons> >> prov:wasDerivedFrom "PDF Methods and training sections" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#m3gnet_m3gnet_max_epochs_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#max_epochs> >> prov:wasDerivedFrom "PDF Methods and training sections" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#m3gnet_m3gnet_patience_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#patience> >> prov:wasDerivedFrom "PDF Methods and training sections" ; dcterms:source <https://arxiv.org/pdf/2202.02450.pdf> .

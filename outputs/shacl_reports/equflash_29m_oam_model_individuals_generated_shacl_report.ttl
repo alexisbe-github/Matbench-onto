@@ -1,0 +1,46 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a sh:ValidationReport ;
+    sh:conforms false ;
+    sh:result [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#equflash_29m_oam_variant> ;
+            sh:resultMessage "every ModelVariant should link to a MachineLearningArchitecture." ;
+            sh:resultPath arch:hasMachineLearningArchitecture ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape [ sh:class arch:MachineLearningArchitecture ;
+                    sh:message "every ModelVariant should link to a MachineLearningArchitecture." ;
+                    sh:minCount 1 ;
+                    sh:path arch:hasMachineLearningArchitecture ] ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#equflash_29m_oam_sevennet_0_model_variant> ;
+            sh:resultMessage "train:trainsModelVariant must point to an arch:ModelVariant." ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape train:TrainsModelVariantObjectShape ;
+            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#equflash_29m_oam_sevennet_0_model_variant> ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/trainingonto-individuals#sevennet_pretraining> ;
+            sh:resultMessage "train:usesDataset must have a MachineLearningTrainingRun as subject." ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape train:UsesDatasetSubjectShape ;
+            sh:value <https://k.loria.fr/ontologies/trainingonto-individuals#sevennet_pretraining> ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#equflash_29m_oam_equflash_model_variant> ;
+            sh:resultMessage "train:trainsModelVariant must point to an arch:ModelVariant." ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape train:TrainsModelVariantObjectShape ;
+            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#equflash_29m_oam_equflash_model_variant> ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/trainingonto-individuals#equflash_pretraining> ;
+            sh:resultMessage "train:usesDataset must have a MachineLearningTrainingRun as subject." ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
+            sh:sourceShape train:UsesDatasetSubjectShape ;
+            sh:value <https://k.loria.fr/ontologies/trainingonto-individuals#equflash_pretraining> ] .
+

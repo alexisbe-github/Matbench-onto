@@ -1,0 +1,281 @@
+{
+  "model": {
+    "family": {
+      "value": "SevenNet",
+      "evidence": "YAML model_name: SevenNet-0; PDF refers to SevenNet architecture throughout"
+    },
+    "variant": {
+      "value": "sevennet_0",
+      "evidence": "YAML model_name: SevenNet-0, lowercased and spaces/hyphens replaced by underscores"
+    },
+    "parameter_number": {
+      "value": 842440,
+      "evidence": "YAML model_params: 842440"
+    }
+  },
+  "architectures": {
+    "NequIP": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF Section 1: 'based on the NequIP architecture'; NequIP is an equivariant message-passing neural network; ontology architecture.ttl defines EquivariantMessagePassingNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 842440,
+        "evidence": "YAML model_params: 842440; PDF: 'reduces the number of parameters ... to 842,440'"
+      },
+      "datasets": {
+        "value": [
+          "MPtrj",
+          "Alex",
+          "DBS",
+          "OMat24",
+          "MatPES",
+          "OC20",
+          "OC22",
+          "ODAC23",
+          "OMol25",
+          "SPICE",
+          "QCML",
+          "MAD",
+          "MP-r2SCAN",
+          "MatPES-r2SCAN",
+          "MP-ALOE"
+        ],
+        "evidence": "PDF Table 1: lists all databases used to train 7net-Omni (SevenNet-0)"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "loss_weight_energy",
+          "loss_weight_force",
+          "loss_weight_stress",
+          "loss_weight_regularization",
+          "max_spherical_harmonics_order",
+          "num_convolution_layers",
+          "node_feature_dimensions",
+          "optimizer_type"
+        ],
+        "evidence": "PDF Section 3.2: training details including learning rate 0.002, loss weights λE=1, λF=1, λS=10^-4, λR=10^-6, lmax=3, five convolution layers, node feature dims 128/64/32, Adam optimizer"
+      },
+      "hyperparameter_details": {
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "0.002",
+            "evidence": "PDF Section 3.2: 'initial learning rate warm-up to a maximum value of 0.002'"
+          }
+        },
+        "loss_weight_energy": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "1",
+            "evidence": "PDF Section 3.2: 'λE = 1'"
+          }
+        },
+        "loss_weight_force": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "1",
+            "evidence": "PDF Section 3.2: 'λF = 1'"
+          }
+        },
+        "loss_weight_stress": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "0.0001",
+            "evidence": "PDF Section 3.2: 'λS = 10^-4'"
+          }
+        },
+        "loss_weight_regularization": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "0.000001",
+            "evidence": "PDF Section 3.2: 'λR = 10^-6'"
+          }
+        },
+        "max_spherical_harmonics_order": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "3",
+            "evidence": "PDF Section 3.2: 'maximum order of spherical harmonics (lmax) to 3'"
+          }
+        },
+        "num_convolution_layers": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "5",
+            "evidence": "PDF Section 3.2: 'employing five convolution layers'"
+          }
+        },
+        "node_feature_dimensions": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "l=0:128, l=1:64, l>1:32",
+            "evidence": "PDF Section 3.2: 'dimensionalities of node features are 128, 64, and 32 for l=0, l=1, and l>1 components'"
+          }
+        },
+        "optimizer_type": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology trainingonto.ttl: MachineLearningHyperparameter class"
+          },
+          "value": {
+            "value": "Adam",
+            "evidence": "PDF Section 3.2: 'we employ the Adam optimizer'"
+          }
+        }
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "pretraining_on_inorganic_crystals",
+        "molecular_extension_training",
+        "full_multidomain_training"
+      ],
+      "evidence": "PDF Section 3.2: describes curriculum learning strategy with three stages: first training on MPtrj/sAlex/OMat24 (7net-ompa), then extending with OMol25, then full training on all databases"
+    },
+    "training_run_details": {
+      "pretraining_on_inorganic_crystals": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF Section 3.2: 'We begin by training 7net-MF on MPtrj, sAlex, and OMat24, resulting in the intermediate model 7net-ompa' - this is a pretraining stage; ontology trainingonto.ttl: PretrainingRun class"
+        },
+        "architectures": {
+          "value": [
+            "NequIP"
+          ],
+          "evidence": "PDF Section 1: SevenNet based on NequIP architecture; Section 3.2: training 7net-MF (multi-fidelity SevenNet based on NequIP)"
+        },
+        "datasets": {
+          "value": [
+            "MPtrj",
+            "Alex",
+            "OMat24"
+          ],
+          "evidence": "PDF Section 3.2: 'training 7net-MF on MPtrj, sAlex, and OMat24'"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF Section 3.2: 'we employ the Adam optimizer'"
+        },
+        "loss_function": {
+          "value": "energy_force_stress_regularization_loss",
+          "evidence": "PDF Section 3.2: Equation (7) defines the loss function combining energy, force, stress, and regularization terms"
+        },
+        "description": {
+          "value": "Pretraining stage on inorganic crystal databases (MPtrj, sAlex, OMat24) using the SevenNet-MF multi-fidelity architecture, producing the intermediate model 7net-ompa.",
+          "evidence": "PDF Section 3.2: curriculum learning first stage"
+        }
+      },
+      "molecular_extension_training": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "PDF Section 3.2: extending training set by incorporating OMol25 - this is a fine-tuning/adaptation stage; ontology trainingonto.ttl: MachineLearningFinetuningRun class"
+        },
+        "architectures": {
+          "value": [
+            "NequIP"
+          ],
+          "evidence": "PDF Section 3.2: continuing with 7net-MF architecture based on NequIP"
+        },
+        "datasets": {
+          "value": [
+            "MPtrj",
+            "Alex",
+            "OMat24",
+            "OMol25",
+            "DBS"
+          ],
+          "evidence": "PDF Section 3.2: 'extend the training set by incorporating OMol25, together with the DBS structures derived from OMol25'"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF Section 3.2: 'we employ the Adam optimizer'"
+        },
+        "loss_function": {
+          "value": "energy_force_stress_regularization_loss",
+          "evidence": "PDF Section 3.2: Equation (7) loss function"
+        },
+        "description": {
+          "value": "Second curriculum stage extending the pretrained model with molecular data (OMol25) and domain-bridging set structures derived from OMol25.",
+          "evidence": "PDF Section 3.2: curriculum learning second stage"
+        }
+      },
+      "full_multidomain_training": {
+        "type": {
+          "value": "MachineLearningTrainingRun",
+          "evidence": "PDF Section 3.2: final training on all databases listed in Table 1; ontology trainingonto.ttl: MachineLearningTrainingRun class"
+        },
+        "architectures": {
+          "value": [
+            "NequIP"
+          ],
+          "evidence": "PDF Section 3.2: training 7net-Omni using SevenNet-MF architecture based on NequIP"
+        },
+        "datasets": {
+          "value": [
+            "MPtrj",
+            "Alex",
+            "DBS",
+            "OMat24",
+            "MatPES",
+            "OC20",
+            "OC22",
+            "ODAC23",
+            "OMol25",
+            "SPICE",
+            "QCML",
+            "MAD",
+            "MP-r2SCAN",
+            "MatPES-r2SCAN",
+            "MP-ALOE"
+          ],
+          "evidence": "PDF Table 1: full list of 15 databases used to train 7net-Omni"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF Section 3.2: 'we employ the Adam optimizer'"
+        },
+        "loss_function": {
+          "value": "energy_force_stress_regularization_loss",
+          "evidence": "PDF Section 3.2: Equation (7) loss function with energy, force, stress, and regularization terms"
+        },
+        "description": {
+          "value": "Final training stage on all 15 databases (242M structures) with selective task regularization and domain-bridging set, using curriculum learning and multi-task training across diverse material domains and computational protocols.",
+          "evidence": "PDF Section 3.2: 'Finally, we include all databases listed in Table 1 and train 7net-Omni for a single epoch to complete the unified model'"
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\sevennet_omni_i12.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2510.11241.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\sevennet_omni_i12.yml"
+  }
+}

@@ -1,0 +1,343 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:mace_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "MACE"^^xsd:string ;
+    arch:hasVariant archind:mace_mp_0_mace_model_variant,
+        archind:mace_mp_0_variant .
+
+trind:mace_mp_0a_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "MACE-MP-0a"^^xsd:string ;
+    train:generatedBy trind:mptrj_pretraining .
+
+trind:mace_mp_0b3_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "MACE-MP-0b3"^^xsd:string ;
+    train:generatedBy trind:mptrj_pretraining .
+
+archind:mace_mp_0_mace_architecture a owl:NamedIndividual,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "MACE"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:mace_mp_0_mace_architecture_configuration ;
+    arch:hasParameterNumber 4688656 .
+
+archind:mace_mp_0_mace_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "MACE architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 128 ;
+    arch:hasLayerCount 2 .
+
+archind:mace_mp_0_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "mace_mp_0"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\mace_mp_0.yml" ;
+    arch:hasParameterNumber 4688656 .
+
+dataind:atomic_numbers_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic numbers"^^xsd:string .
+
+dataind:atomic_positions_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic positions"^^xsd:string .
+
+dataind:atomic_structure_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "atomic structure"^^xsd:string .
+
+dataind:cell_parameters_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "cell parameters"^^xsd:string .
+
+dataind:dft_labelling_method a owl:NamedIndividual,
+        data:LabellingMethod ;
+    rdfs:label "DFT"^^xsd:string .
+
+dataind:energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "energy"^^xsd:string .
+
+dataind:forces_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "forces"^^xsd:string .
+
+dataind:materials_project a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Materials Project"^^xsd:string .
+
+dataind:mptrj a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MPtrj"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 1500000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_numbers_attribute,
+        dataind:atomic_positions_attribute,
+        dataind:cell_parameters_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute,
+        dataind:stress_attribute ;
+    data:wasDerivedFromDataset dataind:materials_project .
+
+dataind:stress_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "stress"^^xsd:string .
+
+trind:amsgrad a owl:NamedIndividual,
+        train:Optimizer ;
+    rdfs:label "AMSGrad"^^xsd:string .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:channel_dimension a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "channel_dimension"^^xsd:string .
+
+trind:correlation_order a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "correlation_order"^^xsd:string .
+
+trind:epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "epochs"^^xsd:string .
+
+trind:gradient_clipping a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "gradient_clipping"^^xsd:string .
+
+trind:hidden_layer_count a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "hidden_layer_count"^^xsd:string .
+
+trind:hidden_layer_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "hidden_layer_size"^^xsd:string .
+
+trind:huber_loss a owl:NamedIndividual,
+        train:LossFunction ;
+    rdfs:label "Huber loss"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:loss_energy_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_energy_weight"^^xsd:string .
+
+trind:loss_force_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_force_weight"^^xsd:string .
+
+trind:loss_stress_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_stress_weight"^^xsd:string .
+
+trind:mace_mp_0_mace_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:mace_mp_0_mace_channel_dimension_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE channel_dimension value"^^xsd:string ;
+    train:ofHyperparameter trind:channel_dimension .
+
+trind:mace_mp_0_mace_correlation_order_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE correlation_order value"^^xsd:string ;
+    train:ofHyperparameter trind:correlation_order .
+
+trind:mace_mp_0_mace_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:epochs .
+
+trind:mace_mp_0_mace_gradient_clipping_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE gradient_clipping value"^^xsd:string ;
+    train:ofHyperparameter trind:gradient_clipping .
+
+trind:mace_mp_0_mace_hidden_layer_count_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE hidden_layer_count value"^^xsd:string ;
+    train:ofHyperparameter trind:hidden_layer_count .
+
+trind:mace_mp_0_mace_hidden_layer_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE hidden_layer_size value"^^xsd:string ;
+    train:ofHyperparameter trind:hidden_layer_size .
+
+trind:mace_mp_0_mace_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:mace_mp_0_mace_loss_energy_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE loss_energy_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_energy_weight .
+
+trind:mace_mp_0_mace_loss_force_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE loss_force_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_force_weight .
+
+trind:mace_mp_0_mace_loss_stress_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE loss_stress_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_stress_weight .
+
+trind:mace_mp_0_mace_max_angular_momentum_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE max_angular_momentum value"^^xsd:string ;
+    train:ofHyperparameter trind:max_angular_momentum .
+
+trind:mace_mp_0_mace_number_of_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE number_of_layers value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_layers .
+
+trind:mace_mp_0_mace_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:mace_mp_0_mace_radial_basis_functions_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE radial_basis_functions value"^^xsd:string ;
+    train:ofHyperparameter trind:radial_basis_functions .
+
+trind:mace_mp_0_mace_radial_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "mace_mp_0 MACE radial_cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:radial_cutoff .
+
+trind:max_angular_momentum a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_angular_momentum"^^xsd:string .
+
+trind:number_of_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_layers"^^xsd:string .
+
+trind:optimizer a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "optimizer"^^xsd:string .
+
+trind:radial_basis_functions a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial_basis_functions"^^xsd:string .
+
+trind:radial_cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial_cutoff"^^xsd:string .
+
+trind:weighted_sum_of_huber_losses a owl:NamedIndividual,
+        train:ObjectiveFunction ;
+    rdfs:label "weighted sum of Huber losses"^^xsd:string .
+
+archind:mace_mp_0_mace_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "mace_mp_0 MACE"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:mace_mp_0_mace_architecture .
+
+trind:mptrj_pretraining a owl:NamedIndividual,
+        train:PretrainingRun ;
+    rdfs:label "mptrj_pretraining"^^xsd:string ;
+    rdfs:comment "Pretraining of MACE-MP-0b3 on MPtrj dataset consisting of approximately 1.5M configurations from Materials Project DFT relaxation trajectories using PBE functional"^^xsd:string ;
+    train:hasHyperparameterValue trind:mace_mp_0_mace_batch_size_value,
+        trind:mace_mp_0_mace_channel_dimension_value,
+        trind:mace_mp_0_mace_correlation_order_value,
+        trind:mace_mp_0_mace_epochs_value,
+        trind:mace_mp_0_mace_gradient_clipping_value,
+        trind:mace_mp_0_mace_hidden_layer_count_value,
+        trind:mace_mp_0_mace_hidden_layer_size_value,
+        trind:mace_mp_0_mace_learning_rate_value,
+        trind:mace_mp_0_mace_loss_energy_weight_value,
+        trind:mace_mp_0_mace_loss_force_weight_value,
+        trind:mace_mp_0_mace_loss_stress_weight_value,
+        trind:mace_mp_0_mace_max_angular_momentum_value,
+        trind:mace_mp_0_mace_number_of_layers_value,
+        trind:mace_mp_0_mace_optimizer_value,
+        trind:mace_mp_0_mace_radial_basis_functions_value,
+        trind:mace_mp_0_mace_radial_cutoff_value ;
+    train:trainsModelVariant archind:mace_mp_0_mace_model_variant ;
+    train:usesDataset dataind:mptrj ;
+    train:usesLoss trind:huber_loss ;
+    train:usesObjectiveFunction trind:weighted_sum_of_huber_losses ;
+    train:usesOptimizer trind:amsgrad .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mace_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#mace_mp_0_variant> >> prov:wasDerivedFrom "YAML model_name: MACE-MP-0 lowercased and spaces/hyphens replaced by underscores" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mace_mp_0_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "4688656"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 4688656" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mace_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#mace_mp_0_mace_model_variant> >> prov:wasDerivedFrom "PDF section 1: MACE is a higher-order equivariant message-passing neural network; ontology architecture.ttl: EquivariantMessagePassingNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mace_mp_0_mace_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#mace_mp_0_mace_architecture> >> prov:wasDerivedFrom "PDF section 1: MACE is a higher-order equivariant message-passing neural network; ontology architecture.ttl: EquivariantMessagePassingNeuralNetworkArchitecture" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mace_mp_0_mace_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "4688656"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params: 4688656" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mace_mp_0_mace_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasLayerCount> "2"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF section 6: two MACE layers" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#mace_mp_0_mace_architecture_configuration> <https://k.loria.fr/ontologies/architectureonto#hasHiddenDimension> "128"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF section 6: 128-channel dimension for tensor decomposition" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_number_of_layers_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#number_of_layers> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_max_angular_momentum_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#max_angular_momentum> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_correlation_order_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#correlation_order> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_channel_dimension_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#channel_dimension> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_radial_cutoff_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#radial_cutoff> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_radial_basis_functions_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#radial_basis_functions> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_hidden_layer_size_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_layer_size> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_hidden_layer_count_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#hidden_layer_count> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_loss_energy_weight_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#loss_energy_weight> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_loss_force_weight_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#loss_force_weight> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_loss_stress_weight_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#loss_stress_weight> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_learning_rate_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#learning_rate> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_optimizer_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#optimizer> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_batch_size_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#batch_size> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_epochs_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#epochs> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_gradient_clipping_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#gradient_clipping> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#mace_mp_0_mace_model_variant> >> prov:wasDerivedFrom "PDF section 6: MACE All models trained in the paper use the MACE architecture" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_number_of_layers_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_max_angular_momentum_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_correlation_order_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_channel_dimension_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_radial_cutoff_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_radial_basis_functions_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_hidden_layer_size_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_hidden_layer_count_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_loss_energy_weight_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_loss_force_weight_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_loss_stress_weight_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_learning_rate_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_optimizer_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_batch_size_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_epochs_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0_mace_gradient_clipping_value> >> prov:wasDerivedFrom "PDF section 6 Hyper-parameters and Training loss subsections" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptrj> >> prov:wasDerivedFrom "PDF section 6: MACE-MP-0b3 model was trained on the MPtrj dataset" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesOptimizer> <https://k.loria.fr/ontologies/trainingonto-individuals#amsgrad> >> prov:wasDerivedFrom "PDF section 6: The models are trained with the AMSGrad variant of Adam" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesLoss> <https://k.loria.fr/ontologies/trainingonto-individuals#huber_loss> >> prov:wasDerivedFrom "PDF section 6: The models were trained using a weighted sum of Huber losses of energy, forces, and stress" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesObjectiveFunction> <https://k.loria.fr/ontologies/trainingonto-individuals#weighted_sum_of_huber_losses> >> prov:wasDerivedFrom "PDF section 6: weighted sum of Huber losses of energy, forces, and stress" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0a_materialization> <https://k.loria.fr/ontologies/trainingonto#generatedBy> <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> >> prov:wasDerivedFrom "PDF section 6 Model versions: Different model versions released including MACE-MP-0a and MACE-MP-0b3" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mace_mp_0b3_materialization> <https://k.loria.fr/ontologies/trainingonto#generatedBy> <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> >> prov:wasDerivedFrom "PDF section 6 Model versions: Different model versions released including MACE-MP-0a and MACE-MP-0b3" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#mptrj_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "Pretraining of MACE-MP-0b3 on MPtrj dataset consisting of approximately 1.5M configurations from Materials Project DFT relaxation trajectories using PBE functional"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF section 6 Training data: MPtrj dataset consists of approx. 1.5M configurations from Materials Project" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#hasNumberOfSamples> "1500000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "PDF section 6: approx. 1.5M configurations" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#hasDataRepresentation> <https://k.loria.fr/ontologies/dataset-individuals#atomic_structure_representation> >> prov:wasDerivedFrom "PDF section 6: structural optimization trajectories from the Materials Project" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#hasLabellingMethod> <https://k.loria.fr/ontologies/dataset-individuals#dft_labelling_method> >> prov:wasDerivedFrom "PDF section 6: DFT calculations use the PBE exchange-correlation functional" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_positions_attribute> >> prov:wasDerivedFrom "PDF section 6: structural information including atomic positions and cell parameters" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#atomic_numbers_attribute> >> prov:wasDerivedFrom "PDF section 6: structural information including atomic positions and cell parameters" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsInputFeature> <https://k.loria.fr/ontologies/dataset-individuals#cell_parameters_attribute> >> prov:wasDerivedFrom "PDF section 6: structural information including atomic positions and cell parameters" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#energy_attribute> >> prov:wasDerivedFrom "PDF section 6: trained using a weighted sum of Huber losses of energy, forces, and stress" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#forces_attribute> >> prov:wasDerivedFrom "PDF section 6: trained using a weighted sum of Huber losses of energy, forces, and stress" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#usesAttributeAsTargetFeature> <https://k.loria.fr/ontologies/dataset-individuals#stress_attribute> >> prov:wasDerivedFrom "PDF section 6: trained using a weighted sum of Huber losses of energy, forces, and stress" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .
+<< <https://k.loria.fr/ontologies/dataset-individuals#mptrj> <https://k.loria.fr/ontologies/datasetonto#wasDerivedFromDataset> <https://k.loria.fr/ontologies/dataset-individuals#materials_project> >> prov:wasDerivedFrom "PDF section 6: compiled originally for CHGNet from Materials Project" ; dcterms:source <https://arxiv.org/pdf/2401.00096.pdf> .

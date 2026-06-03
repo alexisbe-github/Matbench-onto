@@ -1,0 +1,287 @@
+Looking at the SHACL violations:
+
+1. **Violation 1 & 3**: `archind:esen_30m_mp_esen_architecture` is `arch:EquivariantMessagePassingNeuralNetworkArchitecture` but not declared as `arch:MachineLearningArchitecture`. The variant `esen_30m_mp_esen_model_variant` links to it via `arch:hasMachineLearningArchitecture`, and the architecture itself uses `arch:hasMachineLearningArchitectureConfiguration` — both require it to be `arch:MachineLearningArchitecture`.
+
+2. **Violation 2**: `archind:esen_30m_mp_esen_architecture` has `arch:hasMachineLearningArchitectureConfiguration` but is not typed as `arch:MachineLearningArchitecture`.
+
+3. **Violation 4**: `archind:esen_30m_mp_variant` is `arch:ModelVariant` but has no `arch:hasMachineLearningArchitecture` link.
+
+The fixes:
+- Add `arch:MachineLearningArchitecture` type to `archind:esen_30m_mp_esen_architecture` (fixes violations 1, 2, 3)
+- Add `arch:hasMachineLearningArchitecture archind:esen_30m_mp_esen_architecture` to `archind:esen_30m_mp_variant` (fixes violation 4)
+
+```turtle
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:esen_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "eSEN"^^xsd:string ;
+    arch:hasVariant archind:esen_30m_mp_esen_model_variant,
+        archind:esen_30m_mp_variant .
+
+trind:dataset_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "dataset_details"^^xsd:string .
+
+trind:datasets a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "datasets"^^xsd:string .
+
+trind:esen_30m_mp_esen_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:esen_30m_mp_esen_cutoff_radius_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN cutoff_radius value"^^xsd:string ;
+    train:ofHyperparameter trind:cutoff_radius .
+
+trind:esen_30m_mp_esen_energy_loss_coefficient_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN energy_loss_coefficient value"^^xsd:string ;
+    train:ofHyperparameter trind:energy_loss_coefficient .
+
+trind:esen_30m_mp_esen_force_loss_coefficient_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN force_loss_coefficient value"^^xsd:string ;
+    train:ofHyperparameter trind:force_loss_coefficient .
+
+trind:esen_30m_mp_esen_gradient_clipping_norm_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN gradient_clipping_norm value"^^xsd:string ;
+    train:ofHyperparameter trind:gradient_clipping_norm .
+
+trind:esen_30m_mp_esen_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:esen_30m_mp_esen_max_degree_lmax_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN max_degree_Lmax value"^^xsd:string ;
+    train:ofHyperparameter trind:max_degree_lmax .
+
+trind:esen_30m_mp_esen_max_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN max_learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:max_learning_rate .
+
+trind:esen_30m_mp_esen_max_order_mmax_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN max_order_Mmax value"^^xsd:string ;
+    train:ofHyperparameter trind:max_order_mmax .
+
+trind:esen_30m_mp_esen_model_ema_decay_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN model_ema_decay value"^^xsd:string ;
+    train:ofHyperparameter trind:model_ema_decay .
+
+trind:esen_30m_mp_esen_number_of_channels_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN number_of_channels value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_channels .
+
+trind:esen_30m_mp_esen_number_of_esen_layer_blocks_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN number_of_eSEN_layer_blocks value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_esen_layer_blocks .
+
+trind:esen_30m_mp_esen_number_of_radial_basis_functions_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN number_of_radial_basis_functions value"^^xsd:string ;
+    train:ofHyperparameter trind:number_of_radial_basis_functions .
+
+trind:esen_30m_mp_esen_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:esen_30m_mp_esen_radial_basis_function_type_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN radial_basis_function_type value"^^xsd:string ;
+    train:ofHyperparameter trind:radial_basis_function_type .
+
+trind:esen_30m_mp_esen_stress_loss_coefficient_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN stress_loss_coefficient value"^^xsd:string ;
+    train:ofHyperparameter trind:stress_loss_coefficient .
+
+trind:esen_30m_mp_esen_warmup_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN warmup_epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:warmup_epochs .
+
+trind:esen_30m_mp_esen_warmup_factor_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN warmup_factor value"^^xsd:string ;
+    train:ofHyperparameter trind:warmup_factor .
+
+trind:esen_30m_mp_esen_weight_decay_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "esen_30m_mp eSEN weight_decay value"^^xsd:string ;
+    train:ofHyperparameter trind:weight_decay .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:esen_30m_mp_esen_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "eSEN"^^xsd:string ;
+    arch:hasComponent archind:esen_edgewiseconvolution_component,
+        archind:esen_equivariantlayernormalization_component,
+        archind:esen_gatednonlinearity_component,
+        archind:esen_nodewisefeedforward_component,
+        archind:esen_so2convolution_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:esen_30m_mp_esen_architecture_configuration ;
+    arch:hasParameterNumber 30085121 .
+
+archind:esen_30m_mp_esen_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "eSEN architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 128 ;
+    arch:hasLayerCount 10 .
+
+archind:esen_30m_mp_esen_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "esen_30m_mp eSEN"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:esen_30m_mp_esen_architecture .
+
+archind:esen_30m_mp_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "esen_30m_mp"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2502.12147.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\esen_30m_mp.yml" ;
+    arch:hasMachineLearningArchitecture archind:esen_30m_mp_esen_architecture ;
+    arch:hasParameterNumber 30085121 .
+
+archind:esen_edgewiseconvolution_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "EdgewiseConvolution"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:esen_edgewiseconvolution_component_configuration .
+
+archind:esen_edgewiseconvolution_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EdgewiseConvolution component configuration"^^xsd:string .
+
+archind:esen_equivariantlayernormalization_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "EquivariantLayerNormalization"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:esen_equivariantlayernormalization_component_configuration .
+
+archind:esen_equivariantlayernormalization_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EquivariantLayerNormalization component configuration"^^xsd:string .
+
+archind:esen_gatednonlinearity_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "GatedNonLinearity"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:esen_gatednonlinearity_component_configuration .
+
+archind:esen_gatednonlinearity_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "GatedNonLinearity component configuration"^^xsd:string .
+
+archind:esen_nodewisefeedforward_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "NodewiseFeedForward"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:esen_nodewisefeedforward_component_configuration .
+
+archind:esen_nodewisefeedforward_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "NodewiseFeedForward component configuration"^^xsd:string .
+
+archind:esen_so2convolution_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "SO2Convolution"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:esen_so2convolution_component_configuration .
+
+archind:esen_so2convolution_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "SO2Convolution component configuration"^^xsd:string .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:cutoff_radius a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "cutoff_radius"^^xsd:string .
+
+trind:energy_loss_coefficient a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "energy_loss_coefficient"^^xsd:string .
+
+trind:force_loss_coefficient a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "force_loss_coefficient"^^xsd:string .
+
+trind:gradient_clipping_norm a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "gradient_clipping_norm"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:max_degree_lmax a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_degree_Lmax"^^xsd:string .
+
+trind:max_learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_learning_rate"^^xsd:string .
+
+trind:max_order_mmax a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_order_Mmax"^^xsd:string .
+
+trind:model_ema_decay a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "model_ema_decay"^^xsd:string .
+
+trind:number_of_channels a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_channels"^^xsd:string .
+
+trind:number_of_esen_layer_blocks a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_eSEN_layer_blocks"^^xsd:string .
+
+trind:number_of_radial_basis_functions a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_radial_basis_functions"^^xsd:string .
+
+trind:optimizer a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "optimizer"^^xsd:string .
+
+trind:radial_basis_function_type a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial_basis_function_type"^^xsd:string .
+
+trind:stress_loss_coefficient a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "stress_loss_coefficient"^^xsd:string .
+
+trind:warmup_epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "warmup_epochs"^^xsd:string .
+
+trind:warmup_factor a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "warmup_factor"^^xsd:string .
+
+trind:weight_decay a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "weight_decay"^^xsd:string .

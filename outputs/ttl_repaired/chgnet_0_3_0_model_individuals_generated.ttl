@@ -1,0 +1,327 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:chgnet_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "CHGNet"^^xsd:string ;
+    arch:hasVariant archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_model_variant,
+        archind:chgnet_0_3_0_variant .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_batch_size_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network batch_size value"^^xsd:string ;
+    train:ofHyperparameter trind:batch_size .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_bond_graph_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network bond_graph_cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:bond_graph_cutoff .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network cutoff value"^^xsd:string ;
+    train:ofHyperparameter trind:cutoff .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_epochs_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network epochs value"^^xsd:string ;
+    train:ofHyperparameter trind:epochs .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_feature_dimensions_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network feature_dimensions value"^^xsd:string ;
+    train:ofHyperparameter trind:feature_dimensions .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_force_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network force_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:force_loss_weight .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_graph_cutoff_radius_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network graph_cutoff_radius value"^^xsd:string ;
+    train:ofHyperparameter trind:graph_cutoff_radius .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_huber_delta_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network huber_delta value"^^xsd:string ;
+    train:ofHyperparameter trind:huber_delta .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_interaction_blocks_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network interaction_blocks value"^^xsd:string ;
+    train:ofHyperparameter trind:interaction_blocks .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_learning_rate_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network learning_rate value"^^xsd:string ;
+    train:ofHyperparameter trind:learning_rate .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_loss_function_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network loss_function value"^^xsd:string ;
+    train:ofHyperparameter trind:loss_function .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_magmom_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network magmom_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:magmom_loss_weight .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_max_expansion_order_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network max_expansion_order value"^^xsd:string ;
+    train:ofHyperparameter trind:max_expansion_order .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network optimizer value"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_rcut_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network rcut value"^^xsd:string ;
+    train:ofHyperparameter trind:rcut .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_scheduler_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network scheduler value"^^xsd:string ;
+    train:ofHyperparameter trind:scheduler .
+
+trind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_stress_loss_weight_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network stress_loss_weight value"^^xsd:string ;
+    train:ofHyperparameter trind:stress_loss_weight .
+
+trind:dataset_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "dataset_details"^^xsd:string .
+
+trind:datasets a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "datasets"^^xsd:string .
+
+trind:training_run_details a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "training_run_details"^^xsd:string .
+
+archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture a owl:NamedIndividual,
+        arch:GraphNeuralNetworkArchitecture,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "Crystal Hamiltonian Graph Neural Network"^^xsd:string ;
+    arch:hasBackboneArchitecture archind:crystal_hamiltonian_graph_neural_network_graphneuralnetwork_component ;
+    arch:hasComponent archind:crystal_hamiltonian_graph_neural_network_angleupdate_component,
+        archind:crystal_hamiltonian_graph_neural_network_atomconvolution_component,
+        archind:crystal_hamiltonian_graph_neural_network_autodifferentiation_component,
+        archind:crystal_hamiltonian_graph_neural_network_bondconvolution_component,
+        archind:crystal_hamiltonian_graph_neural_network_embeddinglayer_component,
+        archind:crystal_hamiltonian_graph_neural_network_fourierbasis_component,
+        archind:crystal_hamiltonian_graph_neural_network_gatedmlp_component,
+        archind:crystal_hamiltonian_graph_neural_network_interactionblock_component,
+        archind:crystal_hamiltonian_graph_neural_network_linearprojection_component,
+        archind:crystal_hamiltonian_graph_neural_network_smoothrbf_component,
+        archind:crystal_hamiltonian_graph_neural_network_weightedmessagepassing_component ;
+    arch:hasHeadArchitecture archind:crystal_hamiltonian_graph_neural_network_linearprojection_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture_configuration ;
+    arch:hasParameterNumber 400438 .
+
+archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Crystal Hamiltonian Graph Neural Network architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 64 ;
+    arch:hasLayerCount 4 .
+
+archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "chgnet_0_3_0 Crystal Hamiltonian Graph Neural Network"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture .
+
+archind:chgnet_0_3_0_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "chgnet_0_3_0"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2302.14231.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\chgnet_0_3_0.yml" ;
+    arch:hasParameterNumber 412525 ;
+    arch:hasMachineLearningArchitecture archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture .
+
+archind:crystal_hamiltonian_graph_neural_network_angleupdate_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "AngleUpdate"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_angleupdate_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_angleupdate_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AngleUpdate component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_atomconvolution_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "AtomConvolution"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_atomconvolution_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_atomconvolution_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AtomConvolution component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_autodifferentiation_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "AutoDifferentiation"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_autodifferentiation_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_autodifferentiation_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "AutoDifferentiation component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_bondconvolution_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "BondConvolution"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_bondconvolution_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_bondconvolution_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "BondConvolution component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_embeddinglayer_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "EmbeddingLayer"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_embeddinglayer_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_embeddinglayer_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EmbeddingLayer component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_fourierbasis_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "FourierBasis"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_fourierbasis_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_fourierbasis_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "FourierBasis component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_gatedmlp_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "GatedMLP"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_gatedmlp_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_gatedmlp_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "GatedMLP component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_graphneuralnetwork_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "GraphNeuralNetwork"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_graphneuralnetwork_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_graphneuralnetwork_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "GraphNeuralNetwork component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_interactionblock_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "InteractionBlock"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_interactionblock_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_interactionblock_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "InteractionBlock component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_linearprojection_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "LinearProjection component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_smoothrbf_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "SmoothRBF"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_smoothrbf_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_smoothrbf_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "SmoothRBF component configuration"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_weightedmessagepassing_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "WeightedMessagePassing"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_weightedmessagepassing_component_configuration .
+
+archind:crystal_hamiltonian_graph_neural_network_weightedmessagepassing_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "WeightedMessagePassing component configuration"^^xsd:string .
+
+trind:batch_size a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "batch_size"^^xsd:string .
+
+trind:bond_graph_cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "bond_graph_cutoff"^^xsd:string .
+
+trind:cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "cutoff"^^xsd:string .
+
+trind:epochs a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "epochs"^^xsd:string .
+
+trind:feature_dimensions a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "feature_dimensions"^^xsd:string .
+
+trind:force_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "force_loss_weight"^^xsd:string .
+
+trind:graph_cutoff_radius a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "graph_cutoff_radius"^^xsd:string .
+
+trind:huber_delta a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "huber_delta"^^xsd:string .
+
+trind:interaction_blocks a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "interaction_blocks"^^xsd:string .
+
+trind:learning_rate a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "learning_rate"^^xsd:string .
+
+trind:loss_function a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "loss_function"^^xsd:string .
+
+trind:magmom_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "magmom_loss_weight"^^xsd:string .
+
+trind:max_expansion_order a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_expansion_order"^^xsd:string .
+
+trind:optimizer a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "optimizer"^^xsd:string .
+
+trind:rcut a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "rcut"^^xsd:string .
+
+trind:scheduler a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "scheduler"^^xsd:string .
+
+trind:stress_loss_weight a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "stress_loss_weight"^^xsd:string .
+
+archind:crystal_hamiltonian_graph_neural_network_linearprojection_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "LinearProjection"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:crystal_hamiltonian_graph_neural_network_linearprojection_component_configuration .

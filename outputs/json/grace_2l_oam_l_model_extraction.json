@@ -1,0 +1,470 @@
+{
+  "model": {
+    "family": {
+      "value": "GRACE",
+      "evidence": "model_name: GRACE-1L-OAM; paper title and throughout"
+    },
+    "variant": {
+      "value": "grace_1l_oam",
+      "evidence": "model_name: GRACE-1L-OAM, lowercased and spaces/hyphens replaced with underscores"
+    },
+    "parameter_number": {
+      "value": 3447148,
+      "evidence": "model_params: 3447148; Table S1: Tot. num. params. for 1L = 3447148"
+    }
+  },
+  "architectures": {
+    "GRACE-1L": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "Paper describes GRACE as graph extension of ACE with equivariant message passing; ontology: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 3447148,
+        "evidence": "Table S1: 1L Tot. num. params. = 3447148"
+      },
+      "datasets": {
+        "value": [
+          "OMat24",
+          "MPTraj",
+          "sAlex"
+        ],
+        "evidence": "Section II.A: trained on OMat24, then fine-tuned on MPTraj and sAlex; Section IV.A: parameterized using OMat24, sAlex, and MPTraj"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "loss_weights",
+          "cutoff_radius",
+          "radial_basis_functions",
+          "max_angular_momentum",
+          "product_order",
+          "chemical_embedding_dimension",
+          "num_radial_functions",
+          "num_densities",
+          "Lmax_per_product_order"
+        ],
+        "evidence": "Section IV.A and Table S1: rcut=6Å, Chebyshev radial basis, 8 radial basis functions, lmax=4, product order 4, 128-dim chemical embedding, 32 radial functions, 12+1 densities, Lmax per product order 4/4/0/0; Adam optimizer, lr=8e-3 min 5e-4, batch size 165000 bonds, loss weights αE:αF:αS = 16:128:128 then 128:128:256"
+      },
+      "components": {
+        "value": [
+          "ACE_star_graph_basis",
+          "chemical_embedding",
+          "radial_basis_MLP",
+          "recursive_ACE_evaluation",
+          "atomic_energy_readout_MLP"
+        ],
+        "evidence": "Section IV.A and Fig. S1: chemical embedding Zi, radial basis Rnl(r) via MLP, recursive ACE evaluation for star-graph basis, atomic energy via embedding scheme with MLP"
+      },
+      "backbone_architecture": {
+        "value": "AtomicClusterExpansion",
+        "evidence": "Section IV.A: GRACE is a graph extension of the Atomic Cluster Expansion (ACE) method; one-layer model yields star-graph ACE basis"
+      },
+      "head_architecture": {
+        "value": "AtomicEnergyReadoutMLP",
+        "evidence": "Section IV.A: atomic energy computed via embedding scheme with MLP processing remaining densities"
+      },
+      "layer_count": {
+        "value": 1,
+        "evidence": "Model name GRACE-1L-OAM; Section II.A: one-layer (1L) models"
+      },
+      "hidden_dimension": {
+        "value": 128,
+        "evidence": "Section IV.A and Table S1: chemical species embedded into 128-dimensional space"
+      }
+    },
+    "GRACE-2L": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "Paper describes GRACE-2L with equivariant message passing between layers; ontology: EquivariantMessagePassingNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": 12597516,
+        "evidence": "Table S1: 2L Tot. num. params. = 12597516"
+      },
+      "datasets": {
+        "value": [
+          "OMat24",
+          "MPTraj",
+          "sAlex"
+        ],
+        "evidence": "Section II.A: same training procedure for 1L and 2L models"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "loss_weights",
+          "cutoff_radius",
+          "radial_basis_functions",
+          "max_angular_momentum",
+          "product_order",
+          "chemical_embedding_dimension",
+          "num_radial_functions",
+          "num_densities",
+          "Lmax_per_product_order_layer1",
+          "Lmax_per_product_order_layer2",
+          "num_equivariant_functions"
+        ],
+        "evidence": "Section IV.A and Table S1: 2L config with rcut=6Å, 8 radial basis, lmax=4, product order 4, 128-dim embedding, 32 radial funcs, 12+1 densities, Lmax layer1 4/4/1/0, 4000 equivariant funcs, Lmax layer2 4/4/0/0"
+      },
+      "components": {
+        "value": [
+          "ACE_star_graph_basis_layer1",
+          "equivariant_atomic_representations",
+          "ACE_tree_graph_basis_layer2",
+          "chemical_embedding",
+          "radial_basis_MLP",
+          "recursive_ACE_evaluation",
+          "atomic_energy_readout_MLP"
+        ],
+        "evidence": "Section IV.A and Fig. S1: two-layer model with equivariant basis functions combined to define Ii,nL representations, second recursive ACE evaluation for tree graph GRACE basis"
+      },
+      "backbone_architecture": {
+        "value": "AtomicClusterExpansion",
+        "evidence": "Section IV.A: GRACE extends ACE to tree-graphs; second recursive ACE evaluation on tree graph"
+      },
+      "head_architecture": {
+        "value": "AtomicEnergyReadoutMLP",
+        "evidence": "Section IV.A: complete GRACE basis linearly combined to form atomic densities, processed through MLP for atomic energy"
+      },
+      "layer_count": {
+        "value": 2,
+        "evidence": "Model name GRACE-2L; Section II.A: two-layer (2L) models include semi-local interactions via equivariant message passing"
+      },
+      "hidden_dimension": {
+        "value": 128,
+        "evidence": "Section IV.A and Table S1: 128-dimensional chemical embedding for all models"
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "omat24_pretraining",
+        "oam_finetuning",
+        "omat_finetune_E"
+      ],
+      "evidence": "Section IV.A: three training stages described - OMat24 pretraining (OMat-base), OAM fine-tuning (MPTraj+sAlex), and OMat ft-E (energy-weighted fine-tuning on OMat24)"
+    },
+    "omat24_pretraining": {
+      "type": {
+        "value": "PretrainingRun",
+        "evidence": "Section IV.A: initial training on OMat24 dataset constituting the 'OMat-base' models; ontology: PretrainingRun"
+      },
+      "architectures": {
+        "value": [
+          "GRACE-1L",
+          "GRACE-2L"
+        ],
+        "evidence": "Section IV.A: all models initially trained on OMat24 for 12 epochs (1L) and 8 epochs (2L)"
+      },
+      "datasets": {
+        "value": [
+          "OMat24"
+        ],
+        "evidence": "Section IV.A: 'All models were initially trained on the OMat24 dataset'"
+      },
+      "optimizer": {
+        "value": "Adam",
+        "evidence": "Section IV.A: 'For loss optimization we employed the Adam optimizer'"
+      },
+      "loss_function": {
+        "value": "HuberLoss",
+        "evidence": "Section IV.A: 'We utilize the Huber loss for L with parameter δ=0.01 for all components'"
+      },
+      "description": {
+        "value": "Initial pretraining of GRACE 1L and 2L models on OMat24 dataset with equal weighting of energy, force, and stress loss components",
+        "evidence": "Section IV.A: trained for 12 epochs (1L) and 8 epochs (2L) with αE:αF:αS = 16:128:128"
+      },
+      "objective_function": {
+        "value": "MultiComponentLoss",
+        "evidence": "Section IV.A: L = αELE + αFLF + αSLS combining energy, force, and stress losses"
+      },
+      "sampling_method": {
+        "value": null,
+        "evidence": "No specific sampling method mentioned for pretraining"
+      },
+      "uses_batched_selection": {
+        "value": null,
+        "evidence": "Not an active learning run"
+      },
+      "initialized_from_model_materialization": {
+        "value": null,
+        "evidence": "Trained from scratch on OMat24"
+      },
+      "teacher_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "student_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "model_materializations": {
+        "value": [
+          "GRACE-1L-OMAT-base",
+          "GRACE-1L-OMAT-M-base",
+          "GRACE-1L-OMAT-L-base",
+          "GRACE-2L-OMAT-base",
+          "GRACE-2L-OMAT-M-base",
+          "GRACE-2L-OMAT-L-base"
+        ],
+        "evidence": "Section IV.A: 'constituting the OMat-base models'; Table S1 lists 1L, 1L-medium, 1L-large, 2L, 2L-medium, 2L-large variants"
+      }
+    },
+    "oam_finetuning": {
+      "type": {
+        "value": "MachineLearningFinetuningRun",
+        "evidence": "Section IV.A: fine-tuning OMat-base models on combined MPTraj and sAlex datasets; ontology: MachineLearningFinetuningRun"
+      },
+      "architectures": {
+        "value": [
+          "GRACE-1L",
+          "GRACE-2L"
+        ],
+        "evidence": "Section IV.A: fine-tuning applied to both 1L and 2L OMat-base models"
+      },
+      "datasets": {
+        "value": [
+          "MPTraj",
+          "sAlex"
+        ],
+        "evidence": "Section IV.A: 'fine-tuned OMat-base models on the combination of MPTraj and sAlex datasets'"
+      },
+      "optimizer": {
+        "value": "Adam",
+        "evidence": "Section IV.A: Adam optimizer used for all training"
+      },
+      "loss_function": {
+        "value": "HuberLoss",
+        "evidence": "Section IV.A: same Huber loss function with δ=0.01"
+      },
+      "description": {
+        "value": "Fine-tuning of OMat-base models on combined MPTraj and sAlex datasets with increased energy loss weight",
+        "evidence": "Section IV.A: fine-tuned for additional 8 epochs (1L) and 4 epochs (2L) with αE:αF:αS = 128:128:256"
+      },
+      "objective_function": {
+        "value": "MultiComponentLoss",
+        "evidence": "Section IV.A: same multi-component loss with adjusted weights"
+      },
+      "sampling_method": {
+        "value": null,
+        "evidence": "No specific sampling method mentioned"
+      },
+      "uses_batched_selection": {
+        "value": null,
+        "evidence": "Not an active learning run"
+      },
+      "initialized_from_model_materialization": {
+        "value": "OMat-base models",
+        "evidence": "Section IV.A: 'Subsequently, we fine-tuned OMat-base models on the combination of MPTraj and sAlex datasets'"
+      },
+      "teacher_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "student_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "model_materializations": {
+        "value": [
+          "GRACE-1L-OAM",
+          "GRACE-1L-OAM-L",
+          "GRACE-2L-OAM",
+          "GRACE-2L-OAM-M",
+          "GRACE-2L-OAM-L"
+        ],
+        "evidence": "Section II.A and Table I: models designated with -OAM suffix; Table S1 lists 1L, 1L-large, 2L, 2L-medium, 2L-large"
+      }
+    },
+    "omat_finetune_E": {
+      "type": {
+        "value": "MachineLearningFinetuningRun",
+        "evidence": "Section IV.A: fine-tuning on same OMat24 dataset with adjusted loss weights; ontology: MachineLearningFinetuningRun"
+      },
+      "architectures": {
+        "value": [
+          "GRACE-1L",
+          "GRACE-2L"
+        ],
+        "evidence": "Section IV.A: applied to both 1L and 2L OMat-base models"
+      },
+      "datasets": {
+        "value": [
+          "OMat24"
+        ],
+        "evidence": "Section IV.A: 'fine-tuned OMat-base models on the same OMat24 dataset for additional 2 epochs with adjusted loss component weights'"
+      },
+      "optimizer": {
+        "value": "Adam",
+        "evidence": "Section IV.A: Adam optimizer used throughout"
+      },
+      "loss_function": {
+        "value": "HuberLoss",
+        "evidence": "Section IV.A: same Huber loss function"
+      },
+      "description": {
+        "value": "Energy-weighted fine-tuning of OMat-base models on OMat24 with more weight on energy loss",
+        "evidence": "Section IV.A: 'with adjusted loss component weights to αE:αF:αS = 128:128:256 to give more weight to energies'"
+      },
+      "objective_function": {
+        "value": "MultiComponentLoss",
+        "evidence": "Section IV.A: same multi-component loss L = αELE + αFLF + αSLS"
+      },
+      "sampling_method": {
+        "value": null,
+        "evidence": "No specific sampling method mentioned"
+      },
+      "uses_batched_selection": {
+        "value": null,
+        "evidence": "Not an active learning run"
+      },
+      "initialized_from_model_materialization": {
+        "value": "OMat-base models",
+        "evidence": "Section IV.A: fine-tuned from OMat-base models"
+      },
+      "teacher_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "student_model": {
+        "value": null,
+        "evidence": "Not a distillation run"
+      },
+      "model_materializations": {
+        "value": [
+          "GRACE-1L-OMAT-ft-E",
+          "GRACE-1L-OMAT-L-ft-E",
+          "GRACE-2L-OMAT-ft-E",
+          "GRACE-2L-OMAT-M-ft-E",
+          "GRACE-2L-OMAT-L-ft-E"
+        ],
+        "evidence": "Section II.A: 'designated with an -OMAT-ft-E or just -OMAT suffix'; Fig. S5-S13 list these variants"
+      }
+    }
+  },
+  "datasets": {
+    "OMat24": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "Section II.A: OMat24 is a compilation of DFT calculations; ontology: Dataset"
+      },
+      "number_of_samples": {
+        "value": 110000000,
+        "evidence": "Section II.A: 'It encompasses 110 million DFT calculations'"
+      },
+      "data_representation": {
+        "value": "atomic_structure",
+        "evidence": "Section II.A: dataset contains structures with atomic positions and species; Section IV.A: represented by chemical species types μi and atomic positions ri"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "Section II.A: 'DFT calculations, primarily computed with VASP with the GGA-PBE functional'"
+      },
+      "input_features": {
+        "value": [
+          "atomic_species",
+          "atomic_positions",
+          "bond_vectors"
+        ],
+        "evidence": "Section IV.A: 'The atomic structure is represented by chemical species types μi and atomic positions ri, which are transformed into bond vectors rij'"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "forces",
+          "stresses"
+        ],
+        "evidence": "Section IV.A: 'Raw VASP energies, forces and stresses were used for parameterizations'"
+      },
+      "derived_from_dataset": {
+        "value": null,
+        "evidence": "OMat24 is a primary dataset, not derived from another"
+      }
+    },
+    "MPTraj": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "Section II.A: MPTraj is a dataset of relaxation trajectories; ontology: Dataset"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "Exact number of samples not specified in paper"
+      },
+      "data_representation": {
+        "value": "atomic_structure",
+        "evidence": "Section IV.A: relaxation trajectories with atomic positions and species"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "Section IV.A: 'Raw VASP energies, forces and stresses were used'; associated with Materials Project DFT settings"
+      },
+      "input_features": {
+        "value": [
+          "atomic_species",
+          "atomic_positions",
+          "bond_vectors"
+        ],
+        "evidence": "Section IV.A: same representation as OMat24"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "forces",
+          "stresses"
+        ],
+        "evidence": "Section IV.A: energies, forces, and stresses used for parameterization"
+      },
+      "derived_from_dataset": {
+        "value": "Materials Project",
+        "evidence": "Section II.A: MPTraj is associated with Materials Project; reference 52,53"
+      }
+    },
+    "sAlex": {
+      "ontology_class": {
+        "value": "Dataset",
+        "evidence": "Section II.A: subsampled Alexandria dataset; ontology: Dataset"
+      },
+      "number_of_samples": {
+        "value": null,
+        "evidence": "Exact number not specified; described as a subsampled subset of Alexandria"
+      },
+      "data_representation": {
+        "value": "atomic_structure",
+        "evidence": "Section IV.A: relaxation trajectories from Alexandria"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "Section II.A: Alexandria dataset uses DFT calculations"
+      },
+      "input_features": {
+        "value": [
+          "atomic_species",
+          "atomic_positions",
+          "bond_vectors"
+        ],
+        "evidence": "Section IV.A: same representation"
+      },
+      "target_features": {
+        "value": [
+          "energy",
+          "forces",
+          "stresses"
+        ],
+        "evidence": "Section IV.A: energies, forces, and stresses used"
+      },
+      "derived_from_dataset": {
+        "value": "Alexandria",
+        "evidence": "Section II.A: 'a subsampled Alexandria (sAlex) dataset'"
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\grace_2l_oam_l.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2508.17936.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\grace_2l_oam_l.yml"
+  }
+}

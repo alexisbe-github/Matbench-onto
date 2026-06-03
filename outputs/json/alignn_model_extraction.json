@@ -6,164 +6,377 @@
     },
     "variant": {
       "value": "alignn",
-      "evidence": "YAML model_name lowercased and normalized: alignn"
+      "evidence": "YAML model_key: alignn"
     },
     "parameter_number": {
       "value": 4026753,
       "evidence": "YAML model_params: 4026753"
     }
   },
-  "architectures": {
-    "architectures": [
-      "Atomistic Line Graph Neural Network"
-    ],
-    "Atomistic Line Graph Neural Network": {
+  "architectures": [
+    {
+      "name": "ALIGNN",
       "ontology_class": {
-        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
-        "evidence": "PDF describes ALIGNN as a GNN performing message passing on bond graph and line graph with bond angles; ontology has EquivariantMessagePassingNeuralNetworkArchitecture as subclass of EquivariantGraphNeuralNetworkArchitecture"
+        "value": "MessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF p.3: 'ALIGNN performs Edge-gated graph convolution message passing updates on both the atomistic bond graph and its line graph'; ontology: MessagePassingNeuralNetworkArchitecture is a subclass of GraphNeuralNetworkArchitecture"
       },
       "parameter_number": {
         "value": 4026753,
         "evidence": "YAML model_params: 4026753"
       },
-      "datasets": [
-        "JARVIS-DFT",
-        "Materials Project",
-        "QM9"
-      ],
-      "hyperparameters": [
-        "ALIGNN layers",
-        "GCN layers",
-        "Edge input features",
-        "Triplet input features",
-        "Embedding features",
-        "Hidden features",
-        "Normalization",
-        "Batch size",
-        "Learning rate"
-      ],
-      "ALIGNN layers": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
-        },
-        "value": {
-          "value": 4,
-          "evidence": "PDF Table 1: ALIGNN layers = 4"
-        }
+      "datasets": {
+        "value": [
+          "JARVIS-DFT",
+          "Materials Project",
+          "QM9"
+        ],
+        "evidence": "PDF p.3: 'We train ALIGNN models for several crystalline material properties from JARVIS-DFT and Materials project datasets as well as molecular properties from QM9 database'"
       },
-      "GCN layers": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
-        },
-        "value": {
-          "value": 4,
-          "evidence": "PDF Table 1: GCN layers = 4"
-        }
+      "hyperparameters": {
+        "value": [
+          "ALIGNN layers",
+          "GCN layers",
+          "Edge input features",
+          "Triplet input features",
+          "Embedding features",
+          "Hidden features",
+          "Normalization",
+          "Batch size",
+          "Learning rate"
+        ],
+        "evidence": "PDF p.7 Table 1: ALIGNN model configuration listing ALIGNN layers 4, GCN layers 4, Edge input features 80, Triplet input features 40, Embedding features 64, Hidden features 256, Batch normalization, Batch size 64, Learning rate 0.001"
       },
-      "Edge input features": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
-        },
-        "value": {
-          "value": 80,
-          "evidence": "PDF Table 1: Edge input features = 80"
-        }
+      "components": {
+        "value": [
+          "Edge-gated graph convolution",
+          "Graph convolution (GCN)",
+          "Line graph convolution",
+          "Global average pooling",
+          "Fully connected layer"
+        ],
+        "evidence": "PDF p.3-7: ALIGNN uses edge-gated graph convolution on bond graph and line graph, followed by GCN layers, global average pooling, and a fully connected regression/classification layer"
       },
-      "Triplet input features": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
-        },
-        "value": {
-          "value": 40,
-          "evidence": "PDF Table 1: Triplet input features = 40"
-        }
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "No explicit backbone architecture mentioned"
       },
-      "Embedding features": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
-        },
-        "value": {
-          "value": 64,
-          "evidence": "PDF Table 1: Embedding features = 64"
-        }
+      "head_architecture": {
+        "value": "Fully connected regression/classification layer",
+        "evidence": "PDF p.7: 'predict the target properties with a single fully connected regression or classification layers'"
       },
-      "Hidden features": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
-        },
-        "value": {
-          "value": 256,
-          "evidence": "PDF Table 1: Hidden features = 256"
-        }
+      "layer_count": {
+        "value": 8,
+        "evidence": "PDF p.7 Table 1: 4 ALIGNN layers + 4 GCN layers = 8 total graph convolution layers"
       },
-      "Normalization": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
-        },
-        "value": {
-          "value": "Batch normalization",
-          "evidence": "PDF Table 1: Normalization = Batch normalization"
-        }
-      },
-      "Batch size": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
-        },
-        "value": {
-          "value": 64,
-          "evidence": "PDF Table 1: Batch size = 64"
-        }
-      },
-      "Learning rate": {
-        "ontology_class": {
-          "value": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl MachineLearningHyperparameter class"
-        },
-        "value": {
-          "value": 0.001,
-          "evidence": "PDF Table 1: Learning rate = 0.001"
-        }
+      "hidden_dimension": {
+        "value": 256,
+        "evidence": "PDF p.7 Table 1: Hidden features 256; PDF p.22: '4 ALIGNN and 4 graph convolution (GCN) layers, each with hidden dimension 256'"
       }
     }
-  },
+  ],
   "training": {
-    "training_runs": [
-      "pretraining_run"
-    ],
-    "pretraining_run": {
-      "type": {
-        "value": "PretrainingRun",
-        "evidence": "PDF describes training ALIGNN models from scratch on JARVIS-DFT, Materials Project, and QM9 datasets; ontology trainingonto.ttl PretrainingRun class"
-      },
-      "architectures": [
-        "Atomistic Line Graph Neural Network"
+    "training_runs": {
+      "value": [
+        "alignn_pretraining",
+        "alignn_finetuning"
       ],
-      "datasets": [
+      "evidence": "PDF p.8-15: ALIGNN models trained on JARVIS-DFT, Materials Project, and QM9 datasets with training procedures described"
+    },
+    "runs": [
+      {
+        "id": "alignn_pretraining",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF p.8-15: ALIGNN models trained from scratch on JARVIS-DFT, Materials Project, and QM9 datasets"
+        },
+        "architectures": {
+          "value": [
+            "ALIGNN"
+          ],
+          "evidence": "PDF p.3-7: ALIGNN architecture used for all training"
+        },
+        "datasets": {
+          "value": [
+            "JARVIS-DFT",
+            "Materials Project",
+            "QM9"
+          ],
+          "evidence": "PDF p.8-15: Models trained on JARVIS-DFT (55722 materials), Materials Project (69239 materials), and QM9 (130829 molecules)"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "PDF p.22: 'We train all models for 300 epochs using the AdamW optimizer with normalized weight decay of 10^-5'"
+        },
+        "loss_function": {
+          "value": "Mean squared error",
+          "evidence": "PDF p.22: 'For regression targets we minimize the mean squared error (MSE) loss, and for classification targets we minimize the standard negative log likelihood loss'"
+        },
+        "description": {
+          "value": "ALIGNN models trained for 300 epochs using AdamW optimizer with one-cycle learning rate policy, batch size 64, max learning rate 0.001, weight decay 10^-5. Models trained on JARVIS-DFT, Materials Project, and QM9 datasets for predicting various solid-state and molecular properties.",
+          "evidence": "PDF p.22: Training details including 300 epochs, AdamW optimizer, one-cycle policy, max lr 0.001, weight decay 10^-5, batch size 64"
+        },
+        "objective_function": {
+          "value": "Mean squared error",
+          "evidence": "PDF p.22: 'For regression targets we minimize the mean squared error (MSE) loss'"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No specific sampling method mentioned beyond standard train/val/test splits"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "PDF p.22: Models trained from scratch, not initialized from pretrained checkpoints"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "alignn_jarvis_dft_model",
+            "alignn_materials_project_model",
+            "alignn_qm9_model"
+          ],
+          "evidence": "PDF p.8-15: Separate ALIGNN models trained for JARVIS-DFT, Materials Project, and QM9 datasets"
+        }
+      },
+      {
+        "id": "alignn_finetuning",
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "PDF p.15: 'all ALIGNN results reported here use the same set of hyperparameters obtained by tuning to validation performance on the JARVIS-DFT bandgap target' - suggests transfer/finetuning across tasks"
+        },
+        "architectures": {
+          "value": [
+            "ALIGNN"
+          ],
+          "evidence": "PDF p.15: Same ALIGNN architecture used across all tasks"
+        },
+        "datasets": {
+          "value": [
+            "JARVIS-DFT",
+            "Materials Project",
+            "QM9"
+          ],
+          "evidence": "PDF p.8-15: Models applied to multiple datasets with same hyperparameters"
+        },
+        "optimizer": {
+          "value": "AdamW",
+          "evidence": "PDF p.22: AdamW optimizer used for all training"
+        },
+        "loss_function": {
+          "value": "Mean squared error",
+          "evidence": "PDF p.22: MSE loss for regression targets"
+        },
+        "description": {
+          "value": "ALIGNN models with hyperparameters tuned on JARVIS-DFT bandgap task then applied to other datasets and properties including Materials Project and QM9",
+          "evidence": "PDF p.15: 'all ALIGNN results reported here use the same set of hyperparameters obtained by tuning to validation performance on the JARVIS-DFT bandgap target'"
+        },
+        "objective_function": {
+          "value": "Mean squared error",
+          "evidence": "PDF p.22: MSE loss for regression"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No specific sampling method mentioned"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "No explicit initialization from previous model mentioned"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "alignn_multitask_model"
+          ],
+          "evidence": "PDF p.15: Same hyperparameter configuration applied across multiple tasks"
+        }
+      }
+    ],
+    "datasets": {
+      "value": [
         "JARVIS-DFT",
         "Materials Project",
         "QM9"
       ],
-      "optimizer": {
-        "value": "AdamW",
-        "evidence": "PDF Methods section B: AdamW optimizer with normalized weight decay of 10-5"
+      "evidence": "PDF p.8-15: Three main datasets used for training ALIGNN models"
+    },
+    "dataset_details": [
+      {
+        "name": "JARVIS-DFT",
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF p.8-10: JARVIS-DFT described as a dataset; ontology: Dataset class"
+        },
+        "number_of_samples": {
+          "value": 55722,
+          "evidence": "PDF p.8: '2021.8.18 version of JARVIS-DFT dataset, which consists of 55722 materials'"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF p.4: 'For crystals, we use a periodic 12-nearest-neighbor graph construction'"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF p.21: 'The JARVIS-DFT dataset is developed using Vienna Ab-initio simulation package (VASP) software. Most of the properties are calculated using the OptB88vdW functional'"
+        },
+        "input_features": {
+          "value": [
+            "electronegativity",
+            "group number",
+            "covalent radius",
+            "valence electrons",
+            "first ionization energy",
+            "electron affinity",
+            "block",
+            "atomic volume",
+            "interatomic bond distances"
+          ],
+          "evidence": "PDF p.4: 'Each node in the atomistic graph is assigned 9 input node features based on its atomic species: electronegativity, group number, covalent radius, valence electrons, first ionization energy, electron affinity, block and atomic volume' plus 'The initial edge features are interatomic bond distances'"
+        },
+        "target_features": {
+          "value": [
+            "formation energy",
+            "bandgap",
+            "total energy",
+            "ehull",
+            "bulk modulus",
+            "shear modulus",
+            "magnetic moment",
+            "SLME",
+            "spillage",
+            "dielectric constant",
+            "piezoelectric coefficients",
+            "exfoliation energy",
+            "electric field gradient",
+            "effective mass",
+            "Seebeck coefficient",
+            "power factor"
+          ],
+          "evidence": "PDF p.8-13 Tables 2-4: Multiple properties predicted including formation energies, bandgaps, dielectric constants, etc."
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "JARVIS-DFT is a primary dataset derived from DFT calculations"
+        }
       },
-      "loss_function": {
-        "value": "Mean Squared Error",
-        "evidence": "PDF Methods section B: For regression targets we minimize the mean squared error (MSE) loss"
+      {
+        "name": "Materials Project",
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF p.8-9: Materials Project described as a dataset; ontology: Dataset class"
+        },
+        "number_of_samples": {
+          "value": 69239,
+          "evidence": "PDF p.8: 'MP 2018.6.1 version which consists of 69239 materials'"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF p.4: Same graph construction used for crystals"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF p.8: 'properties such as Perdew Burke-Ernzerhof functional (PBE) bandgaps and formation energies'"
+        },
+        "input_features": {
+          "value": [
+            "electronegativity",
+            "group number",
+            "covalent radius",
+            "valence electrons",
+            "first ionization energy",
+            "electron affinity",
+            "block",
+            "atomic volume",
+            "interatomic bond distances"
+          ],
+          "evidence": "PDF p.4: Same 9 node features and edge distance features used for all crystal datasets"
+        },
+        "target_features": {
+          "value": [
+            "formation energy",
+            "band gap"
+          ],
+          "evidence": "PDF p.8-9 Table 2: 'formation energy (Ef) and band gap (Eg)'"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "Materials Project is a primary database"
+        }
       },
-      "description": {
-        "value": "ALIGNN models trained for 300 epochs using AdamW optimizer with one-cycle learning rate policy, batch size 64, on JARVIS-DFT, Materials Project, and QM9 datasets for various solid-state and molecular property prediction tasks.",
-        "evidence": "PDF Methods section B and Section F"
+      {
+        "name": "QM9",
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "PDF p.14-15: QM9 described as a molecular property dataset; ontology: Dataset class"
+        },
+        "number_of_samples": {
+          "value": 130829,
+          "evidence": "PDF p.14: 'QM9 molecular property dataset (130829 molecules)'"
+        },
+        "data_representation": {
+          "value": "molecule graph",
+          "evidence": "PDF p.4: 'This undirected graph then can be represented as G = (υ, є)' - same graph representation for molecules"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF p.14: 'QM9 provides DFT calculated molecular properties'"
+        },
+        "input_features": {
+          "value": [
+            "electronegativity",
+            "group number",
+            "covalent radius",
+            "valence electrons",
+            "first ionization energy",
+            "electron affinity",
+            "block",
+            "atomic volume",
+            "interatomic bond distances"
+          ],
+          "evidence": "PDF p.4: Same node and edge features used for molecules"
+        },
+        "target_features": {
+          "value": [
+            "HOMO",
+            "LUMO",
+            "Gap",
+            "ZPVE",
+            "dipole moment",
+            "isotropic polarizability",
+            "electronic spatial extent",
+            "internal energy at 0 K",
+            "internal energy at 298 K",
+            "enthalpy at 298 K",
+            "Gibbs free energy at 298 K"
+          ],
+          "evidence": "PDF p.14-15 Table 5: 11 molecular properties predicted"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "QM9 is a primary molecular dataset"
+        }
       }
-    }
+    ]
   },
   "_sources": {
     "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\alignn.pdf",

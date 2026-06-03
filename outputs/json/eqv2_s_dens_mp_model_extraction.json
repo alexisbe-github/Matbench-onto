@@ -1,0 +1,251 @@
+{
+  "model": {
+    "family": {
+      "value": "EquiformerV2",
+      "evidence": "YAML model_name: 'eqV2 M'; PDF context: 'EquiformerV2' is used as the base model family name throughout the paper (e.g., Section 4.3, Table 2)."
+    },
+    "variant": {
+      "value": "eqv2_m",
+      "evidence": "YAML model_name: 'eqV2 M' — lowercased and spaces replaced by underscores."
+    },
+    "parameter_number": {
+      "value": 86589068,
+      "evidence": "YAML model_params: 86589068."
+    }
+  },
+  "architectures": {
+    "EquiformerV2": {
+      "ontology_class": {
+        "value": "GraphTransformerArchitecture",
+        "evidence": "PDF context: EquiformerV2 is described as an 'equivariant transformer that uses graph attention' (YAML notes_description). It combines graph neural network and transformer (attention-based) characteristics. The closest matching ontology class is GraphTransformerArchitecture, which is a subclass of TransformerArchitecture in the architecture ontology."
+      },
+      "parameter_number": {
+        "value": 86589068,
+        "evidence": "YAML model_params: 86589068. PDF context (Table 2): eqV2-M refers to the medium variant of EquiformerV2, consistent with the YAML model_name 'eqV2 M'."
+      },
+      "datasets": {
+        "value": [
+          "OMat24",
+          "MPtrj",
+          "Alexandria"
+        ],
+        "evidence": "PDF context (Section 4.3): 'We train and evaluate EquiformerV2 models... trained solely on the OMat24 dataset... trained solely on the MPtrj dataset... further fine-tuned on either the MPtrj or sAlexandria datasets.' Table 2 shows eqV2-M pretrained on OMat and finetuned on MPtrj-sAlex (OAM)."
+      },
+      "hyperparameters": {
+        "value": [
+          "energy_loss_function",
+          "force_loss_function",
+          "stress_loss_function",
+          "learning_rate",
+          "batch_size",
+          "max_epochs",
+          "force_loss_weight",
+          "energy_loss_weight",
+          "stress_loss_weight"
+        ],
+        "evidence": "PDF context (Section 4.3, Supplementary Section G): Training uses per-atom MAE loss for energy, l2 norm loss for forces, MAE loss for isotropic and anisotropic stress components. Hyperparameters are summarized in Supplementary Table G.1 including learning rate, batch size, and loss weights."
+      },
+      "hyperparameter_details": {
+        "energy_loss_function": {
+          "ontology_class": {
+            "value": "LossFunction",
+            "evidence": "Training ontology: LossFunction is a subclass of ObjectiveFunction. The energy loss (per-atom MAE) is a loss function."
+          },
+          "value": {
+            "value": "per-atom MAE loss",
+            "evidence": "PDF context (Supplementary Section G): 'We use a per-atom MAE loss for energy.'"
+          }
+        },
+        "force_loss_function": {
+          "ontology_class": {
+            "value": "LossFunction",
+            "evidence": "Training ontology: LossFunction is a subclass of ObjectiveFunction. The force loss (l2 norm) is a loss function."
+          },
+          "value": {
+            "value": "l2 norm loss",
+            "evidence": "PDF context (Supplementary Section G): 'We use an l2 norm loss for forces.'"
+          }
+        },
+        "stress_loss_function": {
+          "ontology_class": {
+            "value": "LossFunction",
+            "evidence": "Training ontology: LossFunction is a subclass of ObjectiveFunction. The stress loss (MAE on isotropic and anisotropic components) is a loss function."
+          },
+          "value": {
+            "value": "MAE loss for isotropic and anisotropic components",
+            "evidence": "PDF context (Supplementary Section G): 'We use a prediction head that outputs a scalar and irreps of L = 2, then use an MAE loss for the isotropic and the anisotropic component separately.'"
+          }
+        },
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Training ontology: MachineLearningHyperparameter is the class for training hyperparameters."
+          },
+          "value": {
+            "value": null,
+            "evidence": "Supplementary Table G.1 contains hyperparameter values but specific learning rate values are not provided in the visible PDF context."
+          }
+        },
+        "batch_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Training ontology: MachineLearningHyperparameter is the class for training hyperparameters."
+          },
+          "value": {
+            "value": null,
+            "evidence": "Supplementary Table G.1 contains hyperparameter values but specific batch size values are not provided in the visible PDF context."
+          }
+        },
+        "max_epochs": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Training ontology: MachineLearningHyperparameter is the class for training hyperparameters."
+          },
+          "value": {
+            "value": null,
+            "evidence": "Supplementary Table G.1 contains hyperparameter values but specific epoch counts are not provided in the visible PDF context."
+          }
+        },
+        "force_loss_weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Training ontology: MachineLearningHyperparameter is the class for training hyperparameters."
+          },
+          "value": {
+            "value": null,
+            "evidence": "Supplementary Table G.1 contains loss weight values but specific values are not provided in the visible PDF context."
+          }
+        },
+        "energy_loss_weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Training ontology: MachineLearningHyperparameter is the class for training hyperparameters."
+          },
+          "value": {
+            "value": null,
+            "evidence": "Supplementary Table G.1 contains loss weight values but specific values are not provided in the visible PDF context."
+          }
+        },
+        "stress_loss_weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Training ontology: MachineLearningHyperparameter is the class for training hyperparameters."
+          },
+          "value": {
+            "value": null,
+            "evidence": "Supplementary Table G.1 contains loss weight values but specific values are not provided in the visible PDF context."
+          }
+        }
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "omat24_pretraining",
+        "mptrj_finetuning",
+        "oam_joint_finetuning"
+      ],
+      "evidence": "PDF context (Section 4.3): Three training strategies are described: (1) training solely on OMat24, (2) training solely on MPtrj, (3) pre-training on OMat24 and fine-tuning on MPtrj or sAlexandria (OAM). Table 2 references OAM (OMat24 + MPtrj/sAlex finetuning) and MPtrj-only finetuning runs."
+    },
+    "training_run_details": {
+      "omat24_pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "Training ontology: PretrainingRun is a subclass of MachineLearningTrainingRun. PDF context (Section 4.3): 'EquiformerV2/eSEN models trained solely on the OMat24 dataset' — this is a pretraining run on a large-scale dataset."
+        },
+        "architectures": {
+          "value": [
+            "EquiformerV2"
+          ],
+          "evidence": "PDF context (Section 4.3): 'We train and evaluate EquiformerV2 models... trained solely on the OMat24 dataset.'"
+        },
+        "datasets": {
+          "value": [
+            "OMat24"
+          ],
+          "evidence": "PDF context (Section 4.3): Strategy 1 is 'EquiformerV2/eSEN models trained solely on the OMat24 dataset.'"
+        },
+        "optimizer": {
+          "value": null,
+          "evidence": "PDF context (Supplementary Section G): Hyperparameters are summarized in Table G.1 but the specific optimizer name is not visible in the provided PDF context."
+        },
+        "loss_function": {
+          "value": "per-atom MAE loss for energy, l2 norm loss for forces, MAE loss for stress",
+          "evidence": "PDF context (Supplementary Section G): 'We use a per-atom MAE loss for energy and an l2 norm loss for forces... use an MAE loss for the isotropic and the anisotropic component separately.'"
+        },
+        "description": {
+          "value": "Pretraining of EquiformerV2 (medium variant, 86.6M parameters) on the OMat24 dataset comprising over 110M DFT calculations across diverse inorganic materials. The model is trained to predict energy, forces, and stress given an input structure, using per-atom MAE loss for energy, l2 norm loss for forces, and decomposed MAE loss for stress tensor components.",
+          "evidence": "PDF context (Abstract, Section 4.3, Supplementary Section G): OMat24 contains over 110M DFT calculations. EquiformerV2 is trained to predict energy, forces, and stress. Loss functions detailed in Supplementary Section G."
+        }
+      },
+      "mptrj_finetuning": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "Training ontology: MachineLearningFinetuningRun is a subclass of MachineLearningAdaptationRun. PDF context (Section 4.3): 'EquiformerV2/eSEN models trained solely on the MPtrj dataset' — this is a fine-tuning/adaptation run on MPtrj for Matbench Discovery compliance."
+        },
+        "architectures": {
+          "value": [
+            "EquiformerV2"
+          ],
+          "evidence": "PDF context (Section 4.3): 'EquiformerV2/eSEN models trained solely on the MPtrj dataset.'"
+        },
+        "datasets": {
+          "value": [
+            "MPtrj"
+          ],
+          "evidence": "PDF context (Section 4.3): Strategy 2 is 'EquiformerV2/eSEN models trained solely on the MPtrj dataset.'"
+        },
+        "optimizer": {
+          "value": null,
+          "evidence": "PDF context (Supplementary Section G): Optimizer not explicitly named in the visible PDF context."
+        },
+        "loss_function": {
+          "value": "per-atom MAE loss for energy, l2 norm loss for forces, MAE loss for stress",
+          "evidence": "PDF context (Supplementary Section G): Same loss functions as pretraining — per-atom MAE for energy, l2 norm for forces, MAE for stress components."
+        },
+        "description": {
+          "value": "Training of EquiformerV2 on the MPtrj dataset only, used as a baseline for compliant models on the Matbench Discovery benchmark. This run does not use OMat24 pretraining.",
+          "evidence": "PDF context (Section 4.3): 'EquiformerV2/eSEN models trained solely on the MPtrj dataset, with and without denoising augmentation objectives, useful for direct comparison on the Matbench Discovery leaderboard (denoted compliant models).'"
+        }
+      },
+      "oam_joint_finetuning": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "Training ontology: MachineLearningFinetuningRun is a subclass of MachineLearningAdaptationRun. PDF context (Section 4.3): 'EquiformerV2/eSEN models from (1) or OC20 checkpoints further fine-tuned on either the MPtrj or sAlexandria datasets' — this is a fine-tuning run after pretraining."
+        },
+        "architectures": {
+          "value": [
+            "EquiformerV2"
+          ],
+          "evidence": "PDF context (Section 4.3, Table 2): eqV2-M pretrained on OMat and finetuned on MPtrj-sAlex (OAM)."
+        },
+        "datasets": {
+          "value": [
+            "OMat24",
+            "MPtrj",
+            "sAlexandria"
+          ],
+          "evidence": "PDF context (Section 4.3): 'EquiformerV2/eSEN models from (1) or OC20 checkpoints further fine-tuned on either the MPtrj or sAlexandria datasets.' Table 2 labels OAM as OMat + MPtrj/sAlex finetuning."
+        },
+        "optimizer": {
+          "value": null,
+          "evidence": "PDF context (Supplementary Section G): Optimizer not explicitly named in the visible PDF context."
+        },
+        "loss_function": {
+          "value": "per-atom MAE loss for energy, l2 norm loss for forces, MAE loss for stress",
+          "evidence": "PDF context (Supplementary Section G): Same loss functions used across all training strategies."
+        },
+        "description": {
+          "value": "Pretraining of EquiformerV2 on OMat24 followed by fine-tuning on a combination of MPtrj and subsampled Alexandria (sAlexandria) datasets. This OAM (OMat24 + MPtrj/sAlex) strategy produces the highest performing models on the Matbench Discovery leaderboard, with eqV2-M achieving F1 score of 0.917 and energy-above-hull MAE of 20 meV/atom.",
+          "evidence": "PDF context (Section 4.3): 'EquiformerV2/eSEN models from (1) or OC20 checkpoints further fine-tuned on either the MPtrj or sAlexandria datasets, leading to the highest performing models for the Matbench Discovery leaderboard (denoted non-compliant).' Table 2: eqV2-M with OAM achieves F1=0.917, MAE=20 meV/atom."
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\eqv2_s_dens_mp.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2410.12771.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\eqv2_s_dens_mp.yml"
+  }
+}

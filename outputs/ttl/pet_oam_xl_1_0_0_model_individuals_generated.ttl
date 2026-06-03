@@ -1,0 +1,98 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:pet_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "PET"^^xsd:string ;
+    arch:hasVariant archind:pet_mad_xl_variant .
+
+trind:pet_mad_lora_finetuning a owl:NamedIndividual,
+        train:MachineLearningFinetuningRun ;
+    rdfs:label "pet_mad_lora_finetuning"^^xsd:string ;
+    rdfs:comment "Fine-tuning of pre-trained PET-MAD using Low-Rank Adaptation (LoRA) with rank 8 and scaling parameter 0.5 on system-specific datasets for six case studies: lithium thiophosphate, gallium arsenide, high-entropy alloy CoCrFeMnNi, liquid water, succinic acid, and barium titanate"^^xsd:string ;
+    train:trainsModelVariant archind:pet_mad_xl_pet_model_variant ;
+    train:usesDataset dataind:batio3,
+        dataind:gaas,
+        dataind:hea25s,
+        dataind:lps,
+        dataind:succinic_acid,
+        dataind:water .
+
+trind:pet_mad_pretraining a owl:NamedIndividual,
+        train:PretrainingRun ;
+    rdfs:label "pet_mad_pretraining"^^xsd:string ;
+    rdfs:comment "Pretraining of PET-MAD on the MAD dataset (95,595 structures) using the PET graph neural network architecture with 2.8M parameters, trained for 1500 epochs with Adam optimizer and RMSE loss"^^xsd:string ;
+    train:trainsModelVariant archind:pet_mad_xl_pet_model_variant ;
+    train:usesDataset dataind:mad ;
+    train:usesLoss trind:root_mean_square_error ;
+    train:usesOptimizer trind:adam .
+
+archind:pet_mad_xl_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "pet_mad_xl"^^xsd:string ;
+    dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\pet_oam_xl_1_0_0.yml" ;
+    arch:hasParameterNumber 730000000 .
+
+dataind:batio3 a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "BaTiO3"^^xsd:string .
+
+dataind:gaas a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "GaAs"^^xsd:string .
+
+dataind:hea25s a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "HEA25S"^^xsd:string .
+
+dataind:lps a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "LPS"^^xsd:string .
+
+dataind:mad a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MAD"^^xsd:string .
+
+dataind:succinic_acid a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Succinic acid"^^xsd:string .
+
+dataind:water a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Water"^^xsd:string .
+
+trind:adam a owl:NamedIndividual,
+        train:Optimizer ;
+    rdfs:label "Adam"^^xsd:string .
+
+trind:root_mean_square_error a owl:NamedIndividual,
+        train:LossFunction ;
+    rdfs:label "root-mean-square error"^^xsd:string .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#pet_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#pet_mad_xl_variant> >> prov:wasDerivedFrom "YAML: model_name is 'PET-OAM-XL'; lowercased and spaces/hyphens replaced with underscores" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#pet_mad_xl_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "730000000"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML: model_params is 730000000" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#pet_mad_xl_pet_model_variant> >> prov:wasDerivedFrom "['PET']" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mad> >> prov:wasDerivedFrom "['MAD']" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesOptimizer> <https://k.loria.fr/ontologies/trainingonto-individuals#adam> >> prov:wasDerivedFrom "PDF: 'We used the Adam optimizer'" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesLoss> <https://k.loria.fr/ontologies/trainingonto-individuals#root_mean_square_error> >> prov:wasDerivedFrom "PDF: 'The loss function was based on a root-mean-square error difference between the model's energy and force predictions and the corresponding target values'" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "Pretraining of PET-MAD on the MAD dataset (95,595 structures) using the PET graph neural network architecture with 2.8M parameters, trained for 1500 epochs with Adam optimizer and RMSE loss"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF: Training section describes the full training procedure on MAD dataset" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_lora_finetuning> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#pet_mad_xl_pet_model_variant> >> prov:wasDerivedFrom "['PET']" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_lora_finetuning> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#lps> >> prov:wasDerivedFrom "['LPS', 'GaAs', 'HEA25S', 'Water', 'Succinic acid', 'BaTiO3']" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_lora_finetuning> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#gaas> >> prov:wasDerivedFrom "['LPS', 'GaAs', 'HEA25S', 'Water', 'Succinic acid', 'BaTiO3']" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_lora_finetuning> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#hea25s> >> prov:wasDerivedFrom "['LPS', 'GaAs', 'HEA25S', 'Water', 'Succinic acid', 'BaTiO3']" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_lora_finetuning> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#water> >> prov:wasDerivedFrom "['LPS', 'GaAs', 'HEA25S', 'Water', 'Succinic acid', 'BaTiO3']" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_lora_finetuning> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#succinic_acid> >> prov:wasDerivedFrom "['LPS', 'GaAs', 'HEA25S', 'Water', 'Succinic acid', 'BaTiO3']" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_lora_finetuning> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#batio3> >> prov:wasDerivedFrom "['LPS', 'GaAs', 'HEA25S', 'Water', 'Succinic acid', 'BaTiO3']" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#pet_mad_lora_finetuning> <http://www.w3.org/2000/01/rdf-schema#comment> "Fine-tuning of pre-trained PET-MAD using Low-Rank Adaptation (LoRA) with rank 8 and scaling parameter 0.5 on system-specific datasets for six case studies: lithium thiophosphate, gallium arsenide, high-entropy alloy CoCrFeMnNi, liquid water, succinic acid, and barium titanate"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "PDF: Fine-tuning section describes LoRA-based fine-tuning procedure" ; dcterms:source <https://www.nature.com/articles/s41467-025-65662-7.pdf> .

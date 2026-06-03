@@ -1,0 +1,318 @@
+{
+  "model": {
+    "family": {
+      "value": "ORB",
+      "evidence": "YAML model_name: 'ORB v2 MPtrj'; PDF context consistently refers to 'ORB' and 'Orb' as the model family."
+    },
+    "variant": {
+      "value": "orb_v2_mptrj",
+      "evidence": "YAML model_name: 'ORB v2 MPtrj'; lowercased and spaces/hyphens replaced by underscores."
+    },
+    "parameter_number": {
+      "value": 25161727,
+      "evidence": "YAML model_params: 25161727"
+    }
+  },
+  "architectures": {
+    "ORB": {
+      "ontology_class": {
+        "value": "GraphNeuralNetworkArchitecture",
+        "evidence": "PDF context describes ORB as a graph neural network based neural network potential using message passing on atomic graphs; ontology_mapping: GraphNeuralNetworkArchitecture is the closest matching class."
+      },
+      "parameter_number": {
+        "value": 25161727,
+        "evidence": "YAML model_params: 25161727; PDF context (Appendix C) states the 5-layer model has approximately 25M parameters."
+      },
+      "datasets": {
+        "value": [
+          "MPTraj",
+          "Alexandria"
+        ],
+        "evidence": "YAML notes_description: 'pretrained and fine-tuned on MPtrj only'; PDF context (Section 'Datasets and distillation'): 'mpa is shorthand for the combination of MPTraj and Alexandria (PBE)'."
+      },
+      "hyperparameters": {
+        "huber_loss": {
+          "ontology_class": {
+            "value": "LossFunction",
+            "evidence": "ontology_mapping: huber loss is a loss function; ontology class LossFunction."
+          },
+          "value": {
+            "value": "delta=0.01",
+            "evidence": "PDF context (Appendix C): 'we switch from using mean absolute error losses for energies, forces and stress, to using Huber losses (delta = 0.01).'"
+          }
+        },
+        "radial_basis_functions": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: radial basis function count is a hyperparameter; ontology class MachineLearningHyperparameter."
+          },
+          "value": {
+            "value": "20 Gaussian RBFs",
+            "evidence": "PDF context (Appendix C): 'edge embeddings in Orb-v2 were a concatenation of each edge vector and 20 Gaussian radial basis functions applied to the edge length.'"
+          }
+        },
+        "envelope_cutoff": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: envelope cutoff is a hyperparameter; ontology class MachineLearningHyperparameter."
+          },
+          "value": {
+            "value": "smooth envelope cutoffs",
+            "evidence": "PDF context (Appendix B): 'Orb-v2 is already relatively smooth due to its use of a small number of radial basis functions and smooth envelope cutoffs in its attention layers.'"
+          }
+        },
+        "max_neighbors": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: max neighbors is a hyperparameter; ontology class MachineLearningHyperparameter."
+          },
+          "value": {
+            "value": 20,
+            "evidence": "PDF context (Section 'Neighbor limits'): 'Orb-v2 defined atomic neighborhoods by a max radius of 10 Å and a limit of 20 neighbors.'"
+          }
+        },
+        "radius_cutoff": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology_mapping: radius cutoff is a hyperparameter; ontology class MachineLearningHyperparameter."
+          },
+          "value": {
+            "value": "10 Å",
+            "evidence": "PDF context (Section 'Neighbor limits'): 'Orb-v2 defined atomic neighborhoods by a max radius of 10 Å and a limit of 20 neighbors.'"
+          }
+        }
+      },
+      "components": {
+        "value": [
+          "GNS backbone",
+          "attention layers",
+          "confidence head"
+        ],
+        "evidence": "PDF context (Appendix C): 'increase the width of every MLP in the GNS backbone'; PDF context (Appendix B): 'smooth envelope cutoffs in its attention layers'; PDF context (Section 'Uncertainty Estimates'): 'All Orb-v3 models include a confidence head'."
+      },
+      "backbone_architecture": {
+        "value": "GNS",
+        "evidence": "PDF context (Appendix C): 'increase the width of every MLP in the GNS backbone from 512 to 1024'."
+      },
+      "head_architecture": {
+        "value": "confidence head",
+        "evidence": "PDF context (Section 'Uncertainty Estimates'): 'All Orb-v3 models include a confidence head which predicts this binned atomic force error'."
+      },
+      "layer_count": {
+        "value": null,
+        "evidence": "PDF context (Appendix C) references a '5-layer model' for Orb-v3 but does not explicitly state the layer count for the Orb-v2 MPtrj variant."
+      },
+      "hidden_dimension": {
+        "value": 512,
+        "evidence": "PDF context (Appendix C): 'increase the width of every MLP in the GNS backbone from 512 to 1024' — this refers to Orb-v2 width being 512."
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "ontology_mapping: pretraining on MPtrj corresponds to PretrainingRun."
+        },
+        "architectures": {
+          "value": [
+            "ORB"
+          ],
+          "evidence": "YAML notes_description: 'ORB is a pretrained model for atomic simulations'."
+        },
+        "datasets": {
+          "value": [
+            "MPTraj"
+          ],
+          "evidence": "YAML notes_description: 'pretrained and fine-tuned on MPtrj only'."
+        },
+        "optimizer": {
+          "value": null,
+          "evidence": "No optimizer specified in YAML or PDF context for this specific variant."
+        },
+        "loss_function": {
+          "value": "Huber loss (delta=0.01)",
+          "evidence": "PDF context (Appendix C): 'we switch from using mean absolute error losses for energies, forces and stress, to using Huber losses (delta = 0.01).'"
+        },
+        "description": {
+          "value": "Pretraining of ORB v2 on the MPtrj dataset using Huber loss with smooth envelope cutoffs and 20 Gaussian radial basis functions.",
+          "evidence": "YAML notes_description and PDF context (Appendix C)."
+        },
+        "objective_function": {
+          "value": "Huber loss (delta=0.01)",
+          "evidence": "PDF context (Appendix C): 'we switch from using mean absolute error losses for energies, forces and stress, to using Huber losses (delta = 0.01).'"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No sampling method specified in YAML or PDF context."
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "No active learning or batched selection mentioned."
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "No checkpoint or pretrained initialization source specified for this variant."
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "No distillation mentioned for this variant."
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "No distillation mentioned for this variant."
+        },
+        "model_materializations": {
+          "value": [
+            "ORB v2 MPtrj"
+          ],
+          "evidence": "YAML model_name: 'ORB v2 MPtrj'."
+        }
+      },
+      "finetuning": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "ontology_mapping: fine-tuning on MPtrj corresponds to MachineLearningFinetuningRun."
+        },
+        "architectures": {
+          "value": [
+            "ORB"
+          ],
+          "evidence": "YAML notes_description: 'This model is pretrained and fine-tuned on MPtrj only'."
+        },
+        "datasets": {
+          "value": [
+            "MPTraj"
+          ],
+          "evidence": "YAML notes_description: 'pretrained and fine-tuned on MPtrj only'."
+        },
+        "optimizer": {
+          "value": null,
+          "evidence": "No optimizer specified in YAML or PDF context for this specific variant."
+        },
+        "loss_function": {
+          "value": "Huber loss (delta=0.01)",
+          "evidence": "PDF context (Appendix C): 'we switch from using mean absolute error losses for energies, forces and stress, to using Huber losses (delta = 0.01).'"
+        },
+        "description": {
+          "value": "Fine-tuning of ORB v2 on the MPtrj dataset, potentially from a pretrained base.",
+          "evidence": "YAML notes_description: 'This model is pretrained and fine-tuned on MPtrj only'."
+        },
+        "objective_function": {
+          "value": "Huber loss (delta=0.01)",
+          "evidence": "PDF context (Appendix C): 'we switch from using mean absolute error losses for energies, forces and stress, to using Huber losses (delta = 0.01).'"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No sampling method specified in YAML or PDF context."
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "No active learning or batched selection mentioned."
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "No explicit checkpoint or pretrained source specified for this variant's fine-tuning."
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "No distillation mentioned for this variant."
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "No distillation mentioned for this variant."
+        },
+        "model_materializations": {
+          "value": [
+            "ORB v2 MPtrj"
+          ],
+          "evidence": "YAML model_name: 'ORB v2 MPtrj'."
+        }
+      }
+    },
+    "datasets": {
+      "MPTraj": {
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "ontology_mapping: MPTraj is a dataset; ontology class Dataset."
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "YAML and PDF context do not specify the number of samples in MPTraj for this variant."
+        },
+        "data_representation": {
+          "value": "atomic structure",
+          "evidence": "PDF context describes MLIPs operating on atomic positions and crystal structures."
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF context (Section 'Datasets and distillation'): MPTraj is derived from DFT calculations."
+        },
+        "input_features": {
+          "value": [
+            "atomic positions",
+            "edge vectors",
+            "radial basis functions"
+          ],
+          "evidence": "PDF context (Appendix C): 'edge embeddings in Orb-v2 were a concatenation of each edge vector and 20 Gaussian radial basis functions applied to the edge length'."
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces",
+            "stress"
+          ],
+          "evidence": "PDF context (Appendix C): 'we switch from using mean absolute error losses for energies, forces and stress, to using Huber losses'."
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "No explicit derivation source mentioned for MPTraj in the provided context."
+        }
+      },
+      "Alexandria": {
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "ontology_mapping: Alexandria is a dataset; ontology class Dataset."
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "YAML and PDF context do not specify the number of samples in Alexandria."
+        },
+        "data_representation": {
+          "value": "atomic structure",
+          "evidence": "PDF context describes MLIPs operating on atomic positions and crystal structures."
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF context (Section 'Datasets and distillation'): 'Alexandria (PBE)'."
+        },
+        "input_features": {
+          "value": [
+            "atomic positions",
+            "edge vectors",
+            "radial basis functions"
+          ],
+          "evidence": "PDF context (Appendix C): edge embeddings use radial basis functions and edge vectors."
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "forces",
+            "stress"
+          ],
+          "evidence": "PDF context (Appendix C): losses computed for energies, forces and stress."
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "No explicit derivation source mentioned for Alexandria in the provided context."
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\orb_v3.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2504.06231.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\orb_v3.yml"
+  }
+}

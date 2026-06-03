@@ -1,0 +1,303 @@
+{
+  "model": {
+    "family": {
+      "value": "M3GNet",
+      "evidence": "YAML model_name: M3GNet"
+    },
+    "variant": {
+      "value": "m3gnet",
+      "evidence": "YAML model_key: m3gnet"
+    },
+    "parameter_number": {
+      "value": 227549,
+      "evidence": "YAML model_params: 227549; PDF Methods: 'the M3GNet model contains three main blocks with 227,549 learnable weights'"
+    }
+  },
+  "architectures": {
+    "M3GNet": {
+      "ontology_class": {
+        "value": "GraphNeuralNetworkArchitecture",
+        "evidence": "PDF: M3GNet is a graph neural network (GNN) based interatomic potential; ontology: GraphNeuralNetworkArchitecture is the closest matching class"
+      },
+      "parameter_number": {
+        "value": 227549,
+        "evidence": "PDF Methods: 'the M3GNet model contains three main blocks with 227,549 learnable weights'"
+      },
+      "datasets": {
+        "value": [
+          "MPF.2021.2.8"
+        ],
+        "evidence": "PDF: 'MPF.2021.2.8 dataset contains 187,687 ionic steps of 62,783 compounds'"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "cutoff_radius",
+          "three_body_cutoff",
+          "batch_size",
+          "force_loss_weight",
+          "stress_loss_weight",
+          "basis_functions",
+          "embedding_dimension",
+          "main_block_count",
+          "mlp_hidden_neurons",
+          "max_epochs",
+          "patience"
+        ],
+        "evidence": "PDF Methods and training sections"
+      },
+      "hyperparameter_details": {
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": {
+            "initial": 0.001,
+            "decay": "cosine decay to 1% of original in 100 epochs"
+          },
+          "evidence": "PDF Methods: 'Adam optimizer with initial learning rate of 0.001, with a cosine decay to 1% of the original value in 100 epochs'"
+        },
+        "cutoff_radius": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": "5.0 Å",
+          "evidence": "PDF Methods: 'Materials graphs were constructed using a radial cutoff of 5 Å'"
+        },
+        "three_body_cutoff": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": "4.0 Å",
+          "evidence": "PDF Methods: 'the three-body interactions were limited to within a cutoff of 4 Å'"
+        },
+        "batch_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": 32,
+          "evidence": "PDF Methods: 'Batch size of 32 was used in model training'"
+        },
+        "force_loss_weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": 1,
+          "evidence": "PDF Methods: 'We set wf = 1 and wσ = 0.1 during training'"
+        },
+        "stress_loss_weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": 0.1,
+          "evidence": "PDF Methods: 'We set wf = 1 and wσ = 0.1 during training'"
+        },
+        "basis_functions": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": 3,
+          "evidence": "PDF Methods: 'In this work, we used three basis functions for the pair distance expansion'"
+        },
+        "embedding_dimension": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": 64,
+          "evidence": "PDF Methods: 'The graph featurizer converts the atomic number into embeddings of dimension 64'"
+        },
+        "main_block_count": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": 3,
+          "evidence": "PDF Methods: 'The main blocks consist of three three-body information exchange and graph convolutions (N = 3 in Figure 1)'"
+        },
+        "mlp_hidden_neurons": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": 64,
+          "evidence": "PDF Methods: 'Each gated MLP have two layers with 64 neurons in each layer'"
+        },
+        "max_epochs": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": 100,
+          "evidence": "PDF Methods: 'cosine decay to 1% of the original value in 100 epochs'"
+        },
+        "patience": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "ontology: MachineLearningHyperparameter"
+          },
+          "value": 200,
+          "evidence": "PDF Methods: 'training was stopped if the validation metric did not improve for 200 epochs'"
+        }
+      },
+      "components": {
+        "value": [
+          "GraphFeaturizer",
+          "ManyBodyComputation",
+          "BondUpdate",
+          "AtomUpdate",
+          "StateUpdate",
+          "GatedMLP",
+          "ReadoutModule"
+        ],
+        "evidence": "PDF Figure 1 and Methods: graph featurizer, many-body computation, bond/atom/state updates, gated MLP, readout module"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "No explicit backbone architecture mentioned"
+      },
+      "head_architecture": {
+        "value": "GatedMLP",
+        "evidence": "PDF Methods: 'a three-layer gated MLP was used on the atom attributes after the graph convolution and sum the outputs as the final prediction'"
+      },
+      "layer_count": {
+        "value": 3,
+        "evidence": "PDF Methods: 'three three-body information exchange and graph convolutions (N = 3)'"
+      },
+      "hidden_dimension": {
+        "value": 64,
+        "evidence": "PDF Methods: 'output dimensions of 64' and '64 neurons in each layer'"
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "m3gnet_pretraining"
+      ],
+      "evidence": "PDF describes a single pretraining run on MPF.2021.2.8 dataset"
+    },
+    "training_run_details": {
+      "m3gnet_pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF describes training M3GNet from scratch on MP relaxation data; ontology: PretrainingRun"
+        },
+        "architectures": {
+          "value": [
+            "M3GNet"
+          ],
+          "evidence": "PDF: M3GNet architecture trained on MPF.2021.2.8"
+        },
+        "datasets": {
+          "value": [
+            "MPF.2021.2.8"
+          ],
+          "evidence": "PDF: 'MPF.2021.2.8 dataset contains 187,687 ionic steps of 62,783 compounds'"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF Methods: 'The Adam optimizer was used with initial learning rate of 0.001'"
+        },
+        "loss_function": {
+          "value": "Huber",
+          "evidence": "PDF Methods: 'For the universal IAP training, the total loss function includes the loss for energy, forces, and stresses' and 'ℓ is the Huber loss function'"
+        },
+        "description": {
+          "value": "Pretraining of M3GNet universal interatomic potential on Materials Project DFT relaxation data (MPF.2021.2.8) covering 89 elements, using energy, force, and stress targets with Huber loss",
+          "evidence": "PDF Abstract and Methods sections"
+        },
+        "objective_function": {
+          "value": "Huber",
+          "evidence": "PDF Methods: Huber loss function used for training"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No explicit sampling method described beyond standard dataset splitting"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "Trained from scratch, not initialized from a previous checkpoint"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "M3GNet-EFS"
+          ],
+          "evidence": "PDF: 'The final M3GNet-EFS IAP (henceforth, referred to simply as the M3GNet model for brevity)'"
+        }
+      }
+    },
+    "datasets": {
+      "value": [
+        "MPF.2021.2.8"
+      ],
+      "evidence": "PDF: MPF.2021.2.8 is the primary training dataset"
+    },
+    "dataset_details": {
+      "MPF.2021.2.8": {
+        "ontology_class": {
+          "value": "LabeledDataset",
+          "evidence": "PDF: dataset with DFT energies, forces, and stresses as labels; ontology: LabeledDataset"
+        },
+        "number_of_samples": {
+          "value": 187687,
+          "evidence": "PDF: 'MPF.2021.2.8 dataset contains 187,687 ionic steps of 62,783 compounds'"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF: 'Mathematical graphs are a natural representation for crystals and molecules, with nodes and edges representing the atoms and the bonds'"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF: 'dataset of structural relaxations performed by the Materials Project' using PBE/PBE+U DFT"
+        },
+        "input_features": {
+          "value": [
+            "atomic_number",
+            "interatomic_distance",
+            "bond_angle",
+            "lattice_matrix",
+            "atomic_coordinates"
+          ],
+          "evidence": "PDF: graph featurizer uses atomic number embeddings, pair distance expansion, three-body angles, lattice matrix M, and coordinates xi"
+        },
+        "target_features": {
+          "value": [
+            "energy_per_atom",
+            "force",
+            "stress"
+          ],
+          "evidence": "PDF: 'crystal structures with corresponding energies (E), forces (f) and stresses (σ) as targets were used as training data'"
+        },
+        "derived_from_dataset": {
+          "value": "Materials Project",
+          "evidence": "PDF: 'we leveraged on one of the largest open databases of DFT crystal structure relaxations in the world - the Materials Project'"
+        }
+      }
+    }
+  },
+  "_sources": {
+    "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\m3gnet.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2202.02450.pdf",
+    "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\m3gnet.yml"
+  }
+}

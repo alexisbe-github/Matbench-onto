@@ -1,0 +1,105 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:sevennet_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "SevenNet"^^xsd:string ;
+    arch:hasVariant archind:equflash_29m_oam_variant .
+
+trind:equflash_29m_oam_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "equflash-29M-oam"^^xsd:string ;
+    train:generatedBy trind:equflash_pretraining .
+
+trind:sevennet_l2i5_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "SevenNet-l2i5"^^xsd:string ;
+    train:generatedBy trind:sevennet_pretraining .
+
+archind:equflash_29m_oam_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "equflash_29m_oam"^^xsd:string ;
+    dcterms:source <https://openreview.net/pdf?id=wiQe95BPaB> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\equflash_29m_oam.yml" ;
+    arch:hasMachineLearningArchitecture archind:equflash_architecture ;
+    arch:hasParameterNumber 28741188 .
+
+archind:equflash_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "EquFlash"^^xsd:string .
+
+dataind:atom_positions_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atom positions"^^xsd:string .
+
+dataind:atomic_numbers_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic numbers"^^xsd:string .
+
+dataind:atomic_structure_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "atomic structure"^^xsd:string .
+
+dataind:dft_labelling_method a owl:NamedIndividual,
+        data:LabellingMethod ;
+    rdfs:label "DFT"^^xsd:string .
+
+dataind:energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "energy"^^xsd:string .
+
+dataind:forces_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "forces"^^xsd:string .
+
+trind:equflash_pretraining a owl:NamedIndividual,
+        train:MachineLearningTrainingRun,
+        train:PretrainingRun ;
+    rdfs:label "equflash_pretraining"^^xsd:string ;
+    rdfs:comment "Pretraining of EquFlash model (scaled SevenNet-0 with FlashTP) on MPF dataset using Adam optimizer with Huber loss"^^xsd:string ;
+    train:trainsModelVariant archind:equflash_29m_oam_variant ;
+    train:usesDataset dataind:mpf ;
+    train:usesLoss trind:huber_loss ;
+    train:usesObjectiveFunction trind:huber_loss ;
+    train:usesOptimizer trind:adam .
+
+trind:sevennet_pretraining a owl:NamedIndividual,
+        train:MachineLearningTrainingRun,
+        train:PretrainingRun ;
+    rdfs:label "sevennet_pretraining"^^xsd:string ;
+    rdfs:comment "Pretraining of SevenNet-0 (l2i5) model on MPF dataset using Adam optimizer with Huber loss for energy and force predictions"^^xsd:string ;
+    train:trainsModelVariant archind:equflash_29m_oam_variant ;
+    train:usesDataset dataind:mpf ;
+    train:usesLoss trind:huber_loss ;
+    train:usesObjectiveFunction trind:huber_loss ;
+    train:usesOptimizer trind:adam .
+
+dataind:mpf a owl:NamedIndividual,
+        data:Dataset,
+        data:LabeledDataset ;
+    rdfs:label "MPF"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 168921 ;
+    data:usesAttributeAsInputFeature dataind:atom_positions_attribute,
+        dataind:atomic_numbers_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute .
+
+trind:adam a owl:NamedIndividual,
+        train:Optimizer ;
+    rdfs:label "Adam"^^xsd:string .
+
+trind:huber_loss a owl:NamedIndividual,
+        train:LossFunction,
+        train:ObjectiveFunction ;
+    rdfs:label "Huber Loss"^^xsd:string .

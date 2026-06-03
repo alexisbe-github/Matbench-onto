@@ -2,11 +2,11 @@
   "model": {
     "family": {
       "value": "Allegro",
-      "evidence": "YAML model_name: Allegro-MP-L; PDF Section III refers to 'Allegro models'"
+      "evidence": "YAML model_name: Allegro-MP-L"
     },
     "variant": {
       "value": "allegro_mp_l",
-      "evidence": "YAML model_name: Allegro-MP-L, lowercased and spaces/hyphens replaced by underscores"
+      "evidence": "YAML model_name lowercased and normalized: Allegro-MP-L -> allegro_mp_l"
     },
     "parameter_number": {
       "value": 18700000,
@@ -14,108 +14,193 @@
     }
   },
   "architectures": {
-    "items": [
-      {
-        "name": "Allegro",
+    "architectures": [
+      "Allegro"
+    ],
+    "Allegro": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF Section III and architectureonto: Allegro is a deep equivariant neural network using tensor product message passing"
+      },
+      "parameter_number": {
+        "value": 18700000,
+        "evidence": "YAML model_params: 18700000"
+      },
+      "datasets": [
+        "SPICE 2"
+      ],
+      "hyperparameters": [
+        "lmax",
+        "tensor_features",
+        "allegro_layers",
+        "radial_cutoff"
+      ],
+      "lmax": {
         "ontology_class": {
-          "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
-          "evidence": "PDF Section I: 'Allegro model architectures, which are deep equivariant neural networks'; PDF Section II.D: 'Allegro's tensor product operation'; architecture.ttl: EquivariantMessagePassingNeuralNetworkArchitecture is a subclass of EquivariantGraphNeuralNetworkArchitecture"
+          "value": "MachineLearningHyperparameter",
+          "evidence": "trainingonto: lmax is a model configuration hyperparameter"
         },
-        "parameter_number": {
-          "value": 18700000,
-          "evidence": "YAML model_params: 18700000; PDF Table 1 lists large model with ℓmax=3, 128 tensor features, 3 layers"
+        "value": 3,
+        "evidence": "PDF Table 1: large model lmax = 3"
+      },
+      "tensor_features": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "trainingonto: number of tensor features is a model configuration hyperparameter"
         },
-        "datasets": {
-          "value": [
-            "SPICE 2"
-          ],
-          "evidence": "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'"
+        "value": 128,
+        "evidence": "PDF Table 1: large model tensor features = 128"
+      },
+      "allegro_layers": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "trainingonto: number of layers is a model configuration hyperparameter"
         },
-        "hyperparameters": {
-          "items": [
-            {
-              "name": "maximum rotation order (ℓmax)",
-              "ontology_class": {
-                "value": "MachineLearningHyperparameter",
-                "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
-              },
-              "value": {
-                "value": "3",
-                "evidence": "PDF Table 1: large model ℓmax=3"
-              }
-            },
-            {
-              "name": "number of tensor features",
-              "ontology_class": {
-                "value": "MachineLearningHyperparameter",
-                "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
-              },
-              "value": {
-                "value": "128",
-                "evidence": "PDF Table 1: large model Tensor Features=128"
-              }
-            },
-            {
-              "name": "number of Allegro layers",
-              "ontology_class": {
-                "value": "MachineLearningHyperparameter",
-                "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
-              },
-              "value": {
-                "value": "3",
-                "evidence": "PDF Table 1: large model Allegro Layers=3"
-              }
-            },
-            {
-              "name": "radial cutoff (rmax)",
-              "ontology_class": {
-                "value": "MachineLearningHyperparameter",
-                "evidence": "trainingonto.ttl: MachineLearningHyperparameter class exists"
-              },
-              "value": {
-                "value": "6.0 Å",
-                "evidence": "PDF Section III: 'All models employ a radial cutoff rmax of 6.0 Å'"
-              }
-            }
-          ]
-        }
+        "value": 3,
+        "evidence": "PDF Table 1: large model Allegro layers = 3"
+      },
+      "radial_cutoff": {
+        "ontology_class": {
+          "value": "MachineLearningHyperparameter",
+          "evidence": "trainingonto: radial cutoff is a model configuration hyperparameter"
+        },
+        "value": "6.0 Å",
+        "evidence": "PDF Section III: All models employ a radial cutoff rmax of 6.0 Å"
+      },
+      "components": [],
+      "backbone_architecture": null,
+      "head_architecture": null,
+      "layer_count": {
+        "value": 3,
+        "evidence": "PDF Table 1: large model has 3 Allegro layers"
+      },
+      "hidden_dimension": {
+        "value": 128,
+        "evidence": "PDF Table 1: large model has 128 tensor features"
       }
-    ]
+    }
   },
   "training": {
-    "items": [
-      {
-        "id": "allegro_spice2_training",
-        "type": {
-          "value": "PretrainingRun",
-          "evidence": "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'; trainingonto.ttl: PretrainingRun is a subclass of MachineLearningTrainingRun"
-        },
-        "architectures": {
-          "value": [
-            "Allegro"
-          ],
-          "evidence": "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'"
-        },
-        "datasets": {
-          "value": [
-            "SPICE 2"
-          ],
-          "evidence": "PDF Section III: 'we trained Allegro models on the SPICE 2 dataset'"
-        },
-        "optimizer": {
-          "value": null,
-          "evidence": "PDF does not specify optimizer used for training"
-        },
-        "loss_function": {
-          "value": null,
-          "evidence": "PDF does not specify loss function used for training"
-        },
-        "description": {
-          "value": "Training of Allegro models (small, medium, large) on the SPICE 2 dataset subset limited to systems with neutral total charge, using the NequIP framework with TorchInductor compilation and distributed multi-GPU training",
-          "evidence": "PDF Section III: describes training Allegro models on SPICE 2 neutral total charge subset; Section II.B: describes distributed training with TorchInductor"
-        }
+    "training_runs": [
+      "allegro_spice2_pretraining"
+    ],
+    "allegro_spice2_pretraining": {
+      "type": {
+        "value": "PretrainingRun",
+        "evidence": "trainingonto: training from scratch on SPICE 2 dataset"
+      },
+      "architectures": [
+        "Allegro"
+      ],
+      "datasets": [
+        "SPICE 2"
+      ],
+      "optimizer": null,
+      "loss_function": null,
+      "description": {
+        "value": "Training of Allegro large model on neutral total charge subset of SPICE 2 dataset using distributed multi-GPU training with TorchInductor compilation",
+        "evidence": "PDF Section III: trained Allegro models on SPICE 2 dataset with neutral total charge subset"
+      },
+      "objective_function": null,
+      "sampling_method": null,
+      "uses_batched_selection": null,
+      "initialized_from_model_materialization": null,
+      "teacher_model": null,
+      "student_model": null,
+      "model_materializations": [
+        "Allegro-MP-L-0.1"
+      ]
+    }
+  },
+  "datasets": {
+    "datasets": [
+      "SPICE 2",
+      "SPICE 2 test set",
+      "TorsionNet 500"
+    ],
+    "SPICE 2": {
+      "ontology_class": {
+        "value": "LabeledDataset",
+        "evidence": "datasetonto: SPICE 2 has DFT energy and force labels"
+      },
+      "number_of_samples": {
+        "value": 2000000,
+        "evidence": "PDF Section III: SPICE 2 dataset contains more than two million atomic configurations"
+      },
+      "data_representation": {
+        "value": "atomic structure",
+        "evidence": "PDF Section III: contains atomic configurations of organic systems"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section III: energies and forces calculated using density functional theory"
+      },
+      "input_features": [
+        "atomic positions",
+        "atomic species",
+        "total charge"
+      ],
+      "target_features": [
+        "energy",
+        "forces"
+      ],
+      "derived_from_dataset": null
+    },
+    "SPICE 2 test set": {
+      "ontology_class": {
+        "value": "DatasetSplit",
+        "evidence": "datasetonto: official test set split from SPICE 2"
+      },
+      "number_of_samples": null,
+      "data_representation": {
+        "value": "atomic structure",
+        "evidence": "PDF Section III.A: contains atomic configurations"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section III.A: recomputed at SPICE 2 level of theory"
+      },
+      "input_features": [
+        "atomic positions",
+        "atomic species"
+      ],
+      "target_features": [
+        "energy",
+        "forces"
+      ],
+      "derived_from_dataset": {
+        "value": "SPICE 2",
+        "evidence": "PDF Section III.A: official SPICE 2 test set"
       }
-    ]
+    },
+    "TorsionNet 500": {
+      "ontology_class": {
+        "value": "LabeledDataset",
+        "evidence": "datasetonto: has energy labels for torsion barrier heights"
+      },
+      "number_of_samples": {
+        "value": 12000,
+        "evidence": "PDF Section III.A: contains 12,000 atomic configurations"
+      },
+      "data_representation": {
+        "value": "molecular conformers",
+        "evidence": "PDF Section III.A: scanning through torsion angles in 500 drug-like molecules"
+      },
+      "labelling_method": {
+        "value": "DFT",
+        "evidence": "PDF Section III.A: recomputed at SPICE 2 level of theory"
+      },
+      "input_features": [
+        "atomic positions",
+        "atomic species",
+        "torsion angles"
+      ],
+      "target_features": [
+        "relative energy",
+        "torsion barrier height"
+      ],
+      "derived_from_dataset": null
+    }
   },
   "_sources": {
     "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\allegro_mp_l_0_1.pdf",

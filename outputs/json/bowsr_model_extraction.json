@@ -1,115 +1,164 @@
 {
   "model": {
     "family": {
-      "value": "BO-GNN",
-      "evidence": "model_type in YAML summary"
+      "value": "BOWSR",
+      "evidence": "YAML model_name: BOWSR"
     },
     "variant": {
       "value": "bowsr",
-      "evidence": "model_name in YAML summary lowercased and underscored"
+      "evidence": "YAML model_key: bowsr"
     },
     "parameter_number": {
       "value": 167761,
-      "evidence": "model_params in YAML summary"
+      "evidence": "YAML model_params: 167761"
     }
   },
   "architectures": {
-    "items": [
+    "architectures": [
+      {
+        "name": "BOWSR",
+        "ontology_class": {
+          "value": "MachineLearningArchitecture",
+          "evidence": "BOWSR is a Bayesian optimizer with symmetry constraints using a graph deep learning energy model; architectureonto.ttl MachineLearningArchitecture class"
+        },
+        "parameter_number": {
+          "value": null,
+          "evidence": "No specific parameter count reported for BOWSR algorithm itself"
+        },
+        "datasets": {
+          "value": [
+            "Materials Project"
+          ],
+          "evidence": "Section 2.1: MEGNet formation energy model previously trained on the DFT-computed formation energies of 133,420 Materials Project crystals"
+        },
+        "hyperparameters": {
+          "value": [
+            "max_iterations",
+            "acquisition_function",
+            "noise_level",
+            "kernel",
+            "xi_parameter"
+          ],
+          "evidence": "Section 5.1: maximum number of iteration steps, expected improvement acquisition function, noise level set to RMSE of energy model, Rational Quadratic kernel, xi parameter for exploitation-exploration trade-off"
+        },
+        "components": {
+          "value": [
+            "MEGNet",
+            "Gaussian Process"
+          ],
+          "evidence": "Section 2.1 and 5.1: BOWSR uses MEGNet energy model and Gaussian Process surrogate model"
+        },
+        "backbone_architecture": {
+          "value": "MEGNet",
+          "evidence": "Section 2.1: MEGNet formation energy model used as energy evaluator in BOWSR"
+        },
+        "head_architecture": {
+          "value": null,
+          "evidence": "No specific prediction head architecture mentioned for BOWSR"
+        },
+        "layer_count": {
+          "value": null,
+          "evidence": "No layer count reported for BOWSR algorithm"
+        },
+        "hidden_dimension": {
+          "value": null,
+          "evidence": "No hidden dimension reported for BOWSR algorithm"
+        }
+      },
       {
         "name": "MEGNet",
         "ontology_class": {
           "value": "GraphNeuralNetworkArchitecture",
-          "evidence": "MEGNet is a graph neural network architecture; ontology class GraphNeuralNetworkArchitecture in architecture.ttl"
+          "evidence": "Section 5.2: MEGNet is a Materials Graph Network; architectureonto.ttl GraphNeuralNetworkArchitecture class"
         },
         "parameter_number": {
           "value": null,
-          "evidence": "No specific parameter count reported for MEGNet architecture alone in the paper"
+          "evidence": "No specific parameter count reported for MEGNet"
         },
-        "datasets": [
-          {
-            "value": "Materials Project",
-            "evidence": "Section 2.1: MEGNet formation energy model trained on DFT-computed formation energies of 133,420 Materials Project crystals"
-          }
-        ],
-        "hyperparameters": [
-          {
-            "name": "learning_rate",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "Learning rate is a standard ML hyperparameter; ontology class MachineLearningHyperparameter in trainingonto.ttl"
-            },
-            "value": {
-              "value": "0.001",
-              "evidence": "Section 5.2: initial learning rate set to 0.001"
-            }
-          },
-          {
-            "name": "batch_size",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "Batch size is a standard ML hyperparameter; ontology class MachineLearningHyperparameter in trainingonto.ttl"
-            },
-            "value": {
-              "value": "128",
-              "evidence": "Section 5.2: batch size of 128 structures"
-            }
-          },
-          {
-            "name": "max_epochs",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "Max epochs is a standard ML hyperparameter; ontology class MachineLearningHyperparameter in trainingonto.ttl"
-            },
-            "value": {
-              "value": "1500",
-              "evidence": "Section 5.2: all models trained for a maximum of 1500 epochs"
-            }
-          },
-          {
-            "name": "early_stopping_patience",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "Early stopping patience is a standard ML hyperparameter; ontology class MachineLearningHyperparameter in trainingonto.ttl"
-            },
-            "value": {
-              "value": "500",
-              "evidence": "Section 5.2: early stopping callback terminates if validation error does not reduce for 500 consecutive steps"
-            }
-          },
-          {
-            "name": "cutoff_radius",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "Cutoff radius is a standard ML hyperparameter for graph construction; ontology class MachineLearningHyperparameter in trainingonto.ttl"
-            },
-            "value": {
-              "value": "5 Å",
-              "evidence": "Section 5.2: cutoff radius for constructing the neighbor graph was 5 Å"
-            }
-          },
-          {
-            "name": "hidden_dimensions",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "Hidden dimensions is a standard ML hyperparameter; ontology class MachineLearningHyperparameter in trainingonto.ttl"
-            },
-            "value": {
-              "value": "[64, 64, 32]",
-              "evidence": "Section 5.2: three graph convolutional layers with [64, 64, 32] neurons"
-            }
-          },
-          {
-            "name": "set2set_passes",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "Set2set passes is a standard ML hyperparameter; ontology class MachineLearningHyperparameter in trainingonto.ttl"
-            },
-            "value": {
-              "value": "2",
-              "evidence": "Section 5.2: set2set readout function with two passes"
-            }
-          }
-        ]
+        "datasets": {
+          "value": [
+            "Materials Project"
+          ],
+          "evidence": "Section 5.2: MEGNet formation energy and elasticity models trained using the 2019.4.1 version of Materials Project database containing 133,420 structure-formation energy and 12,179 structure-bulk/shear modulus data pairs"
+        },
+        "hyperparameters": {
+          "value": [
+            "learning_rate",
+            "batch_size",
+            "max_epochs",
+            "early_stopping_patience",
+            "cutoff_radius",
+            "set2set_passes",
+            "neurons_per_layer"
+          ],
+          "evidence": "Section 5.2: initial learning rate 0.001, batch size 128, maximum 1500 epochs, early stopping callback 500 steps, cutoff radius 5 Å, set2set readout with two passes, [64, 64, 32] neurons"
+        },
+        "components": {
+          "value": [
+            "Graph Convolutional Layers",
+            "Set2set Readout",
+            "Shifted Softplus Activation"
+          ],
+          "evidence": "Section 5.2: three graph convolutional layers, set2set readout function, shifted softplus activation function"
+        },
+        "backbone_architecture": {
+          "value": "Graph Convolutional Layers",
+          "evidence": "Section 5.2: three graph convolutional layers with [64, 64, 32] neurons"
+        },
+        "head_architecture": {
+          "value": "Set2set Readout",
+          "evidence": "Section 5.2: set2set readout function with two passes used after graph convolution steps"
+        },
+        "layer_count": {
+          "value": 3,
+          "evidence": "Section 5.2: three graph convolutional layers"
+        },
+        "hidden_dimension": {
+          "value": 64,
+          "evidence": "Section 5.2: [64, 64, 32] neurons in each update function"
+        }
+      },
+      {
+        "name": "Gaussian Process",
+        "ontology_class": {
+          "value": "MachineLearningArchitecture",
+          "evidence": "Section 5.1: Gaussian Process model used in BOWSR; architectureonto.ttl MachineLearningArchitecture class"
+        },
+        "parameter_number": {
+          "value": null,
+          "evidence": "No parameter count reported for Gaussian Process"
+        },
+        "datasets": {
+          "value": [],
+          "evidence": "No specific training datasets mentioned for Gaussian Process"
+        },
+        "hyperparameters": {
+          "value": [
+            "kernel",
+            "noise_level"
+          ],
+          "evidence": "Section 5.1: Rational Quadratic kernel, noise level set to RMSE of energy model"
+        },
+        "components": {
+          "value": [],
+          "evidence": "No sub-components mentioned for Gaussian Process"
+        },
+        "backbone_architecture": {
+          "value": null,
+          "evidence": "No backbone architecture mentioned for Gaussian Process"
+        },
+        "head_architecture": {
+          "value": null,
+          "evidence": "No head architecture mentioned for Gaussian Process"
+        },
+        "layer_count": {
+          "value": null,
+          "evidence": "No layer count applicable for Gaussian Process"
+        },
+        "hidden_dimension": {
+          "value": null,
+          "evidence": "No hidden dimension applicable for Gaussian Process"
+        }
       }
     ]
   },
@@ -119,62 +168,310 @@
         "id": "megnet_formation_energy_pretraining",
         "type": {
           "value": "PretrainingRun",
-          "evidence": "MEGNet formation energy model trained on Materials Project data; ontology class PretrainingRun in trainingonto.ttl"
+          "evidence": "Section 5.2: MEGNet formation energy model trained on Materials Project data; trainingonto.ttl PretrainingRun class"
         },
-        "architectures": [
-          {
-            "value": "MEGNet",
-            "evidence": "Section 2.1: MEGNet formation energy model trained on 133,420 Materials Project crystals"
-          }
-        ],
-        "datasets": [
-          {
-            "value": "Materials Project",
-            "evidence": "Section 2.1: trained on DFT-computed formation energies of 133,420 Materials Project crystals"
-          }
-        ],
+        "architectures": {
+          "value": [
+            "MEGNet"
+          ],
+          "evidence": "Section 5.2: MEGNet formation energy model training"
+        },
+        "datasets": {
+          "value": [
+            "Materials Project"
+          ],
+          "evidence": "Section 5.2: trained using 133,420 structure-formation energy pairs from Materials Project 2019.4.1"
+        },
         "optimizer": {
           "value": "Adam",
           "evidence": "Section 5.2: Adam optimizer used"
         },
         "loss_function": {
           "value": null,
-          "evidence": "No specific loss function mentioned for MEGNet training"
+          "evidence": "No specific loss function mentioned"
         },
         "description": {
-          "value": "Pretraining of MEGNet formation energy model on 133,420 crystals from the Materials Project database with DFT-computed formation energies. Model achieves cross-validated MAE of 26 meV atom^-1.",
-          "evidence": "Section 2.1 and Section 5.2"
+          "value": "Pretraining of MEGNet formation energy model on 133,420 crystals from Materials Project",
+          "evidence": "Section 5.2: MEGNet formation energy model trained on Materials Project database"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "No explicit objective function mentioned"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No sampling method mentioned"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "No initialization from previous checkpoint mentioned"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "MEGNet_formation_energy_model"
+          ],
+          "evidence": "Section 5.2: MEGNet formation energy model produced"
         }
       },
       {
         "id": "megnet_elasticity_pretraining",
         "type": {
           "value": "PretrainingRun",
-          "evidence": "MEGNet elasticity model trained on Materials Project data; ontology class PretrainingRun in trainingonto.ttl"
+          "evidence": "Section 5.2: MEGNet elasticity model trained on Materials Project data; trainingonto.ttl PretrainingRun class"
         },
-        "architectures": [
-          {
-            "value": "MEGNet",
-            "evidence": "Section 2.2: MEGNet models trained on DFT-computed elastic moduli of 12,179 crystals"
-          }
-        ],
-        "datasets": [
-          {
-            "value": "Materials Project",
-            "evidence": "Section 2.2: trained on DFT-computed elastic moduli of 12,179 crystals from Materials Project"
-          }
-        ],
+        "architectures": {
+          "value": [
+            "MEGNet"
+          ],
+          "evidence": "Section 5.2: MEGNet elasticity model training"
+        },
+        "datasets": {
+          "value": [
+            "Materials Project"
+          ],
+          "evidence": "Section 5.2: trained using 12,179 structure-bulk/shear modulus data pairs from Materials Project 2019.4.1"
+        },
         "optimizer": {
           "value": "Adam",
           "evidence": "Section 5.2: Adam optimizer used"
         },
         "loss_function": {
           "value": null,
-          "evidence": "No specific loss function mentioned for MEGNet training"
+          "evidence": "No specific loss function mentioned"
         },
         "description": {
-          "value": "Pretraining of MEGNet elasticity models (bulk and shear moduli) on 12,179 crystals from the Materials Project database with DFT-computed elastic moduli.",
-          "evidence": "Section 2.2 and Section 5.2"
+          "value": "Pretraining of MEGNet elasticity model on 12,179 crystals from Materials Project",
+          "evidence": "Section 5.2: MEGNet elasticity model trained on Materials Project database"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "No explicit objective function mentioned"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No sampling method mentioned"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "No initialization from previous checkpoint mentioned"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "MEGNet_elasticity_model"
+          ],
+          "evidence": "Section 5.2: MEGNet elasticity model produced"
+        }
+      }
+    ],
+    "datasets": [
+      {
+        "name": "Materials Project",
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "datasetonto.ttl Dataset class; Section 5.2: Materials Project database"
+        },
+        "number_of_samples": {
+          "value": 133420,
+          "evidence": "Section 5.2: 133,420 structure-formation energy pairs from Materials Project"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "Section 5.2: Materials Graph Network represents atoms and bonds as nodes and edges in a graph"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "Section 2.1: DFT-computed formation energies from Materials Project"
+        },
+        "input_features": {
+          "value": [
+            "atomic_nodes",
+            "bond_edges",
+            "crystal_structure"
+          ],
+          "evidence": "Section 5.2: graph representation with atoms as nodes and bonds as edges"
+        },
+        "target_features": {
+          "value": [
+            "formation_energy",
+            "bulk_modulus",
+            "shear_modulus"
+          ],
+          "evidence": "Section 5.2: formation energy and elasticity (KVRH and GVRH) models"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "No derivation mentioned for Materials Project"
+        }
+      },
+      {
+        "name": "ICSD",
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "datasetonto.ttl Dataset class; Section 2.2: Inorganic Crystal Structure Database"
+        },
+        "number_of_samples": {
+          "value": 5555,
+          "evidence": "Section 2.3: 5,555 ternary structures prototypes in the ICSD"
+        },
+        "data_representation": {
+          "value": "crystal structure",
+          "evidence": "Section 2.2: structure prototypes from ICSD"
+        },
+        "labelling_method": {
+          "value": null,
+          "evidence": "ICSD is a structural database, not a property-labelled dataset"
+        },
+        "input_features": {
+          "value": [
+            "crystal_structure",
+            "space_group",
+            "lattice_parameters",
+            "atomic_positions"
+          ],
+          "evidence": "Section 2.2: structure prototypes with lattice parameters and atomic positions"
+        },
+        "target_features": {
+          "value": [],
+          "evidence": "ICSD is a structural database without target properties"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "No derivation mentioned for ICSD"
+        }
+      },
+      {
+        "name": "Property Prediction Dataset",
+        "ontology_class": {
+          "value": "LabeledDataset",
+          "evidence": "datasetonto.ttl LabeledDataset class; Section 2.2: dataset with pre-computed DFT formation energies and elastic moduli"
+        },
+        "number_of_samples": {
+          "value": 12277,
+          "evidence": "Section 2.2: 12,277 unique crystals with pre-computed DFT formation energies"
+        },
+        "data_representation": {
+          "value": "crystal structure",
+          "evidence": "Section 2.2: crystals from Materials Project"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "Section 2.2: pre-computed DFT formation energies and elastic moduli from Materials Project"
+        },
+        "input_features": {
+          "value": [
+            "crystal_structure",
+            "lattice_parameters",
+            "atomic_positions"
+          ],
+          "evidence": "Section 2.2: unrelaxed, BOWSR-relaxed, and DFT-relaxed structures as inputs"
+        },
+        "target_features": {
+          "value": [
+            "formation_energy",
+            "bulk_modulus",
+            "shear_modulus"
+          ],
+          "evidence": "Section 2.2: formation energies and elastic moduli (bulk and shear moduli)"
+        },
+        "derived_from_dataset": {
+          "value": "Materials Project",
+          "evidence": "Section 2.2: crystals from Materials Project"
+        }
+      },
+      {
+        "name": "Elastic Moduli Dataset",
+        "ontology_class": {
+          "value": "LabeledDataset",
+          "evidence": "datasetonto.ttl LabeledDataset class; Section 2.2: 1,672 crystals with pre-computed DFT elastic moduli"
+        },
+        "number_of_samples": {
+          "value": 1672,
+          "evidence": "Section 2.2: 1,672 unique crystals with pre-computed DFT elastic moduli"
+        },
+        "data_representation": {
+          "value": "crystal structure",
+          "evidence": "Section 2.2: crystals from Materials Project"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "Section 2.2: pre-computed DFT elastic moduli from Materials Project"
+        },
+        "input_features": {
+          "value": [
+            "crystal_structure",
+            "lattice_parameters",
+            "atomic_positions"
+          ],
+          "evidence": "Section 2.2: unrelaxed, BOWSR-relaxed, and DFT-relaxed structures as inputs"
+        },
+        "target_features": {
+          "value": [
+            "bulk_modulus",
+            "shear_modulus"
+          ],
+          "evidence": "Section 2.2: elastic moduli (bulk and shear moduli)"
+        },
+        "derived_from_dataset": {
+          "value": "Materials Project",
+          "evidence": "Section 2.2: crystals from Materials Project"
+        }
+      },
+      {
+        "name": "Screening Candidates",
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "datasetonto.ttl Dataset class; Section 2.3: 399,960 candidates generated"
+        },
+        "number_of_samples": {
+          "value": 399960,
+          "evidence": "Section 2.3: 399,960 candidates generated by elemental substitution"
+        },
+        "data_representation": {
+          "value": "crystal structure",
+          "evidence": "Section 2.3: transition metal borides and carbides candidates"
+        },
+        "labelling_method": {
+          "value": null,
+          "evidence": "Candidates generated by elemental substitution, not labelled"
+        },
+        "input_features": {
+          "value": [
+            "crystal_structure",
+            "composition"
+          ],
+          "evidence": "Section 2.3: candidates generated from ternary prototypes with elemental substitution"
+        },
+        "target_features": {
+          "value": [],
+          "evidence": "No target features for initial candidates"
+        },
+        "derived_from_dataset": {
+          "value": "ICSD",
+          "evidence": "Section 2.3: generated by elemental substitution to 5,555 ternary structures prototypes in ICSD"
         }
       }
     ]

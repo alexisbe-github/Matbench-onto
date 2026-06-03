@@ -1,0 +1,151 @@
+Looking at the SHACL violations:
+
+1. **Violation 1 & 5**: `archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_model_variant` links to `archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture` via `arch:hasMachineLearningArchitecture`, but the architecture individual is typed as `arch:EquivariantMessagePassingNeuralNetworkArchitecture` — it needs to also be typed as `arch:MachineLearningArchitecture`. Also, `archind:nequip_mp_l_variant` has no `arch:hasMachineLearningArchitecture` link at all.
+
+2. **Violation 2 & 3**: `archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture` is the subject of `arch:hasMachineLearningArchitectureConfiguration` but is not typed as `arch:MachineLearningArchitecture`. Same individual is the object of `arch:hasMachineLearningArchitecture` but not typed as `arch:MachineLearningArchitecture`.
+
+3. **Violation 4**: `trind:allegro_spice2_training` uses `train:usesDataset` but is typed as `train:PretrainingRun` — it needs to also be typed as `train:MachineLearningTrainingRun`.
+
+The root cause for violations 1-3 is that `archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture` is typed as `arch:EquivariantMessagePassingNeuralNetworkArchitecture` but not as `arch:MachineLearningArchitecture`. For violation 4, `trind:allegro_spice2_training` needs the `train:MachineLearningTrainingRun` type. For violation 5, `archind:nequip_mp_l_variant` needs an `arch:hasMachineLearningArchitecture` link.
+
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:nequip_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "NequIP"^^xsd:string ;
+    arch:hasVariant archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_model_variant,
+        archind:nequip_mp_l_variant .
+
+trind:nequip_mp_l_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "NequIP-MP-L"^^xsd:string ;
+    train:generatedBy trind:allegro_spice2_training .
+
+archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture a owl:NamedIndividual,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "EquivariantMessagePassingNeuralNetworkArchitecture"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture_configuration ;
+    arch:hasParameterNumber 9600000 .
+
+archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EquivariantMessagePassingNeuralNetworkArchitecture architecture configuration"^^xsd:string ;
+    arch:hasHiddenDimension 128 ;
+    arch:hasLayerCount 3 .
+
+archind:nequip_mp_l_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "nequip_mp_l"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2504.16068.pdf> ;
+    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\nequip_mp_l_0_1.yml" ;
+    arch:hasParameterNumber 9600000 ;
+    arch:hasMachineLearningArchitecture archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture .
+
+dataind:atomic_positions_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic_positions"^^xsd:string .
+
+dataind:atomic_species_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "atomic_species"^^xsd:string .
+
+dataind:atomic_structure_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "atomic structure"^^xsd:string .
+
+dataind:dft_labelling_method a owl:NamedIndividual,
+        data:LabellingMethod ;
+    rdfs:label "DFT"^^xsd:string .
+
+dataind:edge_vectors_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "edge_vectors"^^xsd:string .
+
+dataind:energy_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "energy"^^xsd:string .
+
+dataind:forces_attribute a owl:NamedIndividual,
+        data:DatasetAttribute ;
+    rdfs:label "forces"^^xsd:string .
+
+dataind:spice_2 a owl:NamedIndividual,
+        data:Dataset,
+        data:LabeledDataset ;
+    rdfs:label "SPICE 2"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:hasLabellingMethod dataind:dft_labelling_method ;
+    data:hasNumberOfSamples 2000000 ;
+    data:usesAttributeAsInputFeature dataind:atomic_positions_attribute,
+        dataind:atomic_species_attribute,
+        dataind:edge_vectors_attribute ;
+    data:usesAttributeAsTargetFeature dataind:energy_attribute,
+        dataind:forces_attribute .
+
+trind:allegro_spice2_training a owl:NamedIndividual,
+        train:MachineLearningTrainingRun,
+        train:PretrainingRun ;
+    rdfs:label "allegro_spice2_training"^^xsd:string ;
+    rdfs:comment "Training of Allegro models on the SPICE 2 dataset containing over two million atomic configurations of organic systems with energies and forces calculated using DFT with the ωB97M-D3(BJ) functional. Models were trained on a subset limited to systems with neutral total charge."^^xsd:string ;
+    train:hasHyperparameterValue trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_maximum_rotation_order_value,
+        trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_allegro_layers_value,
+        trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_tensor_features_value,
+        trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_radial_cutoff_value ;
+    train:trainsModelVariant archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_model_variant ;
+    train:usesDataset dataind:spice_2 .
+
+trind:maximum_rotation_order a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "maximum_rotation_order"^^xsd:string .
+
+trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_maximum_rotation_order_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequip_mp_l EquivariantMessagePassingNeuralNetworkArchitecture maximum_rotation_order value"^^xsd:string ;
+    prov:value 3 ;
+    train:ofHyperparameter trind:maximum_rotation_order .
+
+trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_allegro_layers_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequip_mp_l EquivariantMessagePassingNeuralNetworkArchitecture number_of_allegro_layers value"^^xsd:string ;
+    prov:value 3 ;
+    train:ofHyperparameter trind:number_of_allegro_layers .
+
+trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_number_of_tensor_features_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequip_mp_l EquivariantMessagePassingNeuralNetworkArchitecture number_of_tensor_features value"^^xsd:string ;
+    prov:value 128 ;
+    train:ofHyperparameter trind:number_of_tensor_features .
+
+trind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_radial_cutoff_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "nequip_mp_l EquivariantMessagePassingNeuralNetworkArchitecture radial_cutoff value"^^xsd:string ;
+    prov:value "6.0"^^xsd:float ;
+    train:ofHyperparameter trind:radial_cutoff .
+
+trind:number_of_allegro_layers a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_allegro_layers"^^xsd:string .
+
+trind:number_of_tensor_features a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "number_of_tensor_features"^^xsd:string .
+
+trind:radial_cutoff a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "radial_cutoff"^^xsd:string .
+
+archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "nequip_mp_l EquivariantMessagePassingNeuralNetworkArchitecture"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture .

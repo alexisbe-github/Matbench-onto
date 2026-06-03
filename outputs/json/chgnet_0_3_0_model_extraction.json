@@ -2,241 +2,450 @@
   "model": {
     "family": {
       "value": "CHGNet",
-      "evidence": "model_name in YAML summary"
+      "evidence": "YAML model_name: CHGNet"
     },
     "variant": {
       "value": "chgnet_0_3_0",
-      "evidence": "model_key in YAML summary"
+      "evidence": "YAML model_key: chgnet-0.3.0, lowercased and hyphens replaced by underscores"
     },
     "parameter_number": {
       "value": 412525,
-      "evidence": "model_params in YAML summary"
+      "evidence": "YAML model_params: 412525"
     }
   },
   "architectures": {
-    "architectures": [
-      "Graph Neural Network"
-    ],
-    "architecture_details": [
-      {
-        "name": "Graph Neural Network",
-        "ontology_class": {
-          "value": "GraphNeuralNetworkArchitecture",
-          "evidence": "architecture.ttl: GraphNeuralNetworkArchitecture is an owl:Class, subClassOf NeuralNetworkArchitecture. CHGNet is described as a GNN-based MLIP throughout the PDF (Abstract, Introduction, Results II.A)"
-        },
-        "parameter_number": {
-          "value": 400438,
-          "evidence": "PDF page 3, Section II.C: 'CHGNet with 400,438 trainable parameters was trained on the MPtrj dataset'"
-        },
-        "datasets": [
+    "Crystal Hamiltonian Graph Neural Network": {
+      "ontology_class": {
+        "value": "GraphNeuralNetworkArchitecture",
+        "evidence": "PDF: CHGNet is described as a graph-neural-network-based force field (page 1). Ontology: GraphNeuralNetworkArchitecture is a subclass of NeuralNetworkArchitecture."
+      },
+      "parameter_number": {
+        "value": 400438,
+        "evidence": "PDF: CHGNet with 400,438 trainable parameters (page 3)"
+      },
+      "datasets": {
+        "value": [
           "Materials Project Trajectory Dataset"
         ],
-        "hyperparameters": [
-          "rcut",
-          "bond_graph_cutoff",
-          "feature_dimensions",
-          "expansion_orders",
-          "batch_size",
+        "evidence": "PDF: trained on the Materials Project Trajectory Dataset (page 1, page 3)"
+      },
+      "hyperparameters": {
+        "value": [
           "learning_rate",
-          "learning_rate_scheduler",
+          "batch_size",
+          "optimizer",
+          "loss_function",
+          "scheduler",
+          "rcut",
+          "cutoff",
           "epochs",
           "force_loss_weight",
           "stress_loss_weight",
           "magmom_loss_weight",
           "huber_delta",
+          "feature_dimensions",
+          "max_expansion_order",
           "interaction_blocks",
-          "optimizer"
+          "graph_cutoff_radius",
+          "bond_graph_cutoff"
         ],
-        "hyperparameter_details": [
-          {
-            "name": "rcut",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": "5 Å",
-              "evidence": "PDF page 9, Section V.B: 'the default rcut is set to 5 ˚A'"
-            }
+        "evidence": "PDF Methods section: Adam optimizer with 10^-3 initial learning rate, batch size 40, CosineAnnealingLR scheduler, Huber loss with delta=0.1, rcut=5 Angstrom, bond graph cutoff=3 Angstrom, 20 epochs, force weight=1, stress weight=0.1, magmom weight=0.1, 64 feature dimensions, max expansion order 9 (2N+1=9), four interaction blocks (pages 9-10)"
+      },
+      "hyperparameter_details": {
+        "learning_rate": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
           },
-          {
-            "name": "bond_graph_cutoff",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": "3 Å",
-              "evidence": "PDF page 9, Section V.B: 'The bond graph is constructed with a cutoff of 3 ˚A for computational efficiency'"
-            }
+          "value": {
+            "initial": 0.001,
+            "final": 1e-05,
+            "schedule": "CosineAnnealingLR adjusted 10 times per epoch over 20 epochs"
           },
-          {
-            "name": "feature_dimensions",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": 64,
-              "evidence": "PDF page 9, Section V.B: 'all have 64 feature dimensions by default'"
-            }
-          },
-          {
-            "name": "expansion_orders",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": "n=4 (2N+1=9, N=4) for both radial and angular expansions",
-              "evidence": "PDF page 9, Section V.B: 'we set the maximum orders for both n and ℓ to be 2N+1=9'"
-            }
-          },
-          {
-            "name": "batch_size",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": 40,
-              "evidence": "PDF page 10, Section V.C: 'The batch size is set to 40'"
-            }
-          },
-          {
-            "name": "learning_rate",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": "10^-3 initial, decaying to 10^-5",
-              "evidence": "PDF page 10, Section V.C: 'Adam optimizer is used with 10^-3 as the initial learning rate... final learning rate decays to 10^-5 after 20 epochs'"
-            }
-          },
-          {
-            "name": "learning_rate_scheduler",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": "CosineAnnealingLR, 10 adjustments per epoch",
-              "evidence": "PDF page 10, Section V.C: 'The CosineAnnealingLR scheduler is used to adjust the learning rate 10 times per epoch'"
-            }
-          },
-          {
-            "name": "epochs",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": 20,
-              "evidence": "PDF page 10, Section V.C: 'the final learning rate decays to 10^-5 after 20 epochs'"
-            }
-          },
-          {
-            "name": "force_loss_weight",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": 1,
-              "evidence": "PDF page 10, Section V.C: 'wf = 1'"
-            }
-          },
-          {
-            "name": "stress_loss_weight",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": 0.1,
-              "evidence": "PDF page 10, Section V.C: 'wσ = 0.1'"
-            }
-          },
-          {
-            "name": "magmom_loss_weight",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": 0.1,
-              "evidence": "PDF page 10, Section V.C: 'wm = 0.1'"
-            }
-          },
-          {
-            "name": "huber_delta",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": 0.1,
-              "evidence": "PDF page 10, Section V.C: 'Huber loss (with δ = 0.1)'"
-            }
-          },
-          {
-            "name": "interaction_blocks",
-            "ontology_class": {
-              "value": "MachineLearningHyperparameter",
-              "evidence": "trainingonto.ttl: MachineLearningHyperparameter is an owl:Class"
-            },
-            "value": {
-              "value": 4,
-              "evidence": "PDF page 10, Section V.B: 'with four atom convolution layers' and page 9: three full interaction blocks plus one additional convolution layer"
-            }
-          },
-          {
-            "name": "optimizer",
-            "ontology_class": {
-              "value": "Optimizer",
-              "evidence": "trainingonto.ttl: Optimizer is an owl:Class, subClassOf AlgorithmMethod"
-            },
-            "value": {
-              "value": "Adam",
-              "evidence": "PDF page 10, Section V.C: 'the Adam optimizer is used'"
-            }
-          }
-        ]
-      }
-    ]
-  },
-  "training": {
-    "training_runs": [
-      "pretraining_run"
-    ],
-    "training_run_details": [
-      {
-        "id": "pretraining_run",
-        "type": {
-          "value": "PretrainingRun",
-          "evidence": "trainingonto.ttl: PretrainingRun is an owl:Class, subClassOf MachineLearningTrainingRun. PDF Abstract and Section II.B: CHGNet is 'pretrained' on the MPtrj dataset"
+          "evidence": "PDF: Adam optimizer with 10^-3 as initial learning rate, CosineAnnealingLR scheduler, final learning rate decays to 10^-5 after 20 epochs (page 10)"
         },
-        "architectures": [
-          "Graph Neural Network"
-        ],
-        "datasets": [
-          "Materials Project Trajectory Dataset"
-        ],
+        "batch_size": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": 40,
+          "evidence": "PDF: The batch size is set to 40 (page 10)"
+        },
         "optimizer": {
+          "ontology_class": {
+            "value": "Optimizer",
+            "evidence": "Ontology: Optimizer class in trainingonto.ttl"
+          },
           "value": "Adam",
-          "evidence": "PDF page 10, Section V.C: 'the Adam optimizer is used with 10^-3 as the initial learning rate'"
+          "evidence": "PDF: the Adam optimizer is used (page 10)"
         },
         "loss_function": {
-          "value": "Weighted Huber loss (δ=0.1) over energy, forces, stress, and magnetic moments",
-          "evidence": "PDF page 10, Section V.C: 'The model is trained to minimize the summation of Huber loss (with δ = 0.1) of energy, force, stress, and magmoms'"
+          "ontology_class": {
+            "value": "LossFunction",
+            "evidence": "Ontology: LossFunction class in trainingonto.ttl"
+          },
+          "value": "Huber loss (delta=0.1) weighted sum of energy, force, stress, and magmom losses",
+          "evidence": "PDF: minimize summation of Huber loss (delta=0.1) of energy, force, stress, and magmoms (page 10)"
+        },
+        "scheduler": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": "CosineAnnealingLR",
+          "evidence": "PDF: CosineAnnealingLR scheduler (page 10)"
+        },
+        "rcut": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": "5 Angstrom",
+          "evidence": "PDF: default rcut is set to 5 Angstrom (page 9)"
+        },
+        "cutoff": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": "5 Angstrom atom graph, 3 Angstrom bond graph",
+          "evidence": "PDF: rcut 5 Angstrom, bond graph cutoff 3 Angstrom (page 9)"
+        },
+        "epochs": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": 20,
+          "evidence": "PDF: final learning rate decays after 20 epochs (page 10)"
+        },
+        "force_loss_weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": 1,
+          "evidence": "PDF: wf = 1 (page 10)"
+        },
+        "stress_loss_weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": 0.1,
+          "evidence": "PDF: w_sigma = 0.1 (page 10)"
+        },
+        "magmom_loss_weight": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": 0.1,
+          "evidence": "PDF: w_m = 0.1 (page 10)"
+        },
+        "huber_delta": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": 0.1,
+          "evidence": "PDF: Huber loss with delta = 0.1 (page 10)"
+        },
+        "feature_dimensions": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": 64,
+          "evidence": "PDF: all have 64 feature dimensions by default (page 9)"
+        },
+        "max_expansion_order": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": "2N+1=9",
+          "evidence": "PDF: maximum orders for both n and l to be 2N+1=9 (page 9)"
+        },
+        "interaction_blocks": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": 4,
+          "evidence": "PDF: with four atom convolution layers (page 10), three interaction blocks for magmom prediction plus one final convolution (page 9-10)"
+        },
+        "graph_cutoff_radius": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": "5 Angstrom",
+          "evidence": "PDF: rcut set to 5 Angstrom (page 9)"
+        },
+        "bond_graph_cutoff": {
+          "ontology_class": {
+            "value": "MachineLearningHyperparameter",
+            "evidence": "Ontology: MachineLearningHyperparameter class in trainingonto.ttl"
+          },
+          "value": "3 Angstrom",
+          "evidence": "PDF: bond graph constructed with cutoff of 3 Angstrom (page 9)"
+        }
+      },
+      "components": {
+        "value": [
+          "SmoothRBF",
+          "FourierBasis",
+          "EmbeddingLayer",
+          "InteractionBlock",
+          "AtomConvolution",
+          "BondConvolution",
+          "AngleUpdate",
+          "GatedMLP",
+          "LinearProjection",
+          "WeightedMessagePassing",
+          "AutoDifferentiation"
+        ],
+        "evidence": "PDF: Figures 1(c), 1(d), 1(e) and Methods describe SmoothRBF basis expansion, Fourier basis for angles, embedding layers, interaction blocks with atom/bond/angle updates, gatedMLP, linear projection for magmoms, weighted message passing, auto-differentiation for forces/stress (pages 2, 9-10)"
+      },
+      "backbone_architecture": {
+        "value": "GraphNeuralNetwork",
+        "evidence": "PDF: CHGNet foundation is a GNN with atom graph and bond graph, using graph convolution layers (pages 2, 9-10)"
+      },
+      "head_architecture": {
+        "value": "LinearProjection",
+        "evidence": "PDF: magnetic moments predicted by linear projection of atom features; energy by non-linear projection of site-wise averaged features; forces and stress via auto-differentiation (page 10)"
+      },
+      "layer_count": {
+        "value": 4,
+        "evidence": "PDF: four atom convolution layers (page 10), three interaction blocks plus one final convolution layer (page 9-10)"
+      },
+      "hidden_dimension": {
+        "value": 64,
+        "evidence": "PDF: all have 64 feature dimensions by default (page 9)"
+      }
+    }
+  },
+  "training": {
+    "training_runs": {
+      "value": [
+        "pretraining",
+        "finetuning_li_fe_p_o"
+      ],
+      "evidence": "PDF: CHGNet pretrained on MPtrj dataset (page 1, page 3). PDF: fine-tuned CHGNet with Materials Project structures in Li-Fe-P-O chemical space for phase diagram calculations (page 11)"
+    },
+    "training_run_details": {
+      "pretraining": {
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF: CHGNet is pretrained on energies, forces, stresses, and magnetic moments from the MP trajectory dataset (page 1). Ontology: PretrainingRun in trainingonto.ttl"
+        },
+        "architectures": {
+          "value": [
+            "Crystal Hamiltonian Graph Neural Network"
+          ],
+          "evidence": "PDF: CHGNet model architecture described (page 2)"
+        },
+        "datasets": {
+          "value": [
+            "Materials Project Trajectory Dataset"
+          ],
+          "evidence": "PDF: pretrained on the Materials Project Trajectory Dataset (MPtrj) (page 1, page 3)"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF: Adam optimizer (page 10)"
+        },
+        "loss_function": {
+          "value": "WeightedHuberLoss",
+          "evidence": "PDF: weighted sum of Huber loss (delta=0.1) of energy, force, stress, and magmoms (page 10)"
         },
         "description": {
-          "value": "CHGNet was pretrained on the Materials Project Trajectory (MPtrj) dataset containing ~1.5 million inorganic structures with energies, forces, stresses, and magnetic moments from DFT calculations. Training used an 8:1:1 train/validation/test split partitioned by materials, with Adam optimizer, CosineAnnealingLR scheduler, batch size 40, initial learning rate 10^-3 decaying to 10^-5 over 20 epochs.",
-          "evidence": "PDF page 3, Section II.B and II.C; page 10, Section V.C"
+          "value": "Pretraining of CHGNet on the Materials Project Trajectory Dataset containing ~1.5 million inorganic structures with energies, forces, stresses, and magnetic moments from DFT calculations. Training with 8:1:1 train/validation/test split partitioned by materials.",
+          "evidence": "PDF: pretrained on MPtrj dataset with 1,580,395 atom configurations, 8:1:1 training validation test ratio partitioned by materials (page 3, page 9)"
+        },
+        "objective_function": {
+          "value": "WeightedHuberLoss",
+          "evidence": "PDF: minimize weighted sum of Huber losses for energy, force, stress, and magmoms (page 10)"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No explicit sampling method mentioned for pretraining"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "Pretraining from scratch, no prior checkpoint mentioned"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "chgnet-0.3.0"
+          ],
+          "evidence": "YAML model_key: chgnet-0.3.0. PDF: pretrained weights available (page 11)"
+        }
+      },
+      "finetuning_li_fe_p_o": {
+        "type": {
+          "value": "MachineLearningFinetuningRun",
+          "evidence": "PDF: fine-tuned CHGNet with Materials Project structures in Li-Fe-P-O chemical space (page 11). Ontology: MachineLearningFinetuningRun in trainingonto.ttl"
+        },
+        "architectures": {
+          "value": [
+            "Crystal Hamiltonian Graph Neural Network"
+          ],
+          "evidence": "PDF: CHGNet fine-tuned (page 11)"
+        },
+        "datasets": {
+          "value": [
+            "Materials Project Li-Fe-P-O structures"
+          ],
+          "evidence": "PDF: fine-tuned with Materials Project structures in Li-Fe-P-O chemical space (page 11)"
+        },
+        "optimizer": {
+          "value": null,
+          "evidence": "Optimizer not specified for fine-tuning"
+        },
+        "loss_function": {
+          "value": null,
+          "evidence": "Loss function not specified for fine-tuning"
+        },
+        "description": {
+          "value": "Fine-tuning of pretrained CHGNet on Materials Project structures in the Li-Fe-P-O chemical space to improve energy accuracy for LixFePO4 phase diagram calculations. Test error decreased from 23 meV/atom to 15 meV/atom.",
+          "evidence": "PDF: fine-tuned CHGNet decreased test error from 23 meV/atom to 15 meV/atom (page 11)"
+        },
+        "objective_function": {
+          "value": null,
+          "evidence": "Objective function not specified for fine-tuning"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "No sampling method mentioned for fine-tuning"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not an active learning run"
+        },
+        "initialized_from_model_materialization": {
+          "value": "chgnet-0.3.0",
+          "evidence": "PDF: fine-tuned from pretrained CHGNet (page 11)"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "chgnet-0.3.0-finetuned-LiFePO4"
+          ],
+          "evidence": "PDF: fine-tuned CHGNet used for LixFePO4 phase diagram (page 11)"
         }
       }
-    ]
+    },
+    "datasets": {
+      "value": [
+        "Materials Project Trajectory Dataset",
+        "Materials Project Li-Fe-P-O structures"
+      ],
+      "evidence": "PDF: MPtrj dataset (page 3). PDF: Li-Fe-P-O chemical space structures (page 11)"
+    },
+    "dataset_details": {
+      "Materials Project Trajectory Dataset": {
+        "ontology_class": {
+          "value": "LabeledDataset",
+          "evidence": "PDF: dataset contains energies, forces, stresses, and magnetic moments as labels (page 3). Ontology: LabeledDataset in datasetonto.ttl"
+        },
+        "number_of_samples": {
+          "value": 1580395,
+          "evidence": "PDF: 1,580,395 atom configurations (page 3)"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF: periodic crystal structure converted into atom graph with bond graph (page 2, page 9)"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF: GGA and GGA+U DFT calculations (page 3, page 9)"
+        },
+        "input_features": {
+          "value": [
+            "atomic_number",
+            "pairwise_distance",
+            "bond_angle",
+            "nuclear_position"
+          ],
+          "evidence": "PDF: crystal structure with atomic numbers, pairwise distances, bond angles used as input (page 2, page 9)"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "force",
+            "stress",
+            "magnetic_moment"
+          ],
+          "evidence": "PDF: trained on energies, forces, stresses, and magnetic moments (page 1, page 3)"
+        },
+        "derived_from_dataset": {
+          "value": "Materials Project",
+          "evidence": "PDF: parsed from the September 2022 Materials Project database (page 9)"
+        }
+      },
+      "Materials Project Li-Fe-P-O structures": {
+        "ontology_class": {
+          "value": "LabeledDataset",
+          "evidence": "PDF: structures with DFT energies used for fine-tuning (page 11). Ontology: LabeledDataset in datasetonto.ttl"
+        },
+        "number_of_samples": {
+          "value": null,
+          "evidence": "Number of samples not specified for Li-Fe-P-O subset"
+        },
+        "data_representation": {
+          "value": "crystal graph",
+          "evidence": "PDF: same CHGNet input representation used (page 11)"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "PDF: Materials Project structures (page 11)"
+        },
+        "input_features": {
+          "value": [
+            "atomic_number",
+            "pairwise_distance",
+            "bond_angle",
+            "nuclear_position"
+          ],
+          "evidence": "PDF: same CHGNet input features (page 11)"
+        },
+        "target_features": {
+          "value": [
+            "energy",
+            "force",
+            "stress",
+            "magnetic_moment"
+          ],
+          "evidence": "PDF: same prediction targets (page 11)"
+        },
+        "derived_from_dataset": {
+          "value": "Materials Project",
+          "evidence": "PDF: Materials Project structures in Li-Fe-P-O chemical space (page 11)"
+        }
+      }
+    }
   },
   "_sources": {
     "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\chgnet_0_3_0.pdf",
