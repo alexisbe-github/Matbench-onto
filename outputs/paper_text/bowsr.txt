@@ -1,0 +1,1161 @@
+[page 1]
+Accelerating Materials Discovery with Bayesian
+Optimization and Graph Deep Learning
+Yunxing Zuoa,∗, Mingde Qin a,∗, Chi Chen a, Weike Yea, Xiangguo Li a, Jian
+Luoa,∗∗, Shyue Ping Ong a,∗∗
+aDepartment of NanoEngineering, University of California San Diego, 9500 Gilman Dr,
+Mail Code 0448, La Jolla, CA 92093-0448, United States
+Abstract
+Machine learning (ML) models utilizing structure-based features provide an ef-
+ﬁcient means for accurate property predictions across diverse chemical spaces.
+However, obtaining equilibrium crystal structures typically requires expensive
+density functional theory (DFT) calculations, which limits ML-based explo-
+ration to either known crystals or a small number of hypothetical crystals. Here,
+we demonstrate that the application of Bayesian optimization with symmetry
+constraints using a graph deep learning energy model can be used to perform
+“DFT-free” relaxations of crystal structures. Using this approach to signif-
+icantly improve the accuracy of ML-predicted formation energies and elastic
+moduli of hypothetical crystals, two novel ultra-incompressible hard materials
+MoWC2 (P 63/mmc) and ReWB (Pca21) were identiﬁed and successfully syn-
+thesized via in-situ reactive spark plasma sintering from a screening of 399,960
+transition metal borides and carbides. This work addresses a critical bottleneck
+to accurate property predictions for hypothetical materials, paving the way to
+ML-accelerated discovery of new materials with exceptional properties.
+Keywords: materials discovery, bayesian optimization, graph neural network,
+deep learning
+∗These authors contribute equally to this work
+∗∗Correspondences: jluo@ucsd.edu, ongsp@eng.ucsd.edu
+Preprint submitted to Materials Today April 22, 2021
+arXiv:2104.10242v1  [cond-mat.mtrl-sci]  20 Apr 2021
+
+[page 2]
+1. Introduction
+The accurate prediction of novel stable crystals and their properties is a
+fundamental goal in computation-guided materials discovery. While ab initio
+approaches such as density functional theory (DFT) [1, 2] have been phenom-
+enally successful in this regard [3, 4, 5, 6], their high computational cost and
+poor scalability have limited the broad application across vast chemical and
+structural spaces. As a result, high-throughput DFT screening has been mostly
+performed on∼O(100−1000) crystals with relatively small unit cells.
+To circumvent this limitation, machine learning (ML) has emerged as a
+new paradigm for developing eﬃcient surrogate models for predicting materials
+properties at scale [7, 8, 9, 10, 11, 12]. Such ML models are usually trained
+on large databases of materials properties [13, 14, 15] to learn the relationship
+between input chemical and/or structural features and target properties (e.g.,
+formation energies, band gaps, elastic moduli, etc.). Only ML models utilizing
+structural as well as chemical features can distinguish between polymorphs and
+be universally applied in materials discovery across diverse crystal structures.
+In particular, graph neural networks, where atoms and bonds in crystals are
+represented as nodes and edges in a mathematical graph, have emerged as a
+particularly promising approach with state-of-the-art accuracy in predicting a
+broad range of energetic, electronic and mechanical properties [16, 17, 18, 19,
+20, 21, 22, 23].
+Ironically, a critical bottleneck in the application of structure-based ML mod-
+els for materials discovery is the requirement for equilibrium crystal structures
+as the inputs. These are obtained by “relaxing” initial input structures along
+their potential energy surfaces, which are typically computed via expensive DFT
+calculations. While there have been recent eﬀorts [24, 25] at deriving accurate
+interatomic forces from graph representations, the application has been limited
+to a few molecular systems or constrained chemical spaces.
+Here, we propose a Bayesian Optimization With Symmetry Relaxation (BOWSR)
+algorithm to obtain equilibrium crystal structures for accurate ML property
+2
+
+[page 3]
+predictions without DFT. Utilizing a highly eﬃcient MatErials Graph Network
+(MEGNet) formation energy model [16], we demonstrate that BOWSR-relaxed
+structures can serve as accurate inputs to ML property models, yielding far
+higher accuracy in the prediction of various materials properties. Finally, we
+demonstrate the power of this approach by screening∼400,000 transition metal
+borides and carbides for ultra-incompressible hard materials. Two new materials
+with relatively low predicted energy above hull [26] were successfully synthesized
+and demonstrated to have exceptional mechanical properties, in line with the
+ML prediction.
+2. Results
+2.1. Bayesian Optimization With Symmetry Relaxation Algorithm
+Bayesian optimization (BO) is an adaptive strategy for the global optimiza-
+tion of a function. In crystal structure relaxation, the function to be optimized
+is the potential energy surface, which expresses the energy of the crystal as a
+function of the lattice parameters and atomic coordinates. In the BOWSR al-
+gorithm, the symmetry (space group) of the lattice and the Wyckoﬀ positions
+of the atoms are constrained during the relaxation process, i.e., only the inde-
+pendent lattice parameters and atomic coordinates are allowed to vary. The BO
+goal is then the minimization of the following mapping:
+x :={a,b,c,α,β,γ,⃗ c1,⃗ c2,...} (1)
+xopt = argmin
+x
+U(x),U :Rn− →R (2)
+where{a,b,c,α,β,γ}and{⃗ c1,⃗ c2,...}represent the independent lattice param-
+eters and the atomic positions for a P 1 crystal, respectively, and U(.) is the
+energy of the system. The schematic of the BOWSR algorithm as well as two
+examples of the geometry parameterization for a high-symmetry cubic crystal
+and a low-symmetry triclinic crystal are shown in Figure 1.
+3
+
+[page 4]
+Cubic SrTiO3
+Triclinic PdN2Cl2 6.312, 6.498, 3.389
+97,      97,    105
+0.000, 0.000, 0.000
+0.746, 0.733, 0.900
+0.747, 0.159, 0.070
+0.270, 0.312, 0.157
+0.238, 0.786, 0.985
+Constrained Variables
+/u1D6FC, /u1D6FD, /u1D6FE : 
+/u1D44E, /u1D44F, /u1D450 : 
+➞
+/u1D4501 :➞
+/u1D4502 :➞
+/u1D4503 :➞
+/u1D4504 :➞
+/u1D4505 :
+/u1D44E : 3.903 3.975BOWSR
+Algorithm /u1D44E : 
+BOWSR
+Algorithm
+7.537, 6.303, 3.951
+95,    100,    104
+0.150, 0.042, 0.094
+0.936, 0.919, 0.926
+0.909, 0.089, 0.040
+0.340, 0.310, 0.055
+0.332, 0.940, 0.171
+/u1D6FC, /u1D6FD, /u1D6FE : 
+/u1D44E, /u1D44F, /u1D450 : 
+➞
+/u1D4501 :➞
+/u1D4502 :➞
+/u1D4503 :➞
+/u1D4504 :➞
+/u1D4505 :
+a
+b Relaxed Variables
+ Constrained 
+Variables
+Training
+Observations
+Potential Energy 
+Surface 
+Bayesian Optimization With Symmetry Relaxation (BOWSR)
+Maximum 
+iterations Yes
+Gaussian Process 
+Initialization
+Propose
+New
+Datapoint
+Surrogate
+ML model
+Stopping 
+Criteria
+No
+Augment
+Figure 1: Bayesian Optimization With Symmetry Relaxation (BOWSR) algorithm.
+a, The BOWSR algorithm parameterizes each crystal based on the independent lattice pa-
+rameters and atomic coordinates based on its space group. The potential energy surface is
+then approximated by initializing a set of training observations and energies from the ML
+energy model. Bayesian optimization is then used to iteratively propose lower energy geome-
+tries based on prior observations. b, Two examples of the geometry parameterization for
+cubic perovskite SrTiO 3 and triclinic PdN 2Cl2. For the high-symmetry cubic perovskite, the
+lattice parameter a is the only independent parameter, and all atoms are in special Wyckoﬀ
+positions with no degrees of freedom in the fractional coordinates. For the triclinic crystal,
+all six lattice parameters and all atomic coordinates are independent parameters.
+4
+
+[page 5]
+The convergence accuracy and speed of BOWSR are set by the energy evalu-
+atorU(.), which can be any computational model, including ab initio methods,
+empirical potentials, and surrogate ML models. In this work, we have elected to
+use a MatErials Graph Network (MEGNet) formation energy model previously
+trained on the DFT-computed formation energies of 133,420 Materials Project
+crystals [13]. This MEGNet model has a cross-validated mean absolute error
+(MAE) of 26 meV atom−1, which is among the best accuracy among general ML
+models thus far [22, 18]. Examples of the convergence of the BOWSR algorithm
+using the MEGNet energy model are shown in Figure S1.
+2.2. Properties Prediction
+Elemental substitution is a common, chemically intuitive approach to deriv-
+ing potential new compounds. For instance, the rock salt LiCl can be derived
+from rock salt NaCl by substituting Na for the chemically similar Li. Here,
+we demonstrate the potential for BOWSR to substantially enhance ML prop-
+erty predictions of the formation energies and elastic moduli (bulk and shear
+moduli) of substituted crystals. The dataset comprises a total of 12,277 and
+1,672 unique crystals with pre-computed DFT formation energies and elastic
+moduli, respectively, from the Materials Project [13]. These crystals belong to
+144 (35 binary, 91 ternary, and 18 quaternary) common structure prototypes
+in the Inorganic Crystal Structure Database (ICSD) [27, 28]. Each prototype
+comprises at least 30 compositions (statistical distribution shown in Figure S2).
+For each crystal in the dataset (e.g., rock salt GeTe), another crystal with the
+same prototype but a diﬀerent composition (e.g., rock salt NaCl) was selected
+at random and multi-element substitutions (Na→Ge, Cl→Te) were performed
+to arrive at an “unrelaxed” structure. The BOWSR algorithm was then ap-
+plied to obtain a BOWSR-relaxed structure. The unrelaxed, BOWSR-relaxed,
+and the original DFT-relaxed structures were then used as inputs for property
+predictions using MEGNet models. These MEGNet models were trained on
+the DFT-computed formation energies and elastic moduli of 133,420 and 12,179
+crystals, respectively, from the Materials Project.
+5
+
+[page 6]
+d e f
+a b c
+DFT-relaxed
+BOWSR-relaxed
+Unrelaxed
+Figure 2: Performance of MEGNet materials properties predictions for three lev-
+els of relaxation. Three levels of relaxation are served as inputs for MEGNet materials
+properties predictions — unrelaxed, BOWSR-relaxed, and DFT-relaxed structures. a, b, and
+c show the parity plot of MEGNet prediction on formation energies, bulk moduli, and shear
+moduli, respectively. d, e, and f show the errors distribution on the corresponding materials
+property.
+Figure 2 compares the MEGNet model predictions using the unrelaxed,
+BOWSR-relaxed, and DFT-relaxed structures as inputs with respect to DFT-
+computed values. The mean absolute errors (MAEs) of the MEGNet models
+using the DFT-relaxed structures provide a best-case performance baseline. It
+should be noted that the MEGNet models were trained using a superset of
+data from the Materials Project that includes the DFT-relaxed structures [13].
+Hence, the reported MAEs of MEGNet predictions using DFT-relaxed struc-
+tures in this work are much smaller than the previously reported MAEs of these
+MEGNet models from cross-validation and should not be considered as a metric
+for MEGNet performance. Using the unrelaxed structures as inputs results in
+much higher, positively skewed MAEs in the MEGNet formation energy predic-
+tion compared to using DFT-relaxed structures. This is because the unrelaxed
+structures have lattice parameters and atomic positions that can deviate sub-
+stantially from the ground state DFT-relaxed structures, resulting in higher
+6
+
+[page 7]
+energies. Using the BOWSR-relaxed structures as inputs reduces the MAEs by
+a factor of four, from 363 meV atom−1 to 88 meV atom−1. The R2 also substan-
+tially increases from 0.67 to 0.96, and the error distribution is Gaussian-like with
+a mean close to 0. Similarly, large improvements in the MEGNet predictions
+of the elastic moduli are also observed using the BOWSR-relaxed structures
+compared to using unrelaxed structures, with MAEs in the log 10KVRH and
+log10GVRH reducing by half. We tested the sensitivity of the BOWSR algo-
+rithm to the initial structures used to perform elemental substitution. Using
+four randomly chosen parent structures with diﬀerent lattice parameters for
+each prototype, the above procedures were repeated and the results are shown
+in Figure S3. The BOWSR-relaxed structures exhibit consistently low errors
+regardless of initial structure selection.
+We also tested the sensitivity of the BOWSR algorithm to the accuracy of
+the energy evaluator by artiﬁcially introducing Gaussian noise into the MEG-
+Net formation energy prediction. The energy errors from the BOWSR-relaxed
+structures are linearly correlated with the errors of the surrogate ML model with
+the root mean square error (RMSE) ranging from 27 to 1000 meV atom−1 (Fig-
+ure S4), which indicates the robustness of the BO propagation and the broad
+applicability of the BOWSR algorithm to any surrogate ML models. The same
+linear correlations are also observed between the elastic moduli errors and the
+errors of the surrogate ML model, as shown in Figure S4c and S4d.
+7
+
+[page 8]
+2.3. Discovery of Ultra-incompressible Hard Materials
+Elemental
+Substitution
+M’,M’’: Mo, W, Os, Re
+X: B, C
+Ternary Prototypes
+(5555)
+M'
+M''
+XUnrelaxed Candidates
+(399960)
+X
+M'
+M''
+BOWSR Algorithm
+Relaxed Candidates
+(399960)
+DFT Ehull < 100 meV
+DFT Relaxation
+Screening Criteria
+(143)
+Elastic Tensor 
+Calculation
+Synthesis
+
+MEGNet - Ef
+MEGNet - KVRH
+MEGNet - GVRH
+KVRH > 250 GPa
+Ehull < 100 meV
+GVRH > 100 GPaScreening Criteria 
+(1603)
+Figure 3: Flowchart of ultra-incompressible materials discovery leveraged by the
+BOWSR algorithm and MEGNet models. The materials candidates were generated
+by elemental substitution to structure prototypes. These candidates were relaxed by the
+BOWSR algorithm and subsequently screened by their predicted thermodynamic stability and
+mechanical properties. The screened candidates were further veriﬁed by DFT calculations, and
+the high-ranked candidates were directed to synthesis attempts. Quantity in the parenthesis
+shows the number of candidates at each stage.
+We used the BOWSR algorithm with the MEGNet models to rapidly screen
+hundreds of thousands of candidates for novel ultra-incompressible hard materi-
+als, as shown in Figure 3. Given that binary compounds have already been ex-
+8
+
+[page 9]
+tensively explored in the literature [29, 30], we targeted our search in 12 ternary
+M′
+xM′′
+yXz chemical spaces, where M′, M′′= Mo, W, Os, or Re and X = B or
+C. These elements were selected based on their common occurrences in ultra-
+incompressible hard binary compounds. By combinatorially applying elemental
+substitutions to 5,555 ternary structures prototypes in the ICSD [27, 28], 399,960
+candidates were generated and relaxed using the BOWSR algorithm with the
+MEGNet energy model. The BOWSR-relaxed candidates were then screened
+for stability and mechanical properties using MEGNet property models. The
+stability metric used was the energy above hull EMEGNet
+hull , which was computed
+using the predicted formation energy EMEGNet
+f with the 0 K phase diagram in
+the Materials Project database [26, 13, 31]. At this intermediate stage, a rela-
+tively generous threshold of EMEGNet
+hull < 100 meV atom−1 was used to obtain
+candidates that are likely to be thermodynamic stable [32]. Of these, candidates
+with relatively high MEGNet-predicted bulk and shear moduli (K MEGNet
+VRH > 250
+GPa andGMEGNet
+VRH > 100 GPa) were identiﬁed. Similar to the stability criterion,
+the mechanical criteria used are slightly lower than the conventional threshold
+for ultra-incompressibility to account for the higher MAE of the MEGNet elas-
+tic moduli predictions [30]. DFT relaxations and energy calculations were then
+carried out on the 1,603 candidates that passed all three ML-based screening
+criteria. Subsequently, expensive DFT elastic tensor calculations [33] were per-
+formed on the 143 candidates that have DFT EDFT
+hull < 100 meV atom−1.
+Table 1 summarizes the computed elastic properties of the top ten candi-
+dates with the highest computed bulk modulus together with other well-known
+ultra-incompressible materials. Attempts were then made to synthesize all ten
+candidates with eight unique compositions via in-situ reactive spark plasma sin-
+tering (SPS) using elemental precursors in the appropriate ratios (see Methods).
+Two crystals, MoWC 2 (P 63/mmc) and ReWB (Pca21), were successfully syn-
+thesized and conﬁrmed via X-ray diﬀraction (XRD, Figure 4a) as single phase,
+while the synthesis of the other six compositions yielded multiple phases (see
+Figure S5 - S10). Henceforth, we will refer to the two novel phases of MoWC 2
+(P 63/mmc) and ReWB (Pca21) simply as MoWC 2 and ReWB, respectively.
+9
+
+[page 10]
+Table 1: DFT-computed bulk modulus (KVRH), shear modulus (GVRH), Young’s
+modulus (EVRH), Poisson’s ratio (ν) and energy above hull (Ehull) for the top 10
+candidates with regard toKVRH in descending order. MoWC 2 and ReWB are bolded
+as they are successfully synthesized by experiments. Some of the known ultra-incompressible
+materials are used as references.
+KVRH (GPa) GVRH (GPa) EVRH (GPa) ν E hull (meV atom−1)
+Candidates
+ReOsB (P ¯6m2) 370.7 241.3 594.7 0.233 31.7
+ReOsB2 (P 63/mmc) 367.3 220.9 552.0 0.250 87.8
+MoWC2 (P63/mmc) 357.9 260.5 628.8 0.207 96.3
+ReWB (Fddd) 356.8 176.9 455.5 0.287 20.6
+Re13WB9 (P¯6m2) 353.1 177.0 455.1 0.285 88.4
+ReWB (Pca21) 352.6 144.1 380.4 0.320 33.1
+OsWB (Pbam) 351.1 183.1 467.9 0.278 43.3
+ReWB (Cmce) 350.9 161.5 420.1 0.301 32.6
+Re6W7B8 (P 6/m) 348.4 182.8 466.8 0.277 22.2
+ReW2B2 (P4/mbm) 345.8 156.0 406.8 0.304 72.1
+Known materials
+C (Fd¯3m) 430.3 503.6 1086.9 0.079 136.4
+WC (P ¯6m2) 389.8 280.0 677.8 0.210 1.1
+BN (F¯43m) 370.1 382.8 852.4 0.116 77.3
+ReB2 (P63/mmc) 334.9 272.3 642.7 0.180 4.7
+10
+
+[page 11]
+a b
+W
+Re
+Mo
+B
+C
+Pca21 - ReWB
+P63/mmc - MoWC2
+/u1D73D2
+Intensity (a.u.) 
+Experimental ReWB
+Calculated ReWB
+Experimental MoWC2
+Calculated MoWC2
+MEGNet Ehull: 66 meV atom-1 
+MEGNet Ehull: 7 meV atom-1 
+(1 1 0) (2 0 0)
+(0 0 2)
+(1 2 1)
+(2 0 2) (2 1 3)
+(4 1 1)
+(3 1 0) (3 3 0)
+* *
+*
+*
+** ***
+*
+(3 1 2)
+*
+(0 0 0 4)
+*
+(1 0 -1 0)
+*
+(1 0 -1 2)
+*
+(1 0 -1 4)
+*
+(2 -1 -1 0) *
+(2 -1 -1 4)
+*
+(1 0 -1 8)
+Figure 4: Two new materials proposed by the BOWSR algorithm and MEGNet
+prediction conﬁrmed by XRD characterizations. a, Measured and calculated XRD
+patterns of two materials (ReWB and MoWC 2). The major peaks are indexed for reference.
+The pymatgen library [34] was used to calculate the XRD patterns of the DFT-relaxed crystal
+structures. Minor shifts in peak positions between the measured and calculated XRD patterns
+can be attributed to the systematic errors between DFT and experimentally-measured lattice
+parameters. The comparison in lattice parameters between BOWSR-relaxed, DFT-relaxed,
+and experimental structures is shown in Table S1. b, Crystal structures and space group of
+these two materials. The predicted energy above hull for ReWB and MoWC 2 are 66 and 7
+meV atom− 1, respectively.
+11
+
+[page 12]
+a b
+c d
+Figure 5: Experimental measurements and theoretical prediction of mechanical
+properties for the new materials. Comparisons of a, bulk moduli and b, shear moduli
+between MEGNet, DFT and pulse-echo measurements. c, Measured Vickers microhardness
+of ReWB and MoWC 2 under loads ranging from 0.49 N to 9.8 N. d, Comparisons between
+the hardness derived from MEGNet predicted bulk modulus and shear modulus [35] and the
+hardness measured by Vickers indentation at the low load (0.49 N). The DFT calculated results
+are referenced. The error bar represents the standard deviation of multiple experimental
+measurements.
+The mechanical properties of MoWC 2 and ReWB were measured using the
+pulse-echo method [36, 37]. As shown in Figure 5a and 5b, the experimentally-
+measured bulk and shear moduli are in excellent agreement with both the MEG-
+Net and DFT predictions. Both new materials exhibit ultra-incompressibility,
+with bulk modulus close to or larger than 300 GPa [30]. MoWC 2 also exhibits
+high estimated Vickers hardnesses Hv of 36.6 at 0.49 N indentation load and
+20.9 GPa at 9.8 N load (Figure 5c). ReWB has a comparatively lower measured
+12
+
+[page 13]
+hardness of 29.5 at 0.49 N load and 17.6 GPa at 9.8 N load. The Hv values
+at 0.49 N load are within 20-25% of those derived from the MEGNet and DFT
+predicted shear moduli via the empirical relation Hv = 0.151G [35], as shown
+in Figure 5d.
+3. Discussion
+Many materials properties, such as formation energies, mechanical prop-
+erties, etc., exhibit a strong dependence on the crystal structure. However,
+obtaining equilibrium crystal structures as inputs to accurate ML models still
+requires expensive ab initio computations. By coupling an accurate MEGNet
+energy model with Bayesian optimization of symmetry-constrained parameters,
+we demonstrate that the new algorithm can reasonably approximate equilibrium
+structures. The resulting substantial improvements in ML property predictions
+enable the rapid screening of ∼400,000 candidate crystals for stability and ex-
+ceptional mechanical properties, 10 3 - 104 orders of magnitude larger than that
+accessible by high-throughput DFT calculations.
+The eﬀectiveness of the BOWSR algorithm is limited by the accuracy of
+the energy evaluator. While the MEGNet formation energy model has been
+selected in this work, we foresee that the future development of more accurate
+ML energy models may improve the quality of the BOWSR-relaxed structures,
+and subsequent ML property predictions, even further. Here, the search for
+ultra-incompressible materials has been chosen as a model problem due to the
+high cost of acquisition of elastic moduli via standard DFT approaches, but the
+approach outlined can be readily extended to any property for which a reliable
+ML model can be developed. It should be noted, however, that there is an
+inverse relationship between the cost of acquisition and the training data size;
+hence, datasets on expensive properties (e.g., elastic moduli, optical properties,
+etc.) tend to be much smaller in size compared to cheaper properties, making
+it more diﬃcult to build reliable ML models for high-cost properties. While
+approaches such as transfer learning or multi-ﬁdelity models have been shown to
+13
+
+[page 14]
+mitigate this trade-oﬀ to some extent [16, 17, 38, 39], the generally higher errors
+in ML models for high-cost properties should be factored into the screening
+process in the thresholds.
+4. Acknowledgements
+This research was primarily supported by the National Science Foundation
+Materials Research Science and Engineering Center program through the UC
+Irvine Center for Complex and Active Materials (DMR-2011967). The authors
+also acknowledge the use of data and software resources from the Materials
+Project, funded by the U.S. Department of Energy, Oﬃce of Science, Oﬃce
+of Basic Energy Sciences, Materials Sciences and Engineering Division under
+contract no. DE-AC02-05-CH11231: Materials Project program KC23MP, and
+computing resources provided by the Extreme Science and Engineering Discov-
+ery Environment (XSEDE) under grant ACI-1548562.
+5. Material and Methods
+5.1. Bayesian Optimization With Symmetry Relaxation Algorithm
+Geometry relaxation of a crystal structure requires the optimization of up to
+3N +6 variables - six lattice parameters and three fractional coordinates for each
+of the N atoms. By constraining the symmetry to remain unchanged during
+relaxation can reduce the number of independent variables considerably [40, 41,
+42]. The open-source spglib [43] package was used for symmetry determination.
+The search for optimized symmetry-constrained lattice parameters and atomic
+coordinates that minimize the total energy was then carried out via Bayesian
+optimization (BO). The changes in the variables were used as the optimization
+inputs to reduce the tendency of the BO process being dominated by parameters
+with large magnitudes. This approach has been previously used for geometry
+optimization along the imaginary phonon modes [42].
+Using a Latin hypercube sampling, a set of training observations D ∼
+{(xi,U (xi)) i = 1 : m}were initialized, where the xi are the m independent
+14
+
+[page 15]
+lattice parameters and atomic coordinates and U(.) is the energy of the corre-
+sponding structure evaluated by the surrogate model (see Equations 1 and 2).
+The BO strategy comprises two steps [44]:
+1. A Gaussian process (GP) model is trained on the initialized training ob-
+servations D to approximate the U(x). The Rational Quadratic kernel
+[45] is adopted as the covariance function of GP. The noise level of GP
+model is set to the root mean square error (RMSE) of the energy model.
+2. The acquisition function that balances the exploitation and exploration is
+calculated for samples in the search space apart from the training observa-
+tions and the candidate with optimal acquisition function is proposed to
+be evaluated (formation energy prediction by surrogate ML model). Ex-
+ploitation represents the samples with high predicted mean from the GP,
+and exploration accounts the samples with high predictive uncertainty
+[46, 47, 48]. Here, we chose the expected improvement as the acquisition
+function, which can be analytically expressed as [49, 50]:
+E[I(x)] = (µ(x)−U(x+)−ξ)·Φ(Z) +σ(x)·φ(Z) (3)
+and
+x+ = argmax
+i=1,...,n
+U(xi) (4)
+Z = µ(x)−U(x+)−ξ
+σ(x) (5)
+whereµ(x) andσ(x) are the mean and standard deviation of the posterior
+distribution on x from the GP, respectively, and Φ( x) and φ(x) are the
+cumulative distribution function (CDF) and probability density function
+(PDF), respectively. The ξparameter can be tuned to balance the trade-
+oﬀ between the ﬁrst term (exploitation) and the second term (exploration)
+in Equation (3). Until the maximum number of iteration steps is reached,
+the sample with optimal acquisition function was iteratively augmented
+to the training observations and used to update the GP surrogate model
+in the next loop.
+15
+
+[page 16]
+5.2. Materials Graph Network Models
+The Materials Graph Network (MEGNet) models used in this work are based
+on the same architecture as our previous work [16]. Brieﬂy, three graph con-
+volutional layers with [64, 64, 32] neurons were used in each update function,
+and the shifted softplus function was used as the non-linear activation function.
+A set2set readout function with two passes was used after the graph convolu-
+tion steps. The cutoﬀ radius for constructing the neighbor graph was 5 ˚A. The
+MEGNet formation energy (Ef) and elasticity (KVRH andGVRH) models were
+trained using the 2019.4.1 version of Materials Project database [13] containing
+133,420 structure-formation energy and 12,179 structure-bulk/shear modulus
+data pairs. Each dataset was split into 80%:10%:10% train:validation:test ra-
+tios. During the model training, we used a batch size of 128 structures, and set
+the initial learning rate to 0.001 in the Adam optimizer. All models were trained
+for a maximum of 1500 epochs with an early stopping callback, which terminates
+the model training if the validation error does not reduce for 500 consecutive
+steps. The mean absolute errors (MAEs) of Ef, log10(KVRH) and log 10(GVRH)
+models in test data are 26 meV atom −1, 0.07, and 0.12, respectively.
+5.3. DFT calculations
+The DFT relaxations, energy and elastic tensor calculations for the small
+number of candidates that passed the ML screening were carried out using Vi-
+enna ab initio simulation package (VASP) [51] within the projector augmented
+wave approach [52]. The exchange-correlation interaction was described using
+the Perdew-Burke-Ernzerhof (PBE) generalized gradient approximation (GGA)
+[53] functional for structural relaxations and energy calculations. The plane
+wave energy cutoﬀ was set to 520 eV, and the k-point density of at least 1,000
+per number of atoms was used. All structures were relaxed with energies and
+forces converged to 10−5 eV and 0.01 eV/ ˚A, respectively, consistent with the
+calculation setting used in the Materials Project [13]. The elastic tensor cal-
+culations were performed using the procedure described in previous work [33].
+A tighter energy convergence criterion of 10 −7 eV was used, and strains with
+16
+
+[page 17]
+magnitude of (-1%, -0.5%, 0.5%, 1%) were applied to each of the 6 independent
+components of strain tensor.
+5.4. Synthesis
+Bulk specimens of candidates ReOsB, ReOsB 2, MoWC2, ReWB, Re13WB9,
+OsWB, Re 6W7B8, and ReW 2B2 were synthesized via in-situ reactive spark
+plasma sintering (SPS). Elemental powders of Mo, W ( >99.5% purity, ∼325
+mesh, Alfa Aesar), Re ( ∼99.99% purity, ∼325 mesh, Strem Chemicals), Os
+(∼99.8% purity,∼200 mesh, Alfa Aesar), boron (∼99% purity, 1-2µm, US Re-
+search Nanomaterials), and graphite (∼99.9% purity, 0.4-1.2 µm, US Research
+Nanomaterials) were utilized as precursors. For each composition, stoichiomet-
+ric amounts of elemental powders were weighted out in batches of 5 g. The
+powders were ﬁrst mixed by a vortex mixer, and then high energy ball milled
+(HEBM) in a Spex 8000D mill (SpexCertPrep) by tungsten carbide lined stain-
+less steel jars as well as 11.2 mm tungsten carbide milling media (ball-to-powder
+ratio≈4.5:1) for 50 min. 0.05 g or ∼1 wt% of stearic acid was used as lubri-
+cant in the milling process. After HEMB, the as-milled powder mixtures were
+loaded into 10 mm graphite dies lined with graphite foils in batches of 2.5 g, and
+subsequently consolidated into dense pellets via SPS in vacuum ( < 10−2 Torr)
+by a Thermal Technologies 3000 series SPS machine. The HEBM and powder
+handing were conducted in an argon atmosphere (with O 2 level < 10 ppm) to
+prevent oxidation.
+During the SPS, specimens were initially heated to 1400 ◦C at a rate of 100
+◦C/min under constant pressure of 10 MPa. For the ﬁnal densiﬁcation, the
+temperature was subsequently raised at a constant rate of 30 ◦C/min to a ﬁnal
+isothermal sintering temperature, which was set at diﬀerent levels for diﬀerent
+target compositions — 1800 ◦C (ReWB), 1700 ◦C (MoWC 2 and Re 6W7B8),
+1600◦C (Re 13WB9 and ReW 2B2), or 1500 ◦C (ReOsB, ReOsB 2, and OsWB),
+and maintained isothermally for 10 min. Meanwhile, the pressure was increased
+to 50 MPa at a ramp rate of 5 MPa/min. The ﬁnal densiﬁcation temperature
+was optimized for each specimen to achieve a high relative density while prevent
+17
+
+[page 18]
+specimen melting due to overheating. The in-situ reactions between elemental
+precursors likely took place during the initial temperature ramping. After sin-
+tering, the specimens were cooled down naturally inside the SPS machine (with
+power oﬀ).
+5.5. Experimental Characterization
+Sintered specimens were ﬁrst ground to remove the carbon-contaminated sur-
+face layer from the graphite tooling, and polished for further characterizations.
+X-ray diﬀraction (XRD) experiments were conducted using a Rigaku Miniﬂex
+diﬀractometer with the Cu K αradiation at 30 kV and 15 mA. The Vickers
+microhardness tests were carried out on a LECO diamond microindentor with
+loading force varying from 0.49 N (50 gf) to 9.8 N (1 kgf) and constant holding
+time of 15 s, abiding by the ASTM Standard C1327. Over 20 measurements at
+diﬀerent locations were conducted for each specimen at each indentation load to
+ensure statistical validity and minimize the microstructural and grain boundary
+eﬀects. In particular, over 30 measurements were conducted for each specimen
+at 9.8 N indentation load.
+The Young’s and shear moduli of the specimens were calculated from the
+ultrasonic velocities measured with a Tektronix TDS 420A digital oscilloscope,
+following the ASTM standard A494-15. Multiple measurements were conducted
+at diﬀerent locations.
+6. Data Availability
+The raw/processed data required to reproduce these ﬁndings cannot be
+shared at this time due to legal or ethical reasons.
+7. References
+References
+[1] W. Kohn, L. J. Sham, Self-Consistent Equations Including Exchange and
+Correlation Eﬀects, Phys. Rev. 140 (4A) (1965) A1133–A1138. doi:10.
+18
+
+[page 19]
+1103/PhysRev.140.A1133.
+[2] P. Hohenberg, W. Kohn, Inhomogeneous Electron Gas, Phys. Rev. 136 (3B)
+(1964) B864–B871. doi:10.1103/PhysRev.136.B864.
+[3] J. Greeley, T. F. Jaramillo, J. Bonde, I. Chorkendorﬀ, J. K. Nørskov, Com-
+putational high-throughput screening of electrocatalytic materials for hy-
+drogen evolution, Nature Mater 5 (11) (2006) 909–913. doi:10.1038/
+nmat1752.
+[4] R. Gautier, X. Zhang, L. Hu, L. Yu, Y. Lin, T. O. L. Sunde, D. Chon, K. R.
+Poeppelmeier, A. Zunger, Prediction and accelerated laboratory discovery
+of previously unknown 18-electron ABX compounds, Nature Chem 7 (4)
+(2015) 308–316. doi:10.1038/nchem.2207.
+[5] Q. Yan, J. Yu, S. K. Suram, L. Zhou, A. Shinde, P. F. Newhouse, W. Chen,
+G. Li, K. A. Persson, J. M. Gregoire, J. B. Neaton, Solar fuels photoanode
+materials discovery by integrating high-throughput theory and experiment,
+Proc Natl Acad Sci USA 114 (12) (2017) 3040–3043. doi:10.1073/pnas.
+1619940114.
+[6] Z. Wang, J. Ha, Y. H. Kim, W. B. Im, J. McKittrick, S. P. Ong, Mining Un-
+explored Chemistries for Phosphors for High-Color-Quality White-Light-
+Emitting Diodes, Joule 2 (5) (2018) 914–926. doi:10.1016/j.joule.
+2018.01.015.
+[7] A. Seko, A. Togo, H. Hayashi, K. Tsuda, L. Chaput, I. Tanaka, Pre-
+diction of Low-Thermal-Conductivity Compounds with First-Principles
+Anharmonic Lattice-Dynamics Calculations and Bayesian Optimization,
+Phys. Rev. Lett. 115 (20) (2015) 205901. doi:10.1103/PhysRevLett.115.
+205901.
+[8] D. Xue, P. V. Balachandran, J. Hogden, J. Theiler, D. Xue, T. Lookman,
+Accelerated search for materials with targeted properties by adaptive de-
+sign, Nat Commun 7 (1) (2016) 11241. doi:10.1038/ncomms11241.
+19
+
+[page 20]
+[9] F. A. Faber, A. Lindmaa, O. A. von Lilienfeld, R. Armiento, Machine
+Learning Energies of 2 Million Elpasolite ( A B C 2 D 6 ) Crystals,
+Phys. Rev. Lett. 117 (13) (2016) 135502. doi:10.1103/PhysRevLett.117.
+135502.
+[10] B. Sanchez-Lengeling, A. Aspuru-Guzik, Inverse molecular design using
+machine learning: Generative models for matter engineering, Science
+361 (6400) (2018) 360–365. doi:10.1126/science.aat2663.
+[11] J. Schmidt, M. R. G. Marques, S. Botti, M. A. L. Marques, Recent advances
+and applications of machine learning in solid-state materials science, npj
+Comput Mater 5 (1) (2019) 83. doi:10.1038/s41524-019-0221-0 .
+[12] B. Kim, S. Lee, J. Kim, Inverse design of porous materials using artiﬁcial
+neural networks, Sci. Adv. 6 (1) (2020) eaax9324. doi:10.1126/sciadv.
+aax9324.
+[13] A. Jain, S. P. Ong, G. Hautier, W. Chen, W. D. Richards, S. Dacek, S. Cho-
+lia, D. Gunter, D. Skinner, G. Ceder, K. A. Persson, Commentary: The
+Materials Project: A materials genome approach to accelerating materials
+innovation, APL Materials 1 (1) (2013) 011002. doi:10.1063/1.4812323.
+[14] J. E. Saal, S. Kirklin, M. Aykol, B. Meredig, C. Wolverton, Materials
+Design and Discovery with High-Throughput Density Functional Theory:
+The Open Quantum Materials Database (OQMD), JOM 65 (11) (2013)
+1501–1509. doi:10.1007/s11837-013-0755-4 .
+[15] S. Curtarolo, W. Setyawan, S. Wang, J. Xue, K. Yang, R. H. Taylor,
+L. J. Nelson, G. L. Hart, S. Sanvito, M. Buongiorno-Nardelli, N. Mingo,
+O. Levy, AFLOWLIB.ORG: A distributed materials properties repository
+from high-throughput ab initio calculations, Computational Materials Sci-
+ence 58 (2012) 227–235. doi:10.1016/j.commatsci.2012.02.002.
+[16] C. Chen, W. Ye, Y. Zuo, C. Zheng, S. P. Ong, Graph Networks as a
+20
+
+[page 21]
+Universal Machine Learning Framework for Molecules and Crystals, Chem.
+Mater. 31 (9) (2019) 3564–3572. doi:10.1021/acs.chemmater.9b01294.
+[17] C. Chen, Y. Zuo, W. Ye, X. Li, S. P. Ong, Learning properties of ordered
+and disordered materials from multi-ﬁdelity data, Nat Comput Sci 1 (1)
+(2021) 46–53. doi:10.1038/s43588-020-00002-x .
+[18] T. Xie, J. C. Grossman, Crystal Graph Convolutional Neural Networks for
+an Accurate and Interpretable Prediction of Material Properties, Phys.
+Rev. Lett. 120 (14) (2018) 145301. doi:10.1103/PhysRevLett.120.
+145301.
+[19] D. Duvenaud, D. Maclaurin, J. Aguilera-Iparraguirre, R. Gomez-
+Bombarelli, T. Hirzel, A. Aspuru-Guzik, R. P. Adams, Convolutional Net-
+works on Graphs for Learning Molecular Fingerprints 9.
+[20] S. Kearnes, K. McCloskey, M. Berndl, V. Pande, P. Riley, Molecular graph
+convolutions: Moving beyond ﬁngerprints, J Comput Aided Mol Des 30 (8)
+(2016) 595–608. doi:10.1007/s10822-016-9938-8 .
+[21] J. Gilmer, S. S. Schoenholz, P. F. Riley, O. Vinyals, G. E. Dahl, Neu-
+ral Message Passing for Quantum Chemistry, ArXiv170401212 Cs arXiv:
+1704.01212.
+[22] K. T. Sch¨ utt, H. E. Sauceda, P.-J. Kindermans, A. Tkatchenko, K.-R.
+M¨ uller, SchNet – A deep learning architecture for molecules and materials,
+The Journal of Chemical Physics 148 (24) (2018) 241722. doi:10.1063/
+1.5019779.
+[23] P. B. Jørgensen, K. W. Jacobsen, M. N. Schmidt, Neural Message Passing
+with Edge Updates for Predicting Properties of Molecules and Materials,
+ArXiv180603146 Cs Stat arXiv:1806.03146.
+[24] K. T. Sch¨ utt, P. Kessel, M. Gastegger, K. A. Nicoli, A. Tkatchenko, K.-R.
+M¨ uller, SchNetPack: A Deep Learning Toolbox For Atomistic Systems, J.
+21
+
+[page 22]
+Chem. Theory Comput. 15 (1) (2019) 448–455. doi:10.1021/acs.jctc.
+8b00908.
+[25] G. Cheon, L. Yang, K. McCloskey, E. J. Reed, E. D. Cubuk, Crys-
+tal Structure Search with Random Relaxations Using Graph Networks,
+ArXiv201202920 Cond-Mat PhysicsphysicsarXiv:2012.02920.
+[26] S. P. Ong, L. Wang, B. Kang, G. Ceder, Li-Fe-P-O 2 Phase Diagram from
+First Principles Calculations, Chem. Mater. 20 (5) (2008) 1798–1807. doi:
+10.1021/cm702327g.
+[27] G. Bergerhoﬀ, R. Hundt, R. Sievers, I. D. Brown, The inorganic crystal
+structure data base, J. Chem. Inf. Model. 23 (2) (1983) 66–69. doi:10.
+1021/ci00038a003.
+[28] A. Belsky, M. Hellenbrandt, V. L. Karen, P. Luksch, New developments in
+the Inorganic Crystal Structure Database (ICSD): Accessibility in support
+of materials research and design, Acta Cryst Sect A Found Cryst 58 (3)
+(2002) 364–369. doi:10.1107/S0108768102006948.
+[29] G. Akopov, M. T. Yeung, R. B. Kaner, Rediscovering the Crystal Chem-
+istry of Borides, Adv. Mater. 29 (21) (2017) 1604506. doi:10.1002/adma.
+201604506.
+[30] M. T. Yeung, R. Mohammadi, R. B. Kaner, Ultraincompressible, Super-
+hard Materials, Annu. Rev. Mater. Res. 46 (1) (2016) 465–485. doi:
+10.1146/annurev-matsci-070115-032148 .
+[31] W. Ye, C. Chen, Z. Wang, I.-H. Chu, S. P. Ong, Deep neural networks for
+accurate predictions of crystal stability, Nat Commun 9 (1) (2018) 3800.
+doi:10.1038/s41467-018-06322-x .
+[32] W. Sun, S. T. Dacek, S. P. Ong, G. Hautier, A. Jain, W. D. Richards, A. C.
+Gamst, K. A. Persson, G. Ceder, The thermodynamic scale of inorganic
+crystalline metastability, Sci. Adv. 2 (11) (2016) e1600225. doi:10.1126/
+sciadv.1600225.
+22
+
+[page 23]
+[33] M. de Jong, W. Chen, T. Angsten, A. Jain, R. Notestine, A. Gamst,
+M. Sluiter, C. Krishna Ande, S. van der Zwaag, J. J. Plata, C. Toher,
+S. Curtarolo, G. Ceder, K. A. Persson, M. Asta, Charting the complete
+elastic properties of inorganic crystalline compounds, Sci Data 2 (1) (2015)
+150009. doi:10.1038/sdata.2015.9.
+[34] S. P. Ong, W. D. Richards, A. Jain, G. Hautier, M. Kocher, S. Cholia,
+D. Gunter, V. L. Chevrier, K. A. Persson, G. Ceder, Python Materials
+Genomics (pymatgen): A robust, open-source python library for materials
+analysis, Computational Materials Science 68 (2013) 314–319. doi:10.
+1016/j.commatsci.2012.10.028.
+[35] X.-Q. Chen, H. Niu, D. Li, Y. Li, Intrinsic Correlation between Hardness
+and Elasticity in Polycrystalline Materials and Bulk Metallic Glasses, In-
+termetallics 19 (9) (2011) 1275–1281. arXiv:1102.4063, doi:10.1016/j.
+intermet.2011.03.026.
+[36] H. B. Huntington, Ultrasonic Measurements on Single Crystals, Phys. Rev.
+72 (4) (1947) 321–331. doi:10.1103/PhysRev.72.321.
+[37] D. Lazarus, The Variation of the Adiabatic Elastic Constants of KCl, NaCl,
+CuZn, Cu, and Al with Pressure to 10,000 Bars, Phys. Rev. 76 (4) (1949)
+545–553. doi:10.1103/PhysRev.76.545.
+[38] G. Pilania, J. Gubernatis, T. Lookman, Multi-ﬁdelity machine learning
+models for accurate bandgap predictions of solids, Computational Materials
+Science 129 (2017) 156–163. doi:10.1016/j.commatsci.2016.12.004.
+[39] D. Jha, K. Choudhary, F. Tavazza, W.-k. Liao, A. Choudhary, C. Camp-
+bell, A. Agrawal, Enhancing materials property prediction by leveraging
+computational and experimental data using deep transfer learning, Nat
+Commun 10 (1) (2019) 5316. doi:10.1038/s41467-019-13297-w .
+[40] Y. Wang, J. Lv, L. Zhu, Y. Ma, Crystal structure prediction via particle-
+23
+
+[page 24]
+swarm optimization, Phys. Rev. B 82 (9) (2010) 094116. doi:10.1103/
+PhysRevB.82.094116.
+[41] C. W. Glass, A. R. Oganov, N. Hansen, USPEX—Evolutionary crys-
+tal structure prediction, Computer Physics Communications 175 (11-12)
+(2006) 713–720. doi:10.1016/j.cpc.2006.07.020.
+[42] M.-O. Lenz, T. A. R. Purcell, D. Hicks, S. Curtarolo, M. Scheﬄer,
+C. Carbogno, Parametrically constrained geometry relaxations for high-
+throughput materials science, npj Comput Mater 5 (1) (2019) 123. doi:
+10.1038/s41524-019-0254-4 .
+[43] A. Togo, I. Tanaka, $\texttt{Spglib}$: A software library for crystal sym-
+metry search, ArXiv180801590 Cond-Mat arXiv:1808.01590.
+[44] T. Lookman, P. V. Balachandran, D. Xue, R. Yuan, Active learning in
+materials science with emphasis on adaptive sampling using uncertainties
+for targeted design, npj Comput Mater 5 (1) (2019) 21. doi:10.1038/
+s41524-019-0153-8 .
+[45] C. E. Rasmussen, C. K. I. Williams, Gaussian Processes for Machine Learn-
+ing, Adaptive Computation and Machine Learning, MIT Press, Cambridge,
+Mass, 2006.
+[46] R. Martinez-Cantin, N. de Freitas, E. Brochu, J. Castellanos, A. Doucet, A
+Bayesian exploration-exploitation approach for optimal online sensing and
+planning with a visually guided mobile robot, Auton Robot 27 (2) (2009)
+93–103. doi:10.1007/s10514-009-9130-2 .
+[47] B. Shahriari, K. Swersky, Z. Wang, R. P. Adams, N. de Freitas, Taking the
+Human Out of the Loop: A Review of Bayesian Optimization, Proc. IEEE
+104 (1) (2016) 148–175. doi:10.1109/JPROC.2015.2494218.
+[48] P. V. Balachandran, D. Xue, J. Theiler, J. Hogden, T. Lookman, Adaptive
+Strategies for Materials Design using Uncertainties, Sci Rep 6 (1) (2016)
+19660. doi:10.1038/srep19660.
+24
+
+[page 25]
+[49] D. R. Jones, M. Schonlau, Eﬃcient Global Optimization of Expensive
+Black-Box Functions 38.
+[50] T. Lookman, F. J. Alexander, K. Rajan (Eds.), Information Science for
+Materials Discovery and Design, Vol. 225 of Springer Series in Materials
+Science, Springer International Publishing, Cham, 2016. doi:10.1007/
+978-3-319-23871-5 .
+[51] G. Kresse, J. Furthm¨ uller, Eﬃcient iterative schemes for ab initio total-
+energy calculations using a plane-wave basis set, Phys. Rev. B 54 (16)
+(1996) 11169–11186. doi:10.1103/PhysRevB.54.11169.
+[52] P. E. Bl¨ ochl, Projector augmented-wave method, Phys. Rev. B 50 (24)
+(1994) 17953–17979. doi:10.1103/PhysRevB.50.17953.
+[53] J. P. Perdew, K. Burke, M. Ernzerhof, Generalized Gradient Approxi-
+mation Made Simple, Phys. Rev. Lett. 77 (18) (1996) 3865–3868. doi:
+10.1103/PhysRevLett.77.3865.
+25
+
+[page 26]
+Supplementary Material
+Accelerating Materials Discovery with Bayesian
+Optimization and Graph Deep Learning
+Yunxing Zuoa,∗, Mingde Qin a,∗, Chi Chen a, Weike Ye a, Xiangguo Li a, Jian
+Luoa,∗∗, Shyue Ping Ong a,∗∗
+aDepartment of NanoEngineering, University of California San Diego, 9500 Gilman Dr,
+Mail Code 0448, La Jolla, CA 92093-0448, United States
+∗These authors contribute equally to this work
+∗∗Correspondences: jluo@ucsd.edu, ongsp@eng.ucsd.edu
+Preprint submitted to Materials Today April 22, 2021
+arXiv:2104.10242v1  [cond-mat.mtrl-sci]  20 Apr 2021
+
+[page 27]
+Spacegroup: I4/mmm
+Composition: Ca4Bi2O
+Spacegroup: Pnma
+Composition: SnCe2Se4
+Spacegroup: Pnma
+Composition: MgF2
+Spacegroup: I4/mcm
+Composition: Ta5Si3
+Spacegroup: P21/c
+Composition: Ba2LaIrO6
+Spacegroup: Cmcm
+Composition: CsYZnTe3
+a b
+c d
+e f
+initialization iteration initialization iteration
+initialization iteration initialization iteration
+initialization iteration initialization iteration
+Figure S1: Convergence of the BOWSR algorithm using the MEGNet energy model
+for six structures in the dataset of properties prediction. These structures comprise
+two binary, two ternary, and two quaternary crystals obtained from elemental substitution
+in commonly occurring structure prototypes. The structure prototypes for a, Ta5Si3, b,
+MgF2, c, Ca4Bi2O, d, SnCe2Se4, e, Ba2LaIrO6, f, CsYZnTe3 are Cr 5B3 (ICSD#
+27124), Sr 2Si (ICSD# 422), K 2NiF4 (ICSD# 15576), CaFe 2O4 (ICSD# 28177), La 2ZnIrO6
+(ICSD# 75596), and KZrCuS 3 (ICSD# 80624), respectively. All structures were relaxed via
+the BOWSR algorithm using the default number of initialization samples (100) and iterations
+(100).
+2
+
+[page 28]
+counts
+a
+b
+binary ternary quaternary
+occurrence
+Figure S2: Statistical distribution of dataset used for property predictions. a, The
+distribution of 35 binary, 91 ternary, and 18 quaternary commonly occurring structure pro-
+totypes in the dataset. Each bar represents one structure prototype and there are at least
+30 unique compositions for each structure prototype. b, Frequency of each element occurring
+in the dataset. Elements are color-coded according to the number of occurrences. Oxygen is
+the most common element. The relatively high frequencies of the transition metal elements
+Fe, Co, Ni, Cu can be attributed to the commonly occurring intermetallic structure proto-
+types. The three most commonly occurring structure prototypes are the ternary intermetallic
+(ThCr2Si2,[1] TiNiSi,[2] and ZrNiAl[3]) and have 633, 619, and 484 compositions, respectively.
+3
+
+[page 29]
+x0.0
+0.4
+0.8
+1.2
+1.6MAE EMEGNet
+f  (eV atom 1)
+MAE Unrelaxed: 0.373 ± 0.084 (eV atom 1)
+Structure Prototypes0.0
+0.4
+0.8
+1.2
+1.6MAE EMEGNet
+f  (eV atom 1)
+MAE BOWSR-relaxed: 0.087 ± 0.009 (eV atom 1)
+Figure S3: Mean absolute errors (MAEs) of MEGNet prediction compared to DFT
+ground state calculations in formation energies using unrelaxed and BOWSR-
+relaxed structures grouped by structure prototypes. To test the sensitivity of the
+BOWSR algorithm to the initial structures, within each structure prototype, we selected four
+parent structures with diﬀerent lattice parameters for elemental substitution to obtain the un-
+relaxed structures (i.e., same composition with diﬀerent lattice parameters). The mean and
+standard deviation in the MAEs of the MEGNet formation energy prediction with respect to
+DFT-computed values for each prototype are plotted in the ascending order of mean MAE
+for the BOWSR-relaxed structures. While the unrelaxed structures obtained from elemen-
+tal substitution have large MAEs, relaxation via the BOWSR algorithm consistently yields
+structures with much lower and less noisy MAEs in the formation energies.
+4
+
+[page 30]
+a b
+c d
+Figure S4: Sensitivity of the BOWSR algorithm to the accuracy of the energy
+model. a, Error distributions of the MEGNet formation energy model on the training and
+test data. Both the standard deviation ( σ) and root mean squre error (RMSE) are 27 meV
+atom− 1. Varying amounts of Gaussian noise are added to the MEGNet formation energy
+prediction during the BOWSR relaxation process. The error of the energy model σenergy is
+then given by
+√
+σ2
+MEGNet +σ2
+noise, where σnoise is the standard deviation of the added noise.
+The RMSEs of the MEGNet-predicted b, formation energy, c, bulk modulus, and d, shear
+modulus for the BOWSR-relaxed structures are plotted against the error in the energy model.
+In all cases, linear correlations are observed between the RMSE of the MEGNet prediction
+and the error of the energy model, and reasonably low RMSEs in prediction are obtained
+when σenergy < 0.1 eV atom − 1.
+5
+
+[page 31]
+*
+*
+* * *
+*(1 0 -1 0)
+(0 0 0 2)
+(1 0 -1 1)
+(1 0 -1 2) (2 -1 -1 0)
+(1 0 -1 3)
+(0 0 0 2)
+*
+*
+(1 0 -1 1)
+*
+(1 0 -1 3)
+/u1D73D2
+Intensity (a.u.) 
+ReOsB Specimen
+Os (P63/mmc)
+ReB2 (P63/mmc)
+*
+(2 -1 -1 2)
+*
+(1 0 -1 0) (1 0 -1 2)
+*
+Figure S5: Measured XRD patterns of the ReOsB specimen. The specimen exhibits
+two major phases: Os ( P 63/mmc) and ReB 2 (P 63/mmc). The major peaks are indexed for
+reference.
+6
+
+[page 32]
+*
+*
+* * *
+*(1 0 -1 0)
+(0 0 0 2)
+(1 0 -1 1)
+(1 0 -1 2) (2 -1 -1 0)
+(1 0 -1 3)
+(0 0 0 2)
+*
+*
+(1 0 -1 1)
+*
+(1 0 -1 3)
+/u1D73D2
+Intensity (a.u.) 
+ReOsB Specimen
+Os (P63/mmc)
+ReB2 (P63/mmc)
+*
+(2 -1 -1 2)*
+(1 0 -1 0) (1 0 -1 2)
+*
+Figure S6: Measured XRD patterns of the ReOsB 2 specimen. The specimen exhibits
+two major phases: Os ( P 63/mmc) and ReB 2 (P 63/mmc). The major peaks are indexed for
+reference.
+7
+
+[page 33]
+*
+*
+*
+*
+*
+*
+(2 0 -2 1)
+(3 -1 -2 0)
+(1 0 -1 2)
+(3 -1 -2 1)
+(3 0 -3 1)
+(2 0 -2 2)
+**
+(5 -2 -3 2)
+(3 0 -3 3)
+*
+*
+*
+(0 0 0 2)
+(1 0 -1 1)
+(1 0 -1 3)
+/u1D73D2
+Intensity (a.u.) 
+Re13WB9 Specimen
+Re7B3 (P63mc)
+ReB2 (P63/mmc)
+*
+(2 -1 -1 2)
+*
+(1 0 -1 0) (1 0 -1 2)
+*
+Figure S7: Measured XRD patterns of the Re 13WB9 specimen. The specimen exhibits
+the primary phase of Re 7B3 (P 63mc) and the secondary phase of ReB 2 (P 63/mmc). The
+major peaks are indexed for reference.
+8
+
+[page 34]
+*
+* * * *
+(2 0 0)(0 0 2)
+(2 1 1)
+(2 1 3)
+(4 1 1)
+(0 0 0 4)
+*
+*
+*
+(1 0 -1 0)
+(1 0 -1 1)
+*
+(1 0 -1 3)
+(1 0 -1 4)
+*
+(1 0 -1 5)
+*
+* *
+(2 -1 -1 0)(2 -1 -1 4)
+/u1D73D2
+Intensity (a.u.) 
+OsWB Specimen
+W2B (I4/mcm)
+Os2B3 (P63/mmc)
+Figure S8: Measured XRD patterns of the OsWB specimen. The specimen exhibits
+multiple phases including the W 2B (I4/mcm) and Os 2B3 (P 63/mmc). The major peaks are
+indexed for reference.
+9
+
+[page 35]
+*
+* * * *
+(2 0 0)(0 0 2)
+(2 1 1)
+(2 1 3)
+(4 1 1)
+*
+*
+*
+*
+*
+* *
+(2 1 1)
+(3 0 1)
+(4 2 0)
+(4 1 1)
+(1 1 2)
+(4 4 0) (3 3 2)
+/u1D73D2
+Intensity (a.u.) 
+Re6W7B8 Specimen
+W2B (I4/mcm)
+ReB (I41/amd)
+Figure S9: Measured XRD patterns of the Re 6W7B8 specimen. The specimen exhibits
+the primary phase of W2B (I4/mcm) and the secondary phase of ReB (I41/amd). The major
+peaks are indexed for reference.
+10
+
+[page 36]
+*
+* * * *
+(2 0 0)(0 0 2)
+(2 1 1)
+(2 1 3)
+(4 1 1)
+*
+*
+*
+*
+*
+* *
+(2 1 1)
+(3 0 1)
+(4 2 0)
+(4 1 1)
+(1 1 2)
+(4 4 0) (3 3 2)
+/u1D73D2
+Intensity (a.u.) 
+ReW2B2 Specimen
+W2B (I4/mcm)
+ReB (I41/amd)
+Figure S10: Measured XRD patterns of the ReW 2B2 specimen. The specimen exhibits
+the primary phase of W2B (I4/mcm) and the secondary phase of ReB (I41/amd). The major
+peaks are indexed for reference.
+11
+
+[page 37]
+100 200 300 400
+Number of Iterations
+0
+50
+100
+150
+200
+250MAE Ef (meV atom 1)
+w. symmetry constraints
+w/o symmetry constraints
+Figure S11: Comparison of mean absolute errors (MAEs) of MEGNet predictions
+compared to DFT in formation energies of crystals relaxed using Bayesian opti-
+mization with and without symmetry constraints. The MAEs are plotted with respect
+to the number of iterations.
+12
+
+[page 38]
+BOWSR-relaxed DFT-relaxed Experimental
+ReWB (Pca 21) a (˚A) 5.182 5.554 5.519
+b (˚A) 4.864 5.537 5.506
+c (˚A) 5.532 4.729 4.729
+MoWC2 (P 63/mmc) a (˚A) 2.891 2.928 2.907
+c (˚A) 11.580 11.448 11.372
+Table S1: Comparison of the BOWSR-relaxed, DFT-relaxed and experimentally-
+measured lattice parameters for the discovered ultra-incompressible crystals,
+ReWB ( Pca21) and MoWC 2 (P63/mmc). Lattice angles are constrained to ﬁxed values
+by virtue of their orthorhombic and hexagonal crystal systems.
+References
+[1] Z. Ban, M. Sikirica, The crystal structure of ternary silicides thm 2si2 (M
+= Cr, Mn, Fe, Co, Ni and Cu), Acta Cryst 18 (4) (1965) 594–599. doi:
+10.1107/S0365110X6500141X.
+[2] C. B. Shoemaker, D. P. Shoemaker, A ternary alloy with PbCl2-type
+structure: TiNiSi(E), Acta Cryst 18 (5) (1965) 900–905. doi:10.1107/
+S0365110X65002189.
+[3] A. E. Dwight, M. H. Mueller, R. Conner, J. W. Downey, H. Knott, Ternary
+compounds with the fe 2p-type structure, Trans. Metall. Soc. AIME 242 (4)
+(1968) 10.
+13

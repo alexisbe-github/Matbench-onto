@@ -1,3 +1,5 @@
+import argparse
+import json
 import os
 import re
 import sys
@@ -19,9 +21,16 @@ PAPERS_DIR = BASE_DIR / "papers"
 OUTPUTS_DIR = BASE_DIR / "outputs"
 JSON_OUTPUTS_DIR = OUTPUTS_DIR / "json"
 TTL_OUTPUTS_DIR = OUTPUTS_DIR / "ttl"
+MODEL_PAGE_OUTPUTS_DIR = OUTPUTS_DIR / "model_pages"
 
 SEED_SCRIPT = BASE_DIR / "seed_kg_open_router.py"
 JSON_TO_TTL_SCRIPT = BASE_DIR / "json_to_ttl.py"
+
+FALLBACK_PDF_BY_MODEL = {
+    "grace_1l_oam": "grace_2l_oam_l.pdf",
+    "grace_2l_oam": "grace_2l_oam_l.pdf",
+    "grace_2l_mptrj": "grace_2l_oam_l.pdf",
+}
 
 
 def slugify(value):
@@ -29,6 +38,47 @@ def slugify(value):
     value = re.sub(r"[^a-z0-9]+", "_", value)
     value = re.sub(r"_+", "_", value)
     return value.strip("_")
+
+
+def model_slug_from_url(model_url):
+    return slugify(model_url.rstrip("/").split("/")[-1])
+
+
+def normalize_model_selector(value):
+    if not value:
+        return None
+
+    value = str(value).strip()
+
+    if value.endswith((".yml", ".yaml", ".pdf", ".json", ".ttl")):
+        value = Path(value).stem
+
+    for suffix in (
+        "_model_extraction",
+        "_model_individuals_generated",
+        "_individuals_generated",
+    ):
+        if value.endswith(suffix):
+            value = value[: -len(suffix)]
+
+    return model_slug_from_url(value) if "/models/" in value else slugify(value)
+
+
+def slice_model_urls(model_urls, start_from=None):
+    start_slug = normalize_model_selector(start_from)
+
+    if not start_slug:
+        return model_urls
+
+    for index, model_url in enumerate(model_urls):
+        if model_slug_from_url(model_url) == start_slug:
+            return model_urls[index:]
+
+    available = ", ".join(model_slug_from_url(url) for url in model_urls[:10])
+    raise ValueError(
+        f"Could not find start model '{start_from}' "
+        f"(normalized as '{start_slug}'). First available models: {available}"
+    )
 
 
 def get_html(url):
@@ -116,6 +166,67 @@ def normalize_paper_url(url):
     return url
 
 
+def clean_page_text(value):
+    return re.sub(r"\s+", " ", value or "").strip()
+
+
+def extract_model_page_context(soup, model_url):
+    root = soup.find("main") or soup.find(
+        "div", class_=lambda value: value and "model-detail" in value
+    ) or soup.body
+
+    if root is None:
+        return {"url": model_url, "sections": []}
+
+    for tag in root.find_all(["script", "style", "noscript"]):
+        tag.decompose()
+
+    page_text = clean_page_text(root.get_text(" ", strip=True))
+    sections = [{
+        "name": "model_page",
+        "source": model_url,
+        "text": page_text[:30000],
+    }]
+
+    steps_node = root.find(
+        string=lambda value: value
+        and "training performed by" in value.lower()
+    )
+
+    if steps_node is not None:
+        steps_text = clean_page_text(str(steps_node))
+
+        for parent in steps_node.parents:
+            if parent == root:
+                break
+
+            candidate = clean_page_text(parent.get_text(" ", strip=True))
+            if len(steps_text) < len(candidate) <= 4000:
+                steps_text = candidate
+
+            if len(steps_text) >= 120:
+                break
+
+        sections.append({
+            "name": "steps",
+            "source": f"{model_url}#steps",
+            "text": steps_text,
+        })
+
+    return {
+        "url": model_url,
+        "sections": sections,
+    }
+
+
+def save_model_page_context(context, path):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(context, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+
 def resolve_pdf_url(paper_url):
     paper_url = normalize_paper_url(paper_url)
 
@@ -197,14 +308,47 @@ def find_yaml_links_from_files_url(files_url):
     return yaml_urls
 
 
+def select_yaml_url(yaml_urls, model_slug):
+    if not yaml_urls:
+        return None
+
+    scored_urls = []
+
+    for index, yaml_url in enumerate(yaml_urls):
+        filename = yaml_url.rstrip("/").split("/")[-1]
+        stem = filename.rsplit(".", 1)[0]
+        yaml_slug = slugify(stem)
+
+        score = 0
+
+        if yaml_slug == model_slug:
+            score += 100
+        elif model_slug in yaml_slug or yaml_slug in model_slug:
+            score += 50
+
+        model_tokens = set(model_slug.split("_"))
+        yaml_tokens = set(yaml_slug.split("_"))
+        score += len(model_tokens & yaml_tokens)
+
+        scored_urls.append((score, -index, yaml_url))
+
+    scored_urls.sort(reverse=True)
+    return scored_urls[0][2]
+
+
 def process_model(model_url):
     print("\n=== MODEL PAGE ===")
     print(model_url)
 
-    model_slug = slugify(model_url.rstrip("/").split("/")[-1])
+    model_slug = model_slug_from_url(model_url)
 
     html = get_html(model_url)
     soup = BeautifulSoup(html, "html.parser")
+    model_page_path = MODEL_PAGE_OUTPUTS_DIR / f"{model_slug}_model_page.json"
+    save_model_page_context(
+        extract_model_page_context(soup, model_url),
+        model_page_path,
+    )
 
     paper_href = find_model_link(soup, "paper")
     files_href = find_model_link(soup, "files")
@@ -217,7 +361,6 @@ def process_model(model_url):
         print(f"[SKIP] No files link found for {model_slug}")
         return
 
-    paper_url = resolve_pdf_url(urljoin(model_url, paper_href))
     files_url = urljoin(model_url, files_href)
 
     yaml_urls = find_yaml_links_from_files_url(files_url)
@@ -226,17 +369,37 @@ def process_model(model_url):
         print(f"[SKIP] No YAML found for {model_slug}")
         return
 
-    yaml_url = yaml_urls[0]
+    yaml_url = select_yaml_url(yaml_urls, model_slug)
 
-    yaml_path = MODELS_DIR / f"{model_slug}.yml"
     pdf_path = PAPERS_DIR / f"{model_slug}.pdf"
+    yaml_path = MODELS_DIR / f"{model_slug}.yml"
+
+    fallback_pdf_name = FALLBACK_PDF_BY_MODEL.get(model_slug)
+    fallback_pdf_path = PAPERS_DIR / fallback_pdf_name if fallback_pdf_name else None
+
+    if pdf_path.exists():
+        paper_url = normalize_paper_url(urljoin(model_url, paper_href))
+        print(f"[CACHE] Paper already exists: {pdf_path}")
+    else:
+        try:
+            paper_url = resolve_pdf_url(urljoin(model_url, paper_href))
+        except Exception as error:
+            if fallback_pdf_path and fallback_pdf_path.exists():
+                paper_url = normalize_paper_url(urljoin(model_url, paper_href))
+                pdf_path = fallback_pdf_path
+                print(f"[WARN] Paper download URL failed for {model_slug}: {error}")
+                print(f"[FALLBACK] Using local paper: {pdf_path}")
+            else:
+                raise
 
     print(f"Paper: {paper_url}")
     print(f"Files: {files_url}")
     print(f"YAML:  {yaml_url}")
 
     download_file(yaml_url, yaml_path)
-    download_file(paper_url, pdf_path)
+
+    if not pdf_path.exists():
+        download_file(paper_url, pdf_path)
 
     output_json = JSON_OUTPUTS_DIR / f"{model_slug}_model_extraction.json"
     output_ttl = TTL_OUTPUTS_DIR / f"{model_slug}_model_individuals_generated.ttl"
@@ -245,6 +408,8 @@ def process_model(model_url):
     env["YAML_FILE"] = str(yaml_path)
     env["PDF_FILE"] = str(pdf_path)
     env["PDF_URL"] = paper_url
+    env["MODEL_PAGE_FILE"] = str(model_page_path)
+    env["MODEL_PAGE_URL"] = model_url
     env["OUTPUT_JSON_FILE"] = str(output_json)
 
     print("Running LLM extraction...")
@@ -271,18 +436,55 @@ def process_model(model_url):
     print(f"[OK] TTL:  {output_ttl}")
 
 
-MODELS_DIR.mkdir(parents=True, exist_ok=True)
-PAPERS_DIR.mkdir(parents=True, exist_ok=True)
-JSON_OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
-TTL_OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Scrape Matbench Discovery models and generate JSON/TTL individuals."
+    )
+    parser.add_argument(
+        "--start-from",
+        help=(
+            "Resume from this model, inclusive. Accepts a model slug, model URL, "
+            "YAML/PDF filename, JSON extraction filename, or TTL filename."
+        ),
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        help="Process at most this many model pages after applying --start-from.",
+    )
+    return parser.parse_args()
 
-model_urls = collect_model_urls(limit=None)
 
-print(f"Found {len(model_urls)} model pages.")
+def main():
+    args = parse_args()
 
-for model_url in model_urls:
-    try:
-        process_model(model_url)
-    except Exception as error:
-        print(f"[ERROR] {model_url}")
-        print(error)
+    MODELS_DIR.mkdir(parents=True, exist_ok=True)
+    PAPERS_DIR.mkdir(parents=True, exist_ok=True)
+    JSON_OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+    TTL_OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+    MODEL_PAGE_OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    all_model_urls = collect_model_urls(limit=None)
+    model_urls = slice_model_urls(all_model_urls, start_from=args.start_from)
+
+    if args.limit:
+        model_urls = model_urls[: args.limit]
+
+    print(f"Found {len(all_model_urls)} model pages.")
+
+    if args.start_from:
+        print(
+            f"Resuming from {model_slug_from_url(model_urls[0])}: "
+            f"{len(model_urls)} model page(s) queued."
+        )
+
+    for model_url in model_urls:
+        try:
+            process_model(model_url)
+        except Exception as error:
+            print(f"[ERROR] {model_url}")
+            print(error)
+
+
+if __name__ == "__main__":
+    main()

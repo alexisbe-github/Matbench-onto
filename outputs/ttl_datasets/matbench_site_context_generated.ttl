@@ -1,0 +1,476 @@
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix eval: <https://k.loria.fr/ontologies/evaluationonto#> .
+@prefix evalind: <https://k.loria.fr/ontologies/evaluationonto-individuals#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dataind:aflow a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "AFLOW"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2012-06-01"^^xsd:date ;
+    dcterms:description "AFLOW Database"^^xsd:string,
+        "AFLOW Database containing 3,530,330 structures."^^xsd:string,
+        "Static dataset: False"^^xsd:string ;
+    dcterms:extent "3530330 materials"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://aflow.org>,
+        <https://aflow.org/documentation>,
+        <https://doi.org/10.1016/j.commatsci.2012.02.005>,
+        <https://optimade.org/providers-dashboard/providers/aflow> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/aflow> ;
+    data:hasNumberOfSamples 3530330 .
+
+dataind:alex a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Alex"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2023-04-22"^^xsd:date ;
+    dcterms:description "Alexandria"^^xsd:string,
+        "Alexandria dataset containing 30,497,628 structures and 3,100,000 materials."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:extent "3100000 materials"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://alexandria.icams.rub.de>,
+        <https://alexandria.icams.rub.de/data/pbe>,
+        <https://doi.org/10.1002/adma.202210788>,
+        <https://optimade.org/providers-dashboard/providers/alexandria> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/alex> ;
+    data:hasNumberOfSamples 30497628 .
+
+dataind:cosmosdataset a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "COSMOSDataset"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2025-10-21"^^xsd:date ;
+    dcterms:description "Large-scale dataset containing 242,788,218 structures for COSMOS."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://doi.org/10.48550/arXiv.2510.11241>,
+        <https://figshare.com/articles/software/SevenNet-Omni_checkpoint/30399814> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/cosmosdataset> ;
+    data:hasNumberOfSamples 242788218 .
+
+dataind:gnome a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "GNoME"^^xsd:string ;
+    dcterms:accessRights "closed"^^xsd:string ;
+    dcterms:created "2023-11-29"^^xsd:date ;
+    dcterms:description "GNoME dataset containing 89,000,000 structures and 6,000,000 materials."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:extent "6000000 materials"^^xsd:string ;
+    dcterms:license "CC-BY-NC-4.0"^^xsd:string ;
+    dcterms:references <https://doi.org/10.1038/s41586-023-06735-9>,
+        <https://github.com/google-deepmind/materials_discovery>,
+        <https://optimade-gnome.odbx.science> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/gnome> ;
+    data:hasNumberOfSamples 89000000 .
+
+dataind:matpes_pbe a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MatPES PBE"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2025-03-06"^^xsd:date ;
+    dcterms:description "MatPES v1.0 PBE"^^xsd:string,
+        "MatPES v1.0 PBE dataset containing 434,712 structures."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:license "MIT"^^xsd:string ;
+    dcterms:references <https://doi.org/10.48550/arXiv.2503.04070>,
+        <https://matpes.ai>,
+        <https://s3.us-east-1.amazonaws.com/materialsproject-contribs/MatPES_2025_1/MatPES-PBE-2025.1.json.gz> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/matpes-pbe> ;
+    data:hasNumberOfSamples 434712 .
+
+dataind:matpes_r2scan a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MatPES r2SCAN"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2025-03-06"^^xsd:date ;
+    dcterms:description "MatPES v1.0 r2SCAN"^^xsd:string,
+        "MatPES v1.0 r2SCAN dataset containing 387,897 structures."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:license "MIT"^^xsd:string ;
+    dcterms:references <https://doi.org/10.48550/arXiv.2503.04070>,
+        <https://matpes.ai>,
+        <https://s3.us-east-1.amazonaws.com/materialsproject-contribs/MatPES_2025_1/MatPES-R2SCAN-2025.1.json.gz> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/matpes-r2scan> ;
+    data:hasNumberOfSamples 387897 .
+
+dataind:mattersim a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MatterSim"^^xsd:string ;
+    dcterms:accessRights "closed"^^xsd:string ;
+    dcterms:created "2024-05-08"^^xsd:date ;
+    dcterms:description "MatterSim dataset containing 17,000,000 structures."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:license "unreleased"^^xsd:string ;
+    dcterms:references <https://doi.org/10.48550/arXiv.2405.04967>,
+        <https://github.com/microsoft/mattersim> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/mattersim> ;
+    data:hasNumberOfSamples 17000000 .
+
+dataind:mdr_phonon_pbe a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MDR Phonon PBE"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2024-12-21"^^xsd:date ;
+    dcterms:description "MDR Phonon PBE dataset containing 9,959 structures."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://alexandria.icams.rub.de/data/phonon_benchmark/>,
+        <https://alexandria.icams.rub.de/data/phonon_benchmark/pbe>,
+        <https://doi.org/10.48550/arXiv.2412.16551> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/mdr-phonon-pbe> ;
+    data:hasNumberOfSamples 9959 .
+
+dataind:mp_2022 a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MP 2022"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2022-10-28"^^xsd:date ;
+    dcterms:description "MP v2022.10.28"^^xsd:string,
+        "Materials Project v2022.10.28 dataset containing 154,719 structures."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://docs.materialsproject.org/changes/database-versions#v2022.10.28>,
+        <https://doi.org/10.1063/1.4812323>,
+        <https://figshare.com/files/40344436> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/mp-2022> ;
+    data:hasNumberOfSamples 154719 .
+
+dataind:mp_graphs a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MP Graphs"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2019-06-06"^^xsd:date ;
+    dcterms:description "Graphs of MP 2019"^^xsd:string,
+        "Graphs of MP 2019 dataset containing 133,420 structures."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:license "MIT"^^xsd:string ;
+    dcterms:references <https://doi.org/10.1021/acs.chemmater.9b01294>,
+        <https://figshare.com/articles/dataset/8097992>,
+        <https://figshare.com/ndownloader/articles/8097992/versions/2> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/mp-graphs> ;
+    data:hasNumberOfSamples 133420 .
+
+dataind:mpf a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MPF"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2022-03-05"^^xsd:date ;
+    dcterms:description "MPF.2021.2.8"^^xsd:string,
+        "MPF.2021.2.8 dataset containing 188,349 structures and 62,783 materials."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:extent "62783 materials"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://doi.org/10.1038/s43588-022-00349-3>,
+        <https://figshare.com/articles/dataset/19470599>,
+        <https://figshare.com/ndownloader/articles/19470599/versions/3> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/mpf> ;
+    data:hasNumberOfSamples 188349 .
+
+dataind:mptrj a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MPtrj"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2023-07-19"^^xsd:date ;
+    dcterms:description "MPtrj dataset containing 1,580,395 structures and 145,923 materials."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:extent "145923 materials"^^xsd:string ;
+    dcterms:license "MIT"^^xsd:string ;
+    dcterms:references <https://doi.org/10.1038/s42256-023-00716-3>,
+        <https://figshare.com/articles/dataset/23713842>,
+        <https://figshare.com/files/41619375> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/mptrj> ;
+    data:hasNumberOfSamples 1580395 .
+
+dataind:nomad a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "NOMAD"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2019-06-01"^^xsd:date ;
+    dcterms:description "Method: DFT, ML, GW, DMFT, MD\rCode: "^^xsd:string,
+        "NOMAD Repository"^^xsd:string,
+        "NOMAD Repository containing 19,111,098 structures and 4,335,728 materials."^^xsd:string,
+        "Static dataset: False"^^xsd:string ;
+    dcterms:extent "4335728 materials"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://joss.theoj.org/papers/10.21105/joss.05388>,
+        <https://nomad-lab.eu/prod/v1/gui/analyze/apis>,
+        <https://nomad-lab.eu/prod/v1/gui/search/calculations>,
+        <https://optimade.org/providers-dashboard/providers/nmd> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/nomad> ;
+    data:hasNumberOfSamples 19111098 .
+
+dataind:oc20 a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "OC20"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2020-10-01"^^xsd:date ;
+    dcterms:description "Open Catalyst 2020"^^xsd:string,
+        "Open Catalyst 2020 dataset containing 133,934,018 structures."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://doi.org/10.1021/acscatal.0c04525>,
+        <https://fair-chem.github.io/catalysts/datasets/oc20.html#per-adsorbate-trajectories-optional-download>,
+        <https://opencatalystproject.org/leaderboard.html> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/oc20> ;
+    data:hasNumberOfSamples 133934018 .
+
+dataind:omat24 a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "OMat24"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2024-10-16"^^xsd:date ;
+    dcterms:description "OMat24 dataset containing 100,824,585 structures and 3,227,606 materials."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:extent "3227606 materials"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://doi.org/10.48550/arXiv.2410.12771>,
+        <https://huggingface.co/datasets/fairchem/OMAT24#omat24-dataset> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/omat24> ;
+    data:hasNumberOfSamples 100824585 .
+
+dataind:openlam a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "OpenLAM"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2025-02-17"^^xsd:date ;
+    dcterms:description "OpenLAM dataset v1"^^xsd:string,
+        "OpenLAM dataset v1 containing 162,507,178 structures."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://aissquare.com/datasets/detail?pageType=datasets&name=LAMBench-TrainingSet-v1&id=308>,
+        <https://doi.org/10.48550/arXiv.2501.16358> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/openlam> ;
+    data:hasNumberOfSamples 162507178 .
+
+dataind:oqmd a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "OQMD"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2014-04-03"^^xsd:date ;
+    dcterms:description "Open Quantum Materials Database"^^xsd:string,
+        "Open Quantum Materials Database containing 1,226,781 structures."^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:extent "1226781 materials"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://doi.org/10.1007/s11837-013-0755-4>,
+        <https://optimade.org/providers-dashboard/providers/oqmd>,
+        <https://oqmd.org>,
+        <https://static.oqmd.org/static/docs/restful.html>,
+        <https://static.oqmd.org/static/downloads/qmdb__v1_6__112023.sql.gz> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/oqmd> ;
+    data:hasNumberOfSamples 1226781 .
+
+dataind:salex a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "sAlex"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2024-10-16"^^xsd:date ;
+    dcterms:description "Static dataset: True"^^xsd:string,
+        "Subsampled Alexandria"^^xsd:string,
+        "Subsampled Alexandria dataset containing 10,447,765 structures."^^xsd:string ;
+    dcterms:extent "3227606 materials"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://dl.fbaipublicfiles.com/opencatalystproject/data/omat/241018/sAlex/train.tar.gz>,
+        <https://doi.org/10.48550/arXiv.2410.12771>,
+        <https://huggingface.co/datasets/fairchem/OMAT24#salex-dataset>,
+        <https://optimade.org/providers-dashboard/providers/alexandria> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/salex> ;
+    data:hasNumberOfSamples 10447765 .
+
+dataind:salex_validation a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "sAlex Validation"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2024-10-16"^^xsd:date ;
+    dcterms:description "Static dataset: True"^^xsd:string,
+        "Subsampled Alexandria Validation Set"^^xsd:string,
+        "Subsampled Alexandria Validation Set containing 553,218 structures."^^xsd:string ;
+    dcterms:extent "170905 materials"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://dl.fbaipublicfiles.com/opencatalystproject/data/omat/241018/sAlex/val.tar.gz>,
+        <https://doi.org/10.48550/arXiv.2410.12771>,
+        <https://huggingface.co/datasets/fairchem/OMAT24#salex-dataset>,
+        <https://optimade.org/providers-dashboard/providers/alexandria> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/salex-validation> ;
+    data:hasNumberOfSamples 553218 .
+
+dataind:wbm a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "WBM"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2021-01-01"^^xsd:date ;
+    dcterms:description "Static dataset: True"^^xsd:string,
+        "WBM Benchmark Test Set"^^xsd:string,
+        "WBM Benchmark Test Set containing 256,963 structures and 215,488 materials."^^xsd:string ;
+    dcterms:extent "215488 materials"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://doi.org/10.1038/s41524-020-00481-6>,
+        <https://github.com/janosh/matbench-discovery/blob/main/data/wbm/readme.md> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/wbm> ;
+    data:hasNumberOfSamples 256963 .
+
+evalind:adf_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "ADF"^^xsd:string .
+
+evalind:cds_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "CDS"^^xsd:string .
+
+evalind:cmds_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "CMDS"^^xsd:string .
+
+evalind:flips_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "flips"^^xsd:string .
+
+evalind:formation_energy_mae_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "Formation energy MAE"^^xsd:string .
+
+evalind:hull_distance_mae_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "Hull distance MAE"^^xsd:string .
+
+evalind:jumps_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "jumps"^^xsd:string .
+
+evalind:matbench_discovery_benchmark_suite a owl:NamedIndividual,
+        eval:BenchmarkSuite ;
+    rdfs:label "Matbench Discovery"^^xsd:string ;
+    eval:hasBenchmarkRelease evalind:matbench_discovery_benchmark_release .
+
+evalind:pressure_distributions_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "pressure distributions"^^xsd:string .
+
+evalind:rdf_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "RDF"^^xsd:string .
+
+evalind:reference_relative_pbe_errors_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "reference-relative PBE errors"^^xsd:string .
+
+evalind:rmsd_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "RMSD"^^xsd:string .
+
+evalind:smoothness_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "smoothness"^^xsd:string .
+
+evalind:vdos_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "vDOS"^^xsd:string .
+
+evalind:wasserstein_1_distance_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "Wasserstein-1 distance"^^xsd:string .
+
+evalind:κ_srme_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "κ SRME"^^xsd:string .
+
+evalind:σ_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "Σ ="^^xsd:string .
+
+<https://k.loria.fr/ontologies/matbench-site-context-individuals> a owl:Ontology .
+
+dataind:diatomic_reference_curves a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Diatomic DFT reference curves"^^xsd:string ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/sets> .
+
+dataind:kappa_103_phonon_benchmark_set a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "kappa-103 phonon benchmark set"^^xsd:string ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/sets> .
+
+dataind:materials_project_reference_hull a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Materials Project reference convex hull"^^xsd:string ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/sets> .
+
+dataind:md_benchmark_set a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "Molecular dynamics benchmark set"^^xsd:string ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/sets> .
+
+dataind:mdr_mp_pbe_omega_q a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MDR-MP PBE ω_q"^^xsd:string ;
+    dcterms:accessRights "open"^^xsd:string ;
+    dcterms:created "2026-01-08"^^xsd:date ;
+    dcterms:description "Dataset of MDR PBE Phonons in MPtrj containing 8510 structures."^^xsd:string,
+        "MDR PBE Phonons in MPtrj"^^xsd:string,
+        "Method: n/a\r"^^xsd:string,
+        "Static dataset: True"^^xsd:string ;
+    dcterms:license "CC-BY-4.0"^^xsd:string ;
+    dcterms:references <https://doi.org/10.48550/arXiv.2601.07742>,
+        <https://figshare.com/articles/dataset/Preprocessed_data_for_Phonon_Fine-tuning_PFT_/31049869>,
+        <https://figshare.com/files/60964675> ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/mdr-mp-pbe-ω-q>,
+        <https://matbench-discovery.materialsproject.org/data/sets> ;
+    data:hasNumberOfSamples 8510 .
+
+evalind:diatomics_task a owl:NamedIndividual,
+        eval:RegressionTask ;
+    rdfs:label "Diatomics"^^xsd:string ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/tasks/diatomics> ;
+    rdfs:comment "Evaluates machine learning interatomic potentials on self-consistency metrics and reference-relative errors of homonuclear diatomic curves."^^xsd:string ;
+    eval:usesDataset dataind:diatomic_reference_curves .
+
+evalind:geometry_optimization_task a owl:NamedIndividual,
+        eval:RegressionTask ;
+    rdfs:label "MLFF Geometry Optimization Analysis"^^xsd:string ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/tasks/geo-opt> ;
+    rdfs:comment "Evaluates the quality of MLFF relaxations for crystal structures by comparing ML- and DFT-relaxed ground state structures."^^xsd:string ;
+    eval:usesDataset dataind:wbm_test_set .
+
+evalind:matbench_discovery_benchmark_release a owl:NamedIndividual,
+        eval:BenchmarkRelease ;
+    rdfs:label "Matbench Discovery benchmark release"^^xsd:string ;
+    eval:hasTask evalind:diatomics_task,
+        evalind:geometry_optimization_task,
+        evalind:matbench_discovery_discovery_task,
+        evalind:molecular_dynamics_task,
+        evalind:phonons_task .
+
+evalind:matbench_discovery_discovery_task a owl:NamedIndividual,
+        eval:ClassificationTask ;
+    rdfs:label "Crystal Stability Prediction Metrics"^^xsd:string ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/tasks/discovery> ;
+    rdfs:comment "Predicts crystal stability by evaluating formation energy and hull distance errors against DFT reference energies."^^xsd:string ;
+    eval:usesDataset dataind:materials_project_reference_hull,
+        dataind:wbm_test_set .
+
+evalind:molecular_dynamics_task a owl:NamedIndividual,
+        eval:RegressionTask ;
+    rdfs:label "Molecular Dynamics Metrics beta"^^xsd:string ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/tasks/md> ;
+    rdfs:comment "Evaluates how well machine-learning interatomic potentials reproduce structural, thermodynamic and vibrational observables of ab-initio molecular dynamics trajectories."^^xsd:string ;
+    eval:usesDataset dataind:md_benchmark_set .
+
+evalind:phonons_task a owl:NamedIndividual,
+        eval:RegressionTask ;
+    rdfs:label "MLFF Phonon Modeling Metrics"^^xsd:string ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/tasks/phonons> ;
+    rdfs:comment "Evaluates ML force fields on thermal conductivity prediction and phonon frequency spectra accuracy using 2nd and 3rd order derivatives of the potential energy surface."^^xsd:string ;
+    eval:usesDataset dataind:kappa_103_phonon_benchmark_set,
+        dataind:mdr_mp_pbe_omega_q .
+
+dataind:wbm_test_set a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "WBM test set"^^xsd:string ;
+    dcterms:source <https://matbench-discovery.materialsproject.org/data/sets> .
+

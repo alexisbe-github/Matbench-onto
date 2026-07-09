@@ -18,6 +18,44 @@
 #    Object Properties
 #################################################################
 
+###  https://k.loria.fr/ontologies/evaluationonto#evaluatesModelVariant
+:evaluatesModelVariant rdf:type owl:ObjectProperty ;
+                       rdfs:domain :MachineLearningEvaluationRun ;
+                       rdfs:range <https://k.loria.fr/ontologies/architectureonto#ModelVariant> .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto#evaluatesTask
+:evaluatesTask rdf:type owl:ObjectProperty ,
+                        owl:FunctionalProperty ;
+               rdfs:domain :MachineLearningEvaluationRun ;
+               rdfs:range :Task .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto#hasBenchmarkRelease
+:hasBenchmarkRelease rdf:type owl:ObjectProperty ;
+                     rdfs:domain :BenchmarkSuite ;
+                     rdfs:range :BenchmarkRelease .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto#hasMetricResult
+:hasMetricResult rdf:type owl:ObjectProperty ;
+                 rdfs:domain :BenchmarkResult ;
+                 rdfs:range :MetricResult .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto#hasResultTask
+:hasResultTask rdf:type owl:ObjectProperty ,
+                        owl:FunctionalProperty ;
+               rdfs:domain :BenchmarkResult ;
+               rdfs:range :Task .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto#hasMetricType
+:hasMetricType rdf:type owl:ObjectProperty ;
+               rdfs:domain :MetricResult ;
+               rdfs:range :MetricType .
+
+
 ###  https://k.loria.fr/ontologies/evaluationonto#hasSplit
 :hasSplit rdf:type owl:ObjectProperty ;
           rdfs:domain :Fold ;
@@ -26,8 +64,7 @@
 
 ###  https://k.loria.fr/ontologies/evaluationonto#hasTask
 :hasTask rdf:type owl:ObjectProperty ;
-         rdfs:domain :BenchmarkRelease ;
-         rdfs:range :BenchmarkTask .
+         rdfs:domain :BenchmarkRelease .
 
 
 ###  https://k.loria.fr/ontologies/evaluationonto#hasTestSplit
@@ -55,9 +92,21 @@
                       rdfs:range :MetricResult .
 
 
+###  https://k.loria.fr/ontologies/evaluationonto#producesBenchmarkResult
+:producesBenchmarkResult rdf:type owl:ObjectProperty ;
+                         rdfs:domain :MachineLearningEvaluationRun ;
+                         rdfs:range :BenchmarkResult .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto#usesBenchmarkRelease
+:usesBenchmarkRelease rdf:type owl:ObjectProperty ;
+                      rdfs:domain :MachineLearningEvaluationRun ;
+                      rdfs:range :BenchmarkRelease .
+
+
 ###  https://k.loria.fr/ontologies/evaluationonto#usesDataset
 :usesDataset rdf:type owl:ObjectProperty ;
-             rdfs:domain :BenchmarkResult ;
+             rdfs:domain :Task ;
              rdfs:range <https://k.loria.fr/ontologies/datasetonto#Dataset> .
 
 
@@ -70,9 +119,20 @@
           rdfs:domain :Fold .
 
 
+###  https://k.loria.fr/ontologies/evaluationonto#hasMetricValue
+:hasMetricValue rdf:type owl:DatatypeProperty ;
+                rdfs:domain :MetricResult ;
+                rdfs:range xsd:float .
+
+
 #################################################################
 #    Classes
 #################################################################
+
+###  https://k.loria.fr/ontologies/evaluationonto#AggregationFunction
+:AggregationFunction rdf:type owl:Class ;
+                     rdfs:subClassOf <https://k.loria.fr/ontologies/trainingonto#MathematicalFunction> .
+
 
 ###  https://k.loria.fr/ontologies/evaluationonto#BenchmarkRelease
 :BenchmarkRelease rdf:type owl:Class ;
@@ -87,17 +147,31 @@
 :BenchmarkSuite rdf:type owl:Class .
 
 
-###  https://k.loria.fr/ontologies/evaluationonto#BenchmarkTask
-:BenchmarkTask rdf:type owl:Class ;
-               rdfs:subClassOf :Task .
+###  https://k.loria.fr/ontologies/evaluationonto#ClassificationTask
+:ClassificationTask rdf:type owl:Class ;
+                    rdfs:subClassOf :Task .
 
 
 ###  https://k.loria.fr/ontologies/evaluationonto#Fold
 :Fold rdf:type owl:Class .
 
 
+###  https://k.loria.fr/ontologies/evaluationonto#MachineLearningEvaluationRun
+:MachineLearningEvaluationRun rdf:type owl:Class ;
+                              rdfs:subClassOf prov:Activity .
+
+
 ###  https://k.loria.fr/ontologies/evaluationonto#MetricResult
 :MetricResult rdf:type owl:Class .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto#MetricType
+:MetricType rdf:type owl:Class .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto#RegressionTask
+:RegressionTask rdf:type owl:Class ;
+                rdfs:subClassOf :Task .
 
 
 ###  https://k.loria.fr/ontologies/evaluationonto#Task

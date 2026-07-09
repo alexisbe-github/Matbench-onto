@@ -14,17 +14,22 @@ archind:alignn_family a owl:NamedIndividual,
     arch:hasVariant archind:alignn_variant .
 
 trind:datasets a owl:NamedIndividual,
-        train:MachineLearningTrainingRun ;
+        train:TrainingDataset ;
     rdfs:label "datasets"^^xsd:string .
 
 archind:alignn_variant a owl:NamedIndividual,
         arch:ModelVariant ;
     rdfs:label "alignn"^^xsd:string ;
     dcterms:source <https://arxiv.org/pdf/2106.01829.pdf> ;
-    prov:wasDerivedFrom "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\alignn.yml" ;
+    prov:wasDerivedFrom <https://arxiv.org/pdf/2106.01829.pdf> ;
     arch:hasParameterNumber 4026753 ;
     arch:hasMachineLearningArchitecture archind:alignn_architecture .
 
 archind:alignn_architecture a owl:NamedIndividual,
         arch:MachineLearningArchitecture ;
-    rdfs:label "ALIGNN"^^xsd:string .
+    rdfs:label "ALIGNN"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:alignn_architecture_configuration .
+
+archind:alignn_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "ALIGNN architecture configuration"^^xsd:string .

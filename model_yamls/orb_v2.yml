@@ -1,7 +1,7 @@
-model_name: ORB v2 MPtrj
-model_key: orb-v2-mptrj
+model_name: ORB v2
+model_key: orb-v2
 model_version: v2
-date_added: '2024-10-14'
+date_added: '2024-10-11'
 date_published: '2024-10-29'
 authors:
   - name: Mark Neumann
@@ -32,7 +32,7 @@ paper: https://arxiv.org/abs/2410.22570
 pr_url: https://github.com/janosh/matbench-discovery/pull/133
 # v1 checkpoint: https://orbitalmaterials-public-models.s3.us-west-1.amazonaws.com/forcefields/orbff-v1-20240827.ckpt
 # v2 URL taken from: https://github.com/orbital-materials/orb-models/blob/637a98d49c/MODELS.md
-checkpoint_url: https://orbitalmaterials-public-models.s3.us-west-1.amazonaws.com/forcefields/orb-mptraj-only-v2-20241014.ckpt
+checkpoint_url: https://orbitalmaterials-public-models.s3.us-west-1.amazonaws.com/forcefields/orb-v2-20241011.ckpt
 pypi: https://pypi.org/project/orb-models
 
 license:
@@ -41,13 +41,13 @@ license:
   checkpoint: Apache-2.0
   checkpoint_url: https://github.com/orbital-materials/orb-models/blob/637a98d49/LICENSE
 
-openness: OSOD
-trained_for_benchmark: true
+openness: OSCD
+trained_for_benchmark: false
 train_task: S2EFS
 test_task: IS2RE-SR
 targets: EFS_D
 model_type: UIP
-model_params: 25_161_727
+model_params: 25161727
 n_estimators: 1
 
 hyperparams:
@@ -69,104 +69,108 @@ hyperparams:
   n_layers: 15
   features: 256 latent dim, 512 MLP dim
   num_rbfs: 50
-  graph_construction_radius: 10.0
+  graph_construction_radius: 10.0 # Å
   max_neighbors: 20
 
 requirements:
   orb-models: '0.4.0'
   pynanoflann: 'pynanoflann@git+https://github.com/dwastberg/pynanoflann#egg=af434039ae14bedcbb838a7808924d6689274168'
 
-training_set: [MPtrj]
+training_set: [MPtrj, Alex]
 training_cost: missing
 
 notes:
   Description: |
-    ORB is a pretrained model for atomic simulations. This model is pretrained and fine-tuned on MPtrj only.
+    ORB is a pretrained model for atomic simulations. ORB uses a pretrained diffusion model backbone which is fine-tuned on MPtrj + Alexandria.
+  Data Leakage: |
+    Note that the Alexandria dataset contains structure prototypes that overlap with the WBM test set (~97k overlapping prototypes).
+    Models trained on this dataset benefit from some amount of train/test leakage, though testing on Orb v2 showed that brief (less than 1 epoch)
+    fine-tuning resulted in identical metrics whether fine-tuning on Alexandria or sAlex.
 
 metrics:
   phonons:
     kappa_103:
-      κ_SRME: 1.7255
-      pred_file: models/orb/orbff-mptrj-v2/2024-11-09-kappa-103-FIRE-dist=0.01-fmax=1e-4-symprec=1e-5.json.gz
-      pred_file_url: https://figshare.com/files/52134890
-      κ_SRE: 1.4544
+      κ_SRME: 1.7338
+      pred_file: models/orb/orbff-v2/2024-11-09-kappa-103-FIRE-dist=0.01-fmax=1e-4-symprec=1e-5.json.gz
+      pred_file_url: https://figshare.com/files/52134887
+      κ_SRE: 1.4876
   geo_opt:
-    pred_file: models/orb/orbff-mptrj-v2/2024-10-14-wbm-geo-opt.jsonl.gz
-    pred_file_url: https://figshare.com/files/57753379
+    pred_file: models/orb/orbff-v2/2024-10-11-wbm-geo-opt.jsonl.gz
+    pred_file_url: https://figshare.com/files/57753511
     struct_col: orb_structure
     symprec=1e-5:
-      rmsd: 0.1007 # unitless
-      n_sym_ops_mae: 10.0889 # unitless
-      symmetry_decrease: 0.8655 # fraction
-      symmetry_match: 0.1335 # fraction
-      symmetry_increase: 0.0009 # fraction
+      rmsd: 0.0973 # unitless
+      n_sym_ops_mae: 9.9331 # unitless
+      symmetry_decrease: 0.8531 # fraction
+      symmetry_match: 0.1433 # fraction
+      symmetry_increase: 0.0034 # fraction
       n_structures: 256963 # count
-      analysis_file: models/orb/orbff-mptrj-v2/2024-10-14-wbm-geo-opt-symprec=1e-5-moyo=0.4.2.csv.gz
-      analysis_file_url: https://figshare.com/files/53504690
+      analysis_file: models/orb/orbff-v2/2024-10-11-wbm-geo-opt-symprec=1e-5-moyo=0.4.2.csv.gz
+      analysis_file_url: https://figshare.com/files/53504681
     symprec=1e-2:
-      rmsd: 0.1007 # unitless
-      n_sym_ops_mae: 5.6352 # unitless
-      symmetry_decrease: 0.5213 # fraction
-      symmetry_match: 0.4332 # fraction
-      symmetry_increase: 0.0387 # fraction
+      rmsd: 0.0973 # unitless
+      n_sym_ops_mae: 5.0639 # unitless
+      symmetry_decrease: 0.4547 # fraction
+      symmetry_match: 0.4926 # fraction
+      symmetry_increase: 0.0453 # fraction
       n_structures: 256963 # count
-      analysis_file: models/orb/orbff-mptrj-v2/2024-10-14-wbm-geo-opt-symprec=1e-2-moyo=0.4.2.csv.gz
-      analysis_file_url: https://figshare.com/files/53504696
+      analysis_file: models/orb/orbff-v2/2024-10-11-wbm-geo-opt-symprec=1e-2-moyo=0.4.2.csv.gz
+      analysis_file_url: https://figshare.com/files/53504684
   discovery:
-    pred_file: models/orb/orbff-mptrj-v2/2024-10-14-wbm-IS2RE.csv.gz
-    pred_file_url: https://figshare.com/files/52057565
+    pred_file: models/orb/orbff-v2/2024-10-11-wbm-IS2RE.csv.gz
+    pred_file_url: https://figshare.com/files/52057562
     pred_col: e_form_per_atom_orb
     full_test_set:
-      F1: 0.755 # fraction
-      DAF: 4.188 # dimensionless
-      Precision: 0.719 # fraction
-      Recall: 0.795 # fraction
-      Accuracy: 0.911 # fraction
-      TPR: 0.795 # fraction
-      FPR: 0.064 # fraction
-      TNR: 0.936 # fraction
-      FNR: 0.205 # fraction
-      TP: 35047.0 # count
-      FP: 13729.0 # count
-      TN: 199142.0 # count
-      FN: 9045.0 # count
-      MAE: 0.043 # eV/atom
-      RMSE: 0.09 # eV/atom
-      R2: 0.752 # dimensionless
+      F1: 0.858 # fraction
+      DAF: 5.281 # dimensionless
+      Precision: 0.906 # fraction
+      Recall: 0.815 # fraction
+      Accuracy: 0.954 # fraction
+      TPR: 0.815 # fraction
+      FPR: 0.017 # fraction
+      TNR: 0.983 # fraction
+      FNR: 0.185 # fraction
+      TP: 35949.0 # count
+      FP: 3725.0 # count
+      TN: 209146.0 # count
+      FN: 8143.0 # count
+      MAE: 0.028 # eV/atom
+      RMSE: 0.078 # eV/atom
+      R2: 0.814 # dimensionless
       missing_preds: 2 # count
     most_stable_10k:
-      F1: 0.971 # fraction
-      DAF: 6.173 # dimensionless
-      Precision: 0.944 # fraction
+      F1: 0.985 # fraction
+      DAF: 6.348 # dimensionless
+      Precision: 0.97 # fraction
       Recall: 1.0 # fraction
-      Accuracy: 0.944 # fraction
+      Accuracy: 0.97 # fraction
       TPR: 1.0 # fraction
       FPR: 1.0 # fraction
       TNR: 0.0 # fraction
       FNR: 0.0 # fraction
-      TP: 9437.0 # count
-      FP: 563.0 # count
+      TP: 9704.0 # count
+      FP: 296.0 # count
       TN: 0.0 # count
       FN: 0.0 # count
-      MAE: 0.037 # eV/atom
-      RMSE: 0.098 # eV/atom
-      R2: 0.801 # dimensionless
+      MAE: 0.019 # eV/atom
+      RMSE: 0.068 # eV/atom
+      R2: 0.897 # dimensionless
       missing_preds: 0 # count
     unique_prototypes:
-      F1: 0.765 # fraction
-      DAF: 4.702 # dimensionless
-      Precision: 0.719 # fraction
-      Recall: 0.817 # fraction
-      Accuracy: 0.922 # fraction
-      TPR: 0.817 # fraction
-      FPR: 0.059 # fraction
-      TNR: 0.941 # fraction
-      FNR: 0.183 # fraction
-      TP: 27276.0 # count
-      FP: 10668.0 # count
-      TN: 171446.0 # count
-      FN: 6098.0 # count
-      MAE: 0.045 # eV/atom
-      RMSE: 0.091 # eV/atom
-      R2: 0.756 # dimensionless
+      F1: 0.88 # fraction
+      DAF: 6.041 # dimensionless
+      Precision: 0.924 # fraction
+      Recall: 0.841 # fraction
+      Accuracy: 0.965 # fraction
+      TPR: 0.841 # fraction
+      FPR: 0.013 # fraction
+      TNR: 0.987 # fraction
+      FNR: 0.159 # fraction
+      TP: 28055.0 # count
+      FP: 2323.0 # count
+      TN: 179791.0 # count
+      FN: 5319.0 # count
+      MAE: 0.028 # eV/atom
+      RMSE: 0.077 # eV/atom
+      R2: 0.824 # dimensionless
       missing_preds: 0 # count

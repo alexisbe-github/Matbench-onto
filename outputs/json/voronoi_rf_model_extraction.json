@@ -1,0 +1,61 @@
+{
+  "model": {
+    "family": {
+      "value": "Voronoi",
+      "evidence": "YAML model_name"
+    },
+    "variant": {
+      "value": "voronoi-rf",
+      "evidence": "YAML model_key"
+    },
+    "parameter_number": {
+      "value": 26243464,
+      "evidence": "YAML model_params"
+    }
+  },
+  "architectures": {
+    "Fingerprint": {
+      "ontology_class": {
+        "value": "MachineLearningArchitecture",
+        "evidence": "YAML model_type"
+      },
+      "parameter_number": {
+        "value": 26243464,
+        "evidence": "YAML model_params"
+      },
+      "hyperparameters": {
+        "value": [],
+        "evidence": "YAML hyperparams"
+      }
+    }
+  },
+  "training": {
+    "training_runs": [
+      {
+        "id": "voronoi_rf_training_run",
+        "type": {
+          "value": "MachineLearningTrainingRun",
+          "evidence": "ontology/trainingonto.ttl"
+        },
+        "architectures": {
+          "value": [
+            "Fingerprint"
+          ],
+          "evidence": "YAML model_type"
+        },
+        "datasets": {
+          "value": [
+            "MP 2022"
+          ],
+          "evidence": "YAML training_set"
+        }
+      }
+    ]
+  },
+  "evaluation": {},
+  "_sources": {
+    "pdf_file": "papers/voronoi_rf.pdf",
+    "pdf_url": "https://link.aps.org/doi/10.1103/PhysRevB.96.024104",
+    "yaml_file": "model_yamls\\voronoi_rf.yml"
+  }
+}

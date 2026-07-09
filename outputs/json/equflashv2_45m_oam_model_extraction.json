@@ -1,0 +1,70 @@
+{
+  "model": {
+    "family": {
+      "value": "EquFlashV2",
+      "evidence": "YAML model_name"
+    },
+    "variant": {
+      "value": "equflashv2-45M-oam",
+      "evidence": "YAML model_key"
+    },
+    "parameter_number": {
+      "value": 44890492,
+      "evidence": "YAML model_params"
+    }
+  },
+  "architectures": {
+    "UIP": {
+      "ontology_class": {
+        "value": "MachineLearningArchitecture",
+        "evidence": "YAML model_type"
+      },
+      "parameter_number": {
+        "value": 44890492,
+        "evidence": "YAML model_params"
+      },
+      "hyperparameters": {
+        "value": [
+          "max_force",
+          "max_steps",
+          "ase_optimizer",
+          "cell_filter",
+          "graph_construction_radius",
+          "max_neighbors"
+        ],
+        "evidence": "YAML hyperparams"
+      }
+    }
+  },
+  "training": {
+    "training_runs": [
+      {
+        "id": "equflashv2_45m_oam_training_run",
+        "type": {
+          "value": "MachineLearningTrainingRun",
+          "evidence": "ontology/trainingonto.ttl"
+        },
+        "architectures": {
+          "value": [
+            "UIP"
+          ],
+          "evidence": "YAML model_type"
+        },
+        "datasets": {
+          "value": [
+            "OMat24",
+            "MPtrj",
+            "sAlex"
+          ],
+          "evidence": "YAML training_set"
+        }
+      }
+    ]
+  },
+  "evaluation": {},
+  "_sources": {
+    "pdf_file": "papers/equflash_29m_oam.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2506.01815.pdf",
+    "yaml_file": "model_yamls\\equflashv2_45m_oam.yml"
+  }
+}

@@ -6,7 +6,7 @@
     },
     "variant": {
       "value": "gnome",
-      "evidence": "YAML model_name: GNoME; lowercased and underscored"
+      "evidence": "YAML model_key: gnome"
     },
     "parameter_number": {
       "value": 16240000,
@@ -14,1092 +14,1786 @@
     }
   },
   "architectures": {
-    "architectures": [
-      "Equivariant Graph Neural Network",
-      "Equivariant Message Passing Neural Network",
-      "Graph Neural Network",
-      "Message Passing Neural Network",
-      "NequIP"
-    ],
-    "Equivariant Graph Neural Network": {
-      "ontology_class": "EquivariantGraphNeuralNetworkArchitecture",
-      "evidence": "ontology architecture.ttl: :EquivariantGraphNeuralNetworkArchitecture rdfs:subClassOf :EquivariantNeuralNetworkArchitecture",
-      "parameter_number": {
-        "value": null,
-        "evidence": "PDF does not specify parameter count for this architecture separately"
+    "GNoME_graph_neural_network": {
+      "ontology_class": {
+        "value": "EquivariantMessagePassingNeuralNetworkArchitecture",
+        "evidence": "PDF: equivariant Nequip-type GNN; ontology: EquivariantMessagePassingNeuralNetworkArchitecture"
       },
-      "datasets": {
-        "value": [
-          "Materials Project",
-          "OQMD",
-          "ICSD",
-          "WBM"
-        ],
-        "evidence": "PDF Methods: Datasets and candidate generation; snapshots of Materials Project, OQMD, WBM, ICSD"
-      },
-      "hyperparameters": {
-        "value": [
-          "learning_rate",
-          "batch_size",
-          "epochs",
-          "message_passing_iterations",
-          "embedding_dimension",
-          "edge_featurizer",
-          "nonlinearity",
-          "loss_function",
-          "optimizer",
-          "ensemble_size",
-          "test_time_augmentation",
-          "distance_cutoff"
-        ],
-        "evidence": "PDF Methods: Model training and evaluation; Training structural and composition models; Deep ensembles and uncertainty quantification; Test-time augmentations"
-      },
-      "hyperparameters_detail": {
-        "learning_rate": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "5.55e-4",
-            "evidence": "PDF Methods: Training structural and composition models; learning rate of 5.55 × 10^-4"
-          }
-        },
-        "batch_size": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 256,
-            "evidence": "PDF Methods: Training structural and composition models; batch size of 256"
-          }
-        },
-        "epochs": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 1000,
-            "evidence": "PDF Methods: Training structural and composition models; 1,000 epochs"
-          }
-        },
-        "message_passing_iterations": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 3,
-            "evidence": "PDF Methods: Training structural and composition models; number of message-passing iterations is 3"
-          }
-        },
-        "embedding_dimension": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 256,
-            "evidence": "PDF Methods: Training structural and composition models; embedding dimension for all nodes and edges is 256"
-          }
-        },
-        "edge_featurizer": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Gaussian",
-            "evidence": "PDF Methods: Training structural and composition models; Gaussian featurizer"
-          }
-        },
-        "nonlinearity": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "swish",
-            "evidence": "PDF Methods: Training structural and composition models; swish nonlinearities"
-          }
-        },
-        "loss_function": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Huber",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; joint loss function consisting of a weighted sum of a Huber loss on energies and forces"
-          }
-        },
-        "optimizer": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Adam",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; Adam optimizer"
-          }
-        },
-        "ensemble_size": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 10,
-            "evidence": "PDF Methods: Deep ensembles and uncertainty quantification; n = 10 graph networks"
-          }
-        },
-        "test_time_augmentation": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "isotropic_scaling",
-            "evidence": "PDF Methods: Test-time augmentations; isotropic scaling of the lattice vectors"
-          }
-        },
-        "distance_cutoff": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "4.0",
-            "evidence": "PDF Methods: Graph networks; interatomic distance cutoff 4.0 Å for structural models"
-          }
-        }
-      },
-      "components": {
-        "value": [
-          "node_embedding",
-          "edge_embedding",
-          "message_passing",
-          "readout"
-        ],
-        "evidence": "PDF Methods: Graph networks; nodes embedded by atom type, edges embedded on interatomic distance, message passing, linear readout layer"
-      },
-      "backbone_architecture": {
-        "value": null,
-        "evidence": "No backbone architecture specified"
-      },
-      "head_architecture": {
-        "value": "linear_readout",
-        "evidence": "PDF Methods: Graph networks; linear readout layer applied to global state"
-      },
-      "layer_count": {
-        "value": 3,
-        "evidence": "PDF Methods: Training structural and composition models; 3-6 layers of message passing, default 3"
-      },
-      "hidden_dimension": {
-        "value": 256,
-        "evidence": "PDF Methods: Training structural and composition models; embedding dimension 256"
-      }
-    },
-    "Equivariant Message Passing Neural Network": {
-      "ontology_class": "EquivariantMessagePassingNeuralNetworkArchitecture",
-      "evidence": "ontology architecture.ttl: :EquivariantMessagePassingNeuralNetworkArchitecture rdfs:subClassOf :EquivariantGraphNeuralNetworkArchitecture",
-      "parameter_number": {
-        "value": null,
-        "evidence": "PDF does not specify parameter count for this architecture separately"
-      },
-      "datasets": {
-        "value": [
-          "Materials Project",
-          "OQMD",
-          "ICSD",
-          "WBM"
-        ],
-        "evidence": "PDF Methods: Datasets and candidate generation"
-      },
-      "hyperparameters": {
-        "value": [
-          "learning_rate",
-          "batch_size",
-          "epochs",
-          "message_passing_iterations",
-          "embedding_dimension",
-          "edge_featurizer",
-          "nonlinearity",
-          "loss_function",
-          "optimizer",
-          "ensemble_size",
-          "test_time_augmentation",
-          "distance_cutoff"
-        ],
-        "evidence": "PDF Methods: Model training and evaluation"
-      },
-      "hyperparameters_detail": {
-        "learning_rate": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "5.55e-4",
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "batch_size": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 256,
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "epochs": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 1000,
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "message_passing_iterations": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 3,
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "embedding_dimension": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 256,
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "edge_featurizer": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Gaussian",
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "nonlinearity": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "swish",
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "loss_function": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Huber",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential"
-          }
-        },
-        "optimizer": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Adam",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential"
-          }
-        },
-        "ensemble_size": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 10,
-            "evidence": "PDF Methods: Deep ensembles and uncertainty quantification"
-          }
-        },
-        "test_time_augmentation": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "isotropic_scaling",
-            "evidence": "PDF Methods: Test-time augmentations"
-          }
-        },
-        "distance_cutoff": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "4.0",
-            "evidence": "PDF Methods: Graph networks"
-          }
-        }
-      },
-      "components": {
-        "value": [
-          "node_embedding",
-          "edge_embedding",
-          "message_passing",
-          "readout"
-        ],
-        "evidence": "PDF Methods: Graph networks"
-      },
-      "backbone_architecture": {
-        "value": null,
-        "evidence": "No backbone architecture specified"
-      },
-      "head_architecture": {
-        "value": "linear_readout",
-        "evidence": "PDF Methods: Graph networks; linear readout layer"
-      },
-      "layer_count": {
-        "value": 3,
-        "evidence": "PDF Methods: Training structural and composition models"
-      },
-      "hidden_dimension": {
-        "value": 256,
-        "evidence": "PDF Methods: Training structural and composition models"
-      }
-    },
-    "Graph Neural Network": {
-      "ontology_class": "GraphNeuralNetworkArchitecture",
-      "evidence": "ontology architecture.ttl: :GraphNeuralNetworkArchitecture rdfs:subClassOf :NeuralNetworkArchitecture",
-      "parameter_number": {
-        "value": null,
-        "evidence": "PDF does not specify parameter count for this architecture separately"
-      },
-      "datasets": {
-        "value": [
-          "Materials Project",
-          "OQMD",
-          "ICSD",
-          "WBM"
-        ],
-        "evidence": "PDF Methods: Datasets and candidate generation"
-      },
-      "hyperparameters": {
-        "value": [
-          "learning_rate",
-          "batch_size",
-          "epochs",
-          "message_passing_iterations",
-          "embedding_dimension",
-          "edge_featurizer",
-          "nonlinearity",
-          "loss_function",
-          "optimizer",
-          "ensemble_size",
-          "test_time_augmentation",
-          "distance_cutoff"
-        ],
-        "evidence": "PDF Methods: Model training and evaluation"
-      },
-      "hyperparameters_detail": {
-        "learning_rate": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "5.55e-4",
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "batch_size": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 256,
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "epochs": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 1000,
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "message_passing_iterations": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 3,
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "embedding_dimension": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 256,
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "edge_featurizer": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Gaussian",
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "nonlinearity": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "swish",
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "loss_function": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Huber",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential"
-          }
-        },
-        "optimizer": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Adam",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential"
-          }
-        },
-        "ensemble_size": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 10,
-            "evidence": "PDF Methods: Deep ensembles and uncertainty quantification"
-          }
-        },
-        "test_time_augmentation": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "isotropic_scaling",
-            "evidence": "PDF Methods: Test-time augmentations"
-          }
-        },
-        "distance_cutoff": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "4.0",
-            "evidence": "PDF Methods: Graph networks"
-          }
-        }
-      },
-      "components": {
-        "value": [
-          "node_embedding",
-          "edge_embedding",
-          "message_passing",
-          "readout"
-        ],
-        "evidence": "PDF Methods: Graph networks"
-      },
-      "backbone_architecture": {
-        "value": null,
-        "evidence": "No backbone architecture specified"
-      },
-      "head_architecture": {
-        "value": "linear_readout",
-        "evidence": "PDF Methods: Graph networks; linear readout layer"
-      },
-      "layer_count": {
-        "value": 3,
-        "evidence": "PDF Methods: Training structural and composition models"
-      },
-      "hidden_dimension": {
-        "value": 256,
-        "evidence": "PDF Methods: Training structural and composition models"
-      }
-    },
-    "Message Passing Neural Network": {
-      "ontology_class": "MessagePassingNeuralNetworkArchitecture",
-      "evidence": "ontology architecture.ttl: :MessagePassingNeuralNetworkArchitecture rdfs:subClassOf :GraphNeuralNetworkArchitecture",
-      "parameter_number": {
-        "value": null,
-        "evidence": "PDF does not specify parameter count for this architecture separately"
-      },
-      "datasets": {
-        "value": [
-          "Materials Project",
-          "OQMD",
-          "ICSD",
-          "WBM"
-        ],
-        "evidence": "PDF Methods: Datasets and candidate generation"
-      },
-      "hyperparameters": {
-        "value": [
-          "learning_rate",
-          "batch_size",
-          "epochs",
-          "message_passing_iterations",
-          "embedding_dimension",
-          "edge_featurizer",
-          "nonlinearity",
-          "loss_function",
-          "optimizer",
-          "ensemble_size",
-          "test_time_augmentation",
-          "distance_cutoff"
-        ],
-        "evidence": "PDF Methods: Model training and evaluation"
-      },
-      "hyperparameters_detail": {
-        "learning_rate": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "5.55e-4",
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "batch_size": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 256,
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "epochs": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 1000,
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "message_passing_iterations": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 3,
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "embedding_dimension": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 256,
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "edge_featurizer": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Gaussian",
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "nonlinearity": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "swish",
-            "evidence": "PDF Methods: Training structural and composition models"
-          }
-        },
-        "loss_function": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Huber",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential"
-          }
-        },
-        "optimizer": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Adam",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential"
-          }
-        },
-        "ensemble_size": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 10,
-            "evidence": "PDF Methods: Deep ensembles and uncertainty quantification"
-          }
-        },
-        "test_time_augmentation": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "isotropic_scaling",
-            "evidence": "PDF Methods: Test-time augmentations"
-          }
-        },
-        "distance_cutoff": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "4.0",
-            "evidence": "PDF Methods: Graph networks"
-          }
-        }
-      },
-      "components": {
-        "value": [
-          "node_embedding",
-          "edge_embedding",
-          "message_passing",
-          "readout"
-        ],
-        "evidence": "PDF Methods: Graph networks"
-      },
-      "backbone_architecture": {
-        "value": null,
-        "evidence": "No backbone architecture specified"
-      },
-      "head_architecture": {
-        "value": "linear_readout",
-        "evidence": "PDF Methods: Graph networks; linear readout layer"
-      },
-      "layer_count": {
-        "value": 3,
-        "evidence": "PDF Methods: Training structural and composition models"
-      },
-      "hidden_dimension": {
-        "value": 256,
-        "evidence": "PDF Methods: Training structural and composition models"
-      }
-    },
-    "NequIP": {
-      "ontology_class": "EquivariantMessagePassingNeuralNetworkArchitecture",
-      "evidence": "PDF notes_description: GNoME is an equivariant Nequip-type graph neural network; ontology architecture.ttl: :EquivariantMessagePassingNeuralNetworkArchitecture",
       "parameter_number": {
         "value": 16240000,
-        "evidence": "YAML model_params: 16240000; PDF MLIPs: Pretrained GNoME potential; The pretrained potential has 16.24 million parameters"
+        "evidence": "PDF page 85: pretrained potential has 16.24 million parameters"
       },
       "datasets": {
         "value": [
+          "GNoME",
           "Materials Project",
-          "OQMD",
-          "ICSD",
-          "WBM"
+          "OQMD"
         ],
-        "evidence": "PDF Methods: Datasets and candidate generation"
+        "evidence": "PDF page 82: trained on Materials Project; page 85: GNoME dataset; page 86: snapshots of Materials Project and OQMD"
       },
       "hyperparameters": {
         "value": [
           "learning_rate",
           "batch_size",
-          "epochs",
-          "layers",
-          "hidden_features",
+          "message_passing_iterations",
+          "embedding_dimension",
           "radial_cutoff",
-          "edge_irreducible_representations",
-          "radial_mlp_hidden_layers",
-          "radial_mlp_neurons",
-          "nonlinearity",
           "loss_function",
           "optimizer",
-          "distance_cutoff"
+          "epochs"
         ],
-        "evidence": "PDF MLIPs: Pretrained GNoME potential"
-      },
-      "hyperparameters_detail": {
-        "learning_rate": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "2e-3",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; learning rate of 2 × 10^-3"
-          }
-        },
-        "batch_size": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 32,
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; batch size of 32"
-          }
-        },
-        "epochs": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": null,
-            "evidence": "PDF does not specify exact epoch count for NequIP pretraining"
-          }
-        },
-        "layers": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 5,
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; five layers"
-          }
-        },
-        "hidden_features": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "128x0e+64x1x+32x2e",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; hidden features of 128 ℓ=0 scalars, 64 ℓ=1 vectors and 32 ℓ=2 tensors"
-          }
-        },
-        "radial_cutoff": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "5.0",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; radial cutoff of 5 Å"
-          }
-        },
-        "edge_irreducible_representations": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "0e+1e+2e",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; edge-irreducible representation of 0e+1e+2e"
-          }
-        },
-        "radial_mlp_hidden_layers": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 2,
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; radial MLP R(r) with two hidden layers"
-          }
-        },
-        "radial_mlp_neurons": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": 64,
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; 64 neurons"
-          }
-        },
-        "nonlinearity": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "SiLU",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; SiLU for the gated, equivariant nonlinearities"
-          }
-        },
-        "loss_function": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Huber",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; joint loss function consisting of a weighted sum of a Huber loss on energies and forces"
-          }
-        },
-        "optimizer": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "Adam",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; Adam optimizer"
-          }
-        },
-        "distance_cutoff": {
-          "ontology_class": "MachineLearningHyperparameter",
-          "evidence": "ontology trainingonto.ttl: :MachineLearningHyperparameter",
-          "value": {
-            "value": "5.0",
-            "evidence": "PDF MLIPs: Pretrained GNoME potential; radial cutoff of 5 Å"
-          }
-        }
+        "evidence": "PDF page 85: learning rate 2e-3, batch size 32, 3 message-passing iterations, embedding dim 256, cutoff 5Å, Adam optimizer"
       },
       "components": {
         "value": [
-          "node_embedding",
-          "edge_embedding",
-          "convolution",
-          "readout"
+          "radial_MLP",
+          "gated_equivariant_nonlinearity",
+          "self_connection"
         ],
-        "evidence": "PDF MLIPs: Pretrained GNoME potential; embed chemical species, self-connection, convolution"
+        "evidence": "PDF page 85: radial MLP with SiLU, gated equivariant nonlinearities, self-connection"
       },
       "backbone_architecture": {
-        "value": null,
-        "evidence": "No backbone architecture specified"
+        "value": "NequIP",
+        "evidence": "PDF page 85: train a NequIP potential"
       },
       "head_architecture": {
-        "value": "energy_sum",
-        "evidence": "PDF MLIPs: Pretrained GNoME potential; predict energy as sum over scaled and shifted atomic energies"
+        "value": "linear_readout",
+        "evidence": "PDF page 85: linear readout layer to compute energy prediction"
       },
       "layer_count": {
         "value": 5,
-        "evidence": "PDF MLIPs: Pretrained GNoME potential; five layers"
+        "evidence": "PDF page 85: NequIP with five layers"
       },
       "hidden_dimension": {
         "value": 128,
-        "evidence": "PDF MLIPs: Pretrained GNoME potential; hidden features of 128 ℓ=0 scalars"
+        "evidence": "PDF page 85: hidden features of 128 l=0 scalars, 64 l=1 vectors, 32 l=2 tensors"
+      }
+    },
+    "GNoME_compositional_GNN": {
+      "ontology_class": {
+        "value": "GraphNeuralNetworkArchitecture",
+        "evidence": "PDF page 82: compositional models predict stability; ontology: GraphNeuralNetworkArchitecture"
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "Not specified separately from structural model"
+      },
+      "datasets": {
+        "value": [
+          "Materials Project",
+          "GNoME"
+        ],
+        "evidence": "PDF page 85: trained on Materials Project data; page 82: active learning on GNoME data"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "message_passing_iterations",
+          "embedding_dimension"
+        ],
+        "evidence": "PDF page 85: learning rate 5.55e-4, batch size 256, 3 message-passing iterations, embedding dim 256"
+      },
+      "components": {
+        "value": [
+          "linear_readout"
+        ],
+        "evidence": "PDF page 85: output layer projects global vector to energy estimate"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "Not specified"
+      },
+      "head_architecture": {
+        "value": "linear_readout",
+        "evidence": "PDF page 85: linear readout layer"
+      },
+      "layer_count": {
+        "value": 3,
+        "evidence": "PDF page 85: 3 message-passing iterations for compositional model"
+      },
+      "hidden_dimension": {
+        "value": 256,
+        "evidence": "PDF page 85: embedding dimension for all nodes and edges is 256"
       }
     }
   },
   "training": {
     "training_runs": [
-      "active_learning",
-      "pretraining"
-    ],
-    "active_learning": {
-      "type": {
-        "value": "MachineLearningActiveLearningRun",
-        "evidence": "ontology trainingonto.ttl: :MachineLearningActiveLearningRun rdfs:subClassOf :MachineLearningTrainingRun; PDF Active learning section"
+      {
+        "id": "gnome_active_learning_pretraining",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF page 82: initial models trained on Materials Project snapshot; ontology: PretrainingRun"
+        },
+        "architectures": {
+          "value": [
+            "GNoME_graph_neural_network",
+            "GNoME_compositional_GNN"
+          ],
+          "evidence": "PDF page 82: structural and compositional GNNs trained"
+        },
+        "datasets": {
+          "value": [
+            "Materials Project"
+          ],
+          "evidence": "PDF page 82: trained on snapshot of Materials Project from 2018, ~69,000 materials"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF page 85: models trained with Adam optimizer"
+        },
+        "loss_function": {
+          "value": "Huber_loss",
+          "evidence": "PDF page 85: joint loss of Huber loss on energies and forces"
+        },
+        "description": {
+          "value": "Initial pretraining of GNoME structural and compositional GNNs on Materials Project data, achieving 21 meV/atom MAE for structural model and 60 meV/atom for compositional model.",
+          "evidence": "PDF page 82: initial training on Materials Project, MAE 21 meV/atom; page 85: compositional MAE 60 meV/atom"
+        },
+        "objective_function": {
+          "value": "energy_and_force_prediction",
+          "evidence": "PDF page 85: joint loss on energies and forces"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "Not specified for pretraining"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not applicable to pretraining run"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "Trained from scratch on Materials Project"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "GNoME_initial_model"
+          ],
+          "evidence": "PDF page 82: initial model trained on Materials Project"
+        }
       },
-      "architectures": {
-        "value": [
-          "Equivariant Graph Neural Network",
-          "Graph Neural Network"
-        ],
-        "evidence": "PDF Active learning section; GNoME models are GNNs"
+      {
+        "id": "gnome_active_learning_finetuning",
+        "type": {
+          "value": "MachineLearningActiveLearningRun",
+          "evidence": "PDF page 82: six rounds of active learning; ontology: MachineLearningActiveLearningRun"
+        },
+        "architectures": {
+          "value": [
+            "GNoME_graph_neural_network",
+            "GNoME_compositional_GNN"
+          ],
+          "evidence": "PDF page 82: GNoME models trained through active learning rounds"
+        },
+        "datasets": {
+          "value": [
+            "GNoME",
+            "Materials Project",
+            "OQMD"
+          ],
+          "evidence": "PDF page 82: active learning on GNoME discoveries; page 86: snapshots of MP and OQMD"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF page 85: Adam optimizer used throughout"
+        },
+        "loss_function": {
+          "value": "Huber_loss",
+          "evidence": "PDF page 85: Huber loss on energies and forces"
+        },
+        "description": {
+          "value": "Six rounds of active learning where GNoME models filter candidates, DFT verifies predictions, and new data is added to training set. Final MAE improved to 11 meV/atom.",
+          "evidence": "PDF page 82: six rounds of active learning, final MAE 11 meV/atom"
+        },
+        "objective_function": {
+          "value": "energy_and_force_prediction",
+          "evidence": "PDF page 85: joint energy and force loss"
+        },
+        "sampling_method": {
+          "value": "active_learning_sampling",
+          "evidence": "PDF page 82: active learning with model-based filtration and DFT verification"
+        },
+        "uses_batched_selection": {
+          "value": true,
+          "evidence": "PDF page 82: deep ensembles and test-time augmentation for batch filtering"
+        },
+        "initialized_from_model_materialization": {
+          "value": "GNoME_initial_model",
+          "evidence": "PDF page 82: active learning builds on initial pretrained model"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "GNoME_final_ensemble"
+          ],
+          "evidence": "PDF page 82: final ensembles of GNoME models"
+        }
       },
-      "datasets": {
-        "value": [
-          "Materials Project",
-          "OQMD",
-          "ICSD",
-          "WBM"
-        ],
-        "evidence": "PDF Methods: Datasets and candidate generation"
-      },
-      "optimizer": {
-        "value": "Adam",
-        "evidence": "PDF MLIPs: Pretrained GNoME potential; Adam optimizer"
-      },
-      "loss_function": {
-        "value": "Huber",
-        "evidence": "PDF MLIPs: Pretrained GNoME potential; Huber loss"
-      },
-      "description": {
-        "value": "Active learning with six rounds of generation, filtration, and DFT evaluation to discover stable crystals",
-        "evidence": "PDF Active learning section; six rounds of active learning"
-      },
-      "objective_function": {
-        "value": "energy_prediction",
-        "evidence": "PDF GNoME section; predict total energy of crystal"
-      },
-      "sampling_method": {
-        "value": "uncertainty_sampling",
-        "evidence": "PDF Methods: Deep ensembles and uncertainty quantification"
-      },
-      "uses_batched_selection": {
-        "value": true,
-        "evidence": "PDF Methods: Clustered-based reduction; batch size of 256"
-      },
-      "initialized_from_model_materialization": {
-        "value": "Materials Project 2018 snapshot",
-        "evidence": "PDF Methods: Training structural and composition models; Initial models trained on snapshot of Materials Project from 2018"
-      },
-      "teacher_model": {
-        "value": null,
-        "evidence": "Not a distillation run"
-      },
-      "student_model": {
-        "value": null,
-        "evidence": "Not a distillation run"
-      },
-      "model_materializations": {
-        "value": [
-          "GNoME stable crystals database"
-        ],
-        "evidence": "PDF Data availability; stable discoveries available at github and Materials Project"
+      {
+        "id": "gnome_interatomic_potential_pretraining",
+        "type": {
+          "value": "PretrainingRun",
+          "evidence": "PDF page 85: pretrain a general-purpose MLIP; ontology: PretrainingRun"
+        },
+        "architectures": {
+          "value": [
+            "GNoME_graph_neural_network"
+          ],
+          "evidence": "PDF page 85: NequIP potential trained on GNoME relaxation data"
+        },
+        "datasets": {
+          "value": [
+            "GNoME"
+          ],
+          "evidence": "PDF page 85: trained on GNoME dataset of first-principles relaxation calculations"
+        },
+        "optimizer": {
+          "value": "Adam",
+          "evidence": "PDF page 85: Adam optimizer with learning rate 2e-3"
+        },
+        "loss_function": {
+          "value": "Huber_loss",
+          "evidence": "PDF page 85: joint Huber loss on energies and forces"
+        },
+        "description": {
+          "value": "Pretraining of NequIP interatomic potential on GNoME ionic relaxation trajectories with 16.24M parameters, 5 layers, achieving zero-shot generalization.",
+          "evidence": "PDF page 85: NequIP pretrained on GNoME data, 16.24M params, 5 layers"
+        },
+        "objective_function": {
+          "value": "energy_and_force_prediction",
+          "evidence": "PDF page 85: joint loss on energies and forces"
+        },
+        "sampling_method": {
+          "value": null,
+          "evidence": "Not specified"
+        },
+        "uses_batched_selection": {
+          "value": null,
+          "evidence": "Not applicable"
+        },
+        "initialized_from_model_materialization": {
+          "value": null,
+          "evidence": "Trained from scratch"
+        },
+        "teacher_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "student_model": {
+          "value": null,
+          "evidence": "Not a distillation run"
+        },
+        "model_materializations": {
+          "value": [
+            "GNoME_pretrained_NequIP"
+          ],
+          "evidence": "PDF page 85: pretrained GNoME NequIP potential"
+        }
       }
-    },
-    "pretraining": {
-      "type": {
-        "value": "PretrainingRun",
-        "evidence": "ontology trainingonto.ttl: :PretrainingRun rdfs:subClassOf :MachineLearningTrainingRun; PDF MLIPs: Pretrained GNoME potential"
-      },
-      "architectures": {
-        "value": [
-          "NequIP"
-        ],
-        "evidence": "PDF MLIPs: Pretrained GNoME potential; NequIP potential"
-      },
-      "datasets": {
-        "value": [
-          "Materials Project",
-          "OQMD"
-        ],
-        "evidence": "PDF MLIPs: Pretrained GNoME potential; data sampled from ionic relaxations"
-      },
-      "optimizer": {
-        "value": "Adam",
-        "evidence": "PDF MLIPs: Pretrained GNoME potential; Adam optimizer"
-      },
-      "loss_function": {
-        "value": "Huber",
-        "evidence": "PDF MLIPs: Pretrained GNoME potential; Huber loss on energies and forces"
-      },
-      "description": {
-        "value": "Pretraining NequIP potential on ionic relaxation data for interatomic potential",
-        "evidence": "PDF MLIPs: Pretrained GNoME potential"
-      },
-      "objective_function": {
-        "value": "force_prediction",
-        "evidence": "PDF MLIPs: Pretrained GNoME potential; predict energies and forces"
-      },
-      "sampling_method": {
-        "value": "oversampling",
-        "evidence": "PDF MLIPs: Pretrained GNoME potential; oversampling of first-step structures"
-      },
-      "uses_batched_selection": {
-        "value": null,
-        "evidence": "Not an active learning run"
-      },
-      "initialized_from_model_materialization": {
-        "value": null,
-        "evidence": "Trained from scratch"
-      },
-      "teacher_model": {
-        "value": null,
-        "evidence": "Not a distillation run"
-      },
-      "student_model": {
-        "value": null,
-        "evidence": "Not a distillation run"
-      },
-      "model_materializations": {
-        "value": [
-          "GNoME pretrained potential"
-        ],
-        "evidence": "PDF MLIPs: Pretrained GNoME potential"
-      }
-    }
+    ]
   },
-  "datasets": {
-    "datasets": [
-      "Materials Project",
-      "OQMD",
-      "ICSD",
-      "WBM"
-    ],
-    "Materials Project": {
-      "ontology_class": "Dataset",
-      "evidence": "ontology datasetonto.ttl: :Dataset",
-      "number_of_samples": {
-        "value": 69000,
-        "evidence": "PDF Methods: Training structural and composition models; approximately 69,000 materials"
+  "evaluation": {
+    "evaluation_runs": {
+      "matbench_discovery_thermodynamic_stability_classification": {
+        "type": {
+          "value": "MachineLearningEvaluationRun",
+          "evidence": "ontology/evaluationonto.ttl: MachineLearningEvaluationRun"
+        },
+        "model_variant": {
+          "value": "gnome",
+          "evidence": "YAML metrics.discovery"
+        },
+        "benchmark_release": {
+          "value": "matbench_discovery_benchmark_release",
+          "evidence": "YAML metrics.discovery"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "WBM test set",
+          "evidence": "YAML metrics.discovery"
+        },
+        "folds": {
+          "value": [],
+          "evidence": "YAML metrics.discovery"
+        },
+        "metric_results": {
+          "value": [
+            "discovery_full_test_set_f1",
+            "discovery_full_test_set_daf",
+            "discovery_full_test_set_precision",
+            "discovery_full_test_set_recall",
+            "discovery_full_test_set_accuracy",
+            "discovery_full_test_set_tpr",
+            "discovery_full_test_set_fpr",
+            "discovery_full_test_set_tnr",
+            "discovery_full_test_set_fnr",
+            "discovery_full_test_set_tp",
+            "discovery_full_test_set_fp",
+            "discovery_full_test_set_tn",
+            "discovery_full_test_set_fn",
+            "discovery_most_stable_10k_f1",
+            "discovery_most_stable_10k_daf",
+            "discovery_most_stable_10k_precision",
+            "discovery_most_stable_10k_recall",
+            "discovery_most_stable_10k_accuracy",
+            "discovery_most_stable_10k_tpr",
+            "discovery_most_stable_10k_fpr",
+            "discovery_most_stable_10k_tnr",
+            "discovery_most_stable_10k_fnr",
+            "discovery_most_stable_10k_tp",
+            "discovery_most_stable_10k_fp",
+            "discovery_most_stable_10k_tn",
+            "discovery_most_stable_10k_fn",
+            "discovery_unique_prototypes_f1",
+            "discovery_unique_prototypes_daf",
+            "discovery_unique_prototypes_precision",
+            "discovery_unique_prototypes_recall",
+            "discovery_unique_prototypes_accuracy",
+            "discovery_unique_prototypes_tpr",
+            "discovery_unique_prototypes_fpr",
+            "discovery_unique_prototypes_tnr",
+            "discovery_unique_prototypes_fnr",
+            "discovery_unique_prototypes_tp",
+            "discovery_unique_prototypes_fp",
+            "discovery_unique_prototypes_tn",
+            "discovery_unique_prototypes_fn"
+          ],
+          "evidence": "YAML metrics.discovery"
+        }
       },
-      "data_representation": {
-        "value": "crystal_graph",
-        "evidence": "PDF Methods: Graph networks; crystal definition encoded as graph"
-      },
-      "labelling_method": {
-        "value": "DFT",
-        "evidence": "PDF Methods: VASP calculations; DFT calculations"
-      },
-      "input_features": {
-        "value": [
-          "atom_type",
-          "interatomic_distance",
-          "lattice",
-          "structure"
-        ],
-        "evidence": "PDF Methods: Graph networks; nodes embedded by atom type, edges embedded on interatomic distance"
-      },
-      "target_features": {
-        "value": [
-          "formation_energy",
-          "total_energy"
-        ],
-        "evidence": "PDF GNoME section; predict total energy of crystal"
-      },
-      "derived_from_dataset": {
-        "value": null,
-        "evidence": "Original dataset"
+      "matbench_discovery_convex_hull_distance_regression": {
+        "type": {
+          "value": "MachineLearningEvaluationRun",
+          "evidence": "ontology/evaluationonto.ttl: MachineLearningEvaluationRun"
+        },
+        "model_variant": {
+          "value": "gnome",
+          "evidence": "YAML metrics.discovery"
+        },
+        "benchmark_release": {
+          "value": "matbench_discovery_benchmark_release",
+          "evidence": "YAML metrics.discovery"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "WBM test set",
+          "evidence": "YAML metrics.discovery"
+        },
+        "folds": {
+          "value": [],
+          "evidence": "YAML metrics.discovery"
+        },
+        "metric_results": {
+          "value": [
+            "discovery_full_test_set_mae",
+            "discovery_full_test_set_rmse",
+            "discovery_full_test_set_r2",
+            "discovery_full_test_set_missing_preds",
+            "discovery_most_stable_10k_mae",
+            "discovery_most_stable_10k_rmse",
+            "discovery_most_stable_10k_r2",
+            "discovery_most_stable_10k_missing_preds",
+            "discovery_unique_prototypes_mae",
+            "discovery_unique_prototypes_rmse",
+            "discovery_unique_prototypes_r2",
+            "discovery_unique_prototypes_missing_preds"
+          ],
+          "evidence": "YAML metrics.discovery"
+        }
       }
     },
-    "OQMD": {
-      "ontology_class": "Dataset",
-      "evidence": "ontology datasetonto.ttl: :Dataset",
-      "number_of_samples": {
-        "value": null,
-        "evidence": "PDF does not specify exact sample count for OQMD"
-      },
-      "data_representation": {
-        "value": "crystal_graph",
-        "evidence": "PDF Methods: Graph networks; crystal definition encoded as graph"
-      },
-      "labelling_method": {
-        "value": "DFT",
-        "evidence": "PDF Methods: VASP calculations; DFT calculations"
-      },
-      "input_features": {
-        "value": [
-          "atom_type",
-          "interatomic_distance",
-          "lattice",
-          "structure"
-        ],
-        "evidence": "PDF Methods: Graph networks"
-      },
-      "target_features": {
-        "value": [
-          "formation_energy",
-          "total_energy"
-        ],
-        "evidence": "PDF GNoME section; predict total energy"
-      },
-      "derived_from_dataset": {
-        "value": null,
-        "evidence": "Original dataset"
+    "benchmark_releases": {
+      "matbench_discovery_benchmark_release": {
+        "type": {
+          "value": "BenchmarkRelease",
+          "evidence": "ontology/evaluationonto.ttl: BenchmarkRelease"
+        },
+        "tasks": {
+          "value": [
+            "convex_hull_distance_regression_task",
+            "thermodynamic_stability_classification_task"
+          ],
+          "evidence": "YAML fields train_task, test_task, targets and metrics"
+        }
       }
     },
-    "ICSD": {
-      "ontology_class": "Dataset",
-      "evidence": "ontology datasetonto.ttl: :Dataset",
-      "number_of_samples": {
-        "value": 200000,
-        "evidence": "PDF Introduction; 200,000 entries in ICSD"
+    "tasks": {
+      "convex_hull_distance_regression_task": {
+        "type": {
+          "value": "RegressionTask",
+          "evidence": "ontology/evaluation_individuals.ttl"
+        },
+        "dataset": {
+          "value": "WBM test set",
+          "evidence": "YAML fields train_task, test_task, targets and metrics"
+        }
       },
-      "data_representation": {
-        "value": "crystal_structure",
-        "evidence": "PDF Methods: Definition of experimental match; crystal structures"
-      },
-      "labelling_method": {
-        "value": "experimental_measurement",
-        "evidence": "PDF Introduction; experimental approaches"
-      },
-      "input_features": {
-        "value": [
-          "atom_type",
-          "lattice",
-          "structure"
-        ],
-        "evidence": "PDF Methods: Definition of experimental match"
-      },
-      "target_features": {
-        "value": [
-          "stability"
-        ],
-        "evidence": "PDF Introduction; computationally stable structures"
-      },
-      "derived_from_dataset": {
-        "value": null,
-        "evidence": "Original dataset"
+      "thermodynamic_stability_classification_task": {
+        "type": {
+          "value": "ClassificationTask",
+          "evidence": "ontology/evaluation_individuals.ttl"
+        },
+        "dataset": {
+          "value": "WBM test set",
+          "evidence": "YAML fields train_task, test_task, targets and metrics"
+        }
       }
     },
-    "WBM": {
-      "ontology_class": "Dataset",
-      "evidence": "ontology datasetonto.ttl: :Dataset",
-      "number_of_samples": {
-        "value": null,
-        "evidence": "PDF does not specify exact sample count for WBM"
+    "metric_results": {
+      "discovery_full_test_set_f1": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "F1",
+          "evidence": "YAML metrics.discovery.full_test_set.F1"
+        },
+        "metric_value": {
+          "value": 0.81,
+          "evidence": "YAML metrics.discovery.full_test_set.F1"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.F1"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.F1"
+        }
       },
-      "data_representation": {
-        "value": "crystal_graph",
-        "evidence": "PDF Methods: Datasets and candidate generation"
+      "discovery_full_test_set_daf": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "DAF",
+          "evidence": "YAML metrics.discovery.full_test_set.DAF"
+        },
+        "metric_value": {
+          "value": 4.81,
+          "evidence": "YAML metrics.discovery.full_test_set.DAF"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.discovery.full_test_set.DAF"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.DAF"
+        }
       },
-      "labelling_method": {
-        "value": "DFT",
-        "evidence": "PDF Methods: VASP calculations"
+      "discovery_full_test_set_precision": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Precision",
+          "evidence": "YAML metrics.discovery.full_test_set.Precision"
+        },
+        "metric_value": {
+          "value": 0.825,
+          "evidence": "YAML metrics.discovery.full_test_set.Precision"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.Precision"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.Precision"
+        }
       },
-      "input_features": {
-        "value": [
-          "atom_type",
-          "interatomic_distance",
-          "lattice",
-          "structure"
-        ],
-        "evidence": "PDF Methods: Graph networks"
+      "discovery_full_test_set_recall": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Recall",
+          "evidence": "YAML metrics.discovery.full_test_set.Recall"
+        },
+        "metric_value": {
+          "value": 0.796,
+          "evidence": "YAML metrics.discovery.full_test_set.Recall"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.Recall"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.Recall"
+        }
       },
-      "target_features": {
-        "value": [
-          "formation_energy",
-          "total_energy"
-        ],
-        "evidence": "PDF GNoME section"
+      "discovery_full_test_set_accuracy": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Accuracy",
+          "evidence": "YAML metrics.discovery.full_test_set.Accuracy"
+        },
+        "metric_value": {
+          "value": 0.936,
+          "evidence": "YAML metrics.discovery.full_test_set.Accuracy"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.Accuracy"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.Accuracy"
+        }
       },
-      "derived_from_dataset": {
-        "value": null,
-        "evidence": "Original dataset"
+      "discovery_full_test_set_tpr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TPR",
+          "evidence": "YAML metrics.discovery.full_test_set.TPR"
+        },
+        "metric_value": {
+          "value": 0.796,
+          "evidence": "YAML metrics.discovery.full_test_set.TPR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.TPR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.TPR"
+        }
+      },
+      "discovery_full_test_set_fpr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FPR",
+          "evidence": "YAML metrics.discovery.full_test_set.FPR"
+        },
+        "metric_value": {
+          "value": 0.035,
+          "evidence": "YAML metrics.discovery.full_test_set.FPR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.FPR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.FPR"
+        }
+      },
+      "discovery_full_test_set_tnr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TNR",
+          "evidence": "YAML metrics.discovery.full_test_set.TNR"
+        },
+        "metric_value": {
+          "value": 0.965,
+          "evidence": "YAML metrics.discovery.full_test_set.TNR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.TNR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.TNR"
+        }
+      },
+      "discovery_full_test_set_fnr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FNR",
+          "evidence": "YAML metrics.discovery.full_test_set.FNR"
+        },
+        "metric_value": {
+          "value": 0.204,
+          "evidence": "YAML metrics.discovery.full_test_set.FNR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.FNR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.FNR"
+        }
+      },
+      "discovery_full_test_set_tp": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TP",
+          "evidence": "YAML metrics.discovery.full_test_set.TP"
+        },
+        "metric_value": {
+          "value": 35082.0,
+          "evidence": "YAML metrics.discovery.full_test_set.TP"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.full_test_set.TP"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.TP"
+        }
+      },
+      "discovery_full_test_set_fp": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FP",
+          "evidence": "YAML metrics.discovery.full_test_set.FP"
+        },
+        "metric_value": {
+          "value": 7421.0,
+          "evidence": "YAML metrics.discovery.full_test_set.FP"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.full_test_set.FP"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.FP"
+        }
+      },
+      "discovery_full_test_set_tn": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TN",
+          "evidence": "YAML metrics.discovery.full_test_set.TN"
+        },
+        "metric_value": {
+          "value": 205450.0,
+          "evidence": "YAML metrics.discovery.full_test_set.TN"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.full_test_set.TN"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.TN"
+        }
+      },
+      "discovery_full_test_set_fn": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FN",
+          "evidence": "YAML metrics.discovery.full_test_set.FN"
+        },
+        "metric_value": {
+          "value": 9010.0,
+          "evidence": "YAML metrics.discovery.full_test_set.FN"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.full_test_set.FN"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.FN"
+        }
+      },
+      "discovery_full_test_set_mae": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "MAE",
+          "evidence": "YAML metrics.discovery.full_test_set.MAE"
+        },
+        "metric_value": {
+          "value": 0.034,
+          "evidence": "YAML metrics.discovery.full_test_set.MAE"
+        },
+        "unit": {
+          "value": "eV/atom",
+          "evidence": "YAML metrics.discovery.full_test_set.MAE"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.MAE"
+        }
+      },
+      "discovery_full_test_set_rmse": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "RMSE",
+          "evidence": "YAML metrics.discovery.full_test_set.RMSE"
+        },
+        "metric_value": {
+          "value": 0.083,
+          "evidence": "YAML metrics.discovery.full_test_set.RMSE"
+        },
+        "unit": {
+          "value": "eV/atom",
+          "evidence": "YAML metrics.discovery.full_test_set.RMSE"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.RMSE"
+        }
+      },
+      "discovery_full_test_set_r2": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "R2",
+          "evidence": "YAML metrics.discovery.full_test_set.R2"
+        },
+        "metric_value": {
+          "value": 0.786,
+          "evidence": "YAML metrics.discovery.full_test_set.R2"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.discovery.full_test_set.R2"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.R2"
+        }
+      },
+      "discovery_full_test_set_missing_preds": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "missing_preds",
+          "evidence": "YAML metrics.discovery.full_test_set.missing_preds"
+        },
+        "metric_value": {
+          "value": 1744,
+          "evidence": "YAML metrics.discovery.full_test_set.missing_preds"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.full_test_set.missing_preds"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.missing_preds"
+        }
+      },
+      "discovery_most_stable_10k_f1": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "F1",
+          "evidence": "YAML metrics.discovery.most_stable_10k.F1"
+        },
+        "metric_value": {
+          "value": 0.967,
+          "evidence": "YAML metrics.discovery.most_stable_10k.F1"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.F1"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.F1"
+        }
+      },
+      "discovery_most_stable_10k_daf": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "DAF",
+          "evidence": "YAML metrics.discovery.most_stable_10k.DAF"
+        },
+        "metric_value": {
+          "value": 6.127,
+          "evidence": "YAML metrics.discovery.most_stable_10k.DAF"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.discovery.most_stable_10k.DAF"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.DAF"
+        }
+      },
+      "discovery_most_stable_10k_precision": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Precision",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Precision"
+        },
+        "metric_value": {
+          "value": 0.937,
+          "evidence": "YAML metrics.discovery.most_stable_10k.Precision"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Precision"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Precision"
+        }
+      },
+      "discovery_most_stable_10k_recall": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Recall",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Recall"
+        },
+        "metric_value": {
+          "value": 1.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.Recall"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Recall"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Recall"
+        }
+      },
+      "discovery_most_stable_10k_accuracy": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Accuracy",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Accuracy"
+        },
+        "metric_value": {
+          "value": 0.937,
+          "evidence": "YAML metrics.discovery.most_stable_10k.Accuracy"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Accuracy"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Accuracy"
+        }
+      },
+      "discovery_most_stable_10k_tpr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TPR",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TPR"
+        },
+        "metric_value": {
+          "value": 1.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.TPR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TPR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TPR"
+        }
+      },
+      "discovery_most_stable_10k_fpr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FPR",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FPR"
+        },
+        "metric_value": {
+          "value": 1.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.FPR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FPR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FPR"
+        }
+      },
+      "discovery_most_stable_10k_tnr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TNR",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TNR"
+        },
+        "metric_value": {
+          "value": 0.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.TNR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TNR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TNR"
+        }
+      },
+      "discovery_most_stable_10k_fnr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FNR",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FNR"
+        },
+        "metric_value": {
+          "value": 0.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.FNR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FNR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FNR"
+        }
+      },
+      "discovery_most_stable_10k_tp": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TP",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TP"
+        },
+        "metric_value": {
+          "value": 9366.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.TP"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TP"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TP"
+        }
+      },
+      "discovery_most_stable_10k_fp": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FP",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FP"
+        },
+        "metric_value": {
+          "value": 634.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.FP"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FP"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FP"
+        }
+      },
+      "discovery_most_stable_10k_tn": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TN",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TN"
+        },
+        "metric_value": {
+          "value": 0.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.TN"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TN"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TN"
+        }
+      },
+      "discovery_most_stable_10k_fn": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FN",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FN"
+        },
+        "metric_value": {
+          "value": 0.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.FN"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FN"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FN"
+        }
+      },
+      "discovery_most_stable_10k_mae": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "MAE",
+          "evidence": "YAML metrics.discovery.most_stable_10k.MAE"
+        },
+        "metric_value": {
+          "value": 0.035,
+          "evidence": "YAML metrics.discovery.most_stable_10k.MAE"
+        },
+        "unit": {
+          "value": "eV/atom",
+          "evidence": "YAML metrics.discovery.most_stable_10k.MAE"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.MAE"
+        }
+      },
+      "discovery_most_stable_10k_rmse": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "RMSE",
+          "evidence": "YAML metrics.discovery.most_stable_10k.RMSE"
+        },
+        "metric_value": {
+          "value": 0.089,
+          "evidence": "YAML metrics.discovery.most_stable_10k.RMSE"
+        },
+        "unit": {
+          "value": "eV/atom",
+          "evidence": "YAML metrics.discovery.most_stable_10k.RMSE"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.RMSE"
+        }
+      },
+      "discovery_most_stable_10k_r2": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "R2",
+          "evidence": "YAML metrics.discovery.most_stable_10k.R2"
+        },
+        "metric_value": {
+          "value": 0.836,
+          "evidence": "YAML metrics.discovery.most_stable_10k.R2"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.discovery.most_stable_10k.R2"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.R2"
+        }
+      },
+      "discovery_most_stable_10k_missing_preds": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "missing_preds",
+          "evidence": "YAML metrics.discovery.most_stable_10k.missing_preds"
+        },
+        "metric_value": {
+          "value": 0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.missing_preds"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.most_stable_10k.missing_preds"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.missing_preds"
+        }
+      },
+      "discovery_unique_prototypes_f1": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "F1",
+          "evidence": "YAML metrics.discovery.unique_prototypes.F1"
+        },
+        "metric_value": {
+          "value": 0.829,
+          "evidence": "YAML metrics.discovery.unique_prototypes.F1"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.F1"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.F1"
+        }
+      },
+      "discovery_unique_prototypes_daf": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "DAF",
+          "evidence": "YAML metrics.discovery.unique_prototypes.DAF"
+        },
+        "metric_value": {
+          "value": 5.523,
+          "evidence": "YAML metrics.discovery.unique_prototypes.DAF"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.discovery.unique_prototypes.DAF"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.DAF"
+        }
+      },
+      "discovery_unique_prototypes_precision": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Precision",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Precision"
+        },
+        "metric_value": {
+          "value": 0.844,
+          "evidence": "YAML metrics.discovery.unique_prototypes.Precision"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Precision"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Precision"
+        }
+      },
+      "discovery_unique_prototypes_recall": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Recall",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Recall"
+        },
+        "metric_value": {
+          "value": 0.814,
+          "evidence": "YAML metrics.discovery.unique_prototypes.Recall"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Recall"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Recall"
+        }
+      },
+      "discovery_unique_prototypes_accuracy": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Accuracy",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Accuracy"
+        },
+        "metric_value": {
+          "value": 0.948,
+          "evidence": "YAML metrics.discovery.unique_prototypes.Accuracy"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Accuracy"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Accuracy"
+        }
+      },
+      "discovery_unique_prototypes_tpr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TPR",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TPR"
+        },
+        "metric_value": {
+          "value": 0.814,
+          "evidence": "YAML metrics.discovery.unique_prototypes.TPR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TPR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TPR"
+        }
+      },
+      "discovery_unique_prototypes_fpr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FPR",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FPR"
+        },
+        "metric_value": {
+          "value": 0.028,
+          "evidence": "YAML metrics.discovery.unique_prototypes.FPR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FPR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FPR"
+        }
+      },
+      "discovery_unique_prototypes_tnr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TNR",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TNR"
+        },
+        "metric_value": {
+          "value": 0.972,
+          "evidence": "YAML metrics.discovery.unique_prototypes.TNR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TNR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TNR"
+        }
+      },
+      "discovery_unique_prototypes_fnr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FNR",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FNR"
+        },
+        "metric_value": {
+          "value": 0.186,
+          "evidence": "YAML metrics.discovery.unique_prototypes.FNR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FNR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FNR"
+        }
+      },
+      "discovery_unique_prototypes_tp": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TP",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TP"
+        },
+        "metric_value": {
+          "value": 27178.0,
+          "evidence": "YAML metrics.discovery.unique_prototypes.TP"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TP"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TP"
+        }
+      },
+      "discovery_unique_prototypes_fp": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FP",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FP"
+        },
+        "metric_value": {
+          "value": 5009.0,
+          "evidence": "YAML metrics.discovery.unique_prototypes.FP"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FP"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FP"
+        }
+      },
+      "discovery_unique_prototypes_tn": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TN",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TN"
+        },
+        "metric_value": {
+          "value": 177105.0,
+          "evidence": "YAML metrics.discovery.unique_prototypes.TN"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TN"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TN"
+        }
+      },
+      "discovery_unique_prototypes_fn": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FN",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FN"
+        },
+        "metric_value": {
+          "value": 6196.0,
+          "evidence": "YAML metrics.discovery.unique_prototypes.FN"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FN"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FN"
+        }
+      },
+      "discovery_unique_prototypes_mae": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "MAE",
+          "evidence": "YAML metrics.discovery.unique_prototypes.MAE"
+        },
+        "metric_value": {
+          "value": 0.035,
+          "evidence": "YAML metrics.discovery.unique_prototypes.MAE"
+        },
+        "unit": {
+          "value": "eV/atom",
+          "evidence": "YAML metrics.discovery.unique_prototypes.MAE"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.MAE"
+        }
+      },
+      "discovery_unique_prototypes_rmse": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "RMSE",
+          "evidence": "YAML metrics.discovery.unique_prototypes.RMSE"
+        },
+        "metric_value": {
+          "value": 0.085,
+          "evidence": "YAML metrics.discovery.unique_prototypes.RMSE"
+        },
+        "unit": {
+          "value": "eV/atom",
+          "evidence": "YAML metrics.discovery.unique_prototypes.RMSE"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.RMSE"
+        }
+      },
+      "discovery_unique_prototypes_r2": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "R2",
+          "evidence": "YAML metrics.discovery.unique_prototypes.R2"
+        },
+        "metric_value": {
+          "value": 0.785,
+          "evidence": "YAML metrics.discovery.unique_prototypes.R2"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.discovery.unique_prototypes.R2"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.R2"
+        }
+      },
+      "discovery_unique_prototypes_missing_preds": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "missing_preds",
+          "evidence": "YAML metrics.discovery.unique_prototypes.missing_preds"
+        },
+        "metric_value": {
+          "value": 1517,
+          "evidence": "YAML metrics.discovery.unique_prototypes.missing_preds"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.unique_prototypes.missing_preds"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.missing_preds"
+        }
       }
     }
   },
   "_sources": {
     "pdf_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\papers\\gnome.pdf",
-    "pdf_url": "https://nature.com/articles/s41586-023-06735-9.pdf",
+    "pdf_url": "https://nature.com/articles/s41586-023-06735-9",
     "yaml_file": "C:\\Users\\user\\Desktop\\Matbench-onto\\model_yamls\\gnome.yml"
   }
 }

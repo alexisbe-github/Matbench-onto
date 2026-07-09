@@ -1,0 +1,1306 @@
+[page 1]
+Rapid Discovery of Stable Materials by Coordinate-free Coarse Graining
+Rhys E. A. Goodall,1 Abhijith S. Parackal,2 Felix A. Faber,1 Rickard Armiento,2,∗and Alpha A. Lee1,†
+1Department of Physics, University of Cambridge, United Kingdom
+2Department of Physics, Chemistry and Biology, Linköping University, Sweden
+A fundamental challenge in materials science pertains to elucidating the relationship between
+stoichiometry, stability, structure, and property. Recent advances have shown that machine learning
+can be used to learn such relationships, allowing the stability and functional properties of materials
+to be accurately predicted. However, most of these approaches use atomic coordinates as input and
+are thus bottlenecked by crystal structure identiﬁcation when investigating novel materials. Our
+approach solves this bottleneck by coarse-graining the inﬁnite search space of atomic coordinates
+into a combinatorially enumerable search space. The key idea is to use Wyckoﬀ representations –
+coordinate-free sets of symmetry-related positions in a crystal – as the input to a machine learning
+model. Our model demonstrates exceptionally high precision in discovering new theoretically stable
+materials, identifying 1,569 materials that lie below the known convex hull of previously calculated
+materials from just 5,675ab-initio calculations. Our approach opens up fundamental advances in
+computational materials discovery.
+I. INTRODUCTION
+Finding a needle in a haystack is often used as an
+analogy for materials discovery. Only a small propor-
+tion of viable material compositions (believed to be
+of the orderO(1010) [1]) will have thermodynamically
+stable polymorphs that are experimentally accessible.
+Most approaches to tackle this challenge focus on pre-
+dictive models for materials properties – metaphorical
+sieves that ﬁlter out the hay. Here we seek an alterna-
+tive approach: Can we signiﬁcantly cut down materials
+space by changing how we represent materials – making
+most of the hay disappear?
+Ourapproachismotivatedbyaconceptubiquitousin
+science: coarse-graining. Taking molecular chemistry,
+for example, chemists typically build intuitions about
+chemical properties using molecular graphs. Molecular
+graphs are a coarse-grained representation of molecules,
+with each graph corresponding to a unique ensemble
+of atomic coordinates. Searching in the enumerable
+space of molecular graphs, as opposed to the innumer-
+able space of possible atomic coordinates, has enabled
+the development of powerful computational tools [2, 3]
+as well as eﬀorts that exhaustively enumerate chemical
+space [4, 5].
+In materials science, however, an analogous coarse-
+grained representation of crystal structures is miss-
+ing. Thus, we are left confronting the innumerable
+search space problem. Composition-based approaches
+can somewhat overcome this challenge [6–9] but do so
+at the cost of discarding all information about the crys-
+tal structures of the materials being considered. As
+such, either extensive computational crystal structure
+searching or lab-based experiments are required to val-
+idate predictions.
+One avenue to manoeuvre around this challenge has
+been to explore restricted classes of structure proto-
+types using novel descriptors, e.g. Perovskites [10–12],
+quaternary Heuslers [13], or Elpasolites [14]. Specify-
+ing the prototype avoids the need for crystal structure
+∗Correspondence email address: rickard.armiento@liu.se
+†Correspondence email address: aal44@cam.ac.uk
+searching, empowering more extensive screening cam-
+paigns as the computational cost of validation is greatly
+reduced.
+In this paper, we introduce an approach that gen-
+eralises these prototype-restricted models by consider-
+ing Wyckoﬀ representations – coordinate-free sets of
+symmetry-related positions in a crystal. This frame-
+work allows us to develop accurate machine learning
+models for materials discovery tasks where the relaxed
+crystal structure isa priori unknown.
+We ﬁrst test the ability of our model to identify novel
+stable materials across a diverse range of chemistries,
+showing that it has a precision∼3 times larger than
+state-of-the-art coordinate-free methods based on ele-
+mental substitutions [15, 16]. We then evaluate the per-
+formance of our model in identifying stable structures
+within phase diagrams with diverse structures, showing
+that our model ﬁnds low energy structures in the phase
+diagram with∼5 times lower computational eﬀort. Fi-
+nally, we develop a materials exploration pipeline that,
+starting from an initial nucleus of known materials,
+screens nearby materials space and allows the eﬃcient
+discovery of new stable materials. We identify 1,569
+hitherto unknown materials that are below the known
+convex hull of previously calculated materials from just
+5,675 ab-initio calculations.
+II. RESULTS
+A. Wyckoﬀ Representation Regression
+Building an accurate machine learning model hinges
+on identifying model inputs that are suﬃciently infor-
+mative to allow the target variable to be predicted.
+However, for a machine learning model to be useful in
+practice, these inputs need to be signiﬁcantly cheaper
+to obtain than the cost of labelling data. In the context
+of materials discovery, previous works have shown that
+virtual screening workﬂows based on Kohn-Sham den-
+sity functional theory (DFT) can be used to identify
+novel functional materials [17, 18]. Separately it has
+been shown that accurate machine learning models can
+be built for the formation energies of inorganic crys-
+tals calculated via DFT using the DFT-relaxed crystal
+arXiv:2106.11132v3  [cond-mat.mtrl-sci]  15 Mar 2022
+
+[page 2]
+2
+Ef = Wren
+...
+Enumerate Wyckoff 
+Representations of
+Novel Materials
+Predict Formation Energy from 
+Wyckoff Representation using 
+Machine Learning Model
+ΔEhull 
+ < 0  
+ΔEhull 
+ > 0  
+  
+    
+  
+Generate Initial Structures for 
+Materials Predicted to be Stable
+Relax Structures with Symmetry 
+Constraints to Validate Predictions
+Proposed Discovery Workflow
+Compare Predicted 
+Energies Against Known 
+Convex Hull of Stability 
+Figure 1. Coarse-graining materials space using Wyckoﬀ representations enables eﬃcient data-driven ma-
+terials discovery.A machine learning powered materials discovery workﬂow that takes advantage of the beneﬁts of the
+proposed Wyckoﬀ representation. The workﬂow uses a machine learning model to predict formation energies for candidate
+materials in an enumerated library of Wyckoﬀ representations (shapes are used to denote diﬀerent Wyckoﬀ positions and
+colours to denote diﬀerent element types). These predicted formation energies are then compared against the known convex
+hull of stability. Structures satisfying the required symmetries are then generated and relaxed for materials predicted to be
+stable. The calculated energies of the relaxed structures can then be compared against the known convex hull to conﬁrm
+whether the candidate is stable.
+structure as the model input [19–22]. Inference using
+these models is signiﬁcantly cheaper than the DFT cal-
+culations they approximate, but sadly their application
+to materials discovery is circular because arriving at a
+DFT-relaxed structure necessitates calculating the en-
+ergy using DFT multiple times.
+Several groups have therefore proposed to use
+composition-based inputs [6–9], which avoid the up-
+front need for structure identiﬁcation. However, the
+composition is not expressive enough to diﬀerentiate
+polymorphs. This is a signiﬁcant shortcoming as diﬀer-
+ent polymorphs can have radically diﬀerent properties,
+most famously the example of diamond and graphite.
+As such, we turn to model inputs that can distinguish
+polymorphs whilst also avoiding the cost of DFT. Such
+models can be used to triage which DFT calculations
+are carried out in materials discovery workﬂows, allow-
+ing for more eﬃcient use of computational resources.
+In crystallography, one way to completely specify the
+crystal structure of a material is via a combination of:
+1) the spacegroup of the structure, 2) the dimensions
+of its unit cell, and 3) a set of Wyckoﬀ positions with
+the elements that sit on them. The Wyckoﬀ positions
+describe sites that map onto equivalent sites under the
+symmetry transformations of the given spacegroup [23].
+As a consequence, a single Wyckoﬀ position can encode
+the positions of multiple atoms. To construct model
+inputs from sets of Wyckoﬀ positions, we discard the
+information about the exact positions and lattice pa-
+rameters. In the resulting coordinate-free representa-
+tion, the Wyckoﬀ representation, each Wyckoﬀ position
+is simply labelled by a Wyckoﬀ letter and the element
+at that position. Consequently, as the Wyckoﬀ repre-
+sentation is discrete, it is possible to computationally
+enumerate Wyckoﬀ representations that represent can-
+didate materials for use in screening campaigns.
+The procedure of obtaining the Wyckoﬀ representa-
+tion from a crystal structure can be viewed as a coarse-
+graining process that takes us from an unsymmetrised
+initial parameter space of size 4N + 6, through the
+symmetrised Wyckoﬀ position space of maximum size
+5M + 6, to the much smaller coordinate-free space of
+Wyckoﬀ representations with size2M, whereN is the
+number of sites in the unit cell and the corresponding
+number of Wyckoﬀ positionsM satisﬁes M≤N. The
+back mapping from the coarse-grained Wyckoﬀ repre-
+sentation to the full structure can often be satisfacto-
+rily obtained via a single symmetry constrained DFT-
+relaxation of a prototype structure (see Figure 1).
+To use the Wyckoﬀ representation as the input for a
+machine learning model, we formulate the task of prop-
+erty prediction as a multi-set regression problem. A
+message-passing neural network architecture based on
+the Roost architecture [8] is used to do this – theRoost
+model performs materials property prediction via set
+regression on the weighted set of elements in a mate-
+rial’s composition.
+The principal idea behind the model architecture is
+to embed the coordinate-free Wyckoﬀ positions of a
+given material into a vector space. The representations
+in this embedded space are then updated via message
+passing operations that consider all directed pairwise
+combinations of members in the multi-set. The mes-
+sages propagate contextual information between Wyck-
+
+[page 3]
+3
+oﬀ positions leading to the emergence of material-
+speciﬁc representations. These message passing stages
+are repeated multiple times before a permutation in-
+variant pooling operation is applied to the multi-set
+to get a ﬁxed-length representation. As the labelling of
+Wyckoﬀ positions includes several choices of setting, we
+carry out on-the-ﬂy augmentation of equivalent Wyck-
+oﬀ representations. We then average the ﬁxed-length
+representations for these equivalent inputs to ensure
+invariance to this choice. These averaged ﬁxed-length
+representations are then fed into a feed-forward output
+neural network that returns the models predictions.
+This work focuses primarily on models that predict
+the formation energy of inorganic crystalline materi-
+als, although the proposed framework and inputs are
+applicable to any material property. We call the pro-
+posed model Wren (Wyckoﬀ Representation regres-
+sioN). Throughout this work, we train Deep Ensembles
+consisting of 10 Wren models starting from diﬀerent
+random initialisations [24], allowing us to estimate the
+model’s uncertainty as well as providing better point
+estimates. Details of the Wren architecture and the
+hyper-parameters used are given in the Supplementary
+Information.
+B. Selecting Stable Materials from Diverse
+Chemical Space
+To accelerate the screening of materials space for
+novel stable materials, a model must reduce the ex-
+pected number of calculations needed to ﬁnd a can-
+didate below the known convex hull (here taken to be
+the convex hull of the MP data set before cleaning). We
+ﬁrst assess the ability of the model to generalise across
+materials space to unseen combinations of elements.
+To do this, we consider two data sets: (i) The Materi-
+alsProject(MP)database[25]whichisahighlycurated
+database of high-throughput DFT calculations. At the
+time of access, the Materials Project database contains
+approximately 140k crystal structures. We apply a
+canonicalisation and cleaning treatment (see Materials
+andMethods)thatleavesaﬁnalMPdatasetcontaining
+approximately 105k distinct materials; (ii) The WBM
+dataset, obtained from [16]. The dataset contains cal-
+culated energies and properties of a large number of
+crystal structures that were generated through the sub-
+stitution of elements in known crystal structures from
+MP with chemically similar elements [26]. As such,
+the WBM dataset chemically extrapolates from the MP
+dataset. After de-duplication and cleaning the WBM
+data set contains approximately 215k materials.
+We make predictions for the formation energies of the
+materials contained in the WBM data set using aWren
+model trained on the MP data set. We then assess how
+well the Wren model selects potentially stable materi-
+als from the WBM data set. The relevant metrics are;
+the prevalence – the proportion of materials below the
+known convex hull (actual positives), the precision –
+how many of the predictions of potentially stable ma-
+terials are correct (i.e. the ratio of true predicted pos-
+itives to the total predicted positives), and the recall
+– how many of the actual materials below the known
+convex hull are found (i.e. the ratio of true predicted
+0.2
+ 0.1
+ 0.0 0.1 0.2 0.3
+EHull MP / eV per atom
+0.00
+0.02
+0.04
+0.06
+0.08
+0.10
+0.12
+0.14MAE / eV per atom
+Corrected
+GGA DFT
+Accuracy
+GGA DFT
+Accuracy
+| EHull MP| > MAE
+40 meV
+Figure 2. Wren’s average error is below DFT error
+in the region around the stability threshold.Rolling
+mean absolute error on the WBM data set as the energy
+to the convex hull is varied forWren model. A scale bar is
+shown for the windowing period of 40 meV per atom used
+when calculating the rolling average. The standard error in
+the mean is shaded around each curve. The highlighted V-
+shaped region shows the area in which the average absolute
+error is greater than the energy to the known convex hull –
+this is the region where the model is most at risk of miss-
+classifying structures. In the majority of this regionWren’s
+accuracy is well below the 100 meV per atom threshold con-
+sidered to be the accuracy of semi-local DFT across diverse
+chemistries [29] and comparable to the∼ 50 meV per atom
+threshold characteristic of ﬁtted correction schemes [30–32].
+positives to actual positives). In this setup, the ratio of
+the precision and the prevalence gives the enrichment
+factor or degree of acceleration. Enrichment factors are
+frequently reported for virtual screening campaigns in
+drug discovery applications [27, 28].
+The precision using the Wren model to triage cal-
+culations is 38%. Consequently, given that the preva-
+lence of theoretically stable materials in the WBM data
+set is 15%, using Wren leads to an enrichment factor
+of 2.5. As enrichment here is computed with respect
+to the active search strategy of Ref. [16] this trans-
+lates into a signiﬁcant improvement in eﬃciency over
+random or exhaustive search strategies as our improve-
+ments compound multiplicatively with theirs. Conse-
+quently, triaging screening workﬂows based on Wren
+should enable more materials below the known hull to
+be identiﬁed with limited computational resources. We
+also observe a high recall of 76%, meaning thatWren
+misses relatively few potentially stable materials.
+Thescreeningperformanceofthemodelcanbetuned
+by adjusting our triage criteria. For example, an
+alternative triage criterion would be to require that
+∆ ˆEHull-Pred + ˆσ <0 where ∆ ˆEHull-Pred is the pre-
+dicted distance of a candidate material from the known
+convex hull and ˆσis the predictive uncertainty of the
+model. This uncertainty adjusted criterion encour-
+ages the model to suggest candidates it is more certain
+about, leading to an increased precision of 53%. The
+
+[page 4]
+4
+0 500 1000 1500 2000
+Number of Calculations
+0
+2
+4
+6
+8
+10Enrichment Factor
+Ti Zn N
+10 meV
+20 meV
+30 meV
+0 500 1000 1500 2000
+Number of Calculations
+0
+2
+4
+6
+8
+10
+Zr Zn N
+10 meV
+20 meV
+30 meV
+0 500 1000 1500 2000
+Number of Calculations
+0
+2
+4
+6
+8
+10
+Hf Zn N
+10 meV
+20 meV
+30 meV
+Figure 3. Wren accelerates the recovery of low energy structures in unseen chemical systems.The ﬁgures
+show how the enrichment factor varies as we useWrento direct exploration of the Ti-Zn-N, Zr-Zn-N and Hf-Zn-N chemical
+systems. The enrichment factor is the ratio of candidates found satisfying a given triage criterion to the number we would
+expect to ﬁnd via a random search. The enrichment factor is plotted for candidates within 10, 20 and 30 meV per atom
+from the convex hull of the full explored system. A light-grey guideline is included to show the performance expected from
+a random model – an enrichment factor of 1. The plots demonstrate that usingWren leads to a signiﬁcant degree of early
+enrichment of low energy structures.
+enrichment factor for the uncertainty adjusted criterion
+is 3.5. Consequently, the choice of triage criteria should
+depend on the aims of a given workﬂow – the expected
+opportunity cost of false negatives vs false positives, the
+availability of experimental or computational resources,
+and how easy it is to expand the candidate pool.
+The strong performance of Wren can be explained
+by looking at how the mean absolute error changes as a
+function of the distance from the known convex hull.
+Figure 2 shows that near to the stability threshold,
+∆EHull-MP = 0, Wren makes highly accurate predic-
+tions of the formation energy.
+More signiﬁcant errors are seen for materials far
+above and far below the hull. However, in these regions,
+the average error is less than the energy to the convex
+hull, meaning that the model’s classiﬁcations are still
+reliable. The large errors far above the hull are due to
+the routine underestimation of the formation energy of
+unstable structures. This underestimation is a manifes-
+tation of a bias in the MP data set towards structures
+with low formation energies. The bias arises from the
+fact that large numbers of the initial structures in the
+MP data set are sourced from the ICSD [33]. This re-
+sult highlights the importance of negative examples for
+building generally applicable machine learning models
+[34–36].
+C. Exploration of Unseen Tertiary Phase
+Diagrams
+From an applications perspective, researchers are
+often interested in exploring a single or small num-
+ber of chemical systems that have not previously been
+studied. Typical approaches for computationally map-
+ping out the convex hull of novel chemical systems
+[37, 38] are highly expensive, often requiring thousands
+of structures to be relaxed.
+To evaluate the ability ofWren to assist when map-
+ping the phase diagrams of targeted chemical systems,
+we consider the TAATA data set [39], consisting of 3
+highly sampled ab-initio phase diagrams for the Hf-Zn-
+N, Ti-Zn-N and Zr-Zn-N ternary systems. The ternary
+systems studied in the TAATA data set were investi-
+gated for their potential in piezoelectric devices and
+energy harvesting applications. We focus on ternary
+systems due to the fact that whilst crystal structure
+prediction approaches such as [37, 38] work very well
+for unary and binary systems, there has been less work
+applying these methods to ternary systems [40–42] due
+to the combinatorial explosion in the number of can-
+didates that need to be relaxed per phase diagram to
+obtain reliable results – often in excess of 10,000 relax-
+ations are carried out for each chemical system.
+The TAATA data set contains a diverse range of sta-
+ble and unstable structures for each composition (Full
+details about the construction of the TAATA data set
+are given in the Supplementary Information as well as
+in [39]). After applying a canonicalisation and clean-
+ing treatment (See Materials and Methods), we are left
+with 3,104 entries over 523 compositions in the Ti-Zn-N
+phase diagram, 2,711 entries over 453 compositions in
+the Zr-Zn-N phase diagram, and 3,381 entries over 596
+compositions in the Hf-Zn-N phase diagram.
+We trained Wren on the MP data set but excluded
+all the tertiary compounds from the Ti-Zn-N, Zr-Zn-N
+and Hf-Zn-N chemical systems. This model was then
+used to predict the energies of tertiary compounds in
+the TAATA data set. These formation energy predic-
+tions were then used to construct hypothetical convex
+hulls for the Ti-Zn-N, Zr-Zn-N and Hf-Zn-N chemi-
+cal systems (See Supplementary Information). Figure
+3 shows how selecting which relaxations to carry out
+based on the predicted distances to the hypothetical
+convex hulls constructed using theWren model’s pre-
+dictions can accelerate phase diagram exploration. To
+quantifythiseﬀectwelookattheenrichmentfactorasa
+function of the number of calculations. The enrichment
+factor describes the ratio between the number of candi-
+dates found satisfying a target criterion when employ-
+ing a given virtual screening strategy and the number
+of positive candidates that hypothetically would have
+
+[page 5]
+5
+Figure 4. Wren enables automated computational
+prospecting of new stable materials.Data-mined sub-
+stitution probabilities are used to generate novel candidates
+for screening. A heat-map of the data-mined log substi-
+tution probabilities for the ﬁrst 36 main group elements is
+shown in the top left. The matrix captures known chemi-
+cal trends, for example, that halogens can often be substi-
+tuted for each other in crystal structures. Using the Wyckoﬀ
+representation regression allows far more unrelaxed candi-
+dates to be considered than possible in conventional DFT-
+led high-throughput workﬂows. The funnel diagram shows
+the number of unrelaxed candidates that pass the diﬀerent
+stability criteria when ﬁltering based on the predictions of
+the Wren model. In total 4,721 out of 5,675 validation cal-
+culations completed. Of these 1,569 were below the known
+convex hull, giving a precision of 33% amongst the com-
+pleted calculations.
+been found if the candidates were screened randomly.
+Considering materials within 20 meV per atom of the
+DFT-calculated convex hull as our target criteria, we
+see that after 250 calculations we have a high enrich-
+ment factor of 5.4 in the Ti-Zn-N chemical system, 5.1
+for the Zr-Zn-N chemical system, and 4.5 for the Hf-
+Zn-N chemical system when using theWrenmodel, i.e.
+we are saving 4.5-5.4x compute resource compared to a
+random search.
+D. Computational Prospecting for Novel Stable
+Materials
+Having established the promise of Wyckoﬀ represen-
+tation regression in predicting the stability of unseen
+materials, we deployWrenon the prospective challenge
+of discovering new theoretically stable materials. For
+this stage, we trainedWrenon the union of the MP and
+WBM data sets. This combined data set contains ap-
+proximately 322k materials after canonicalisation and
+cleaning. We randomly sampled 5% of the data set to
+use as a test set and trained on the remaining 95%. The
+resulting model has a mean absolute error of 31 meV
+per atom on this test set, which is below the commonly
+quoted chemical accuracy level of 1 kcal per mol (43
+meVperatom)[43]. Themodel’saccuracyasafunction
+of training set size follows a power-law relationship (see
+Supplementary Information). Reassuringly, the model
+does not appear to saturate in performance, suggest-
+ing that the representation is rich enough and further
+increases in model performance can be unlocked given
+more data [44–46].
+Whilst the coarse-grained space of Wyckoﬀ represen-
+tations is computably enumerable and far smaller than
+the inﬁnite space of atomic coordinates, attempting
+materials discovery by exhaustively screening all pos-
+sible Wyckoﬀ representations for general chemistries is
+computationally ineﬃcient as the prevalence of stable
+materials remains vanishingly low even in the coarse-
+grainedspace. Toeﬀectivelytacklethetaskofmaterials
+discovery in general chemistries, it is necessary to ﬁrst
+construct a design space with a higher expected preva-
+lence [13]. To do this we draw inspiration from previ-
+ous work [15, 16] and generate candidates for screening
+by making elemental substitutions in crystal structures
+that are near to the known convex hull. Focusing on the
+use machine learning to accelerate workﬂows tackling
+general chemistries is particularly compelling as false
+positive and false negative data produced in such work-
+ﬂows can subsequently be used to retrain the model.
+Inclusion of a diverse range of negative examples in the
+training data is key to improving performance in tar-
+geted exhaustive workﬂows, such as in Section C, where
+design space enrichment is not applicable.
+Toobtainoursubstitutionprobabilities, weextracted
+39,164 ordered structures from the ICSD [33, 47] and
+binned them according to their Wyckoﬀ representa-
+tions. Within each prototype, all pairs of structures
+are compared and we count which element substitu-
+tions (including self substitutions) would be needed to
+change one structure into the other [26]. We only con-
+sider substitutions where all Wyckoﬀ positions sharing
+one element-type are changed simultaneously and not
+per position substitutions. Once normalised, the rows
+of the count matrix can be interpreted as substitution
+probabilities for each element.
+Using these data-mined probabilities, we generated
+a screening library of materials by substituting diﬀer-
+ent elements into structures taken from the MP data
+set. We only consider initial structures from the MP
+data set with energies above the convex hull less than
+100 meV per atom. This choice of this threshold means
+that we should be including most metastable structures
+within the MP data set. We consider 10 diﬀerent sub-
+stitutions for each initial structure. Candidates that
+have the same composition as materials already present
+intheunionoftheMPandWBMdatasetsareremoved
+from the library. Lanthanide and actinide-based ma-
+terials and materials containing Noble elements were
+also excluded. This workﬂow produced a screening li-
+brary of approximately 415k candidates. The size of
+the screening library can be readily increased by con-
+sidering more elemental substitutions per structure.
+Despite constraining our screening set to be close to
+known materials, it is likely that we are still asking
+
+[page 6]
+6
+the model to make predictions in areas of materials
+space where it lacks support from the training data. As
+shown on the WBM data set, uncertainty estimation
+allows us to reduce the risk in our materials screen-
+ing process by factoring our model’s uncertainty into
+our triage criterion. For simplicity we use the same
+simple uncertainty adjusted criterion considered previ-
+ously; ∆ ˆEHull-Pred + ˆσ <0. In total 5,675 candidates
+satisﬁed this screening criterion (See Figure 4).
+Validation with DFT resulted in 4,721 completed cal-
+culations across 4,464 unique compositions. Of these,
+1,569 structures were conﬁrmed to be below the convex
+hull of the MP data set, 1,369 below the convex hull
+of the union of the MP and WBM data sets. There-
+fore, the precision for the completed calculations was
+33% with respect to the MP convex hull, conﬁrming
+the workﬂow’s ability to accelerate materials discovery.
+Although direct comparisons are not strictly permis-
+sible, as previous prospective searches using machine
+learning have been restricted to single prototypes, the
+Wyckoﬀ representation based approach presented sig-
+niﬁcantly surpasses previously reported precision’s of
+4% [14] and 13% [22]. Another key consideration for
+materials discovery is whether the model is able to gen-
+eralise and make novel discoveries or simply interpolate
+current knowledge. Out of the 4,721 completed calcu-
+lations 269 were assigned to AFLOW prototypes for
+which there were no isopointal prototypes in the train-
+ing set. Of these 78 were conﬁrmed to be below the
+convex hull of the union of the MP and WBM data
+sets. Developing workﬂows to directly target the dis-
+covery of structures for which no isopointal prototypes
+exist remains a key challenge for future work.
+III. DISCUSSION
+In this work, we introduced the concept of using
+coarse-graining to accelerate materials discovery. We
+developed the framework of Wyckoﬀ representation re-
+gression, Wren, and applied it to predict the formation
+energy of materials. Wren collapses an inﬁnite search
+space of atomic coordinates into a combinatorially enu-
+merable search space enabling eﬃcient data-driven ex-
+ploration of materials space. On a set of challenging
+tasks curated from the literature, we ﬁnd that our ap-
+proach can accurately map the phase diagrams of un-
+seen chemical systems and is∼3x better at ﬁnding sta-
+ble materials than current methods based on elemental
+substitutions.
+We developed a materials prospecting pipeline us-
+ing Wren. As a proof-of-concept, we identiﬁed 1,558
+new materials below the known convex hull from just
+5,675 calculations. These results demonstrate that
+leveraging Wyckoﬀ representation regression allows for
+moreeﬃcientandextensiveexpansionofcomputational
+material science databases. Such eﬀorts are crucial
+to expedite the search for a wide variety of indus-
+trially desirable materials required for the transition
+to a low-carbon economy, e.g. thermoelectrics [48],
+piezoelectrics[39], fast-ionconductors[49], highvoltage
+multi-valent cathode materials [50], and caloric mate-
+rials [51].
+IV. MATERIALS AND METHODS
+A. Wren Model Architecture
+The bulk of the Wren architecture directly mim-
+ics that of Roost [8] and we refer the readers there
+for an in-depth description of how the message pass-
+ing is formulated. The principle diﬀerence between
+the two architectures comes in that the nodes on the
+dense graph now represent the diﬀerent Wyckoﬀ posi-
+tions rather than the diﬀerent elemental species (See
+Figure 5). The elemental information is encoded us-
+ing the ‘matscholar’ embedding from [52] which has
+a dimensionality ofdel = 200. The remainder of the
+node embedding comprises the Wyckoﬀ position em-
+bedding (described below) plus the fractional multiplic-
+ity of that Wyckoﬀ position within the unit cell. The
+combined dimensionality of the Wyckoﬀ proportion of
+the embedding isdwyk = 445.
+To reduce the total dimension of the node embed-
+dings, we project both the elemental and Wyckoﬀ em-
+beddings into lower-dimensional spaces using learnt
+aﬃne transformations. The low dimension embeddings
+are then concatenated to give the node embeddings. In
+this work we chosed∗
+el = 32 andd∗
+wyk = 32 giving a to-
+tal dimensionality ofd = 64 for the node embeddings.
+We use 3 message passing layers, each with a sin-
+gle attention head. We chose single-hidden-layer neural
+networks with 256 hidden units and LeakyReLU activa-
+tion functions for both parts of the soft-attention mech-
+anism. The output network consists of a feed-forward
+neural network with skip connections and ReLU activa-
+tion functions. The output network used has 4 hidden
+layers containing 256, 256, 128, and 64 hidden units
+respectively.
+B. Wyckoﬀ Position Embedding
+In total across the 230 crystallographic spacegroups
+in 3D there are 1,731 diﬀerent Wyckoﬀ positions. The
+embedding we use is made up of 3 parts; a one-hot
+encoding of the crystal system (of which there are
+6), a one-hot encoding of the Bravais lattice centring
+(of which there are 5), and an encoding constructed
+from the sum of multi-hot encodings of the equivalent
+sites within a given Wyckoﬀ position (See Figure 5).
+To construct the multi-hot encodings, we ﬁrst collate
+all the sites within all the allowed Wyckoﬀ positions
+as recorded on the Bilbao crystallographic server [53].
+Each site can be broken apart into its oﬀset and alge-
+braic terms (whether the position corresponds to a line,
+a plane, etc.), e.g.
+(−x +y + 1/4,y,z + 3/4) = (1/4, 0, 3/4) +
+(−x +y,y,z ) (1)
+From this, we construct separate one-hot encodings for
+the unique algebraic and unique oﬀset positions. We
+end up with 185 unique algebraic positions and 248
+unique oﬀset positions. A Wyckoﬀ position is then rep-
+resented by a sum of the embeddings of all the allowed
+sites. The resulting embedding has a dimensionality
+of 444 with the 1,731 Wyckoﬀ positions being encoded
+
+[page 7]
+7
+Figure 5. Breakdown of diﬀerent components of the
+Wyckoﬀ position embeddings. The Wyckoﬀ position
+embeddings are made up of two parts. First, the Wyckoﬀ
+proportion of the embedding that is comprised of 3 sub-
+sections encoding the crystal system, Bravais centring and
+equivalent sites in the Wyckoﬀ positions. Second, the ele-
+mental embedding for which we take the ‘matscholar’ em-
+bedding from [52].
+into 1038 unique embeddings. This embedding is de-
+signed to try and expose as many possible correlations
+as possible that might exist between diﬀerent Wyckoﬀ
+positions. As an illustrative example the embeddings
+for the f Wyckoﬀ position ofFm ¯3 (No. 202),F432 (No.
+209), andFm ¯3m(No. 225)areallthesame. Thisarises
+as they are all face-centred cubic lattices that describe
+the positions of 32 atoms within the unit cell at ((0, 0,
+0), (0, 1/2, 1/2), (1/2, 0, 1/2), (1/2, 1/2, 0))⊕((x, x,
+x), (-x, -x, x), (-x, x, -x), (x, -x, -x), (-x, -x, -x), (x, x,
+-x), (x, -x, x), (-x, x, x)), where x is a free-coordinate
+of the Wyckoﬀ positions. The embedding vector has 4’s
+in the positions corresponding to the (x, x, x), (-x, -x,
+x), (-x, x, -x), (x, -x, -x), (-x, -x, -x), (x, x, -x), (x, -x,
+x), (-x, x, x) algebraic terms and 8’s in the positions
+corresponding to the (0, 0, 0), (0, 1/2, 1/2), (1/2, 0,
+1/2), (1/2, 1/2, 0) oﬀset terms. In principle further
+engineering of this embedding could be carried out to
+encode more prior knowledge, however, for the sizes of
+data set considered in this work the beneﬁt of doing so
+is likely to be marginal.
+C. Invariance to Equivalent Wyckoﬀ
+Representations
+The categorisation of Wyckoﬀ positions depends on
+a choice of origin [54]. As such, there is not a unique
+mapping between the crystal structure and the Wyck-
+oﬀ representation. To ensure the model is invariant to
+the choice of origin, we perform on-the-ﬂy augmenta-
+tion of Wyckoﬀ positions with respect to this choice of
+origin (See Figure 6). The augmented representations
+are averaged at the end of the message passing stage
+Figure 6. On-the-ﬂy augmentation of equiva-
+lent Wyckoﬀ representations ensures invariance to
+equivalent descriptions. The labelling of Wyckoﬀ posi-
+tions includes a choice of setting, in order to ensure that
+our model is invariant to these choices we perform on the
+ﬂy augmentation of all equivalent Wyckoﬀ representations
+and then average the augmented embeddings before they
+are fed into the output network.
+to provide a single representation of equivalent Wyck-
+oﬀ representations to the output network. By pool-
+ing at this point we ensure that the model is invariant
+and that its training is not biased towards materials for
+which many equivalent Wyckoﬀ representations exist.
+D. Evaluation of Wyckoﬀ Positions
+For this work, we primarily make use ofspglib [55]
+to determine the spacegroup and Wyckoﬀ positions for
+the structures in the data sets. We set the tolerance
+thresholds as 0.1 Å for positions and 5◦for angles
+(Note, these are the same tolerances as used in Ma-
+terials Project to calculate the spacegroup). In real
+materials, we often observe some degree of oﬀ-site re-
+laxation away from high-symmetry sites. Depending
+on the level of anisotropy and the symmetry ﬁnder’s
+tolerance threshold, this might result in materials be-
+ing classed as P1. As lower symmetry Wyckoﬀ rep-
+resentations encode less information about the struc-
+ture, the symmetry ﬁnder tolerance is an important
+hyper-parameter to bear in mind. However, prelimi-
+nary investigations showed that varying the tolerance
+thresholdbetweentypicalvaluesof0.01Åand0.1Ådid
+not signiﬁcantly impact model accuracy on the TAATA
+data set. We note that as an alternative to manual se-
+lection of tolerance hyper-parameters, symmetry ﬁnd-
+ers with adaptive tolerances, such asaflow-sym [56],
+could be used for the identiﬁcation of the spacegroup
+and Wyckoﬀ positions. However, given that we did not
+observe any appreciable improvement in accuracy us-
+ing aflow-sym and adaptive-schemes are typically as-
+sociated with greater computational cost,spglib was
+picked over other symmetry ﬁnders due to its speed.
+E. Model Training
+Throughout this work, we train Deep Ensembles of
+10 models starting from diﬀerent random initialisations
+for each data setup and architecture considered.
+
+[page 8]
+8
+All the models examined in this work were trained
+using the AdamW optimiser [57] with a ﬁxed learning
+rate of3×10−4. A mini-batch size of 128 and a weight
+decay parameter of 10−6 were used for all the experi-
+ments. The models were trained for 400 epochs (cycles
+through the training set).
+Formally Deep Ensembles require the use of a proper
+scoring rule for training. Therefore, we train all models
+to minimise the following robust L1 loss function which
+is an example of a proper scoring rule for regression
+[58, 59],
+L =
+∑
+i
+√
+2
+ˆσa,θ(xi)∥yi−ˆµθ(xi)∥1 +log
+(
+ˆσa,θ(xi)
+)
+(2)
+where ˆµθ(xi) and ˆσa,θ(xi)2 are a predictive mean and
+predictive aleatoric variance outputted by the model,
+and yi is the target label.
+The expectations, ˆy(xi), and epistemic uncertainties,
+ˆσa(xi)2 from the ensemble are calculated as
+ˆy(xi) = 1
+W
+W∑
+w
+ˆµθw(xi), (3)
+ˆσ2
+e(xi) = 1
+W
+W∑
+w
+(
+ˆy(xi)−ˆµθw(xi)
+)2
+, (4)
+where the indexw runs over theW members of the en-
+semble. The total uncertainty of the ensemble expec-
+tation is simply the sum of the epistemic contribution
+and the average of the aleatoric contributions from each
+model in the ensemble.
+ˆσ2(xi) = ˆσ2
+e(xi) + 1
+W
+W∑
+w
+ˆσ2
+a,θw(xi). (5)
+F. Canonicalisation and Cleaning
+All the data used to train models in this work went
+throughacanonicalisationandcleaningprocess. Tables
+I, II, and III show how much data is discarded at each
+stage.
+The canonicalisation stage removes higher energy
+structures that have equivalent Wyckoﬀ representations
+to other structures in the data set.
+We adopt the same canonicalisation scheme as used
+by the AFLOW prototype encyclopedia [60, 61]. Most
+structures removed by canonicalisation are triclinic, as
+the lack of symmetries in triclinic systems results in
+many distinct structures mapping to the same Wyckoﬀ
+representation.
+For the WBM data set we carried out cleaning based
+on the relaxed structures and relaxed Wyckoﬀ repre-
+sentations. We removed elemental structures in the
+WBM data set to ensure that our end-points for cal-
+culating formation energies were consistent. The union
+of the MP and WBM data sets used to train theWren
+model for the prospective validation made use of an ear-
+lier cannonicalisation scheme which led to it containing
+some duplicated Wyckoﬀ representations. In total the
+union of MP and WBM used contained 322,915 mate-
+rials.
+Table I. Table showing the the impact of cleaning criteria
+on the MP data set.
+Filter Number
+Full Data Set 139,367
+Lowest Energy Canonical Representations 129,190
+Formation Energy less than 5 eV per atom 129,176
+Less than 16 Wyckoﬀ Positions 108,656
+Less than 64 sites in Crystal Structure 105,057
+Volume per site less than 500 Å3 104,878
+Table II. Table showing the the impact of cleaning criteria
+on the WBM data set.
+Filter Number
+Full Data Set 257,486
+Lowest Energy Canonical Representations 224,498
+After Removal of Duplicates Found in MP 217,085
+Excluding Pure Systems 216,877
+Formation Energy less than 5 eV per atom 216,859
+Less than 16 Wyckoﬀ Positions 216,819
+Less than 64 sites in Crystal Structure 216,807
+Volume per site less than 500 Å3 216,806
+Table III. Table showing the the impact of cleaning criteria
+on the TAATA data set.
+Filter Number
+Full Data Set 12,815
+Lowest Energy Canonical Representations 9,688
+Less than 16 Wyckoﬀ Positions 9,490
+Less than 64 sites in Crystal Structure 9,190
+Volume per site less than 500 Å3 9,190
+G. Prospective Density Functional Theory
+Settings
+The validation of predictions in our materials
+prospecting pipeline was carried out using Kohn-Sham
+DFT with the plane wave pseudopotential codeVASP
+[62, 63]. Projector augmented wave (PAW) type
+pseudopotentials [64, 65] were used with the Perdew-
+Burke-Ernzerhof (PBE) generalised gradient approxi-
+mation exchange-correlation functional [66]. All cal-
+culations were done using a 520 eV plane-wave energy
+cutoﬀ. The pseudopotentials and Hubbard- U values
+were selected to ensure compatibility with data con-
+tained in the Materials Project. The Materials Project
+MaterialsProjectCompatibility correction scheme
+implemented inpymatgenwas applied to allow the mix-
+ing of GGA and GGA+U calculations [67]. We used
+the High-Throughput Toolkit (httk v1.0) introduced
+in Ref. [68] to manage the calculations.
+DATA AVAILABILITY
+The relaxed and initial structures for
+the TAATA data set are available from
+https://doi.org/10.5281/zenodo.5530535.
+The MP data set used for this work was queried
+from https://materialsproject.org [25] using the Mate-
+rialsAPI[69]. ThedatawasqueriedfromSupplemental
+
+[page 9]
+9
+Database Release V2021.03.22.
+The relaxed structures for WBM data
+set used in this work are available from
+https://archive.materialscloud.org/record/2021.68.
+The pre-relaxation structures were obtained from the
+original authors on request.
+The ICSD [33, 47] can be accessed under license from
+FIZ Karlsruhe—Leibniz Institut for Information Infras-
+tructure at https://icsd.products.ﬁz-karlsruhe.de/.
+The relaxed and initial structures for all com-
+pleted prospective calculations are available from
+https://doi.org/10.5281/zenodo.6345276.
+CODE AVAILABILITY
+A working version of the code is available at
+https://github.com/CompRhys/aviary.
+ACKNOWLEDGEMENTS
+REAG and AAL acknowledge the support of the
+Winton Programme for the Physics of Sustainability.
+AAL acknowledges support from the Royal Society.
+FAF acknowledges funding from the Swiss National Sci-
+ence Foundation (Grant No. P2BSP2_191736). RA
+and ASP acknowledge support from the Swedish Re-
+search Council (VR) Grant No. 2020-05402 and the
+Swedish e-Science Centre (SeRC). The computations
+were enabled by resources provided by the Swedish Na-
+tional Infrastructure for Computing (SNIC) at NSC
+partially funded by the Swedish Research Council
+through grant agreement No. 2018-05973.
+The authors thank Janosh Riebesell for valuable dis-
+cussions regarding this work and Hai-Chen Wang and
+co-authors for providing the pre-relaxation structures
+for the WBM data set.
+AUTHOR CONTRIBUTIONS
+REAG: Methodology, Software, Investigation, Visu-
+alisation, Writing - Original Draft. ASP: Methodology,
+Investigation, Validation. FAF: Conceptualisation, Su-
+pervision, Writing - Review & Editing. RA: Concep-
+tualisation, Supervision, Writing - Review & Editing.
+AAL: Supervision, Writing - Review & Editing.
+COMPETING INTERESTS
+The authors declare no competing interests.
+[1] Daniel W Davies, Keith T Butler, Adam J Jackson,
+Andrew Morris, Jarvist M Frost, Jonathan M Skelton,
+and Aron Walsh. Computational screening of all sto-
+ichiometric inorganic materials. Chem, 1(4):617–627,
+2016.
+[2] David K Duvenaud, Dougal Maclaurin, Jorge Ipar-
+raguirre, Rafael Bombarell, Timothy Hirzel, Alán
+Aspuru-Guzik, and Ryan P Adams. Convolutional net-
+works on graphs for learning molecular ﬁngerprints. In
+Advances In Neural Information Processing Systems,
+pages 2224–2232, 2015.
+[3] Jessica Vamathevan, Dominic Clark, Paul Czodrowski,
+Ian Dunham, Edgardo Ferran, George Lee, Bin Li,
+Anant Madabhushi, Parantu Shah, Michaela Spitzer,
+and Others. Applications of machine learning in drug
+discovery and development.Nature Reviews Drug Dis-
+covery, 18(6):463–477, 2019.
+[4] Lars Ruddigkeit, Ruud Van Deursen, Lorenz C Blum,
+and Jean-Louis Reymond. Enumeration of 166 bil-
+lion organic small molecules in the chemical universe
+database GDB-17. Journal Of Chemical Information
+And Modeling, 52(11):2864–2875, 2012.
+[5] Jean-Louis Reymond. The chemical space project.Ac-
+counts Of Chemical Research, 48(3):722–730, 2015.
+[6] Bryce Meredig, Ankit Agrawal, Scott Kirklin, James E
+Saal, JW Doak, Alan Thompson, Kunpeng Zhang,
+Alok Choudhary, and Christopher Wolverton. Com-
+binatorial screening for new materials in unconstrained
+composition space with machine learning.Physical Re-
+view B, 89(9):094104, 2014.
+[7] Logan Ward, Ankit Agrawal, Alok Choudhary, and
+Christopher Wolverton. A general-purpose machine
+learning framework for predicting properties of inor-
+ganic materials.npj Computational Materials, 2:16028,
+2016.
+[8] Rhys EA Goodall and Alpha A Lee. Predicting mate-
+rials properties without crystal structure: Deep repre-
+sentation learning from stoichiometry.Nature Commu-
+nications, 11(1):1–9, 2020.
+[9] Anthony Yu-Tung Wang, Steven K Kauwe, Ryan J
+Murdock, and Taylor D Sparks. Compositionally re-
+stricted attention-based network for materials property
+predictions. npj Computational Materials, 7(1):1–10,
+2021.
+[10] Jonathan Schmidt, Jingming Shi, Pedro Borlido, Lim-
+ing Chen, Silvana Botti, and Miguel AL Marques. Pre-
+dictingthethermodynamicstabilityofsolidscombining
+density functional theory and machine learning.Chem-
+istry Of Materials, 29(12):5090–5103, 2017.
+[11] Haiying Liu, Jiucheng Cheng, Hongzhou Dong, Jian-
+guang Feng, Beili Pang, Ziya Tian, Shuai Ma, Fengjin
+Xia, ChunkaiZhang, andLifengDong. Screeningstable
+and metastable ABO3 perovskites using machine learn-
+ing and the materials project.Computational Materials
+Science, 177:109614, 2020.
+[12] Ankit Jain and Thomas Bligaard. Atomic-position in-
+dependent descriptor for machine learning of material
+properties. Phys. Rev. B, 98:214112, Dec 2018.
+[13] Kyoungdoc Kim, Logan Ward, Jiangang He, Amar Kr-
+ishna, Ankit Agrawal, and C Wolverton. Machine-
+learning-accelerated high-throughput materials screen-
+ing: Discovery of novel quaternary heusler compounds.
+Physical Review Materials, 2(12):123801, 2018.
+[14] Felix A Faber, Alexander Lindmaa, O Anatole
+Von Lilienfeld, and Rickard Armiento. Machine learn-
+ing energies of 2 million elpasolite(ABC 2D6) crystals.
+Physical review letters, 117(13):135502, 2016.
+[15] Geoﬀroy Hautier, Chris Fischer, Virginie Ehrlacher,
+Anubhav Jain, and Gerbrand Ceder. Data mined ionic
+substitutions for the discovery of new compounds.In-
+organic Chemistry, 50(2):656–663, 2011.
+
+[page 10]
+10
+[16] Hai-Chen Wang, Silvana Botti, and Miguel AL Mar-
+ques. Predicting stable crystalline compounds us-
+ing chemical similarity. npj Computational Materials,
+7(1):1–9, 2021.
+[17] Gerbrand Ceder, Y-M Chiang, DR Sadoway, MK Ay-
+dinol, Y-I Jang, and Biying Huang. Identiﬁcation
+of cathode materials for lithium batteries guided by
+ﬁrst-principles calculations. Nature, 392(6677):694–
+696, 1998.
+[18] Anubhav Jain, Yongwoo Shin, and Kristin A Persson.
+Computational predictions of energy materials using
+density functional theory. Nature Reviews Materials,
+1(1):1–13, 2016.
+[19] Kristof T Schütt, Huziel E Sauceda, P-J Kindermans,
+Alexandre Tkatchenko, and K-R Müller. SchNet–a
+deep learning architecture for molecules and materi-
+als. The Journal Of Chemical Physics, 148(24):241722,
+2018.
+[20] Tian Xie and Jeﬀrey C Grossman. Crystal graph con-
+volutional neural networks for an accurate and inter-
+pretable prediction of material properties.Physical Re-
+view Letters, 120(14):145301, 2018.
+[21] Chi Chen, Weike Ye, Yunxing Zuo, Chen Zheng, and
+Shyue Ping Ong. Graph networks as a universal ma-
+chine learning framework for molecules and crystals.
+Chemistry Of Materials, 31(9):3564–3572, 2019.
+[22] Cheol Woo Park and Chris Wolverton. Developing an
+improved crystal graph convolutional neural network
+framework for accelerated materials discovery.Physical
+Review Materials, 4(6):063801, 2020.
+[23] Ralph Walter Graystone Wyckoﬀ.The Analytical Ex-
+pression Of The Results Of The Theory Of Space-
+groups, volume 318. Carnegie Institution Of Washing-
+ton, 1922.
+[24] Balaji Lakshminarayanan, Alexander Pritzel, and
+Charles Blundell. Simple and scalable predictive un-
+certainty estimation using deep ensembles. InAdvances
+In Neural Information Processing Systems, pages 6402–
+6413, 2017.
+[25] Anubhav Jain, Shyue Ping Ong, Geoﬀroy Hautier,
+Wei Chen, William Davidson Richards, Stephen Dacek,
+Shreyas Cholia, Dan Gunter, David Skinner, Ger-
+brand Ceder, and Others. Commentary: The materi-
+als project: A materials genome approach to accelerat-
+ing materials innovation.APL Materials, 1(1):011002,
+2013.
+[26] Henning Glawe, Antonio Sanna, EKU Gross, and
+Miguel AL Marques. The optimal one dimensional pe-
+riodic table: A modiﬁed pettifor chemical scale from
+data mining. New Journal Of Physics, 18(9):093011,
+2016.
+[27] Andreas Bender and Robert C Glen. A discussion of
+measures of enrichment in virtual screening: Compar-
+ing the information content of descriptors with increas-
+ing levels of sophistication.Journal Of Chemical Infor-
+mation And Modeling, 45(5):1369–1375, 2005.
+[28] Niu Huang, Brian K Shoichet, and John J Irwin.
+Benchmarking sets for molecular docking.Journal Of
+Medicinal Chemistry, 49(23):6789–6801, 2006.
+[29] Scott Kirklin, James E Saal, Bryce Meredig, Alex
+Thompson, Jeﬀ W Doak, Muratahan Aykol, Stephan
+Rühl, and Chris Wolverton. The open quantum materi-
+als database (oqmd): Assessing the accuracy of dft for-
+mation energies. npj Computational Materials, 1(1):1–
+15, 2015.
+[30] Vladan Stevanović, Stephan Lany, Xiuwen Zhang, and
+Alex Zunger. Correcting density functional theory for
+accurate predictions of compound enthalpies of forma-
+tion: Fitted elemental-phase reference energies.Physi-
+cal Review B, 85(11):115104, 2012.
+[31] Rico Friedrich, Demet Usanmaz, Corey Oses, Andrew
+Supka, Marco Fornari, Marco Buongiorno Nardelli,
+Cormac Toher, and Stefano Curtarolo. Coordination
+corrected ab initio formation enthalpies.npj Computa-
+tional Materials, 5(1):1–12, 2019.
+[32] Amanda Wang, Ryan Kingsbury, Matthew McDer-
+mott, Matthew Horton, Anubhav Jain, Shyue Ping
+Ong, Shyam Dwaraknath, and Kristin Persson. A
+framework for quantifying uncertainty in DFT energy
+corrections, May 2021.
+[33] G Bergerhoﬀ, ID Brown, F Allen, and Others. Crys-
+tallographic databases. International Union Of Crys-
+tallography, Chester, 360:77–95, 1987.
+[34] Paul Raccuglia, Katherine C Elbert, Philip DF Adler,
+Casey Falk, Malia B Wenny, Aurelio Mollo, Matthias
+Zeller, Sorelle A Friedler, Joshua Schrier, and Alexan-
+der J Norquist. Machine-learning-assisted mate-
+rials discovery using failed experiments. Nature,
+533(7601):73–76, 2016.
+[35] Jonathan Schmidt, Mário RG Marques, Silvana Botti,
+and Miguel AL Marques. Recent advances and appli-
+cations of machine learning in solid-state materials sci-
+ence. npj Computational Materials, 5(1):1–36, 2019.
+[36] MK Horton, S Dwaraknath, and KA Persson. Promises
+and perils of computational materials databases.Na-
+ture Computational Science, 1(1):3–5, 2021.
+[37] Chris J Pickard and RJ Needs. Ab initio random struc-
+ture searching.Journal Of Physics: Condensed Matter,
+23(5):053201, 2011.
+[38] Yanchao Wang, Jian Lv, Li Zhu, and Yanming Ma.
+CALYPSO: A method for crystal structure prediction.
+Computer Physics Communications , 183(10):2063–
+2070, 2012.
+[39] Christopher Tholander, CBA Andersson, Rickard
+Armiento, Ferenc Tasnadi, and Björn Alling. Strong
+piezoelectric response in stable TiZnN2, ZrZnN2, and
+HfZnN2 found by ab initio high-throughput approach.
+Journal Of Applied Physics, 120(22):225102, 2016.
+[40] Alexander G Kvashnin, Christian Tantardini, Hayk A
+Zakaryan, Yulia A Kvashnina, and Artem R Oganov.
+Computational search for new W-Mo-B compounds.
+Chemistry of Materials, 32(16):7028–7035, 2020.
+[41] Ziheng Lu, Bonan Zhu, Benjamin WB Shires, David O
+Scanlon, and Chris J Pickard. Ab initio random struc-
+ture searching for battery cathode materials.The Jour-
+nal of Chemical Physics, 154(17):174111, 2021.
+[42] Simone Di Cataldo, Wolfgang von der Linden, and Lilia
+Boeri. First-principles search of hot superconductivity
+inla-xhternaryhydrides. npj Computational Materials,
+8(1):1–8, 2022.
+[43] Felix A Faber, Luke Hutchison, Bing Huang, Justin
+Gilmer, Samuel S Schoenholz, George E Dahl, Oriol
+Vinyals, Steven Kearnes, Patrick F Riley, and O Ana-
+tole Von Lilienfeld. Prediction errors of molecular
+machine learning models lower than hybrid dft er-
+ror. Journal Of Chemical Theory And Computation,
+13(11):5255–5264, 2017.
+[44] K-R Müller, Michael Finke, Noboru Murata, Klaus
+Schulten, and Shun-ichi Amari. A numerical study
+on learning curves in stochastic multilayer feedforward
+networks. Neural Computation, 8(5):1085–1106, 1996.
+[45] FelixFaber, AlexanderLindmaa, OAnatoleVonLilien-
+feld, andRickardArmiento. Crystalstructurerepresen-
+tations for machine learning models of formation en-
+ergies. International Journal Of Quantum Chemistry,
+115(16):1094–1101, 2015.
+[46] Felix A Faber, Anders S Christensen, Bing Huang,
+and O Anatole Von Lilienfeld. Alchemical and struc-
+tural distribution based representation for universal
+quantum machine learning. The Journal Of Chemical
+
+[page 11]
+11
+Physics, 148(24):241717, 2018.
+[47] Mariette Hellenbrandt. The inorganic crystal structure
+database (ICSD)—present and future.Crystallography
+Reviews, 10(1):17–22, 2004.
+[48] Shidong Wang, Zhao Wang, Wahyu Setyawan, Natalio
+Mingo, and Stefano Curtarolo. Assessing the ther-
+moelectric properties of sintered compounds via high-
+throughput ab-initio calculations. Physical Review X,
+1(2):021012, 2011.
+[49] Austin D Sendek, Qian Yang, Ekin D Cubuk, Karel-
+Alexander N Duerloo, Yi Cui, and Evan J Reed. Holis-
+tic computational structure screening of more than
+12000 candidates for solid lithium-ion conductor mate-
+rials. Energy & Environmental Science, 10(1):306–320,
+2017.
+[50] Pieremanuele Canepa, Gopalakrishnan Sai Gautam,
+Daniel C Hannah, Rahul Malik, Miao Liu, Kevin G
+Gallagher, Kristin A Persson, and Gerbrand Ceder.
+Odyssey of multivalent cathode materials: Open
+questions and future challenges. Chemical Reviews,
+117(5):4287–4341, 2017.
+[51] Nikolai A Zarkevich, Duane D Johnson, and Vitalij K
+Pecharsky. High-throughput search for caloric materi-
+als: The caloricool approach. Journal Of Physics D:
+Applied Physics, 51(2):024002, 2017.
+[52] Vahe Tshitoyan, John Dagdelen, Leigh Weston,
+Alexander Dunn, Ziqin Rong, Olga Kononova,
+Kristin A Persson, Gerbrand Ceder, and Anubhav
+Jain. Unsupervised word embeddings capture latent
+knowledge from materials science literature. Nature,
+571(7763):95, 2019.
+[53] Mois Ilia Aroyo, Juan Manuel Perez-Mato, Cesar
+Capillas, Eli Kroumova, Svetoslav Ivantchev, Gotzon
+Madariaga, Asen Kirov, and Hans Wondratschek. Bil-
+bao crystallographic server: I. databases and crys-
+tallographic computing programs. Zeitschrift Für
+Kristallographie-Crystalline Materials, 221(1):15–27,
+2006.
+[54] LL Boyle and JE Lawrenson. The origin depen-
+dence of wyckoﬀ site description of a crystal structure.
+Acta Crystallographica Section A: Crystal Physics,
+Diﬀraction, Theoretical And General Crystallography,
+29(4):353–357, 1973.
+[55] Atsushi Togo and Isao Tanaka. Spglib: A software
+library for crystal symmetry search. arXiv Preprint
+ArXiv:1808.01590, 2018.
+[56] David Hicks, Corey Oses, Eric Gossett, Geena Gomez,
+Richard H Taylor, Cormac Toher, Michael J Mehl,
+Ohad Levy, and Stefano Curtarolo. AFLOW-
+SYM: Platform for the complete, automatic and self-
+consistent symmetry analysis of crystals. Acta Crys-
+tallographica Section A: Foundations And Advances,
+74(3):184–203, 2018.
+[57] Ilya Loshchilov and Frank Hutter. Decoupled weight
+decay regularization. In 7th International Confer-
+ence On Learning Representations, ICLR 2019, New
+Orleans, LA, USA, May 6-9, 2019. OpenReview.net,
+2019.
+[58] David A Nix and Andreas S Weigend. Estimating the
+mean and variance of the target probability distribu-
+tion. InProceedings Of 1994 Ieee International Confer-
+ence On Neural Networks (ICNN’94), volume 1, pages
+55–60. IEEE, 1994.
+[59] Alex Kendall and Yarin Gal. What uncertainties do we
+need in bayesian deep learning for computer vision? In
+Advances In Neural Information Processing Systems,
+pages 5574–5584, 2017.
+[60] Michael J Mehl, David Hicks, Cormac Toher, Ohad
+Levy, Robert M Hanson, Gus Hart, and Stefano Cur-
+tarolo. Theaﬂowlibraryofcrystallographicprototypes:
+Part 1.Computational Materials Science, 136:S1–S828,
+2017.
+[61] David Hicks, Michael J Mehl, Eric Gossett, Cormac
+Toher, Ohad Levy, Robert M Hanson, Gus Hart, and
+StefanoCurtarolo. Theaﬂowlibraryofcrystallographic
+prototypes: Part 2. Computational Materials Science,
+161:S1–S1011, 2019.
+[62] Georg Kresse and Jürgen Furthmüller. Eﬃciency of
+ab-initio total energy calculations for metals and semi-
+conductors using aplane-wavebasis set.Computational
+Materials Science, 6(1):15–50, 1996.
+[63] Georg Kresse and Jürgen Furthmüller. Eﬃcient iter-
+ative schemes for ab initio total-energy calculations
+using a plane-wave basis set. Physical Review B,
+54(16):11169, 1996.
+[64] Peter E Blöchl. Projector augmented-wave method.
+Physical Review B, 50(24):17953, 1994.
+[65] Georg Kresse and Daniel Joubert. From ultrasoft pseu-
+dopotentials to the projector augmented-wave method.
+Physical Review B, 59(3):1758, 1999.
+[66] John P Perdew, Kieron Burke, and Matthias Ernzer-
+hof. Generalized gradient approximation made simple.
+Physical Review Letters, 77(18):3865, 1996.
+[67] Anubhav Jain, Geoﬀroy Hautier, Shyue Ping Ong,
+Charles J Moore, Christopher C Fischer, Kristin A
+Persson, and Gerbrand Ceder. Formation enthalpies
+by mixing GGA and GGA+U calculations. Physical
+Review B, 84(4):045115, 2011.
+[68] Rickard Armiento. Database-Driven High-Throughput
+Calculations And Machine Learning Models For Ma-
+terials Design, pages 377–395. Springer International
+Publishing, Cham, 2020.
+[69] Shyue Ping Ong, Shreyas Cholia, Anubhav Jain,
+Miriam Brafman, Dan Gunter, Gerbrand Ceder, and
+Kristin A Persson. The materials application program-
+ming interface (api): A simple, ﬂexible and eﬃcient
+api for materials data based on representational state
+transfer (rest) principles.Computational Materials Sci-
+ence, 97:209–215, 2015.
+
+[page 12]
+SI: Rapid Discovery of Stable Materials by Coordinate-free Coarse Graining
+Rhys E. A. Goodall,1 Abhijith S. Parackal,2 Felix A. Faber,1 Rickard Armiento,2 and Alpha A. Lee1
+1Department of Physics, University of Cambridge, United Kingdom
+2Department of Physics, Chemistry and Biology, Linköping University, Sweden
+I. SYMMETRY CHANGES DURING
+SYMMETRY CONSTRAINED RELAXATIONS
+Carrying out a symmetry constrained relaxation in
+VASP prevents symmetry breaking, but in some in-
+stances, we can see the merger of distinct Wyckoﬀ po-
+sitions into higher symmetry Wyckoﬀ positions. This
+can lead to a change in the Wyckoﬀ representation in
+screening workﬂows between the pre-relation and re-
+laxed structures. To ensure that we have a well-deﬁned
+map, we trainWren models to learn the target proper-
+ties as a function of the relaxed Wyckoﬀ representation.
+A change in Wyckoﬀ representation was observed in
+29,417 out of 257,486 materials in the WBM data set.
+Consequently, the Wyckoﬀ representation appears to
+change during relaxation for approximately 10% of can-
+didates produced using prototype-based substitution
+workﬂows.
+II. ENRICHMENT AS A FUNCTION OF
+DISTANCE TO THE CONVEX HULL
+Figure S1 shows a stacked histogram of the energy
+to the convex hull of the full MP data set for the mate-
+rials from the WBM data set. The histogram sections
+Figure S1. Wren eﬃciently identiﬁes stable struc-
+tures when screening diverse chemical spaces.His-
+togram of the energy to the convex hull for materials in the
+WBM data set. The histogram is broken down into true
+positives, false negatives, false positives, and true negatives
+based on whether theWrenmodel predicts candidates to be
+below the known convex hull.Wren exhibits a high recall
+with the majority of materials below the convex hull being
+correctly identiﬁed by the model.
+are coloured according to whether theWrenmodel cor-
+rectly predicts a candidate to be below the known con-
+vex hull given its Wyckoﬀ representation.
+III. EXTRAPOLATION IN MATERIAL SPACE
+The WBM data set was generated using an itera-
+tive wo

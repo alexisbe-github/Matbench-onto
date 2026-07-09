@@ -14,193 +14,136 @@
     }
   },
   "architectures": {
-    "architectures": [
-      {
-        "name": "BOWSR",
-        "ontology_class": {
-          "value": "MachineLearningArchitecture",
-          "evidence": "BOWSR is a Bayesian optimizer with symmetry constraints using a graph deep learning energy model; architectureonto.ttl MachineLearningArchitecture class"
-        },
-        "parameter_number": {
-          "value": null,
-          "evidence": "No specific parameter count reported for BOWSR algorithm itself"
-        },
-        "datasets": {
-          "value": [
-            "Materials Project"
-          ],
-          "evidence": "Section 2.1: MEGNet formation energy model previously trained on the DFT-computed formation energies of 133,420 Materials Project crystals"
-        },
-        "hyperparameters": {
-          "value": [
-            "max_iterations",
-            "acquisition_function",
-            "noise_level",
-            "kernel",
-            "xi_parameter"
-          ],
-          "evidence": "Section 5.1: maximum number of iteration steps, expected improvement acquisition function, noise level set to RMSE of energy model, Rational Quadratic kernel, xi parameter for exploitation-exploration trade-off"
-        },
-        "components": {
-          "value": [
-            "MEGNet",
-            "Gaussian Process"
-          ],
-          "evidence": "Section 2.1 and 5.1: BOWSR uses MEGNet energy model and Gaussian Process surrogate model"
-        },
-        "backbone_architecture": {
-          "value": "MEGNet",
-          "evidence": "Section 2.1: MEGNet formation energy model used as energy evaluator in BOWSR"
-        },
-        "head_architecture": {
-          "value": null,
-          "evidence": "No specific prediction head architecture mentioned for BOWSR"
-        },
-        "layer_count": {
-          "value": null,
-          "evidence": "No layer count reported for BOWSR algorithm"
-        },
-        "hidden_dimension": {
-          "value": null,
-          "evidence": "No hidden dimension reported for BOWSR algorithm"
-        }
+    "BOWSR": {
+      "ontology_class": {
+        "value": "MachineLearningArchitecture",
+        "evidence": "BOWSR is a BO-GNN algorithm; no specific subclass matches, so top-level MachineLearningArchitecture from architecture.ttl"
       },
-      {
-        "name": "MEGNet",
-        "ontology_class": {
-          "value": "GraphNeuralNetworkArchitecture",
-          "evidence": "Section 5.2: MEGNet is a Materials Graph Network; architectureonto.ttl GraphNeuralNetworkArchitecture class"
-        },
-        "parameter_number": {
-          "value": null,
-          "evidence": "No specific parameter count reported for MEGNet"
-        },
-        "datasets": {
-          "value": [
-            "Materials Project"
-          ],
-          "evidence": "Section 5.2: MEGNet formation energy and elasticity models trained using the 2019.4.1 version of Materials Project database containing 133,420 structure-formation energy and 12,179 structure-bulk/shear modulus data pairs"
-        },
-        "hyperparameters": {
-          "value": [
-            "learning_rate",
-            "batch_size",
-            "max_epochs",
-            "early_stopping_patience",
-            "cutoff_radius",
-            "set2set_passes",
-            "neurons_per_layer"
-          ],
-          "evidence": "Section 5.2: initial learning rate 0.001, batch size 128, maximum 1500 epochs, early stopping callback 500 steps, cutoff radius 5 Å, set2set readout with two passes, [64, 64, 32] neurons"
-        },
-        "components": {
-          "value": [
-            "Graph Convolutional Layers",
-            "Set2set Readout",
-            "Shifted Softplus Activation"
-          ],
-          "evidence": "Section 5.2: three graph convolutional layers, set2set readout function, shifted softplus activation function"
-        },
-        "backbone_architecture": {
-          "value": "Graph Convolutional Layers",
-          "evidence": "Section 5.2: three graph convolutional layers with [64, 64, 32] neurons"
-        },
-        "head_architecture": {
-          "value": "Set2set Readout",
-          "evidence": "Section 5.2: set2set readout function with two passes used after graph convolution steps"
-        },
-        "layer_count": {
-          "value": 3,
-          "evidence": "Section 5.2: three graph convolutional layers"
-        },
-        "hidden_dimension": {
-          "value": 64,
-          "evidence": "Section 5.2: [64, 64, 32] neurons in each update function"
-        }
+      "parameter_number": {
+        "value": null,
+        "evidence": "No parameter count reported for BOWSR itself in YAML or PDF"
       },
-      {
-        "name": "Gaussian Process",
-        "ontology_class": {
-          "value": "MachineLearningArchitecture",
-          "evidence": "Section 5.1: Gaussian Process model used in BOWSR; architectureonto.ttl MachineLearningArchitecture class"
-        },
-        "parameter_number": {
-          "value": null,
-          "evidence": "No parameter count reported for Gaussian Process"
-        },
-        "datasets": {
-          "value": [],
-          "evidence": "No specific training datasets mentioned for Gaussian Process"
-        },
-        "hyperparameters": {
-          "value": [
-            "kernel",
-            "noise_level"
-          ],
-          "evidence": "Section 5.1: Rational Quadratic kernel, noise level set to RMSE of energy model"
-        },
-        "components": {
-          "value": [],
-          "evidence": "No sub-components mentioned for Gaussian Process"
-        },
-        "backbone_architecture": {
-          "value": null,
-          "evidence": "No backbone architecture mentioned for Gaussian Process"
-        },
-        "head_architecture": {
-          "value": null,
-          "evidence": "No head architecture mentioned for Gaussian Process"
-        },
-        "layer_count": {
-          "value": null,
-          "evidence": "No layer count applicable for Gaussian Process"
-        },
-        "hidden_dimension": {
-          "value": null,
-          "evidence": "No hidden dimension applicable for Gaussian Process"
-        }
+      "datasets": {
+        "value": [
+          "MP Graphs"
+        ],
+        "evidence": "YAML training_set: MP Graphs"
+      },
+      "hyperparameters": {
+        "value": [],
+        "evidence": "No explicit hyperparameters listed for BOWSR in YAML or PDF"
+      },
+      "components": {
+        "value": [
+          "MEGNet"
+        ],
+        "evidence": "PDF: BOWSR uses MEGNet as the energy evaluator (Section 2.1)"
+      },
+      "backbone_architecture": {
+        "value": "MEGNet",
+        "evidence": "PDF: MEGNet formation energy model is the surrogate model inside BOWSR (Section 2.1)"
+      },
+      "head_architecture": {
+        "value": null,
+        "evidence": "No separate head architecture described for BOWSR"
+      },
+      "layer_count": {
+        "value": null,
+        "evidence": "No layer count reported for BOWSR itself"
+      },
+      "hidden_dimension": {
+        "value": null,
+        "evidence": "No hidden dimension reported for BOWSR itself"
       }
-    ]
+    },
+    "MEGNet": {
+      "ontology_class": {
+        "value": "GraphNeuralNetworkArchitecture",
+        "evidence": "PDF: MEGNet is a graph neural network; GraphNeuralNetworkArchitecture from architecture.ttl"
+      },
+      "parameter_number": {
+        "value": null,
+        "evidence": "No parameter count reported for MEGNet in YAML or PDF"
+      },
+      "datasets": {
+        "value": [
+          "MP Graphs"
+        ],
+        "evidence": "PDF: MEGNet trained on 133,420 Materials Project crystals (Section 2.1)"
+      },
+      "hyperparameters": {
+        "value": [
+          "learning_rate",
+          "batch_size",
+          "max_epochs",
+          "early_stopping_patience",
+          "cutoff_radius",
+          "graph_convolution_layers",
+          "readout_passes"
+        ],
+        "evidence": "PDF Section 5.2: learning_rate=0.001, batch_size=128, max_epochs=1500, early_stopping=500, cutoff=5Å, 3 graph conv layers, set2set with 2 passes"
+      },
+      "components": {
+        "value": [],
+        "evidence": "No named sub-components of MEGNet listed beyond graph convolution layers and set2set readout"
+      },
+      "backbone_architecture": {
+        "value": null,
+        "evidence": "MEGNet is itself the backbone; no separate backbone mentioned"
+      },
+      "head_architecture": {
+        "value": null,
+        "evidence": "No separate head architecture described for MEGNet"
+      },
+      "layer_count": {
+        "value": 3,
+        "evidence": "PDF Section 5.2: three graph convolutional layers with [64, 64, 32] neurons"
+      },
+      "hidden_dimension": {
+        "value": 64,
+        "evidence": "PDF Section 5.2: first two graph conv layers have 64 neurons"
+      }
+    }
   },
   "training": {
     "training_runs": [
       {
-        "id": "megnet_formation_energy_pretraining",
+        "id": "megnet_pretraining",
         "type": {
           "value": "PretrainingRun",
-          "evidence": "Section 5.2: MEGNet formation energy model trained on Materials Project data; trainingonto.ttl PretrainingRun class"
+          "evidence": "PDF: MEGNet models trained on Materials Project data before use in BOWSR (Section 2.1, 5.2)"
         },
         "architectures": {
           "value": [
             "MEGNet"
           ],
-          "evidence": "Section 5.2: MEGNet formation energy model training"
+          "evidence": "PDF Section 5.2: MEGNet formation energy and elasticity models trained on MP data"
         },
         "datasets": {
           "value": [
-            "Materials Project"
+            "MP Graphs"
           ],
-          "evidence": "Section 5.2: trained using 133,420 structure-formation energy pairs from Materials Project 2019.4.1"
+          "evidence": "PDF: trained on 133,420 structure-formation energy and 12,179 structure-elastic modulus data pairs from MP (Section 5.2)"
         },
         "optimizer": {
           "value": "Adam",
-          "evidence": "Section 5.2: Adam optimizer used"
+          "evidence": "PDF Section 5.2: Adam optimizer used"
         },
         "loss_function": {
           "value": null,
-          "evidence": "No specific loss function mentioned"
+          "evidence": "No explicit loss function named in PDF or YAML"
         },
         "description": {
-          "value": "Pretraining of MEGNet formation energy model on 133,420 crystals from Materials Project",
-          "evidence": "Section 5.2: MEGNet formation energy model trained on Materials Project database"
+          "value": "MEGNet formation energy and elasticity models trained on Materials Project DFT data using Adam optimizer with learning rate 0.001, batch size 128, up to 1500 epochs with early stopping patience of 500",
+          "evidence": "PDF Section 5.2: training details for MEGNet models"
         },
         "objective_function": {
           "value": null,
-          "evidence": "No explicit objective function mentioned"
+          "evidence": "No explicit objective function named beyond standard loss minimization"
         },
         "sampling_method": {
           "value": null,
-          "evidence": "No sampling method mentioned"
+          "evidence": "No sampling method specified for MEGNet pretraining"
         },
         "uses_batched_selection": {
           "value": null,
@@ -208,7 +151,7 @@
         },
         "initialized_from_model_materialization": {
           "value": null,
-          "evidence": "No initialization from previous checkpoint mentioned"
+          "evidence": "MEGNet trained from scratch on MP data"
         },
         "teacher_model": {
           "value": null,
@@ -220,258 +163,1933 @@
         },
         "model_materializations": {
           "value": [
-            "MEGNet_formation_energy_model"
-          ],
-          "evidence": "Section 5.2: MEGNet formation energy model produced"
-        }
-      },
-      {
-        "id": "megnet_elasticity_pretraining",
-        "type": {
-          "value": "PretrainingRun",
-          "evidence": "Section 5.2: MEGNet elasticity model trained on Materials Project data; trainingonto.ttl PretrainingRun class"
-        },
-        "architectures": {
-          "value": [
             "MEGNet"
           ],
-          "evidence": "Section 5.2: MEGNet elasticity model training"
-        },
-        "datasets": {
-          "value": [
-            "Materials Project"
-          ],
-          "evidence": "Section 5.2: trained using 12,179 structure-bulk/shear modulus data pairs from Materials Project 2019.4.1"
-        },
-        "optimizer": {
-          "value": "Adam",
-          "evidence": "Section 5.2: Adam optimizer used"
-        },
-        "loss_function": {
-          "value": null,
-          "evidence": "No specific loss function mentioned"
-        },
-        "description": {
-          "value": "Pretraining of MEGNet elasticity model on 12,179 crystals from Materials Project",
-          "evidence": "Section 5.2: MEGNet elasticity model trained on Materials Project database"
-        },
-        "objective_function": {
-          "value": null,
-          "evidence": "No explicit objective function mentioned"
-        },
-        "sampling_method": {
-          "value": null,
-          "evidence": "No sampling method mentioned"
-        },
-        "uses_batched_selection": {
-          "value": null,
-          "evidence": "Not an active learning run"
-        },
-        "initialized_from_model_materialization": {
-          "value": null,
-          "evidence": "No initialization from previous checkpoint mentioned"
-        },
-        "teacher_model": {
-          "value": null,
-          "evidence": "Not a distillation run"
-        },
-        "student_model": {
-          "value": null,
-          "evidence": "Not a distillation run"
-        },
-        "model_materializations": {
-          "value": [
-            "MEGNet_elasticity_model"
-          ],
-          "evidence": "Section 5.2: MEGNet elasticity model produced"
+          "evidence": "PDF: trained MEGNet formation energy and elasticity models (Section 5.2)"
         }
       }
-    ],
+    ]
+  },
+  "evaluation": {
+    "evaluation_runs": {
+      "matbench_discovery_thermodynamic_stability_classification": {
+        "type": {
+          "value": "MachineLearningEvaluationRun",
+          "evidence": "ontology/evaluationonto.ttl: MachineLearningEvaluationRun"
+        },
+        "model_variant": {
+          "value": "bowsr",
+          "evidence": "YAML metrics.discovery"
+        },
+        "benchmark_release": {
+          "value": "matbench_discovery_benchmark_release",
+          "evidence": "YAML metrics.discovery"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "WBM test set",
+          "evidence": "YAML metrics.discovery"
+        },
+        "folds": {
+          "value": [],
+          "evidence": "YAML metrics.discovery"
+        },
+        "metric_results": {
+          "value": [
+            "discovery_full_test_set_f1",
+            "discovery_full_test_set_daf",
+            "discovery_full_test_set_precision",
+            "discovery_full_test_set_recall",
+            "discovery_full_test_set_accuracy",
+            "discovery_full_test_set_tpr",
+            "discovery_full_test_set_fpr",
+            "discovery_full_test_set_tnr",
+            "discovery_full_test_set_fnr",
+            "discovery_full_test_set_tp",
+            "discovery_full_test_set_fp",
+            "discovery_full_test_set_tn",
+            "discovery_full_test_set_fn",
+            "discovery_most_stable_10k_f1",
+            "discovery_most_stable_10k_daf",
+            "discovery_most_stable_10k_precision",
+            "discovery_most_stable_10k_recall",
+            "discovery_most_stable_10k_accuracy",
+            "discovery_most_stable_10k_tpr",
+            "discovery_most_stable_10k_fpr",
+            "discovery_most_stable_10k_tnr",
+            "discovery_most_stable_10k_fnr",
+            "discovery_most_stable_10k_tp",
+            "discovery_most_stable_10k_fp",
+            "discovery_most_stable_10k_tn",
+            "discovery_most_stable_10k_fn",
+            "discovery_unique_prototypes_f1",
+            "discovery_unique_prototypes_daf",
+            "discovery_unique_prototypes_precision",
+            "discovery_unique_prototypes_recall",
+            "discovery_unique_prototypes_accuracy",
+            "discovery_unique_prototypes_tpr",
+            "discovery_unique_prototypes_fpr",
+            "discovery_unique_prototypes_tnr",
+            "discovery_unique_prototypes_fnr",
+            "discovery_unique_prototypes_tp",
+            "discovery_unique_prototypes_fp",
+            "discovery_unique_prototypes_tn",
+            "discovery_unique_prototypes_fn"
+          ],
+          "evidence": "YAML metrics.discovery"
+        }
+      },
+      "matbench_discovery_convex_hull_distance_regression": {
+        "type": {
+          "value": "MachineLearningEvaluationRun",
+          "evidence": "ontology/evaluationonto.ttl: MachineLearningEvaluationRun"
+        },
+        "model_variant": {
+          "value": "bowsr",
+          "evidence": "YAML metrics.discovery"
+        },
+        "benchmark_release": {
+          "value": "matbench_discovery_benchmark_release",
+          "evidence": "YAML metrics.discovery"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "WBM test set",
+          "evidence": "YAML metrics.discovery"
+        },
+        "folds": {
+          "value": [],
+          "evidence": "YAML metrics.discovery"
+        },
+        "metric_results": {
+          "value": [
+            "discovery_full_test_set_mae",
+            "discovery_full_test_set_rmse",
+            "discovery_full_test_set_r2",
+            "discovery_full_test_set_missing_preds",
+            "discovery_most_stable_10k_mae",
+            "discovery_most_stable_10k_rmse",
+            "discovery_most_stable_10k_r2",
+            "discovery_most_stable_10k_missing_preds",
+            "discovery_unique_prototypes_mae",
+            "discovery_unique_prototypes_rmse",
+            "discovery_unique_prototypes_r2",
+            "discovery_unique_prototypes_missing_preds"
+          ],
+          "evidence": "YAML metrics.discovery"
+        }
+      },
+      "matbench_discovery_relaxed_structure_matching_rmsd": {
+        "type": {
+          "value": "MachineLearningEvaluationRun",
+          "evidence": "ontology/evaluationonto.ttl: MachineLearningEvaluationRun"
+        },
+        "model_variant": {
+          "value": "bowsr",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "benchmark_release": {
+          "value": "matbench_discovery_benchmark_release",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "WBM test set",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "folds": {
+          "value": [],
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "metric_results": {
+          "value": [
+            "geo_opt_symprec_1e_5_rmsd",
+            "geo_opt_symprec_1e_5_n_sym_ops_mae",
+            "geo_opt_symprec_1e_5_symmetry_decrease",
+            "geo_opt_symprec_1e_5_symmetry_match",
+            "geo_opt_symprec_1e_5_symmetry_increase",
+            "geo_opt_symprec_1e_5_n_structures",
+            "geo_opt_symprec_1e_2_rmsd",
+            "geo_opt_symprec_1e_2_n_sym_ops_mae",
+            "geo_opt_symprec_1e_2_symmetry_decrease",
+            "geo_opt_symprec_1e_2_symmetry_match",
+            "geo_opt_symprec_1e_2_symmetry_increase",
+            "geo_opt_symprec_1e_2_n_structures"
+          ],
+          "evidence": "YAML metrics.geo_opt"
+        }
+      }
+    },
+    "benchmark_releases": {
+      "matbench_discovery_benchmark_release": {
+        "type": {
+          "value": "BenchmarkRelease",
+          "evidence": "ontology/evaluationonto.ttl: BenchmarkRelease"
+        },
+        "tasks": {
+          "value": [
+            "convex_hull_distance_regression_task",
+            "relaxed_structure_matching_rmsd_task",
+            "thermodynamic_stability_classification_task"
+          ],
+          "evidence": "YAML fields train_task, test_task, targets and metrics"
+        }
+      }
+    },
+    "tasks": {
+      "convex_hull_distance_regression_task": {
+        "type": {
+          "value": "RegressionTask",
+          "evidence": "ontology/evaluation_individuals.ttl"
+        },
+        "dataset": {
+          "value": "WBM test set",
+          "evidence": "YAML fields train_task, test_task, targets and metrics"
+        }
+      },
+      "relaxed_structure_matching_rmsd_task": {
+        "type": {
+          "value": "RegressionTask",
+          "evidence": "ontology/evaluation_individuals.ttl"
+        },
+        "dataset": {
+          "value": "WBM test set",
+          "evidence": "YAML fields train_task, test_task, targets and metrics"
+        }
+      },
+      "thermodynamic_stability_classification_task": {
+        "type": {
+          "value": "ClassificationTask",
+          "evidence": "ontology/evaluation_individuals.ttl"
+        },
+        "dataset": {
+          "value": "WBM test set",
+          "evidence": "YAML fields train_task, test_task, targets and metrics"
+        }
+      }
+    },
+    "metric_results": {
+      "discovery_full_test_set_f1": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "F1",
+          "evidence": "YAML metrics.discovery.full_test_set.F1"
+        },
+        "metric_value": {
+          "value": 0.437,
+          "evidence": "YAML metrics.discovery.full_test_set.F1"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.F1"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.F1"
+        }
+      },
+      "discovery_full_test_set_daf": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "DAF",
+          "evidence": "YAML metrics.discovery.full_test_set.DAF"
+        },
+        "metric_value": {
+          "value": 1.836,
+          "evidence": "YAML metrics.discovery.full_test_set.DAF"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.discovery.full_test_set.DAF"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.DAF"
+        }
+      },
+      "discovery_full_test_set_precision": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Precision",
+          "evidence": "YAML metrics.discovery.full_test_set.Precision"
+        },
+        "metric_value": {
+          "value": 0.315,
+          "evidence": "YAML metrics.discovery.full_test_set.Precision"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.Precision"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.Precision"
+        }
+      },
+      "discovery_full_test_set_recall": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Recall",
+          "evidence": "YAML metrics.discovery.full_test_set.Recall"
+        },
+        "metric_value": {
+          "value": 0.711,
+          "evidence": "YAML metrics.discovery.full_test_set.Recall"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.Recall"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.Recall"
+        }
+      },
+      "discovery_full_test_set_accuracy": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Accuracy",
+          "evidence": "YAML metrics.discovery.full_test_set.Accuracy"
+        },
+        "metric_value": {
+          "value": 0.685,
+          "evidence": "YAML metrics.discovery.full_test_set.Accuracy"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.Accuracy"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.Accuracy"
+        }
+      },
+      "discovery_full_test_set_tpr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TPR",
+          "evidence": "YAML metrics.discovery.full_test_set.TPR"
+        },
+        "metric_value": {
+          "value": 0.711,
+          "evidence": "YAML metrics.discovery.full_test_set.TPR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.TPR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.TPR"
+        }
+      },
+      "discovery_full_test_set_fpr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FPR",
+          "evidence": "YAML metrics.discovery.full_test_set.FPR"
+        },
+        "metric_value": {
+          "value": 0.32,
+          "evidence": "YAML metrics.discovery.full_test_set.FPR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.FPR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.FPR"
+        }
+      },
+      "discovery_full_test_set_tnr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TNR",
+          "evidence": "YAML metrics.discovery.full_test_set.TNR"
+        },
+        "metric_value": {
+          "value": 0.68,
+          "evidence": "YAML metrics.discovery.full_test_set.TNR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.TNR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.TNR"
+        }
+      },
+      "discovery_full_test_set_fnr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FNR",
+          "evidence": "YAML metrics.discovery.full_test_set.FNR"
+        },
+        "metric_value": {
+          "value": 0.289,
+          "evidence": "YAML metrics.discovery.full_test_set.FNR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.full_test_set.FNR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.FNR"
+        }
+      },
+      "discovery_full_test_set_tp": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TP",
+          "evidence": "YAML metrics.discovery.full_test_set.TP"
+        },
+        "metric_value": {
+          "value": 31347.0,
+          "evidence": "YAML metrics.discovery.full_test_set.TP"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.full_test_set.TP"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.TP"
+        }
+      },
+      "discovery_full_test_set_fp": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FP",
+          "evidence": "YAML metrics.discovery.full_test_set.FP"
+        },
+        "metric_value": {
+          "value": 68139.0,
+          "evidence": "YAML metrics.discovery.full_test_set.FP"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.full_test_set.FP"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.FP"
+        }
+      },
+      "discovery_full_test_set_tn": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TN",
+          "evidence": "YAML metrics.discovery.full_test_set.TN"
+        },
+        "metric_value": {
+          "value": 144732.0,
+          "evidence": "YAML metrics.discovery.full_test_set.TN"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.full_test_set.TN"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.TN"
+        }
+      },
+      "discovery_full_test_set_fn": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FN",
+          "evidence": "YAML metrics.discovery.full_test_set.FN"
+        },
+        "metric_value": {
+          "value": 12745.0,
+          "evidence": "YAML metrics.discovery.full_test_set.FN"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.full_test_set.FN"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.FN"
+        }
+      },
+      "discovery_full_test_set_mae": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "MAE",
+          "evidence": "YAML metrics.discovery.full_test_set.MAE"
+        },
+        "metric_value": {
+          "value": 0.114,
+          "evidence": "YAML metrics.discovery.full_test_set.MAE"
+        },
+        "unit": {
+          "value": "eV/atom",
+          "evidence": "YAML metrics.discovery.full_test_set.MAE"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.MAE"
+        }
+      },
+      "discovery_full_test_set_rmse": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "RMSE",
+          "evidence": "YAML metrics.discovery.full_test_set.RMSE"
+        },
+        "metric_value": {
+          "value": 0.164,
+          "evidence": "YAML metrics.discovery.full_test_set.RMSE"
+        },
+        "unit": {
+          "value": "eV/atom",
+          "evidence": "YAML metrics.discovery.full_test_set.RMSE"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.RMSE"
+        }
+      },
+      "discovery_full_test_set_r2": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "R2",
+          "evidence": "YAML metrics.discovery.full_test_set.R2"
+        },
+        "metric_value": {
+          "value": 0.142,
+          "evidence": "YAML metrics.discovery.full_test_set.R2"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.discovery.full_test_set.R2"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.R2"
+        }
+      },
+      "discovery_full_test_set_missing_preds": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "missing_preds",
+          "evidence": "YAML metrics.discovery.full_test_set.missing_preds"
+        },
+        "metric_value": {
+          "value": 6185,
+          "evidence": "YAML metrics.discovery.full_test_set.missing_preds"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.full_test_set.missing_preds"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "full_test_set",
+          "evidence": "YAML metrics.discovery.full_test_set.missing_preds"
+        }
+      },
+      "discovery_most_stable_10k_f1": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "F1",
+          "evidence": "YAML metrics.discovery.most_stable_10k.F1"
+        },
+        "metric_value": {
+          "value": 0.664,
+          "evidence": "YAML metrics.discovery.most_stable_10k.F1"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.F1"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.F1"
+        }
+      },
+      "discovery_most_stable_10k_daf": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "DAF",
+          "evidence": "YAML metrics.discovery.most_stable_10k.DAF"
+        },
+        "metric_value": {
+          "value": 3.252,
+          "evidence": "YAML metrics.discovery.most_stable_10k.DAF"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.discovery.most_stable_10k.DAF"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.DAF"
+        }
+      },
+      "discovery_most_stable_10k_precision": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Precision",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Precision"
+        },
+        "metric_value": {
+          "value": 0.497,
+          "evidence": "YAML metrics.discovery.most_stable_10k.Precision"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Precision"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Precision"
+        }
+      },
+      "discovery_most_stable_10k_recall": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Recall",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Recall"
+        },
+        "metric_value": {
+          "value": 1.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.Recall"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Recall"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Recall"
+        }
+      },
+      "discovery_most_stable_10k_accuracy": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Accuracy",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Accuracy"
+        },
+        "metric_value": {
+          "value": 0.497,
+          "evidence": "YAML metrics.discovery.most_stable_10k.Accuracy"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Accuracy"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.Accuracy"
+        }
+      },
+      "discovery_most_stable_10k_tpr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TPR",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TPR"
+        },
+        "metric_value": {
+          "value": 1.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.TPR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TPR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TPR"
+        }
+      },
+      "discovery_most_stable_10k_fpr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FPR",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FPR"
+        },
+        "metric_value": {
+          "value": 1.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.FPR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FPR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FPR"
+        }
+      },
+      "discovery_most_stable_10k_tnr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TNR",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TNR"
+        },
+        "metric_value": {
+          "value": 0.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.TNR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TNR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TNR"
+        }
+      },
+      "discovery_most_stable_10k_fnr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FNR",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FNR"
+        },
+        "metric_value": {
+          "value": 0.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.FNR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FNR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FNR"
+        }
+      },
+      "discovery_most_stable_10k_tp": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TP",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TP"
+        },
+        "metric_value": {
+          "value": 4971.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.TP"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TP"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TP"
+        }
+      },
+      "discovery_most_stable_10k_fp": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FP",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FP"
+        },
+        "metric_value": {
+          "value": 5029.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.FP"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FP"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FP"
+        }
+      },
+      "discovery_most_stable_10k_tn": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TN",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TN"
+        },
+        "metric_value": {
+          "value": 0.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.TN"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TN"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.TN"
+        }
+      },
+      "discovery_most_stable_10k_fn": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FN",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FN"
+        },
+        "metric_value": {
+          "value": 0.0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.FN"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FN"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.FN"
+        }
+      },
+      "discovery_most_stable_10k_mae": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "MAE",
+          "evidence": "YAML metrics.discovery.most_stable_10k.MAE"
+        },
+        "metric_value": {
+          "value": 0.259,
+          "evidence": "YAML metrics.discovery.most_stable_10k.MAE"
+        },
+        "unit": {
+          "value": "eV/atom",
+          "evidence": "YAML metrics.discovery.most_stable_10k.MAE"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.MAE"
+        }
+      },
+      "discovery_most_stable_10k_rmse": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "RMSE",
+          "evidence": "YAML metrics.discovery.most_stable_10k.RMSE"
+        },
+        "metric_value": {
+          "value": 0.32,
+          "evidence": "YAML metrics.discovery.most_stable_10k.RMSE"
+        },
+        "unit": {
+          "value": "eV/atom",
+          "evidence": "YAML metrics.discovery.most_stable_10k.RMSE"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.RMSE"
+        }
+      },
+      "discovery_most_stable_10k_r2": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "R2",
+          "evidence": "YAML metrics.discovery.most_stable_10k.R2"
+        },
+        "metric_value": {
+          "value": -1.172,
+          "evidence": "YAML metrics.discovery.most_stable_10k.R2"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.discovery.most_stable_10k.R2"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.R2"
+        }
+      },
+      "discovery_most_stable_10k_missing_preds": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "missing_preds",
+          "evidence": "YAML metrics.discovery.most_stable_10k.missing_preds"
+        },
+        "metric_value": {
+          "value": 0,
+          "evidence": "YAML metrics.discovery.most_stable_10k.missing_preds"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.most_stable_10k.missing_preds"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "most_stable_10k",
+          "evidence": "YAML metrics.discovery.most_stable_10k.missing_preds"
+        }
+      },
+      "discovery_unique_prototypes_f1": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "F1",
+          "evidence": "YAML metrics.discovery.unique_prototypes.F1"
+        },
+        "metric_value": {
+          "value": 0.423,
+          "evidence": "YAML metrics.discovery.unique_prototypes.F1"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.F1"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.F1"
+        }
+      },
+      "discovery_unique_prototypes_daf": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "DAF",
+          "evidence": "YAML metrics.discovery.unique_prototypes.DAF"
+        },
+        "metric_value": {
+          "value": 1.964,
+          "evidence": "YAML metrics.discovery.unique_prototypes.DAF"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.discovery.unique_prototypes.DAF"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.DAF"
+        }
+      },
+      "discovery_unique_prototypes_precision": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Precision",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Precision"
+        },
+        "metric_value": {
+          "value": 0.3,
+          "evidence": "YAML metrics.discovery.unique_prototypes.Precision"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Precision"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Precision"
+        }
+      },
+      "discovery_unique_prototypes_recall": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Recall",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Recall"
+        },
+        "metric_value": {
+          "value": 0.718,
+          "evidence": "YAML metrics.discovery.unique_prototypes.Recall"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Recall"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Recall"
+        }
+      },
+      "discovery_unique_prototypes_accuracy": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "Accuracy",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Accuracy"
+        },
+        "metric_value": {
+          "value": 0.697,
+          "evidence": "YAML metrics.discovery.unique_prototypes.Accuracy"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Accuracy"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.Accuracy"
+        }
+      },
+      "discovery_unique_prototypes_tpr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TPR",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TPR"
+        },
+        "metric_value": {
+          "value": 0.718,
+          "evidence": "YAML metrics.discovery.unique_prototypes.TPR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TPR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TPR"
+        }
+      },
+      "discovery_unique_prototypes_fpr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FPR",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FPR"
+        },
+        "metric_value": {
+          "value": 0.307,
+          "evidence": "YAML metrics.discovery.unique_prototypes.FPR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FPR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FPR"
+        }
+      },
+      "discovery_unique_prototypes_tnr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TNR",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TNR"
+        },
+        "metric_value": {
+          "value": 0.693,
+          "evidence": "YAML metrics.discovery.unique_prototypes.TNR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TNR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TNR"
+        }
+      },
+      "discovery_unique_prototypes_fnr": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FNR",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FNR"
+        },
+        "metric_value": {
+          "value": 0.282,
+          "evidence": "YAML metrics.discovery.unique_prototypes.FNR"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FNR"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FNR"
+        }
+      },
+      "discovery_unique_prototypes_tp": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TP",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TP"
+        },
+        "metric_value": {
+          "value": 23963.0,
+          "evidence": "YAML metrics.discovery.unique_prototypes.TP"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TP"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TP"
+        }
+      },
+      "discovery_unique_prototypes_fp": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FP",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FP"
+        },
+        "metric_value": {
+          "value": 55843.0,
+          "evidence": "YAML metrics.discovery.unique_prototypes.FP"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FP"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FP"
+        }
+      },
+      "discovery_unique_prototypes_tn": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "TN",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TN"
+        },
+        "metric_value": {
+          "value": 126271.0,
+          "evidence": "YAML metrics.discovery.unique_prototypes.TN"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TN"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.TN"
+        }
+      },
+      "discovery_unique_prototypes_fn": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "FN",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FN"
+        },
+        "metric_value": {
+          "value": 9411.0,
+          "evidence": "YAML metrics.discovery.unique_prototypes.FN"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FN"
+        },
+        "task": {
+          "value": "thermodynamic_stability_classification_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.FN"
+        }
+      },
+      "discovery_unique_prototypes_mae": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "MAE",
+          "evidence": "YAML metrics.discovery.unique_prototypes.MAE"
+        },
+        "metric_value": {
+          "value": 0.118,
+          "evidence": "YAML metrics.discovery.unique_prototypes.MAE"
+        },
+        "unit": {
+          "value": "eV/atom",
+          "evidence": "YAML metrics.discovery.unique_prototypes.MAE"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.MAE"
+        }
+      },
+      "discovery_unique_prototypes_rmse": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "RMSE",
+          "evidence": "YAML metrics.discovery.unique_prototypes.RMSE"
+        },
+        "metric_value": {
+          "value": 0.167,
+          "evidence": "YAML metrics.discovery.unique_prototypes.RMSE"
+        },
+        "unit": {
+          "value": "eV/atom",
+          "evidence": "YAML metrics.discovery.unique_prototypes.RMSE"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.RMSE"
+        }
+      },
+      "discovery_unique_prototypes_r2": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "R2",
+          "evidence": "YAML metrics.discovery.unique_prototypes.R2"
+        },
+        "metric_value": {
+          "value": 0.151,
+          "evidence": "YAML metrics.discovery.unique_prototypes.R2"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.discovery.unique_prototypes.R2"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.R2"
+        }
+      },
+      "discovery_unique_prototypes_missing_preds": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "missing_preds",
+          "evidence": "YAML metrics.discovery.unique_prototypes.missing_preds"
+        },
+        "metric_value": {
+          "value": 4484,
+          "evidence": "YAML metrics.discovery.unique_prototypes.missing_preds"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.discovery.unique_prototypes.missing_preds"
+        },
+        "task": {
+          "value": "convex_hull_distance_regression_task",
+          "evidence": "YAML metrics.discovery"
+        },
+        "dataset": {
+          "value": "unique_prototypes",
+          "evidence": "YAML metrics.discovery.unique_prototypes.missing_preds"
+        }
+      },
+      "geo_opt_symprec_1e_5_rmsd": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "rmsd",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.rmsd"
+        },
+        "metric_value": {
+          "value": 0.195,
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.rmsd"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.rmsd"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "symprec_1e_5",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.rmsd"
+        }
+      },
+      "geo_opt_symprec_1e_5_n_sym_ops_mae": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "n_sym_ops_mae",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.n_sym_ops_mae"
+        },
+        "metric_value": {
+          "value": 29.4219,
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.n_sym_ops_mae"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.n_sym_ops_mae"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "symprec_1e_5",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.n_sym_ops_mae"
+        }
+      },
+      "geo_opt_symprec_1e_5_symmetry_decrease": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "symmetry_decrease",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.symmetry_decrease"
+        },
+        "metric_value": {
+          "value": 0.0038,
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.symmetry_decrease"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.symmetry_decrease"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "symprec_1e_5",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.symmetry_decrease"
+        }
+      },
+      "geo_opt_symprec_1e_5_symmetry_match": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "symmetry_match",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.symmetry_match"
+        },
+        "metric_value": {
+          "value": 0.5299,
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.symmetry_match"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.symmetry_match"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "symprec_1e_5",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.symmetry_match"
+        }
+      },
+      "geo_opt_symprec_1e_5_symmetry_increase": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "symmetry_increase",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.symmetry_increase"
+        },
+        "metric_value": {
+          "value": 0.4642,
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.symmetry_increase"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.symmetry_increase"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "symprec_1e_5",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.symmetry_increase"
+        }
+      },
+      "geo_opt_symprec_1e_5_n_structures": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "n_structures",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.n_structures"
+        },
+        "metric_value": {
+          "value": 250779,
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.n_structures"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.n_structures"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "symprec_1e_5",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-5.n_structures"
+        }
+      },
+      "geo_opt_symprec_1e_2_rmsd": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "rmsd",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.rmsd"
+        },
+        "metric_value": {
+          "value": 0.195,
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.rmsd"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.rmsd"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "symprec_1e_2",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.rmsd"
+        }
+      },
+      "geo_opt_symprec_1e_2_n_sym_ops_mae": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "n_sym_ops_mae",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.n_sym_ops_mae"
+        },
+        "metric_value": {
+          "value": 25.4696,
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.n_sym_ops_mae"
+        },
+        "unit": {
+          "value": "dimensionless",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.n_sym_ops_mae"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "symprec_1e_2",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.n_sym_ops_mae"
+        }
+      },
+      "geo_opt_symprec_1e_2_symmetry_decrease": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "symmetry_decrease",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.symmetry_decrease"
+        },
+        "metric_value": {
+          "value": 0.0694,
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.symmetry_decrease"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.symmetry_decrease"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "symprec_1e_2",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.symmetry_decrease"
+        }
+      },
+      "geo_opt_symprec_1e_2_symmetry_match": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "symmetry_match",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.symmetry_match"
+        },
+        "metric_value": {
+          "value": 0.7978,
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.symmetry_match"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.symmetry_match"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "symprec_1e_2",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.symmetry_match"
+        }
+      },
+      "geo_opt_symprec_1e_2_symmetry_increase": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "symmetry_increase",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.symmetry_increase"
+        },
+        "metric_value": {
+          "value": 0.1198,
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.symmetry_increase"
+        },
+        "unit": {
+          "value": "fraction",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.symmetry_increase"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "symprec_1e_2",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.symmetry_increase"
+        }
+      },
+      "geo_opt_symprec_1e_2_n_structures": {
+        "type": {
+          "value": "MetricResult",
+          "evidence": "ontology/evaluationonto.ttl: MetricResult"
+        },
+        "metric_type": {
+          "value": "n_structures",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.n_structures"
+        },
+        "metric_value": {
+          "value": 250779,
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.n_structures"
+        },
+        "unit": {
+          "value": "count",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.n_structures"
+        },
+        "task": {
+          "value": "relaxed_structure_matching_rmsd_task",
+          "evidence": "YAML metrics.geo_opt"
+        },
+        "dataset": {
+          "value": "symprec_1e_2",
+          "evidence": "YAML metrics.geo_opt.symprec=1e-2.n_structures"
+        }
+      }
+    },
     "datasets": [
       {
-        "name": "Materials Project",
+        "id": "MP_Graphs",
         "ontology_class": {
           "value": "Dataset",
-          "evidence": "datasetonto.ttl Dataset class; Section 5.2: Materials Project database"
+          "evidence": "datasetonto.ttl: Dataset class; YAML training_set: MP Graphs"
         },
         "number_of_samples": {
           "value": 133420,
-          "evidence": "Section 5.2: 133,420 structure-formation energy pairs from Materials Project"
+          "evidence": "PDF Section 2.1: MEGNet trained on 133,420 Materials Project crystals"
         },
         "data_representation": {
           "value": "crystal graph",
-          "evidence": "Section 5.2: Materials Graph Network represents atoms and bonds as nodes and edges in a graph"
+          "evidence": "PDF: MEGNet uses graph representation of crystals (Section 2.1)"
         },
         "labelling_method": {
           "value": "DFT",
-          "evidence": "Section 2.1: DFT-computed formation energies from Materials Project"
+          "evidence": "PDF: trained on DFT-computed formation energies (Section 2.1)"
         },
         "input_features": {
           "value": [
-            "atomic_nodes",
-            "bond_edges",
+            "atomic_number",
+            "bond_length",
+            "crystal_graph"
+          ],
+          "evidence": "PDF: MEGNet uses atoms as nodes, bonds as edges with bond lengths (Section 5.2)"
+        },
+        "target_features": {
+          "value": [
+            "formation_energy",
+            "bulk_modulus",
+            "shear_modulus"
+          ],
+          "evidence": "PDF Section 5.2: Ef, KVRH, GVRH models trained on MP data"
+        },
+        "derived_from_dataset": {
+          "value": null,
+          "evidence": "MP Graphs is the primary Materials Project dataset"
+        }
+      },
+      {
+        "id": "WBM",
+        "ontology_class": {
+          "value": "Dataset",
+          "evidence": "datasetonto.ttl: Dataset class; YAML pred_file references WBM"
+        },
+        "number_of_samples": {
+          "value": 256964,
+          "evidence": "YAML metrics.discovery.full_test_set: TP+FP+TN+FN = 31347+68139+144732+12745 = 256963, plus 6185 missing_preds ≈ 256964"
+        },
+        "data_representation": {
+          "value": "crystal structure",
+          "evidence": "YAML pred_file: 2023-01-23-wbm-IS2RE.csv.gz"
+        },
+        "labelling_method": {
+          "value": "DFT",
+          "evidence": "WBM dataset uses DFT-computed formation energies"
+        },
+        "input_features": {
+          "value": [
             "crystal_structure"
           ],
-          "evidence": "Section 5.2: graph representation with atoms as nodes and bonds as edges"
+          "evidence": "YAML test_task: IS2RE-SR, input is initial structure"
         },
         "target_features": {
           "value": [
-            "formation_energy",
-            "bulk_modulus",
-            "shear_modulus"
+            "formation_energy_above_hull"
           ],
-          "evidence": "Section 5.2: formation energy and elasticity (KVRH and GVRH) models"
+          "evidence": "YAML targets: E; metrics.discovery evaluates energy above hull"
         },
         "derived_from_dataset": {
           "value": null,
-          "evidence": "No derivation mentioned for Materials Project"
-        }
-      },
-      {
-        "name": "ICSD",
-        "ontology_class": {
-          "value": "Dataset",
-          "evidence": "datasetonto.ttl Dataset class; Section 2.2: Inorganic Crystal Structure Database"
-        },
-        "number_of_samples": {
-          "value": 5555,
-          "evidence": "Section 2.3: 5,555 ternary structures prototypes in the ICSD"
-        },
-        "data_representation": {
-          "value": "crystal structure",
-          "evidence": "Section 2.2: structure prototypes from ICSD"
-        },
-        "labelling_method": {
-          "value": null,
-          "evidence": "ICSD is a structural database, not a property-labelled dataset"
-        },
-        "input_features": {
-          "value": [
-            "crystal_structure",
-            "space_group",
-            "lattice_parameters",
-            "atomic_positions"
-          ],
-          "evidence": "Section 2.2: structure prototypes with lattice parameters and atomic positions"
-        },
-        "target_features": {
-          "value": [],
-          "evidence": "ICSD is a structural database without target properties"
-        },
-        "derived_from_dataset": {
-          "value": null,
-          "evidence": "No derivation mentioned for ICSD"
-        }
-      },
-      {
-        "name": "Property Prediction Dataset",
-        "ontology_class": {
-          "value": "LabeledDataset",
-          "evidence": "datasetonto.ttl LabeledDataset class; Section 2.2: dataset with pre-computed DFT formation energies and elastic moduli"
-        },
-        "number_of_samples": {
-          "value": 12277,
-          "evidence": "Section 2.2: 12,277 unique crystals with pre-computed DFT formation energies"
-        },
-        "data_representation": {
-          "value": "crystal structure",
-          "evidence": "Section 2.2: crystals from Materials Project"
-        },
-        "labelling_method": {
-          "value": "DFT",
-          "evidence": "Section 2.2: pre-computed DFT formation energies and elastic moduli from Materials Project"
-        },
-        "input_features": {
-          "value": [
-            "crystal_structure",
-            "lattice_parameters",
-            "atomic_positions"
-          ],
-          "evidence": "Section 2.2: unrelaxed, BOWSR-relaxed, and DFT-relaxed structures as inputs"
-        },
-        "target_features": {
-          "value": [
-            "formation_energy",
-            "bulk_modulus",
-            "shear_modulus"
-          ],
-          "evidence": "Section 2.2: formation energies and elastic moduli (bulk and shear moduli)"
-        },
-        "derived_from_dataset": {
-          "value": "Materials Project",
-          "evidence": "Section 2.2: crystals from Materials Project"
-        }
-      },
-      {
-        "name": "Elastic Moduli Dataset",
-        "ontology_class": {
-          "value": "LabeledDataset",
-          "evidence": "datasetonto.ttl LabeledDataset class; Section 2.2: 1,672 crystals with pre-computed DFT elastic moduli"
-        },
-        "number_of_samples": {
-          "value": 1672,
-          "evidence": "Section 2.2: 1,672 unique crystals with pre-computed DFT elastic moduli"
-        },
-        "data_representation": {
-          "value": "crystal structure",
-          "evidence": "Section 2.2: crystals from Materials Project"
-        },
-        "labelling_method": {
-          "value": "DFT",
-          "evidence": "Section 2.2: pre-computed DFT elastic moduli from Materials Project"
-        },
-        "input_features": {
-          "value": [
-            "crystal_structure",
-            "lattice_parameters",
-            "atomic_positions"
-          ],
-          "evidence": "Section 2.2: unrelaxed, BOWSR-relaxed, and DFT-relaxed structures as inputs"
-        },
-        "target_features": {
-          "value": [
-            "bulk_modulus",
-            "shear_modulus"
-          ],
-          "evidence": "Section 2.2: elastic moduli (bulk and shear moduli)"
-        },
-        "derived_from_dataset": {
-          "value": "Materials Project",
-          "evidence": "Section 2.2: crystals from Materials Project"
-        }
-      },
-      {
-        "name": "Screening Candidates",
-        "ontology_class": {
-          "value": "Dataset",
-          "evidence": "datasetonto.ttl Dataset class; Section 2.3: 399,960 candidates generated"
-        },
-        "number_of_samples": {
-          "value": 399960,
-          "evidence": "Section 2.3: 399,960 candidates generated by elemental substitution"
-        },
-        "data_representation": {
-          "value": "crystal structure",
-          "evidence": "Section 2.3: transition metal borides and carbides candidates"
-        },
-        "labelling_method": {
-          "value": null,
-          "evidence": "Candidates generated by elemental substitution, not labelled"
-        },
-        "input_features": {
-          "value": [
-            "crystal_structure",
-            "composition"
-          ],
-          "evidence": "Section 2.3: candidates generated from ternary prototypes with elemental substitution"
-        },
-        "target_features": {
-          "value": [],
-          "evidence": "No target features for initial candidates"
-        },
-        "derived_from_dataset": {
-          "value": "ICSD",
-          "evidence": "Section 2.3: generated by elemental substitution to 5,555 ternary structures prototypes in ICSD"
+          "evidence": "WBM is a separate dataset derived from Materials Project"
         }
       }
     ]

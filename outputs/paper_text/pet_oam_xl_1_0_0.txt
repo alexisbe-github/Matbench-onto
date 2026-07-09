@@ -1,0 +1,987 @@
+[page 1]
+Article https://doi.org/10.1038/s41467-025-65662-7
+PET-MAD as a lightweight universal
+interatomic potential for advanced materials
+modeling
+Arslan Mazitov 1,2 , Filippo Bigi1,2, Matthias Kellner1, Paolo Pegolo 1,
+Davide Tisi 1, Guillaume Fraux1,S e r g e yP o z d n y a k o v1, Philip Loche 1 &
+Michele Ceriotti 1
+Machine-learning interatomic potentials have greatly extended the reach of
+atomic-scale simulations, offering the accuracy of ﬁrst-principles calculations
+at a fraction of the cost. Leveraging large quantum mechanical databases and
+expressive architectures, recent universal models deliver qualitative accuracy
+across the periodic table but are often biased toward low-energy conﬁgura-
+tions. We introduce PET-MAD, a generally applicable interatomic potential
+trained on a dataset combining stable inorganic and organic solids, system-
+atically modiﬁed to enhance atomic diversity. Using a moderate but thor-
+oughly consistent level of electronic-structure theory, we assess PET-MAD’s
+accuracy on established benchmarks andadvanced simulations of six mate-
+rials. Despite the small training set and lightweight architecture, PET-MAD is
+competitive with the state-of-the-art machine-learned interatomic potentials
+for inorganic solids, while also being reliable for molecules, organic materials,
+and surfaces. It is stable and fast, enabling the near-quantitative study of
+thermal and quantum mechanical ﬂuctuations, functional properties, and
+phase transitions out of the box. It can be efﬁciently ﬁne-tuned to deliver full
+quantum mechanical accuracy with a minimal number of targeted
+calculations.
+Efﬁcient methods for solving the electronic structure problem for
+molecules and materials have made it possible to predict their struc-
+ture, stability, and properties from ﬁrst principles. However, the
+associated computational cost and poor scaling with system size
+severely limit the complexity, time, and length scale accessible to
+simulations. Machine-learning (ML) models that aim to replace ﬁrst-
+principles methods to evaluate energy and forces—so-called machine-
+learning interatomic potentials (MLIPs) —a d d r e s st h i sl i m i t a t i o nb y
+training on a set of reference quantum mechanical calculations, and
+then making accurate yet inexpensive ML predictions, for both
+materials
+1–3 and (bio)molecules4–7.
+For almost two decades, this scheme has been used successfully
+to study a large number of chemical systems for whichﬁrst-principles
+calculations are too expensive, and empirical forceﬁelds are either not
+available or not suf ﬁciently accurate8–10. Nonetheless, the aforemen-
+tioned approach typically implies parameterizing a speciﬁcM L I Pf o r
+every new system, which requires a considerable number of ab initio
+calculations, as well as substantial human effort and expertise inﬁtting
+the potential. In contrast to this family of single-purpose potentials,
+recent years have seen the development of several general-purpose, or
+universal models
+11–13, which aim to be applicable to a large range of
+distinct chemical systems, either out of the box or after minimal ﬁne-
+Received: 4 April 2025
+Accepted: 17 October 2025
+Check for updates
+1Laboratory of Computational Science and Modeling, Institut des Matériaux, École Polytechnique Fédérale de Lausanne, Lausanne, Switzerland.2These
+authors contributed equally: Arslan Mazitov, Filippo Bigi. e-mail: arslan.mazitov@epﬂ.ch; michele.ceriotti@epﬂ.ch
+Nature Communications|        (2025) 16:10653 1
+1234567890():,;
+1234567890():,;
+
+[page 2]
+tuning. These models provide a qualitative description of the atomic-
+scale interactions across the periodic table, although their level of
+accuracy for a speci ﬁc application depends on how closely the pro-
+blem of interest aligns with the considerations underlying the con-
+struction of the reference dataset. For instance, many existing datasets
+are built to represent a collection of stable materials, and to support
+the search for new materials with optimal properties
+14–17.T oc o m p l i -
+cate things, the accuracy of general-purpose potentials is often
+assessed using inconsistent levels of ab initio theory, making it difﬁcult
+to isolate the shortcomings of the model from the discrepancy in the
+electronic-structure reference. In this work, we use the Massive Ato-
+mistic Diversity (MAD) dataset, which incorporates a high degree of
+chemical and structural diversity while employing highly converged,
+internally consistent reference calculations. This allows for a quanti-
+tative assessment of the performance of ﬁtted models across the
+periodic table, since MAD’s ab initio settings are broadly applicable to
+most chemical systems, although the comparatively simple exchange-
+correlation functional we use may not always be equally accurate.
+Energies and forces are ﬁtted using a Point Edge Transformer (PET)
+graph neural network
+18, resulting in a general-purpose MLIP, which we
+name PET-MAD. We evaluate the accuracy of the resulting model on a
+wide range of public datasets, ensuring consistency in the electronic-
+structure settings, and showing that PET-MAD achieves competitive
+performance on several external benchmarks despite being trained on
+2-3 orders of magnitude fewer structures. We then critically assess the
+performance of PET-MAD in highly non-trivial atomistic simulations,
+including accelerated statistical sampling, quantum nuclear ﬂuctua-
+tions, and predicting functional properties. We focus on six examples,
+motivated by their scientiﬁc interest, diversity in material classes and
+physical effects being probed, as well as the fact that each has pre-
+viously been studied using ad hoc MLIPs —namely, lithium thiopho-
+sphate, gallium arsenide, a CoCrFeMnNi high-entropy alloy, liquid
+water, succinic acid, and barium titanate. For each example, we
+quantitatively assess the accuracy of PET-MAD by comparing it against
+both a bespoke model trained with compatible energetics, which
+provides an extremely close match to the electronic-structure refer-
+e n c e ,a sw e l la saﬁne-tuned model that enables PET-MAD to achieve
+the same level of accuracy with a small number of additional training
+structures. PET-MAD demonstrates that accurate, fast, and robust
+universal models can be trained using a tiny fraction of the structures
+of last-generation datasets, and provides a feature-rich framework for
+advanced atomistic simulations, which includes direct-force accelera-
+tion and inexpensive end-to-end uncertainty quantiﬁcation.
+Results
+PET-MAD is a generally applicable machine-learning interatomic
+potential based on PET (an unconstrained, transformer-based graph
+neural network architecture) and a custom training set built on the
+principles of Massive Atomistic Diversity (MAD) and internal con-
+sistency of the reference energetics. We thoroughly test the perfor-
+mance of PET-MAD against several benchmark datasets and compare it
+with four widely used universal potentials. Six case studies complete
+our analysis, showcasing and quantitatively assessing PET-MAD for
+diverse classes of materials and advanced atomistic simulations,
+comparing a system-speciﬁc PET version trained on an ad hoc dataset,
+the generally-applicable PET-MAD, and the versionsﬁne-tuned to each
+system. We emphasize that in all of these examples, we focus on the
+consistency of the model with the electronic-structure reference,
+irrespective of the actual accuracy of the latter in reproducing
+experimental quantities.
+MAD dataset
+Most of the existing efforts to generate datasets to train universal
+models focus on either inorganic crystals
+14,16,19 or molecular
+compounds20, and aim to include as many structures as possible. PET-
+MAD is trained on the Massive Atomistic Diversity (MAD) dataset,
+which is based on a different philosophy. First, it aims to push the
+limits of universality by including both organic and inorganic atomistic
+systems of all possible dimensionalities. This approach has already
+been shown to deliver good transferability upon including up to 45
+elements in the training data
+21. Second, our resulting model is meant to
+work in complex atomistic simulation protocols describing a wide
+range of thermodynamic conditions, which requires covering a large
+conﬁguration space and being computationally affordable. To this
+end, the MAD dataset includes randomized and highly-distorted
+structures in the training set, applying to solids and surfaces ideas
+similar to those that drove the development of “mindless” molecular
+benchmark sets
+22. Third, the reference electronic-structure calcula-
+tions are designed to be robust an d consistent, to ensure that the
+structural and chemical motifs are treated in the same way, regardless
+of the type of structure they are part of, which is important for a
+coherent structure-energy mapping. This choice neglects, or approx-
+imates poorly, the description of effects such as spin polarization,
+electron correlation, and dispersion, which are important for certain
+classes of materials but cannot be applied consistently across the MAD
+dataset. Details of the electronic-structure calculations are given in
+“First-principles calculations”. Last but not least, we restrict the dataset
+to fewer than 100,000 structures in order to reduce the time and cost
+of training, making the entire training procedure accessible to a wider
+community. As we shall see, the strategy we use allows us to preserve
+the representative power of the dataset.
+The MAD dataset contains 95,595 structures of 85 elements in
+total (with atomic numbers ranging from 1 to 86, except Astatine) and
+consists of 8 subsets that cover a diverse range of chemical and
+structural motifs. The largest subset, MC3D, contains 33,596 bulk
+crystal structures from the Materials Cloud 3D database
+23.I t sd i v e r s i -
+ﬁed variants, MC3D-rattled and MC3D-random, comprise 30,044 and
+2800 structures, respectively, where the former is generated by add-
+ing Gaussian noise to atomic positions, and the latter by randomly
+reassigning atomic species within selected crystals. Additional struc-
+tural diversity is introduced by MC3D-surface, which includes
+5589 surface slabs cleaved along low-index planes, and MC3D-cluster,
+consisting of 9071 nanoclusters cut from random bulk environments.
+Complementing these, MC2D provides 2676 two-dimensional crystals
+from the Materials Cloud 2D database
+24. Finally, the SHIFTML-molcrys
+and SHIFTML-molfrags subsets contribute 8578 molecular crystals and
+3241 neutral molecular fragments, respectively, both derived from the
+SHIFTML and Cambridge Structural Database collections
+25–27.Am o r e
+detailed description of the subsets is given in Methods, and in Sup-
+plementary Table 1.
+The number of structures in each subset represents the total
+number of structures that were successfully converged in DFT calcu-
+lations, afterﬁltering out a few outlier conﬁgurations with forces above
+al a r g et h r e s h o l d( 1 0 0e V /Å for MC3D-rattled and MC3D-random, and
+10 eV/Å for the other subsets). Speci ﬁc details on the generation of
+MAD subsets are given in “MAD dataset construction” and in a dedi-
+cated public data record (see “Data availability”).
+Model architecture and training
+The PET architecture18 is a rotationally unconstrained and transformer-
+based graph neural network (GNN) which has a high descriptive power
+(as every transformer layer can be scaled to be a universal
+approximator)
+18 and low inference cost (as we shall demonstrate in
+“Benchmarking”). For PET-MAD, we chose the architecture based on an
+extensive hyperparameter search, resulting in a model with approxi-
+mately 2.8 million parameters in total. Before training, each subset of
+MAD was randomly shufﬂed and further split into training, validation,
+and test subsets in fractions of 80%, 10%, and 10%, respectively. All
+subsets were then merged to obtain the ﬁnal training, validation, and
+test sets. More details on the architecture and training are available in
+Article https://doi.org/10.1038/s41467-025-65662-7
+Nature Communications|        (2025) 16:10653 2
+
+[page 3]
+“PET model”, “Training of PET-MAD”, and Supplementary Information.
+In order to improve the performance of PET-MAD on speciﬁc chemical
+systems, we used a ﬁne-tuning strategy based on the low-rank adap-
+tation technique (LoRA)28.D e t a i l so nﬁne-tuning are further discussed
+in “Fine-tuning”.
+The model also includes uncertainty-quanti ﬁcation capabilities,
+based on the last-layer prediction rigidity (LLPR) method 29.E r r o r
+estimation is especially important for a model aiming to be generally-
+applicable, and that (despite the high diversity of the MAD training set)
+may often be used for out-of-domain predictions. As shown in Sup-
+plementary Note 8, the calibrated LLPR uncertainties correlate well
+with the empirical test-set errors, while adding negligible overhead on
+top of energy predictions. Given that PET-MAD is intended for use in
+advanced simulations that estimate observable quantities through
+sophisticated sampling protocols, it is essential to be able to propagate
+the energy errors onto the ﬁnal quantity of interest. To this end, we
+generate a shallow ensemble based on the LLPR covariance
+29. Unlike
+standard ensemble-based methods 30, which typically introduce a
+computational overhead proportional to the number of ensemble
+members, both LLPR and the shallow ensemble method
+31 allow
+uncertainty quantiﬁcation at negligible additional cost. Moreover, they
+allow one to compute errors on any derived quantities using direct
+ensemble propagation, as we demonstrate for free-energy calculations
+in “Melting point of GaAs”, and for phonon dispersion curves in Sup-
+plementary Note 9. Details on our uncertainty-quantiﬁcation approach
+are summarized in “Uncertainty quantiﬁcation” and explained thor-
+oughly in the Supplementary Information. Even though PET-MAD is
+designed to evaluate forces using backpropagation, we also train a
+separate head that predicts forces directly as a function of the atomic
+coordinates. Avoiding backpropagation makes the model two to three
+times faster (as we show in “Benchmarking”), but should be used with
+care, as it violates energy conservation with pathological con-
+sequences on sampling accuracy
+32. We address these problems in
+Supplementary Note 12, where we also show how a multiple-time-step
+integrator allows one to retain the computational advantages of direct
+force predictions without introducing sampling artifacts.
+Benchmarking
+First, we demonstrate the efﬁcacy of combining the MAD dataset and
+the PET architecture by comparing the accuracy of PET-MAD against
+other universal models on the popular Matbench Discovery
+benchmark33. We analyze the overall gain in models ’ accuracies with
+the increase in the training set size and the number of trainable
+parameters.
+Since PET-MAD is trained on the MAD dataset, which has different
+DFT settings compared to the Matbench Discovery (which shares
+common settings with the training sets of other reference models), we
+recomputed a random subset of the benchmark containing 555 struc-
+tures (excluding lanthanides and actinides) using MAD-compatible
+DFT settings. We evaluate the accuracies of all models on this subset,
+picking for each model the DFT reference compatible with its training
+set. Fig. 1 demonstrates the Pareto frontier of the models ’ data efﬁ-
+ciency: Pareto-optimal models efﬁciently use additional training data
+to increase their accuracy. PET-MAD signiﬁcantly improves on existing
+models, achieving the accuracy of other advanced universal MLIPs
+such as SevenNet and GNoME using 1–3 orders of magnitude less data.
+For illustrative purposes, the ﬁgure also shows the accuracy of PET-
+MAD evaluated against the inconsistent Matbench Discovery ener-
+getics: the 3 × larger error is entirely due to the discrepancy in the
+reference data. A thorough analysis of DFT consistency effects is dis-
+cussed in the Supplementary Note 4.
+The ﬁgure also shows that many of the optimal models use a very
+large number of parameters, which makes them accurate but com-
+putationally demanding, and therefore not suitable for the long,
+complex simulation tasks that PET-MAD is designed for. For this rea-
+son, we will focus on medium-size models for the rest of these
+benchmarks: MACE-MP-0
+11, MatterSim12,O r b - v 213 and SevenNet34. Like
+PET-MAD, these models have been designed and are widely used for
+advanced materials simulations beyond single-point calculations. We
+e x t e n dt h ec o m p a r i s o no nM a t b e n c hD i s c o v e r yt oi n c l u d eo t h e r
+popular atomistic machine learning benchmarks for bulk inorganic
+systems, molecular systems, and catalytic applications, namely MPtrj
+14,
+Alexandria19, OC2020 (S2EF) 35,S P I C E20,a n dM D 2 2 36.Ad e t a i l e d
+description of the structure types entering each benchmark is pro-
+vided in Supplementary Table 2. In evaluating the benchmarks, it is
+important to keep in mind that (1) most of the reference models are
+larger than PET-MAD (we use the versions with the largest number of
+parameters in their families, MACE-MP-0-L and MatterSim-5M, Orb-v2,
+SevenNet-l3i5 having respectively about 15.8 M, 4.6 M, 25 M, and 1.17 M
+parameters, as opposed to 2.8 M for PET-MAD) and (2) they are trained
+on much larger datasets (1.58 M, 17 M, 32.1 M, and 1.58 M structures,
+respectively).
+The benchmarking results are presented in Table 1.W e ﬁnd that
+PET-MAD achieves high accuracy in predicting both energies and
+interatomic forces, outperforming MACE-MP-0-L in most cases, and
+competing closely with MatterSim-5M and SevenNet-l3i5 even for the
+inorganic datasets they are trained on. Upon using a consistent level of
+DFT theory, PET-MAD outperforms all other models in predicting raw
+energies of the WBM crystals from the Matbench Discovery
+benchmark
+33.O r b - v 2p e r f o r m ss i g n iﬁcantly better than all other
+models on MPtrj and Alexandria, which are part of its training set. PET-
+MAD outperforms all other models on molecular datasets such as
+SPICE and MD22, and matches Orb-v2 also on the OC2020 S2EF –
+which is a strongly extrapolative exercise as MAD does not include
+conﬁgurations of adsorbed molecules.
+The reference models perform much worse than PET-MAD on the
+(consistently recomputed) MAD benchmark. This is not too surprising,
+as MAD is designed to be more diverse than the datasets on which
+these models are trained. Still, it is instructive to assess separately the
+accuracy of the various models on the different sections of MAD
+(Fig. 2). PET-MAD outperforms MACE-MP-0-L, MatterSim-5M, and
+SevenNet-l3i5 in almost all cases. The accuracy is similar (and in a few
+cases slightly better) for the stable inorganic structures, including bulk
+(MC3D) and layered (MC2D) compounds. MC3D-derived surfaces and
+clusters show slightly larger force and considerably larger energy
+Fig. 1 | Pareto frontier of various universal MLIPs.The number of conﬁgurations
+in the training set is shown on the x-axis, and y-axis shows mean absolute error
+(MAE) for the energy-above-hull property on a subset of the WBM dataset
+15 (a part
+of the Matbench Discovery benchmark33). Colored dots represent a set of selected
+models, each with a corresponding number of parameters shown in color, while
+other models from the benchmark are shown with grey dots. PET-MAD results are
+shown with diamonds for both consistent and inconsistent DFT references, where
+the latter is shown with a shaded label. PET-MAD signiﬁcantly pushes the frontier
+(dotted line) downward, achieving the accuracy of other advanced universal MLIPs
+like SevenNet and GNoME using 1-3 orders of magnitude less data.
+Article https://doi.org/10.1038/s41467-025-65662-7
+Nature Communications|        (2025) 16:10653 3
+
+[page 4]
+errors. Errors of the other universal models are up to 50 times larger
+for the distorted subsets (MC3D-rattled and MC3D-randcomp) which
+contain especially unusual, diverse con ﬁgurations. MatterSim-5M,
+which is trained on a broader, yet unpublished, set of conﬁgurations,
+performs substantially better than the other models. The most notable
+difference occurs in the molecular systems (SHIFTML-molcrys and
+SHIFTML-molfrags), where PET-MAD dramatically outperforms all
+other models. This result is again expected, as organic systems
+represent a completely different region of conﬁguration space, which
+is heavily undersampled in the case of inorganic crystal datasets. The
+last model from the reference list, Orb-v2, requires a separate discus-
+sion, as it provides by default direct, non-conservative force predic-
+tions. Orb-v2 outperforms all other models (including, marginally, PET-
+MAD) on relaxed inorganic systems, presumably thanks to the com-
+bination of aﬂexible, unconstrained architecture and the large training
+s e t( w h i c hi n c l u d e sb o t ht h eM P t r j
+14 and Alexandria19 datasets). How-
+ever, it still provides worse accuracy on rattled, random composition
+structures, surfaces and molecular systems compared to PET-MAD.
+Both PET-MAD and Orb-v2 use architectures that do not enforce exact
+rotational equivariance, which is learned approximately by data aug-
+mentation. The resulting symmetry breaking can be monitored and
+controlled easily
+37, but it is important to assess its extent. To do so, we
+estimated the symmetry error in PET-MAD and Orb-v2 energy
+predictions by applying a series of rotations on a Lebedev-Laikov grid
+of order 9 for each structure in the MAD subset and calculating the
+standard deviation in the predictions (Fig. 2, right panel). In most
+cases, the rotational discrepancy of the PET-MAD model is one or two
+orders of magnitude smaller than the corresponding prediction error,
+below 1 meV/atom for all subsets except MC3D-random and MC3D-
+cluster. Orb-v2 shows signi ﬁcantly higher discrepancies in energy
+predictions, which are at times comparable to the actual errors.
+The PET-MAD model is also computationally ef ﬁcient, which
+facilitates simulating larger time and length scales. We compared the
+throughput of molecular dynamics simulations of systems of different
+sizes and densities (solid aluminum, diamond, and liquid water, see
+Fig. 3) and, when available, used lighter versions of the reference
+models compared to those used in the accuracy benchmarks (namely,
+MACE-MP-0 M, MatterSim-1M, and SevenNet-0). These models have
+fewer parameters and thus allow faster inference at the expense of
+accuracy, making this a more challenging test for the speed of PET-
+MAD. Nevertheless, we see that PET-MAD is faster and more memory
+efﬁcient than all models. When exploiting the computational advan-
+tage of direct-force prediction, PET-MAD is also competitive with the
+non-conservative Orb-v2 model.
+The takeaway is that an unconstrained architecture and a
+problem-agnostic construction of the training set make PET-MAD
+Fig. 2 | Comparison of the accuracies of the universal MLIPs on the MAD
+dataset. PET-MAD (black line), MACE-MP-0-L (blue line), Orb-v2 (orange line),
+MatterSim-5M (green line), and SevenNet-l3i5 (red line) models' results are resolved
+by different MAD subsets. The left and center panels show the mean absolute errors
+in energies and force predictions. The right panel shows the rotational discrepancy
+in energy predictions of the unconstrained models (PET-MAD and Orb-v2). Results
+for all models except PET-MAD were obtained using consistently recalculated
+reference values (i.e., computed with MPtrj dataset settings) to achieve consistency
+with the training sets of the corresponding reference models. See also Table 1 for
+benchmarks on out-of-sample datasets.
+Table 1 | Comparison of PET-MAD accuracies on popular atomistic machine learning datasets against MACE-MP-0-L, Mat-
+terSim-5M, Orb-v2, and SevenNet-l3i5 models
+Dataset PET-MAD MACE-MP-0-L MatterSim-5M Orb-v2 SevenNet
+MAD 17.6 ∣ 65.1 81.6∣181.5 47.3 ∣133.7 52.9 ∣96.2 82.1 ∣173.5
+MPtrj 22.3 ∣77.9 15.1 ∣50.8 21.3 ∣61.4 5.6 ∣ 21.9 9.8∣25.5
+Matbench 31.3 ∣ — 58.5∣— 38.2 ∣— 37.9∣— 47.5∣—
+Alexandria 49.0 ∣66.8 65.4 ∣79.5 21.2 ∣39.9 13.2 ∣ 10.5 47.6∣70.3
+OC2020 18.3 ∣114.5 82.4 ∣169.6 31.5 ∣119.2 19.8 ∣ 99.3 45.7∣162.7
+SPICE 3.7 ∣ 59.5 10.6∣166.8 21.3 ∣145.6 59.0 ∣140.8 11.3 ∣139.1
+MD22 1.9 ∣ 65.6 9.4∣182.9 28.6 ∣160.4 174.3 ∣220.7 11.1 ∣146.2
+For each dataset and model, mean absolute errors are reported for raw energy∣forces predictions (in units of meV/atom∣meV/Å). The best results for each benchmark are shown in bold. We do not
+show force errors for the Matbench Discovery subset, since forces are not available in the reference data.
+Article https://doi.org/10.1038/s41467-025-65662-7
+Nature Communications|        (2025) 16:10653 4
+
+[page 5]
+competitive in speed and accuracy with models that have a larger
+number of parameters and are trained on much larger datasets (Fig.1).
+This has important implications to guide the design of future datasets
+and provides a more sustainable and accessible platform to support
+model development.
+Benchmarking accuracies alone, however, do not ensure that PET-
+MAD can be reliably used in realistic atomistic modeling scenarios.
+Therefore, in the following sections, we demonstrate the applicability
+of PET-MAD for atomistic simulations by comparing its performance
+against single-purpose and ﬁne-tuned models for six diverse and
+challenging use cases.
+Ionic transport in lithium thiophosphate
+Lithium thiophosphates (LPS) are a class of materials that have been
+intensely studied as electrolytes for solid-state batteries
+38. The arche-
+typal member of this class, Li 3PS4, has been the subject of several
+computational investigations, including ref.39, which we use both as a
+blueprint for this benchmark and the source of the system-speci ﬁc
+dataset. Following the same approach as in that reference, we compute
+the ionic conductivity σ (one of the key properties for the technolo-
+g i c a la p p l i c a t i o n so fL P S )o ft h r e ek n o w np h a s e so fL i
+3PS4, α, β and γ40,
+using molecular dynamics and the Green-Kubo theory of linear
+response
+41.
+We compare the results obtained using the PET-MAD potential
+with a single-purpose PET potential trained from scratch over the
+dataset from ref. 39 (PET-Bespoke), and with one ﬁne-tuned over the
+same dataset using the LoRA technique (see “Fine-tuning” for more
+details, and the SI for a full discussion). For this dataset, the validation
+mean absolute error (MAE) of PET-MAD for energy∣forces is 4.9 meV/
+atom∣63.9 meV/Å, to be compared with 1.2 meV/atom∣35.6 meV/Å,f o r
+a model trained from scratch on the LPS dataset, and 1.3 meV/
+atom∣36.0 meV/Å for the ﬁne-tuned model. Fig. 4 shows the values of
+the conductivity for all the phases and over a wide range of tempera-
+tures computed with PET-MAD (black), a model ﬁne-tuned using the
+LoRA algorithm with rank 8 (orange), and the PET-Bespoke model
+(blue). For all three phases, PET-MAD is in excellent agreement with the
+bespoke and ﬁne-tuned models, demonstrating quantitative accuracy
+despite the larger validation error. For the γ-phase, PET-MAD slightly
+overestimates the temperature at which the transition to a high-
+conductivity phase occurs. Except for this minor discrepancy, PET-
+MAD shows excellent agreement with the more accurate dedicated
+models, capturing the change of behavior inσ following the rotation of
+the PS
+4 tetrahedra39. The results agree quantitatively with those of
+ref. 39, despite being based on slightly different DFT parameters and
+relying on a different class of MLIPs.
+Melting point of GaAs
+Gallium Arsenide (GaAs) is a III-V semiconductor whose properties
+make it a good choice to manufacture the high-quality optical and
+electrical devices, as well as high-end photovoltaics.
+The growth of GaAs nanostructures often relies on the coex-
+istence of solid GaAs and molten Ga in an As-rich atmosphere
+42. Cor-
+responding computational studies typically require MLIPs that can
+accurately describe different phases and compositions across the Ga/
+Fig. 3 | Inference time of several universal MLIPs evaluated over different bulk
+materials and system sizes. For each MLIP, we use its LAMMPS65 interface if
+available, preferably choosing the Kokkos-enabled67 (kk) version, or its ASE68
+interface otherwise. All timings were measured on a single NVIDIA H100 GPU.
+Missing points for MACE-MP-0 and SevenNet caused by out-of-memory errors are
+marked with red crosses. Color code of the lines is consistent with the one used in
+Fig. 2. The non-conservative (NC) versions of Orb-v2 and PET-MAD are shown in
+dashed orange and grey lines, respectively. These models beneﬁt from a theoretical
+speedup, but can violate conservation of energy, often resulting in ill-behaved
+molecular dynamics
+32. The model versions used were MatterSim-v1.0.0-1M, MACE-
+MP-0 (M), Orb-v2, SevenNet-0 (11Jul2024).
+Fig. 4 | Temperature dependence of the ionic conductivityσ for the α, β,a n dγ
+phases of Li3PS4. The ﬁgure compares the values ofσ from PET-MAD (black), aﬁne-
+tuned model (orange), and a bespoke PET model trained from scratch (blue).
+Article https://doi.org/10.1038/s41467-025-65662-7
+Nature Communications|        (2025) 16:10653 5
+
+[page 6]
+As phase diagram. Electronic properties change wildly between dif-
+ferent phases, posing additional challenges to the construction of
+empirical potentials. Following the work of Imbalzano et al. 43,w e
+repeat the calculation of the melting point of stoichiometric GaAs at
+ambient pressure with the interface pinning method. This method
+computes the differences in chemical potentials between the liquid
+and solid phases, and the melting point is determined by identifying
+the temperature at which the chemical potential difference becomes
+zero. A combination of the LLPR ensemble predictions with the
+reweighting technique allows us to propagate errors on the chemical
+potential curves
+44, and therefore assess the contribution of the epis-
+temic part of the error to the melting point error caused by limitations
+of the ML ﬁt.
+Figure 5 demonstrates these calculations, comparing the PET-
+MAD model with a bespoke PET model trained on the reference GaAs
+training set, and the LoRA-ﬁne-tuned model on the same training set.
+The test set errors (MAE) on energy∣forces are 14.4 meV/at.∣74.1 meV/Å,
+for PET-MAD, 0.7 meV/at.∣29.0 meV/Å, for PET-Bespoke and 1.3 meV/
+at.∣45.3 meV/Å, for PET-MAD-LoRA. When it comes to the estimation of
+the melting point, the LoRA and Bespoke models are in quantitative
+agreement (1169 ± 3 K vs 1169 ± 4 K) whilst the PET-MAD model pre-
+dicts a slightly smaller value of 1111 ± 72 K. The predicted error is
+consistent with the lower accuracy of the general-purpose PET-MAD,
+which highlights the importance of the inexpensive uncertainty pro-
+pagation afforded by the LLPR ensemble architecture implemented in
+our PET models. It should be noted that the error of the general-
+purpose model against the bespoke potentials is very small compared
+to the deviation of the computed melting point from the experimen-
+tally measured melting point (1511 K), and with the typical errors of
+empirical force ﬁelds. This large discrepancy is consistent with that
+observed in ref. 43, and can be attributed to shortcomings of the
+reference electronic-structure calculations– which is not uncommon
+as the computed melting point of a given material can vary by hun-
+dreds of Kelvins depending on the choice of DFT functional
+45.
+Surface segregation in high-entropy alloys
+High-entropy alloys – containing 5 or more metals in roughly equi-
+molar composition– often possess excellent mechanical properties46,
+and perform well as heterogeneous catalysts 47. Investigating their
+properties and exploring efﬁciently their composition space requires
+versatile models that can handle a high degree of chemical diversity.
+We replicate some of the simulations in ref. 48,u s i n gP E T - M A Dt o
+study the segregation of different elements at the (111) surface of the
+CoCrFeMnNi alloy, a prototypical HEA
+46. Modeling of the differential
+surface propensity of the elements in the alloy— which is central to the
+applications of HEAs as heterogeneous catalysts — requires a combi-
+nation of replica-exchange molecular dynamics with Monte-Carlo
+atom swaps (REMD/MC) to overcome the slow diffusivity, and the
+existence of free-energy barriers to segregation starting from a ran-
+dom alloy. This example allows us to demonstrate the capabilities of
+PET-MAD in complex computational workﬂows, to assess the ability of
+the model to describe surface effects that are often overlooked in
+other universal models
+49, and to test ﬁnetuning over a dataset with a
+greater degree of chemical diversity than the other examples we
+consider. We use the Gibbs surface excess calculated at 800 K using
+the REMD/MC protocol (see Methods for computational details) as a
+measure of surface segregation in a CoCrFeMnNi surface slab. We
+compare three models: the pre-trained PET-MAD, PET trained from
+scratch (PET-Bespoke), and the ﬁne-tuned model (PET-MAD-LoRA),
+where the last two were trained on a subset of the HEA25S dataset
+48,
+recomputed with MAD dataset DFT settings for consistency (details on
+the subset selection are given in Methods). The validations MAEs of
+all three models on energy ∣forces are 25.8 meV/atom ∣175.1 meV/ Å,
+14.6 meV/atom ∣138.3 meV/ Å, and 9.4 meV/atom ∣124.8 meV/ Å,
+respectively.
+Results of the surface excess calculation are given in Fig. 6. First,
+we note that the segregation pattern obtained from both pre-trained
+and ﬁne-tuned models is almost identical and quantitatively matches
+the results from ref. 48, which corresponds to surface layers enriched
+in nickel and depleted in other elements. Both these models agree
+qualitatively with the results of the PET-Bespoke model, but there is a
+more pronounced quantitative difference in the surface excess values.
+In interpreting this discrepancy, one should keep in mind that, con-
+trary to other examples, we only recomputed about 2000 structures
+out of the 30’000 in the HEA25S, and so a bespoke model incurs a high
+risk of overﬁtting – which is also consistent with the learning curves
+reported in the SI. This case study demonstrates that pre-trained PET-
+MAD is capable of capturing all effects relevant to surface segregation
+in HEAs and providing advanced sampling capabilities of the HEA
+Fig. 5 | Chemical potential differences between liquid and solid GaAs phases as
+a function of temperature.The results are computed with PET-MAD (black), PET-
+Bespoke (blue) and PET-MAD-LoRA (orange) models. The dashed solid lines indi-
+cate the mean values of the predictedΔμ, and the light colored lines represent the
+reweighted predictions from the individual members of the shallow ensemble. The
+large spread of the PET-MAD ensemble predictions correctly reﬂects the dis-
+crepancy with respect to the Bespoke and LoRA-ﬁne-tuned model.
+Fig. 6 | Gibbs surface excess Γa of the elements on a (111) surface of the
+CoCrFeMnNi alloy.The results are obtained from the REMD/MC simulation at 800
+K performed with the pre-trained PET-MAD model (black bars), bespoke PET model
+trained on a subset of the HEA25S dataset (blue bars), and the PET-MAD-LoRA
+model, ﬁne-tuned on the same subset (orange bars). Both pre-trained and ﬁne-
+tuned models result in almost identical segregation patterns with the surface
+enriched in nickel, which is similar to one from ref.48. The inconsistency between
+the bespoke and ﬁne-tuned models is most likely due to the bespoke model’s
+overﬁtting.
+Article https://doi.org/10.1038/s41467-025-65662-7
+Nature Communications|        (2025) 16:10653 6
+
+[page 7]
+chemical and structural space without being speci ﬁcally trained on
+HEA data.
+Quantum nuclear effects in liquid water
+Water is a widely studied system because of its high biological, envir-
+onmental, and technological signi ﬁcance, as well as the many
+anomalies in its physical properties, which can be traced to the strong
+hydrogen bonds that form local tetrahedral motifs. Due to its light
+hydrogen atoms, accounting for nuclear quantum effects (NQEs) is
+fundamental in order to extract accurate observables for liquid water,
+even at room temperature
+50. In this example, we employ path integral
+molecular dynamics (PIMD) to model nuclear quantum effects in the
+simulation of a medium-sized periodic system consisting of 128 water
+molecules (384 atoms).
+We ﬁrst evaluate the O-O and O-H pair correlation functions,
+which report on inter-molecular structural correlations, and show the
+extent of intra-molecular quantum ﬂuctuations, respectively.
+Additionally, we calculate the constant-volume heat capacity at 298 K
+— a physical quantity that exhibits very pronounced quantum effects,
+and that requires the use of sophisticated path integral estimators that
+are notoriously difﬁcult to converge
+51. We compare (1) the PET-MAD
+model, (2) a system-speciﬁc PET model trained on the dataset from ref.
+52, with energies and forces recomputed at the same level of theory
+used for MAD, (3) a PET-MAD model which wasﬁne-tuned on the same
+recomputed water dataset and (4) values for a simple classical force-
+ﬁeld that reproduces well most of the experimental properties of water
+and allows us to demonstrate the slow convergence of some of the
+estimators
+53.
+The main takeaways from this comparison (shown in Fig. 7)a r e
+that (1) PET-MAD inherits the ten dency of GGA functionals to over-
+estimate the melting point of water, leading to room temperature
+simulations of a highly undercooled liquid, that is overstructured, with
+excessive delocalization of protons along H bonds, and a heat capacity
+that is closer to that of ice than to water; and (2) that the general-
+purpose model is in excellent agreement with the bespoke models,
+both in classical simulations and in path integral simulations that are
+sufﬁcient to converge the pair-correlation function, and approach
+convergence of the heat capacity. This is signi ﬁcant as it proves that
+PET-MAD can be used reliably even when probing the large intra-
+molecular distortions induced by zero-pointﬂuctuations, and that it is
+fast enough to afford the large overhead of path-integral simulations
+with complex estimators – even though it cannot escape the limita-
+tions of the electronic-structure reference.
+Quantum nuclear effects in NMR crystallography
+We now consider the impact of quantum nuclear ﬂuctuations in a
+different context, evaluating how they affect the nuclear magnetic
+resonance (NMR) chemical shieldings in organic crystals, and hence
+how they affect NMR crystallography. In the prototypical NMR crys-
+tallography workﬂow, chemical shieldings are computed for a set of
+static candidate structures, and compared with those measured
+experimentally for an unknown polymorph
+54. The most likely candi-
+date structure is then taken to be the one for which the experimentally
+measured and computed shieldings best agree.
+NMR shieldings result from the averaging of instantaneous values
+of structures distorted by thermal and quantum ﬂuctuations, which
+can be sampled computationally by performing MLIP-driven (PI)MD
+simulations and then evaluating the chemical shieldings using a
+bespoke machine learning model for succinic acid crystals. We
+Fig. 7 | Radial distribution functions g (top) and heat capacity CV (bottom) of
+liquid water with nuclear quantum effects.The results are obtained using PIMD
+simulations at 298 K and 1 atm. with PET-MAD, a ﬁne-tuned version of PET-MAD,
+and a bespoke PET model, shown in black (squares), orange (triangles), and blue
+(circles) lines and symbols, respectively. Solid lines show the radial distribution
+function of O-O and O-H pairs from the PIMD (quantum) simulation, and classic MD
+results are shown in dashed lines for comparison. C
+V is given as a function of the
+number of beads employed in the PIMD simulation. Results on the g and CV
+obtained with the empirical q-TIP4P/F forceﬁeld (reproduced from ref.69) are also
+i n c l u d e df o rc o m p a r i s o na n ds h o w ni ng r e e nl i n e sa n dd o t s .
+Fig. 8 | Computed chemical shielding distribution of 1Hi n α succinic acid
+crystals.The inset shows the hydrogen bonding pattern in the succinic acid dimer
+of α-succinic acid. The results are obtained using PET-MAD (black), PET-MAD-LoRA
+(orange) and PET-Bespoke (blue) models for PIMD (solid) and MD (dotted) simu-
+lations. Shieldings of the static geometry (PET-MAD only) are shown as vertical lines
+(carboxylic H3 site around 15 ppm and an average of the aliphatic H1 and H2 sites
+around 28 ppm).
+Article https://doi.org/10.1038/s41467-025-65662-7
+Nature Communications|        (2025) 16:10653 7
+
+[page 8]
+simulate in particular the α p o l y m o r p ho fs u c c i n i ca c i d ,o n eo ft h e
+structures investigated in a previous study55 from which we also obtain
+the training structures to build bespoke shielding and MLIP models
+(the test set accuracies (MAE) on energy ∣forces are 12.5 meV/
+atom∣106.1 meV/Å for PET-MAD, 3.1 meV/atom ∣86.0 meV/Å for PET-
+Bespoke and 2.0 meV/atom ∣64.5 meV/Å for PET-MAD-LoRA). In line
+with the excellent accuracy of PET-MAD for molecular crystals, we
+observe near-perfect agreement between the distributions of chemical
+shieldings obtained with the three potentials (Fig. 8), with both clas-
+sical and quantum sampling – the latter showing a large downward
+shift and broadening of the
+1H shielding distributions, especially for
+the H-bonded protons, qualitatively the same observation that Engel
+and coworkers make in ref. 55 using a bespoke MLIP trained on PBE0-
+MBD reference calculations. As in the case of water, these results
+demonstrate the ability of PET-MAD to describe quantum nuclear
+ﬂuctuations. By combining MLIP-driven sampling with models of
+functional properties, such as the chemical shieldings, one can extend
+the reach of a general-purpose model beyond structural and energetic
+predictions.
+Dielectric response of barium titanate
+To conclude our benchmarking series, we study the ability of PET-MAD
+to describe the dielectric properties of materials using barium titanate
+system as an example. Barium titanate (BaTiO
+3, BTO) is a prototypical
+ferroelectric perovskite that undergoes a sequence of temperature-
+dependent structural phase transitions: rhombohedral (R, below 183
+K), orthorhombic (O, 183–278 K), tetragonal (T, 278–393 K), and cubic
+(C, above 393 K)
+56. The ferroelectricity in BTO arises from off-center
+displacements of the Ti atom within the oxygen octahedron, which
+break centrosymmetry in the lower-temperature phases. These dis-
+placements are fundamental to its ferroelectric behavior and phase
+transitions
+57, making BTO an ideal model system for studying ferroe-
+lectricity in perovskites.
+To evaluate the capability of PET-MAD in characterizing ferroe-
+lectricity in this material, we performﬂexible-cell MD simulations for a
+320-atom model of BTO over a temperature range of 40 –400 K at
+constant ambient pressure, following the same protocol as in ref. 58
+and as reported in the Methods. Once again, we recompute consistent
+energetics for the material-speciﬁc dataset, to build bespoke andﬁne-
+tuned PET models. Test-set MAEs on energy ∣forces are 12.67 meV/
+atom∣27.96 meV/Å for PET-MAD, 0.23 meV/atom ∣9.41 meV/Å for the
+bespoke model, and 0.12 meV/atom ∣3.92 meV/ Å for the LoRA- ﬁne-
+tuned model, respectively.
+We then analyze the sampled con ﬁguration within a reduced-
+dimensionality collective variable landscape derived from a subset of
+neighbor density coefﬁcients
+58 (shown in the inset of Fig.9). Measuring
+the populations of different phases by a clustering algorithm allows us
+to estimate their relative chemical potential, and hence the transition
+temperatures between the different phases. Similar to what is
+observed in ref. 58, the transition temperatures are heavily under-
+estimated with respect to experiments (due to a combination of DFT
+shortcomings andﬁnite-size effects), but there is excellent agreement
+between PET-MAD and the two bespoke models. The largest dis-
+crepancy, for the T-C transition, is below 30 K—a remarkable accuracy
+for a model with such broad applicability.
+To further assess the reliability of PET-MAD in predicting func-
+tional properties, we also compute the temperature-dependent static
+dielectric tensor ϵ
+r (Fig. 9), by estimating the covariance of the total
+polarization, computed in turn using an equivariant linear model
+trained on the polarization dataset of ref. 58 (more details in the
+Methods). All models predict qualitatively the large value ofϵ
+r for the
+paraelectric, cubic phase, which increases greatly as it approaches the
+ferroelectric transition temperature, and then takes smaller values in
+the tetragonal and orthorhombic phases (which have multiple
+inequivalent optical axes). As it is the case of the transition
+temperatures, the two specialized models are in near-perfect agree-
+ment, while the PET-MAD simulations slightly underestimateϵ
+r in the T
+phase, and yield a curve in the C phase that is shifted by about 25 K,
+consistent with the lower Curie temperature. Overall, this ﬁnal exam-
+ple demonstrates once more that, despite considerably larger test
+errors than for a bespoke model, PET-MAD captures with close-to-
+quantitative accuracy subtle physical effects, and can be used to drive
+complicated, advanced materials modeling protocols.
+Discussion
+PET-MAD pushes the boundaries of what generally-applicable uni-
+versal machine learning potentials can achieve, providing out-of-the-
+box semi-quantitative accuracy for both inorganic and organic mate-
+rials benchmarks, as well as for six demonstrative applications cover-
+ing a very broad range of material types and advanced simulation
+techniques. Moreover, it does so while being trained on a data set that
+is orders of magnitude smaller than those used for current state-of-the-
+art models. This observation suggests that the computational budget
+for training set construction can be best allocated by pursuing internal
+consistency and a high degree of structural and chemical diversity —
+two guiding principles which underlie the construction of the MAD
+dataset we introduce here. A compact dataset facilitates model train-
+ing and optimization, as well as the transition to more accurate and
+computationally demanding approximations to the electronic-
+structure problem.
+The PET architecture we use is not constrained to follow rigorous
+rotational invariance; nonetheless, it learns to make predictions that
+are invariant to a high degree of accuracy. It achieves a high expres-
+sivity thanks to its transformer module, while being faster than all the
+conservative models we considered, and even faster when using non-
+conservative forces. The availability of a reliable and inexpensive
+uncertainty quantiﬁcation framework makes it possible to assess
+model error and also its propagation to the ultimate quantity of
+interest. In cases where this error is larger than desired, a simple ﬁne-
+tuning procedure can be applied to further improve the accuracy for a
+Fig. 9 | Temperature-dependent dielectric response of BTO.The results for three
+PET models—the pre-trained PET-MAD, the bespoke PET model, and a LoRA-ﬁne-
+tuned PET-MAD—are shown in black, blue, and orange lines, respectively. Vertical
+dotted lines correspond to phase transition temperatures estimated from the
+relative chemical potentials. Error bars correspond to standard deviations across
+four independent MD runs. The inset shows the collective variable landscape dis-
+tinguishing three separate phases, with the corresponding probabilities of occu-
+pying each phase. The models consistently identify the different phases, as
+evidenced by the contour plots at 0.5 probability centered on the basins corre-
+sponding to each phase.
+Article https://doi.org/10.1038/s41467-025-65662-7
+Nature Communications|        (2025) 16:10653 8
+
+[page 9]
+speciﬁc target system, while maintaining the ability to make qualitative
+predictions for the high-diversity test set. PET-MAD is easily accessible
+from several atomic-scale simulators thanks to its integration within
+the metatensor
+59 ecosystem. It provides an ef ﬁcient and accurate
+solution to perform simple and advanced atomistic simulations of
+materials, and we expect it will serve as inspiration for future devel-
+opments of both datasets and model architectures, as well as a reliable
+engine to drive the design and discovery of new and better materials.
+Methods
+We provide a brief but complete overview of the procedure we fol-
+lowed to construct the MAD dataset, to train the PET-MAD model, and
+to ﬁne-tune single-purpose models. The simulation protocols for the
+advanced simulation examples follow closely those of the cited pub-
+lications, and are brieﬂy discussed in the SI for the convenience of the
+reader.
+MAD dataset construction
+In four of the MAD subsets, namely MC3D 23,M C 2 D24,S H I F T M L -
+molcrys25, and SHIFTML-molfrags 27, we simply used the published
+structures, recalculating their energy and forces with the MAD DFT
+settings provided in “First-principles calculations”. For the remaining
+MC3D-based subsets, we always started from the original MC3D crys-
+tals and made different structural modiﬁcations, with the sole goal of
+improving coverage of the con ﬁguration space for highly-distorted,
+unusual conﬁgurations. Structures in the MC3D-rattled subset were
+obtained by selecting each MC3D crystal with more than one atom in
+the unit cell and applying to the Cartesian coordinates of each atom a
+Gaussian noise with zero mean and a standard deviation equal to 20%
+of the corresponding covalent radii. The MC3D-randcomp subset was
+created by ﬁrst taking the atomic positions and cell parameters of a
+random crystal structure from the MC3D subset, then assigning ran-
+dom atom types to every lattice site, andﬁnally adjusting isotropically
+the total volume of the cell to match the total atomic volume calcu-
+lated based on the covalent radii of the elements. The surface slabs in
+the MC3D-surface subset were obtained by cleaving a randomly-
+selected MC3D crystal along a random, symmetrically distinct crys-
+tallographic plane with the maximum value of the Miller index (hkl)
+equal to 3, also ensuring the orthogonality of the normal lattice vector
+to the surface plane. The MC3D-cluster subset was constructed by
+cutting a random spherical atomic environment containing between 2
+and 8 atoms from a randomly selected MC3D crystal structure.
+First-principles calculations
+All datasets in this work (i.e., MAD and the reference subsets used for
+benchmarking, as well as the single-purpose dataset for the six case
+studies) were built by computing energies and forces using an identical
+density functional theory (DFT) setup. We used the Quantum Espresso
+v7.2 package
+60,c o m p i l e dw i t ht h eS I R I U Sv 7 . 5 . 261 libraries as the pri-
+mary DFT engine and AiiDA v2.6.362 as a workﬂow and task manager.
+To reduce the possibility that some simulations would converge to
+ambiguous magnetization states, all simulations were performed in a
+non-magnetic setting, using the PBEsol exchange-correlation func-
+tional. Even though this choice is known to have shortcomings for
+several classes of materials– as shown by the discrepancy of some of
+our examples with experiments – it allows us to generate predictions
+for a highly diverse system with a high degree of stability and con-
+verged numerical parameters. We described valence and semi-core
+electrons using the standard solid-state pseudopotentials library
+(SSSP) v1.2 (efﬁciency set)
+63, with the most stringent settings for plane-
+wave and charge-density cutoffs across the 85 elements (110 Ry and
+1320 Ry, respectively). As discussed in the Supplementary Information,
+using different settings to match the maximum cutoff of each struc-
+ture would give substantial inconsistencies between the description of
+some atomic types. Electronic smearing and partial occupancies were
+described with a Marzari-Vanderbilt-DeVita-Payne cold smearing with
+a spread of 0.01 Ry. In all periodic dimensions, the ﬁrst Brillouin zone
+was sampled with aΓ-centered grid with a resolution of 0.125Å
+−1,w h i l e
+only the Γ point was used along the non-periodic dimensions. In the
+case of non-periodic systems, we also applied a truncation scheme of
+the Coulomb potential to avoid the interaction of periodic replicas of
+the system through the periodic b oundary conditions: the Sohier-
+Calandra-Mauri method for 2D systems and the Martyna-Tuckerman
+correction for 0D systems. Along each non-periodic direction, we
+additionally included a 25 Å vacuum to ensure convergence of the
+truncation methods. A compositional baseline based on isolated atom
+energies was subtracted from the DFT energies of each structure to
+improve the numerical stability of training.
+For most of the MAD subsets listed in the MAD dataset, the DFT
+settings provided above ensured a good convergence rate of > 95%,
+i.e. convergence was not achieved in less than 5% of the cases. The
+exception is MC3D-random, for which only about 55% of the attempted
+simulations converged. This result does not come as a surprise and can
+be explained by the highly distorted state of these structures.
+PET model
+As our machine learning approach for ﬁtting interatomic potentials,
+we employ the Point Edge Transformer (PET)18,w h i c hh a sb e e ns h o w n
+to achieve state-of-the-art performance across a diverse set of bench-
+marks spanning both molecular and materials domains. In essence,
+PET is a graph neural network (GNN) where each message-passing layer
+is implemented as an arbitrarily deep transformer. Speci ﬁcally, PET
+maintains feature vectors (or messages) f
+l
+ij for every directed bond
+between atomsi and j that lie within a speciﬁed cutoff radius. Here, the
+superscriptl denotes the message-passing layer index, and eachf l
+ij is a
+ﬁxed-size vector (a token) of dimension dPET. These intermediate
+representations are updated at each message-passing layer by a
+transformer with an adjustable number of internal layers, invoked for
+each atomic environment. At each message-passing layer, for each
+atom i, the input tokens to the transformer consist of the message
+vectors ff
+l
+ji gj coming from all neighbors j to the central atom i.T h e
+transformer then applies a sequence-to-sequence transformation in a
+permutation-covariant manner. Its outputs are subsequently inter-
+preted as the new set of outbound messages from atom i to each
+neighbor j, ff l +1
+ij gj . Geometric information (i.e., the 3D positions of
+neighbors) and chemical species are also incorporated into this pro-
+cess. To obtain the desired target property (e.g., energy), PET applies
+feed-forward neural networks to each representationf
+l
+ij and sums all
+the outputs across bondsij and layers l.T h eP E Ta r c h i t e c t u r ei m p o s e s
+no explicit rotational symmetry constraints, but learns to be equivar-
+iant through data augmentation. This unconstrained approach yields
+high theoretical expressivity: even a single layer of the model acts as a
+universal approximator featuring virtually unlimited body order and
+angular resolution. A detailed speciﬁcation of the architecture and the
+full functional form can be found in ref. 18.
+Training of PET-MAD
+We split the MAD dataset into training, validation, and test parts by
+separately shufﬂing each of the eight subsets, and selecting respec-
+tively 80%, 10%, and 10% of the str uctures. The composition con-
+tribution to the total energy of the structures wasﬁtted using a simple
+linear model and subtracted to improve the training behavior. We used
+a Pareto-optimal architecture (see the details on hyperparameter
+optimization in the Supplementary Information) with a cutoff radius of
+4.5 Å, 2 message-passing layers, each containing 2 transformer layers
+with a token size of 256, 8 heads in the multi-head attention layer, 512
+neurons in the output multi-layer perceptron. Training was performed
+using the PyTorch framework and the metatrain package
+59 on 8
+NVIDIA H100 GPUs with a batch size of 24 structures per GPU for a total
+of 1500 epochs and took about 40 hours. We used the Adam optimizer
+Article https://doi.org/10.1038/s41467-025-65662-7
+Nature Communications|        (2025) 16:10653 9
+
+[page 10]
+with an initial learning rate (LR) of 10 −4 and applied an LR scheduler,
+which halved the LR every 250 epochs. The loss function was based on
+a root-mean-square error difference between the model’s energy and
+force predictions and the corresponding target values, with a scaling
+factor of 0.1 applied to the energy contribution. Mean absolute errors
+of the trained PET-MAD model were 7.3 meV/atom ∣43.2 meV/ Å in
+energies and forces prediction on the train set. Validation set errors
+were 14.7 meV/atom∣72.2 meV/Å, respectively.
+Fine-tuning
+Fine-tuning of the pre-trained PET-MAD model was performed using a
+parameter-efﬁcient ﬁne-tuning technique based on low-rank adapta-
+tion (LoRA)28. This method is widely used in the ML community, since it
+allows to mitigatecatastrophic forgetting— the phenomenon of losing
+accuracy on the base dataset while tuning the model on the new
+dataset, which is inherent to conventional ﬁne-tuning, where all the
+weights of the model are trainable64. In the LoRA approach, the weights
+of the base model are frozen during the training, while an additional
+set of trainable weights composed of two low-rank matrices is added to
+each attention block of the model with a regularization factor, which
+controls the inﬂuence of the low-rank matrices on the model’sw e i g h t s .
+By adjusting rank and regularization factor, one can optimize theﬁne-
+tuning work ﬂow to achieve better performance on speci ﬁc tasks,
+without compromising entirely the ability to perform the more general
+task. In this work, we used a rank of 8 and a scaling parameter of 0.5 for
+all LoRA ﬁne-tuned models, unless otherwise speciﬁed.
+In terms of raw accuracy on the specialized datasets, the evidence
+in “Results” and Supplementary Note 11 indicate that ﬁne-tuning is
+always beneﬁcial compared to training a specialized ad hoc model in
+the low-data regime. Even though on larger datasets a specialized
+model trained from scratch can exceed the accuracy of a ﬁne-tuned
+model, this is not the case for many of the systems investigated in this
+work, including barium titanate, succinic acid, lithium thiophosphate,
+and high-entropy alloys.
+LoRA-ﬁne-tuned models retain a varying degree of accuracy (see
+the Supplementary Note 10 for details) on the generic structures from
+the MAD dataset, while still providing practically equivalent obser-
+vables from an ad-hoc fully specialized model. In general, we therefore
+recommend employing LoRA if ﬁne-tuning PET-MAD for a speci ﬁc
+application.
+Uncertainty quantiﬁcation
+We provide uncertainty quantiﬁcation for the PET-MAD model via the
+LLPR method29, which produces a posteriori uncertainty estimates for
+trained neural networks. The LLPR uncertainties can be computed
+based on the covariance of the last-layer features over the training set,
+and they can be evaluated at nearly no additional cost compared to the
+raw predictions. The LLPR formalism is particularly suitable in the
+context of this study, as it can be used to sample aﬁnite number of last-
+layer weight sets. The resulting last-layer ensemble can be used to
+propagate uncertainties through arbitrarily complex atomistic work-
+ﬂows, by manipulating separately the outputs of the different
+ensemble members, and/or using them to reweight the trajectories
+generated by the mean of the ensemble
+44.
+Simulations details
+In this section, we provide an overview of the methodology to explain
+the technical challenges and provide a few details that can be useful to
+appreciate the implications of the benchmark accuracy. Unless
+otherwise speci ﬁed, the simulations were performed using the
+LAMMPS package (27 Jun 2024) with Kokkos version 4.3.1
+65.
+Ionic transport in lithium thiophosphate. The ionic conductivities,σ,
+were computed via the Green-Kubo theory of linear response41,w h i c h
+is a practical framework to compute transport coefﬁcients of extended
+systems39.F o ra ni 

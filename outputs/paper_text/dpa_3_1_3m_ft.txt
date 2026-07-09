@@ -1,0 +1,948 @@
+[page 1]
+A Graph Neural Network for the Era of Large
+Atomistic Models
+Duo Zhang1,2,3, Anyang Peng1, Chun Cai1,2, Wentao Li4, Yuanchang Zhou5,6, Jinzhe
+Zeng7,8,9, Mingyu Guo1,2,10, Chengqian Zhang1,2,3, Bowen Li11, Hong Jiang12, Tong
+Zhu11,13,14, Weile Jia5,6, Linfeng Zhang1,2,*
+, and Han Wang15,16,†
+1AI for Science Institute, Beijing 100080, P . R. China
+2DP Technology, Beijing 100080, P . R. China
+3Academy for Advanced Interdisciplinary Studies, Peking University, Beijing 100871, P . R. China
+4Department of Chemical Engineering, Tsinghua University, Beijing 100084, P . R. China.
+5State Key Lab of Processors, Institute of Computing Technology, Chinese Academy of Sciences, Beijing 100871,
+P .R. China
+6University of Chinese Academy of Sciences, Beijing 100871, P .R. China
+7School of Artificial Intelligence and Data Science, University of Science and Technology of China, Hefei 230026, P .
+R. China
+8Suzhou Institute for Advanced Research, University of Science and Technology of China, Suzhou 215123, P .
+R. China
+9Suzhou Big Data & AI Research and Engineering Center, Suzhou 215123, P . R. China
+10School of Chemistry, Sun Y at-sen University, Guangzhou, P . R. China
+11Shanghai Engineering Research Center of Molecular Therapeutics & New Drug Development, School of
+Chemistry and Molecular Engineering, East China Normal University, Shanghai 200062, P .R. China
+12College of Chemistry and Molecular Engineering, Peking University Beijing 100871, P . R. China
+13NYU-ECNU Center for Computational Chemistry at NYU Shanghai, Shanghai 200062, P .R. China
+14Institute for Advanced algorithms research, Shanghai, 201306, P .R. China
+15National Key Laboratory of Computational Physics, Institute of Applied Physics and Computational Mathematics,
+Fenghao East Road 2, Beijing 100094, P .R. China
+16HEDPS, CAPT, College of Engineering, Peking University, Beijing 100871, P .R. China
+ABSTRACT
+Foundation models, or large atomistic models (LAMs), aim to universally represent the ground-state
+potential energy surface (PES) of atomistic systems as defined by density functional theory (DFT).
+The scaling law is pivotal in the development of large models, suggesting that their generalizability
+in downstream tasks consistently improves with increased model size, expanded training datasets,
+and larger computational budgets. In this study, we present DPA3, a multi-layer graph neural network
+founded on line graph series (LiGS), designed explicitly for the era of LAMs. We demonstrate that the
+generalization error of the DPA3 model adheres to the scaling law. The scalability in the number of
+model parameters is attained by stacking additional layers within DPA3. Additionally, the model employs
+a dataset encoding mechanism that decouples the scaling of training data size from the model size
+within its multi-task training framework. When trained as problem-oriented potential energy models, the
+DPA3 model exhibits superior accuracy in the majority of benchmark cases, encompassing systems with
+diverse features, including molecules, bulk materials, surface and cluster catalysts, two-dimensional
+materials, and battery materials. When trained as a LAM on the OpenLAM-v1 dataset, the DPA-3.1-3M
+model exhibits lowest overall zero-shot generalization error across 12 downstream tasks spanning a
+diverse array of research domains. This performance suggests superior accuracy as an out-of-the-box
+potential model, requiring minimal fine-tuning data for downstream scientific applications.
+arXiv:2506.01686v3  [physics.comp-ph]  23 Jan 2026
+
+[page 2]
+1 Introduction
+The foundational model for atomistic systems is predicated on the Schrödinger equation 1, with the
+assumption that relativistic effects are negligible. The ground state solution to the Schrödinger equation,
+applying the Born-Oppenheimer approximation 2, defines a universal potential energy surface (PES),
+which plays a central role in the computational simulation of systems at the atomistic scale3. In practice,
+Kohn-Sham density functional theory (DFT) 4, 5 is frequently employed as a computationally feasible
+approximation to the ground state Schrödinger equation. While DFT offers an attractive balance between
+accuracy and efficiency for most applications, the computational demand remains significant, as the
+complexity scales cubically with the electronic degrees of freedom.
+In the past decade, machine learning interatomic potentials (MLIPs)6–12 have emerged as an efficient
+surrogate for DFT calculations, significantly reducing computational costs to linear scaling while maintain-
+ing comparable accuracy13. MLIPs are typically trained to address specific scientific challenges. However,
+when investigating a new system, the model must be re-parameterized, necessitating a substantial amount
+of DFT calculations to label the training data. This requirement has stimulated the development of univer-
+sal models or large atomistic models (LAMs), which aim to universally represent the ground-state potential
+energy surface of the atomistic systems14–22. The feasibility of LAMs is grounded in the universality of
+the DFT solution. These models are expected to be used as out-of-the-box potential energy surfaces19 or
+fine-tuned with substantially less training data23–25 for downstream tasks.
+While some LAMs have been successfully applied, yielding substantial advances in research—such as
+the GNoME model, which discovered 381,000 new stable structures—a considerable disparity remains
+in the generalizability of state-of-the-art LAMs compared to MLIPs specifically trained for particular
+problems26. To bridge this gap, enhancements in LAM architectures are expected to focus on improving
+generalizability across diverse research domains. Additionally, the development of LAMs is anticipated
+to adhere to scaling laws27–30, which propose that the generalizability of these models can be improved
+by systematically expanding the dataset size, model parameters, and computational budgets. Despite
+the pivotal role of scaling laws in model development, their exploration within LAMs remains limited.
+Notably, GNoME demonstrated a scaling law with respect to the number of training data, while Uni-
+Mol231, a pretrained model for molecular sciences, illustrated scaling laws concerning data, parameters,
+and computational budgets. However, a recent study also reveals the non-trivial nature of scaling law,
+particularly for GNN-based architectures where oversmoothing effects pose significant challenges 32.
+The specific model architecture through which a LAM may exhibit these scaling laws remains an open
+question.
+According to the scaling laws, a key strategy for enhancing the generalizability of LAMs is to incorpo-
+rate extensive training datasets that span a broad spectrum of research domains. However, inconsistencies
+arise due to variations in exchange-correlation (XC) functionals, discretization basis sets, and software
+implementations in DFT calculations, rendering available training data incompatible for merging to train
+LAMs. A potential solution is to expand existing datasets with compatible DFT calculation settings. For
+example, the Open Materials 2024 dataset33 maintains consistent settings, specifically the PBE/PBE+U34
+functional and plane-wave basis, with the Materials Project35, while significantly increasing data volume.
+However, this extension may not be able to satisfy the requirements for XC functionals and basis sets in
+other domains, such as small molecules, where hybrid functionals and atomic basis sets are commonly
+used36–38. Alternatively, multi-task training offers a method to learn common knowledge across a wide
+array of datasets, irrespective of their DFT settings 24, 39. Nonetheless, this approach faces scalability
+*linfeng.zhang.zlf@gmail.com
+†wang_han@iapcm.ac.cn
+2/36
+
+[page 3]
+challenges, as the number of fitting heads needed to learn dataset-specific knowledge increases with the
+number of datasets. Furthermore, the inconsistent XC preferences across different domains drive the
+development of multi-fidelity models40, 41.
+The LAMs are expected to produce physically meaningful results in molecular simulations, necessitat-
+ing adherence to all physical laws inherent to the universal PES. Specifically, LAMs should be smooth
+and conservative, ensuring energy conservation in microcanonical ensemble molecular dynamics (MD)
+simulations and maintaining Boltzmann distributions in canonical and isothermal-isobaric ensemble MD
+simulations42. LAMs must also be invariant under translational and rotational transformations, thereby
+conserving linear and angular momentum, respectively, in accordance with Noether’s theorem. Addition-
+ally, LAMs should respect the indistinguishability of atoms of the same chemical species, maintaining
+invariance under their permutations, which is fundamental to quantum statistics. Recent studies indicate
+that smooth, conservative models demonstrate a higher correlation between force field accuracy and
+property predictions, a critical factor in downstream applications43.
+In this study, we present the DPA3 model architecture, a message-passing neural network built upon
+line graph series (LiGS) specifically designed for the forthcoming era of LAMs. The model is designed to
+exhibit scaling laws, whereby its generalizability improves consistently with increases in model size, the
+volume of training data, and computational budgets. Furthermore, the DPA3 model incorporates dataset
+encoding to differentiate between training datasets, enabling multi-task training across diverse datasets
+irrespective of their DFT settings, with the advantage that the overhead does not scale with the number of
+datasets. Last but not least, the DPA3 model is rigorously aligned with all physical laws associated with
+the universal PES.
+The advantages of the DPA3 model architecture are first demonstrated through MLIP tasks that are
+well-established in the literature, where DPA3 consistently outperforms state-of-the-art GNN models in
+most instances. Subsequently, the scaling law of DPA3 in LAM tasks is validated through training on the
+MPtrj dataset, which has been used to train LAMs such as CHGNet17 and MACE-MP-019. Additionally,
+the DPA3 model, trained on the OpenLAM-v1 dataset44, yields the DPA-3.1-3M model, which surpasses
+state-of-the-art LAMs in zero-shot force field predictions across 12 downstream tasks. This superior
+performance underscores its potential in addressing real-world scientific challenges. All of the features
+position DPA3 as an exceptionally suitable candidate for the era of LAMs.
+2 Results
+2.1 DPA3: a graph neural network on line graph series
+The DPA3 model is a graph neural network that operates on a series of graphs generated through the
+line graph transformation45–47. Given a graph formed by vertices and edges, the line graph transform L
+constructs a new graph, denoted as L(G) . This process involves two steps, as illustrated in Fig. 1(a):
+first, each edge in G becomes a vertex in L(G) ; second, an edge is formed between two vertices in
+L(G) if their corresponding edges in G share a common vertex. It is important to note that applying
+the line graph transform to a graph results in another graph. Therefore, starting with an initial graph
+G(1), one can recursively generate a series of graphs {G(1),G (2), . . . ,G(K)} using the line graph transform
+G(k) =L(G (k−1)) for any 1<k≤K . This sequence is referred to as the Line Graph Series (LiGS)
+generated from the graph G(1), as illustrated in Fig. 1(b). In this series, we refer to the graph G(k) as
+having an order ofk, while the maximal orderKalso defines the order of the LiGS.
+In an atomistic system, a graph G(1) can be defined by representing atoms as vertices and pairs of
+neighboring atoms as edges. The neighborhood of a given atom i consists of all other atoms within a
+user-defined cutoff radius, r1
+c, from atom i. A correspondence can be established between the vertices and
+3/36
+
+[page 4]
+Figure 1.Schematic plot of the DPA3 model architecture. (a) The line graph transform. (b) The line
+graph series (LiGS). (c) The model architecture of DPA3, a graph neural network on LiGS. (d) The update
+block of graphG (1). (e) The update block of graphG (k),k>1.
+4/36
+
+[page 5]
+edges in the LiGS and geometric entities within an atomistic system. Specifically, the vertices in G(2),
+G(3), and G(4) correspond to a bond defined by two neighboring atoms, an angle formed by three atoms
+with two of the bonds sharing a common atom, and a dihedral angle defined by four atoms with two of the
+angles sharing a common bond, respectively, as illustrated in Fig. 1(b).
+The DPA3 model is a multi-layer message-passing neural network defined on the LiGS, as depicted
+in Fig. 1 (b). In this model, the layer l vertex and edge features on the LiGS graph G(k) are represented
+by v(k,l)
+α ∈R dv and e(k,l)
+αβ ∈R de, respectively, where α and αβ denote vertex and edge indices, dv and de
+denote the dimensionality of the vertex and edge features, respectively. The feature updating process
+within the LiGS is conducted iteratively across all graphs using a recursive formula. At each layer, vertex
+features are refined through the convolution of messages transmitted via all edges connecting to the vertex,
+while edge features are updated based on a message formed from the edge feature itself combined with the
+features of the two terminal vertices. The updating mechanism employs a residual formulation to ensure
+model stability, even with the integration of multiple update layers. Importantly, the vertex feature of
+graph G(k) is identical to the edge feature of the preceding graph G(k−1) within the LiGS framework. This
+identity eliminates the necessity of preserving redundant vertex feature data for any graph G(k) where
+k>1 . Instead, vertex feature updates are transferred to adjacent graphs to revise the edge features of
+G(k−1). Subsequently, these updated edge features in graph G(k−1) dictate the vertex features of graphG(k),
+as illustrated in Fig. 1(e). For the initial graph G(1), vertex features are iteratively refined by incorporating
+additional self-message and symmetrization transformation, see Fig. 1 (d). The detailed information on
+the feature update scheme is provided in Sec. 4.3.
+The final vertex feature of the initial graph G(1) is employed as a descriptor to represent the local
+environment of any atom within the system. Additionally, it is possible to aggregate vertex features from
+the graphs in the LiGS using suitable pooling methods. This approach enhances model performance in
+shallow architectures, whereas a decline in performance is observed with deeper models. Given that model
+capacity is primarily augmented through deeper networks, we exclusively utilize the vertex feature from
+G(1) to construct the descriptor.
+In the case of multi-task training, the descriptor is further augmented with a dataset encoding, typically
+represented as a one-hot vector corresponding to the training datasets. This enhanced feature is then input
+to a fitting MLP to predict the atomic contributions to the energy, which are subsequently combined to
+determine the total system energy. Forces and virials are derived by back-propagating the DPA3 predicted
+system energy with respect to atomic coordinates and cell tensors, respectively. Consequently, the DPA3
+model is inherently conservative. The proof demonstrating that the DPA3 model is smooth and invariant
+to translational, rotational, and permutation symmetry operations is provided in Sec. 4.3.
+2.2 Related work
+Graph neural network models on LiGS for atomistic modeling.Graph neural networks (GNNs) are
+widely used to predict materials properties48. Line graph transformations generate higher-order graphs that
+capture edge- and angle-associated features, thereby extending model capacity; representative examples
+include ALIGNN49, DimeNet++50, CrysToGraph51. Ruff et. al. introduced the nested GNN architectures
+coGN and coNGN, which update the edge features of the initial graph G(1) using a nested GNN defined
+on G(2), the second graph in the LiGS. ALIGNN-FF16 and CHGNet17 are GNN-based potential-energy
+models built on the LiGS truncated at order K=2 . Relative to ALIGNN-FF and CHGNet, DPA3 provides
+three key advances: (1) A systematic extension of the architecture to higher LiGS orders. (2) New design
+elements—including the SiLUT activation and a residual update scheme—that together yield a superior
+performance and clear scaling laws with respect to model size, dataset size, and compute. Ablation
+studies quantifying the contribution of these components to the observed scaling behavior are provided
+5/36
+
+[page 6]
+in Sec. S-3.2 of the Supplementary Materials. (3) Dataset encoding, which enables parameter-efficient
+multitask training across datasets from diverse research domains.
+Equivariant GNNs.Equivariant graph neural networks 10, 12, 43, 52–54constitute a broad class of models
+for representing potential energy surfaces. These models can be interpreted as GNNs defined on the
+LiGS G(1), with their expressive power arising from the incorporation of equivariant atomic features that
+transform according to truncated irreducible representations of the symmetry groups O(3) or SO(3). The
+key distinctions between equivariant GNNs and DPA3 are as follows: (1) equivariant GNNs operate on
+LiGS of order 1, whereas DPA3 is theoretically defined on LiGS of arbitrary order K; and (2) equivariant
+GNNs employ equivariant atomic features, while DPA3 leverages invariant features associated with the
+nodes and edges of each graph within the LiGS.
+2.3 Benchmarking
+The DPA3 model is evaluated using five test cases established in the literature, as depicted in Fig. 2. In
+each case, the DPA3 models are trained as MLIPs, with a focus on achieving high accuracy in predicting
+energies, forces, and stress tensors. The results are then compared with those from state-of-the-art MLIP
+architectures. In these benchmarks, we did not prioritize the accuracy of property calculations, primarily
+because the DPA3 model is designed to be smooth and conservative, thus convergence in force field
+error will inherently lead to convergence in property calculation error43. In all instances, the maximum
+model size of the DPA3 is limited by the memory capacity of the GPU hardware accessible to the authors
+during the training period, specifically the Nvidia A800 GPU, which features 80GB of memory. For each
+benchmark dataset, we adopt the evaluation metric (MAE or RMSE) established in previous studies to
+enable a direct and equitable comparison with published baselines.
+We first benchmark DPA3 on the SPICE-MACE-OFF36, which was developed by Kovács et.al. for
+training a MLIP for organic small molecule tasks. The dataset comprises 1M configurations (95% for
+training/validation and 5% for test) with each labeled with the ωB97M-D3(BJ)/def2-TZVPPD58–62 XC
+functional and basis set. We have kept the division of the training, validation and test sets as the Ref.36, and
+compare the DPA3 model with MACE-OFF23(M) (MACE(M) in short), MACE-OFF23(L) (MACE(L) in
+short), EScAIP63 and eSEN43 models. In this benchmark, we evaluate the DPA3 model with configurations
+of 3, 6, 12, and 24 layers, denoted as DPA3-L3, DPA3-L6, DPA3-L12, and DPA3-L24, respectively.
+Additional hyper-parameters of the model are detailed in Section S-2.2.
+To deliver a comprehensive evaluation of a model’s performance on a test case consisting of multiple
+datasets, we introduce an averaged error metric calculated in logarithmic space: the Logarithmic Weighted
+Average Root Mean Square Error (LW ARMSE) or Mean Absolute Error (LW AMAE), defined as follows:
+LW ARMSE or LW AMAE({erri,w i}) =exp
+ 
+1
+∑i wi
+∑
+i
+wi log(erri)
+!
+,(1)
+where erri denotes the RMSE or MAE (of energy or force) calculated for the ith dataset within the test
+case, and wi represents the corresponding weight assigned to each dataset. In the absence of explicitly
+specified weights, a default value of 1.0 is assigned to each subset. This aggregate, computed in the
+logarithmic domain, mitigates the influence of outliers, preventing any single dataset from dominating the
+overall score and providing a more balanced assessment of performance across datasets.
+As depicted in Fig. 2(a) and further detailed in the Supplementary Information Table S-1, our smallest
+model, DPA3-L3 attains the same energy LW AMAE as MACE(M) while using only 40% of the parameters
+(0.9M vs 2.3M). DPA3-L6, achieves approximately 34% lower energy LWAMAE than MACE(L) with
+just 20% of its parameters (1.3M vs 6.9M). Remarkably, the larger DPA3-L24 configuration significantly
+6/36
+
+[page 7]
+PubChemDES370K M.DES370K D.Dipeptides
+Sol. AA Water QMugs
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2EMAE (meV/atom)
+(a) SPICE-MACE-OFF
+MAE RMSE MAEB NABHh
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6Torsional Error (kcal/mol)
+(b) TorsionNet-500
+// 0
+20
+40
+60
+80
+Number of molecules
+0
+0
+2
+4
+ERMSE (meV/H2O)
+(c) Water/Ice Systems
+Liquid Water
+Ice Ih (b)Ice Ih (c)Ice Ih (d)
+0
+20
+40
+60
+FRMSE (meV/Å)
+0.0
+0.5
+1.0
+1.5EMAE (meV/atom)
+(d) AIMD Material Datasets
+// 0
+10
+20
+30
+EMAE (meV)
+F.D. on CuGraphene
+Zeolite
+0
+20
+40
+60FMAE (meV/Å)
+0
+5
+10
+15ELWARMSE (meV/atom)
+(e) DPA2 Test Sets
+DPA3-L24DPA3-L12DPA3-L6
+DPA2EqV2GNOAllegroMACENequIP
+0
+25
+50
+75
+100FLWARMSE (meV/Å)
+DPA3-L24
+DPA3-L12
+DPA3-L6
+DPA3-L3
+eSEN
+EScAIP
+MACE(L)
+MACE(M)
+DPA2
+AIMNet2
+NequIP
+DeepPot-SE
+AlphaNet
+EqV2
+Gemnet-OC
+Allegro
+Figure 2.Comparative performance of DPA3 with other MLIPs across different benchmarks. (a) Test
+energy MAE (EMAE , meV/atom) evaluated on the SPICE-MACE-OFF dataset36. Abbreviations:
+DES370k M. (DES370k Monomers), DES370k D. (DES370k Dimers) and Sol. AA (Solvated Amino
+Acids). (b) Torsional energy prediction errors quantified by MAE, RMSE, barrier height MAE (MAEB),
+and the number of accurately predicted barrier heights within 1 kcal/mol (NABHh) on the TorsionNet-500
+dataset55, following evaluation methods described in Ref.56. (c) Test energy RMSE (ERMSE , meV/H2O)
+and force RMSE (FRMSE , meV/Å) for liquid water and three ice configurations (Ih (b), Ih (c), and Ih (d),
+sampled at different thermodynamic states)8. (d) Test energy MAE (EMAE , meV/atom for the first two
+datasets and meV for the third) and force MAE (FMAE , meV/Å) evaluated on three distinct material
+datasets from Ref.57, namely, the Formate Decomposition on Cu (F.D. on Cu), the Defected Bilayer
+Graphene and the Zeolite dataset. (e) Logarithmic Weighted Average RMSE of energy (EL WARMSE,
+meV/atom) and force (FL WARMSE, meV/Å), as defined in Eq. (1), evaluated on the DPA2 test sets
+comprising 18 diverse cases detailed in Ref.24.
+7/36
+
+[page 8]
+surpasses MACE(L), achieving a reduction in energy LW AMAE by approximately 66% while utilizing 30%
+fewer parameters (4.9M vs. 6.9M). In comparison to EScAIP, DPA3-L24 exhibited superior performance
+across all energy MAE metrics and five out of seven force MAEs, utilizing only about 11% of EScAIP’s
+parameter count. The eSEN model demonstrated the best performance among all models. The DPA3
+family reveals a clear trend: as the model size increases, both energy and force errors decrease, suggesting
+that its performance may be further enhanced by employing deeper model configurations.
+The accuracy of the SPICE-MACE-OFF trained DPA3 model in calculating the torsion profile is
+benchmarked using the TorsioNet-50055 test case. As illustrated in Fig. 2(b) and detailed in Table S-2,
+DPA3-L24 demonstrates superior performance across all metrics compared to models trained with SPICE-
+MACE-OFF, MACE(M/L), and other models such as AIMNet237 and DPA2-drug56. Notably, it achieves
+a 60% reduction in torsional barrier height MAE (MAEB) compared to MACE(L). Remarkably, both
+DPA3-L12 and DPA3-L24 exhibit zero NABHh, indicating that the error in all predictions of torsional
+barrier height falls within the 1 kcal/mol threshold.
+The performance of the DPA3 models in condensed-phase systems is preliminarily evaluated using a
+test case involving liquid water and ice Ih configurations. These configurations were derived from classical
+ab initio molecular dynamics (AIMD) and path-integral AIMD (PI-AIMD) simulations conducted under
+various thermodynamic conditions, utilizing the PBE0-TS XC functional8. The liquid water configurations
+were sampled at ambient condition, while the ice Ih configurations were sampled at three thermodynamic
+states: state (b) 273 K and 1 bar, state (c) 330 K and 1 bar and state (d) 238 K and 2.13 kbar. In accordance
+with the protocol established in previous research10, which utilized only 0.1% of the data to demonstrate
+the data efficiency of the model, we adopted the same settings. This approach facilitates direct comparison
+among the DeepPot-SE64, NequIP10, and DPA3 models.
+As shown in Fig. 2(c) and detailed in Table S-3, DPA3-L12 achieves overall lower RMSE values
+compared to NequIP, with around 60% reduction in energy LWARMSE and 30% reduction in force
+LW ARMSE. Notably, it even outperforms the original DeePMD model, which was trained on the complete
+dataset, in one out of four energy RMSEs and three out of four force RMSEs, underscoring DPA3’s strong
+fitting capability. Interestingly, the scaling law is less apparent in this context: DPA3-L12 exhibits superior
+overall performance compared to DPA3-L24. This implies that the diversity of configurations within
+the test case is limited, causing larger models to be prone to overfitting. Furthermore, our evaluation of
+DeepPot-SE—a refined version of the original DeePMD—under identical training conditions demonstrated
+comparable performance to NequIP, despite utilizing only 0.1% of the data. This finding challenges the
+validity of data efficiency assessments for this specific dataset 10, emphasizing the necessity for more
+representative benchmarks to systematically evaluate model performance.
+DPA3 was further evaluated using a test case proposed in Ref.57, consisting of three datasets: formate
+decomposition on Cu, defected bilayer graphene, and zeolites. These datasets exemplify catalysis, two-
+dimensional materials, and porous materials, respectively. As shown in Fig. 2(d) and Table S-4, the
+smallest model, DPA3-L6, consistently outperforms NequIP and demonstrates lower errors than AlphaNet,
+except for force prediction in the graphene dataset. Improved accuracy is achieved with larger models,
+DPA3-L12 and DPA3-L24, both of which consistently outperform NequIP and AlphaNet on the first
+two datasets. For the zeolite dataset, a clear trend of reduced error rates is observed with larger DPA3
+architectures. The DPA3-L24 model demonstrates only slightly lower accuracy compared to AlphaNet.
+The DPA3 model is benchmarked on the DPA2 test sets 24, which were originally introduced to
+evaluate the DPA2 model24. DPA2 is a GNN constructed on the initial graph G and employs a self-
+attention mechanism65 to model interactions among edge features. Consequently, its network architecture
+is fundamentally different from that of DPA3. These test sets comprise 18 datasets spanning diverse
+research domains, including alloy and battery materials, metal cluster catalysis, drug-like molecules, and
+8/36
+
+[page 9]
+Table 1.Results on the Matbench Discovery leaderboard, with all compliant models accessed before
+May 27, 2025.
+Model CPS↑Acc↑F1↑ DAF↑Prec↑ MAE↓ RMSE↓R2↑κ SRME↓ RMSD↓ Params↓ Targets
+DPA3-L24 0.717 0.936 0.803 5.024 0.768 0.037 0.080 0.812 0.650 0.080 4.92M EFSG
+eSEN-30M-MP0.797 0.946 0.831 5.260 0.804 0.033 0.078 0.822 0.340 0.07530.1M EFSG
+SevenNet-l3i5 0.714 0.920 0.760 4.629 0.708 0.044 0.087 0.776 0.550 0.085 1.17M EFSG
+MatRIS v0.5.0 MPtrj 0.681 0.938 0.809 5.049 0.772 0.037 0.082 0.803 0.861 0.077 5.83M EFSGM
+GRACE-2L-MPtrj 0.681 0.896 0.691 4.163 0.636 0.052 0.094 0.741 0.525 0.090 15.3M EFSG
+MACE-MP-0 0.644 0.878 0.669 3.777 0.577 0.057 0.101 0.697 0.647 0.091 4.69M EFSG
+AlphaNet-MPTrj 0.566 0.933 0.799 4.863 0.743 0.041 0.091 0.745 1.310 0.107 16.2M EFSG
+eqV2 S DeNS 0.522 0.941 0.815 5.042 0.771 0.036 0.085 0.788 1.676 0.076 31.2M EFSD
+ORB v2 MPtrj 0.470 0.922 0.765 4.702 0.719 0.045 0.091 0.756 1.725 0.101 25.2M EFSD
+M3GNet 0.428 0.813 0.569 2.882 0.441 0.075 0.118 0.585 1.412 0.112 228k EFSG
+CHGNet 0.400 0.851 0.613 3.361 0.514 0.063 0.103 0.689 1.717 0.095 413k EFSGM
+linear alkane pyrolysis, all trained under an identical protocol. The LWARMSEs, calculated using the
+weights outlined in Table S-5, are depicted in Fig. 2(e). According to this metric, DPA3-L24 consistently
+demonstrates superior performance in both energy and force predictions, reinforcing its reliability across
+various applications. Notably, EqV2 shows a lower force RMSE in certain systems, as detailed in Table S-5.
+This may be attributed to its non-conservative force-prediction approach, which fits energy and force
+separately, at the expense of conservativeness.
+The performance of DPA3 is also validated on well-established Matbench Discovery leaderboard66,
+a benchmark that ranks MLIPs across various tasks simulating the high-throughput discovery of stable
+inorganic crystals. Specifically, compliant models trained on the MPtrj dataset 17 are evaluated on the
+WBM test set67 by performing structural optimization and predicting formation energies, subsequently
+converted to convex hull distances to assess thermodynamic stability. Table 1 summarizes the comparative
+results between DPA3-L24 and other state-of-the-art compliant models accessed from the leaderboard on
+May 27, 2025. DPA3 achieves the second-best combined performance score (CPS), demonstrating an
+excellent balance between model complexity (parameter count) and predictive performance. Moreover, for
+DPA3, accuracy in energy prediction directly translates to accuracy in downstream property predictions. In
+Supplementary Information Section S-1.2, we demonstrate a strong linear correlation between the energy
+MAE on the WBM test set and the MAEs for four material properties—maximum phonon frequency,
+entropy, free energy, and heat capacity—in the MDR benchmark 68. This correlation has been demonstrated
+to arise directly from enforcing strict conservativeness in the model architecture43.
+The performance of the DPA3 architecture, constructed with varying orders of the LiGS, is evaluated
+using the DPA2 test sets. Specifically, we assessed the LW ARMSEs of both energy and forces for DPA3-L3
+and DPA3-L6 under different LiGS orders K, as illustrated in Fig. 3. The model’s accuracy improves
+significantly when increasing the order from 1 to 2; however, this trend does not persist as the order
+increases to 3. In fact, a decrease in accuracy is observed when increasing the order from 2 to 3, particularly
+in the accuracy of force predictions. In theory, the order-2 DPA3 possesses a higher capacity than the
+order-3, which suggests the observed decline may be attributed to two factors: First, the edge features in
+the order-2 graph, geometrically represented as angular features, sufficiently capture the local geometric
+context for most systems. Second, the inclusion of edge features in the order-3 graph, specifically dihedral
+terms, potentially complicates the training process. Based on these findings, we adopt order K=2 as the
+default configuration, as it provides the optimal performance.
+A systematic assessment of inference performance was conducted, with detailed protocols provided in
+9/36
+
+[page 10]
+1 2 3
+K
+3.5
+4.0
+4.5
+5.0
+5.5
+6.0
+6.5ELWARMSE (meV/atom)
+DPA3-L3
+DPA3-L6
+1 2 3
+K
+60
+70
+80
+90
+100
+110FLWARMSE (meV/Å)
+DPA3-L3
+DPA3-L6
+Figure 3.LW ARMSEs in energy and force predictions evaluated on the DPA2 test sets. The DPA3
+models with three layers (DPA3-L3) and six layers (DPA3-L6) were examined at varying LiGS ordersK.
+106 2 × 106
+3 × 106
+# Parameters
+14
+16
+18
+20
+22
+24
+26Energy MAE (meV/atom)
+(a)
+MAE = (Nopt/1.4 × 109) 0.4465
+107
+3 × 106
+6 × 106
+2 × 107
+# Data
+14
+16
+18
+20
+22
+24
+ (b)
+MAE = (Dopt/2.9 × 1012) 0.2296
+1013
+1014
+Compute [P]
+14
+16
+18
+20
+22
+24
+ (c)
+MAE = (C/(2.9 × 1021 × P)) 0.1545
+Figure 4.Scaling law of the DPA3 models. All evaluations are conducted by measuring validation energy
+MAEs using models trained on the OMat24 dataset. DPA3 exhibits smooth performance improvement
+with jointly scaling of (a) model parameters (N), (b) training data (D), and (c) compute budget (C).
+Section S-1.3. Performance is quantified as the average time per atom required to compute the energy,
+forces, and pressure tensor of a given configuration. Because computational efficiency depends strongly on
+system size, we employed an extensible water system at equilibrium density as a representative example
+and evaluated DPA3 (L3, L6, L12, and L24) and MACE (M and L variants) across configurations of
+varying sizes (Fig. S-2). The runtimes of MACE and DPA3 converge beyond roughly 400 and 1000 atoms,
+respectively. DPA3-L3 is the fastest among all models—about 2 × faster than MACE(M)—while also
+achieving slightly better accuracy than MACE(M) in Table. S-1. DPA3-L6 attains a similar speed to
+MACE(M) (yet delivers 34% better accuracy than MACE(L) ), and DPA3-L12 is faster than MACE(L).
+Results for optimized MACE implementations with customized CUDA kernels 36, 69 are also included.
+For relatively small systems (fewer than ∼300 atoms for MACE(M) and ∼100 atoms for MACE(L)),
+the optimized MACE versions show no clear advantage, but their efficiency surpasses the standard
+implementations as system size increases. At convergence, optimized MACE (M, L) outperforms both
+MACE(M) and DPA3-L6, and the optimized MACE(M) achieves a speed matching DPA3-L3.
+2.4 Scaling Law
+The scaling behavior of DPA3 is examined on the OMat24 dataset using an approach analogous to the
+10/36
+
+[page 11]
+0
+10
+20
+30ELWARMSE (meV/atom)
+(a) Catalysis
+DPA-3.1-3M (OMat)
+DPA-2.4-7M
+MACE-MPA-0
+Orb-v3
+SevenNet-MF-ompa (OMat)
+MatterSim-v1-5M
+GRACE-2L-OAM
+0
+100
+200
+300FLWARMSE (meV/Å)
+0
+2
+4
+6
+8
+10
+12
+(b) Inorganic Materials
+DPA-3.1-3M (OMat)
+DPA-2.4-7M
+MACE-MPA-0
+Orb-v3
+SevenNet-MF-ompa (OMat)
+MatterSim-v1-5M
+GRACE-2L-OAM
+0
+50
+100
+150
+200
+0
+2
+4
+6
+8
+10
+(c) Molecules
+DPA-3.1-3M (OMat)
+DPA-2.4-7M
+MACE-MPA-0
+Orb-v3
+SevenNet-MF-ompa (OMat)
+MatterSim-v1-5M
+GRACE-2L-OAM
+0
+100
+200
+300
+0
+2
+4
+6
+8
+10
+12
+(d) ALL
+DPA-3.1-3M (OMat)
+DPA-2.4-7M
+MACE-MPA-0
+Orb-v3
+SevenNet-MF-ompa (OMat)
+MatterSim-v1-5M
+GRACE-2L-OAM
+0
+50
+100
+150
+200
+Figure 5.Zero-shot generalizability evaluation of force field prediction tasks across three distinct
+domains. (a-c) Logarithmic Weighted Average Root Mean Squared Errors (LW ARMSE) of energy
+(ELW ARMSE, meV/atom) and force (FLW ARMSE, meV/Å), defined by Eq. (1), computed separately within
+each domain. (d) LW ARMSE evaluated on the combined set of all 12 datasets across the three domains.
+Training data summary: DPA-3.1-3M and DPA-2.4-7M24, 26 are multitask-pretrained on
+OpenLAM-v126, 44. SevenNet-MF-ompa72 is multitask-pretrained on OMat2433, MPtrj17, and sAlex73.
+MACE-MPA-019, Orb-v374, and GRACE-2L-OAM75 are pretrained on OMat24 and subsequently
+fine-tuned on MPtrj and sAlex. MatterSim-v1-5M20 is trained on a proprietary materials dataset that is not
+publicly available.
+IsoFLOP profiles introduced in Ref. 70 and subsequently applied to study the scaling laws of UMA
+models71. Training experiments were conducted with varying model sizes under six fixed IsoFLOP
+settings. The total computational cost is estimated as C=P×N×D , where C denotes the compute budget
+(in FLOPs), N the number of model parameters, and D the size of the training dataset (in number of
+configurations). Here, P is an unknown prefactor whose exact value is unimportant. All experiments were
+performed in the single-epoch regime, such that D is proportional to the number of training steps. For
+each compute budget, the validation MAE was plotted as a function of parameter count N and fitted with a
+parabola. The minimum MAE and the corresponding optimal parameter count, Nopt(C), represent the best
+achievable performance under the given compute budget. The validation MAE is further analyzed as a
+function of Nopt, the corresponding dataset size Dopt =C/(PN opt), and the compute budget C, as shown in
+Fig. 4(a–c). The results clearly demonstrate that the validation energy MAE decreases with increasing
+model size, dataset size, and compute budget, following power-law scaling consistent with trends observed
+in large language models27, 70, albeit with different exponents.
+2.5 A large atomistic model: DPA-3.1-3M
+11/36
+
+[page 12]
+In this work, we propose a large atomistic model (LAM), DPA-3.1-3M, which is trained on the OpenLAM-
+v1 dataset collection. This collection consists of 31 datasets with random train/validation splits and
+includes large-scale open-source datasets such as OMat2433, OC2076, and SPICE238, as well as smaller,
+domain-specific datasets (e.g., metals, alloys, and organic reactions), as documented in the data card44. To
+jointly train datasets with varying sizes and DFT settings, we adopted a multitask pretraining scheme23, 24,
+utilizing per-dataset sampling weights that were heuristically selected based on dataset importance and
+sparsity. A detailed description of each dataset and the corresponding weights is available in Refs.26, 44.
+The DPA-3.1-3M model architecture employs a LiGS order truncated at K=2 and consists of L=16
+layers. The model was trained for 4 million steps on 128 GPUs, with detailed hyperparameters provided
+in Table S-9. Under this setup, the resulting DPA-3.1-3M model contains approximately 3.26 million
+parameters.
+The generalizability of the DPA-3.1-3M model was assessed by evaluating its zero-shot prediction
+accuracy on force field tasks across 12 downstream datasets spanning three distinct scientific domains:
+Catalysis,Inorganic Materials, andMolecules, as detailed in Tab. S-6. These datasets were proposed in
+the literature as training resources for MLIPs designed to address various scientific challenges, and for
+efficiency, we randomly downsampled each to a maximum of 1,000 data frames. Importantly, they were
+independently constructed from the training datasets within the OpenLAM-v1 collection. In this context,
+zero-shot prediction refers to the direct evaluation of the DPA-3.1-3M model’s prediction error on the
+downstream datasets without any additional training. It is important to note that energy labels computed
+via DFT can differ by an arbitrary constant due to variations in pseudopotential selection and software
+implementations. To address this, for energy prediction, each model in this test is employed to predict the
+energy difference between the labels and a dummy model that linearly correlates the DFT energy with
+chemical composition. In contrast, predictions for forces and virials are directly obtained from the models
+without such adjustments.
+Figure 5 and Table S-6 present a comparative analysis of the zero-shot generalizability of the DPA-3.1-
+3M model against several state-of-the-art LAMs released prior to May 1, 2025. These models include
+DPA-2.4-7M24, 26, Orb-v374, MACE-MPA-019, SevenNet-MF-ompa72, MatterSim-v1-5M20 and GRACE-
+2L-OAM75. The recently released UMA models 71 are not accessible in China 77, where the authors’
+institutions are based, thus we were unable to include them in our benchmark. The accuracy of each
+model is quantified using the LWARMSEs for energy, force and, where applicable, virial predictions,
+as defined in Eq. (1). These metrics are evaluated across all datasets (denoted by “ALL”) as well as the
+datasets within the catalysis, inorganic materials, and molecules domains (see Figure 5). Detailed error
+statistics for each dataset are provided in Table S-6. A lower error indicates that the model would either
+provide superior accuracy as a standalone PES model or require less data for fine-tuning in downstream
+applications.
+The multi-task pretrained DPA-3.1-3M model exhibits state-of-the-art performance across all tasks,
+achieving overall LWARMSEs of 6.6 meV/atom for energy and 130.6 meV/Å for forces. This result
+underscores the efficacy of multi-task pretraining and the robustness of the DPA-3 architecture in LAM
+implementations. Among single-task trained models, Orb-v3 demonstrates competitive performance with
+average LWARMSEs of 8.7 meV/atom for energy and 171.0 meV/Å for forces, particularly excelling
+in the Inorganic Materials domain. Notably, SevenNet-MF-ompa achieves a lower virial LWARMSE
+than DPA-3.1-3M, with values of 92.4 meV/atom compared to 98.1 meV/atom, as shown in Table S-6.
+Although models like Orb-v3 and SevenNet-MF-ompa exhibit comparable or even superior accuracy in
+certain metrics, they require significantly more parameters than DPA-3.1-3M, with parameter counts of
+25.5M and 25.7M versus 3.26M, respectively.
+Additionally, most LAMs were trained on datasets labeled exclusively with the PBE XC functional,
+12/36
+
+[page 13]
+which does not correspond to the labeling functional used in some downstream test datasets. For instance,
+ANI-1x was originally labeled at the ωB97X/6-31G* level, and AIMD-Chig at the M06-2X/6-31G*
+level. To mitigate the impact of XC functional mismatch on test error, we have relabeled these datasets
+using the PBE XC functional. It is noted that discrepancies in basis sets and pseudopotentials between
+the training data and downstream tests are not aligned in our evaluation. This misalignment primarily
+results from the significant challenge of reconciling projected augmented wavefunction (PAW) DFT
+calculations in periodic boundary systems with Gaussian basis set DFT calculations in open boundary
+systems. We have chosen not to resolve these mismatches because they have significantly less impact on
+the test errors than the discrepancies in XC functionals. For the multi-task trained models DPA-3.1-3M
+and SevenNet-MF-ompa, we employ the OMat24 dataset encoding during inference, labeling the results
+as DPA-3.1-3M (OMat) and SevenNet-MF-ompa (OMat), respectively, in Fig. 5 and Tab. S-6.
+When comparing LAM performance, note that training datasets differ across models. DPA-3.1-3M
+and DPA-2.4-7M are multitask-pretrained on OpenLAM-v1, a collection spanning catalysis, inorganic
+materials, and molecules (see Refs.26, 44 for details). By contrast, the other LAMs are trained primarily
+on inorganic-materials datasets (see the caption of Fig. 5 for a summary). Accordingly, the benchmark
+in Fig. 5 and Table S-6 is in-domain but out-of-distribution for DPA-3.1-3M and DPA-2.4-7M, and
+out-of-domain and out-of-distribution for the other models; hence a systematic domain-wise comparison
+is warranted. Out-of-domain performance is also relevant because several baselines have demonstrated
+generalization to catalysis and molecular tasks19, 74. From Fig. 5(a)–(c) and the domain-wise LW ARMSE
+in Table S-6, DPA-3.1-3M ranks first in the catalysis and molecules domains, while in inorganic materials
+it ranks third, slightly behind Orb-v3 and SevenNet-MF-ompa.
+We further assess inorganic-materials generalization using a finetuned variant, DPA-3.1-3M-FT, in
+which the OMat24 encoding is finetuned on MPTrj and sAlex to align the XC functional. On the Matbench
+Discovery benchmark (Table S-7), DPA-3.1-3M-FT attains the lowest RMSE and the highestR2; its F1
+score ranks behind eSEN-30M-OAM, Orb-v3, and SevenNet-MF-ompa, but exceeds GRACE-2L-OAM,
+MatterSim-v1-5M, and MACE-MPA-0. This trend closely matches the LW ARMSE ordering for inorganic
+materials in Table S-6, supporting the reliability of our benchmark. In Supplementary Information Table S-
+8, we fine-tuned DPA-3.1-3M on SPICE–MACE–OFF with the SPICE2 dataset encoding and compared
+it to task-specific DPA3 variants (L12, L24) reported in Fig. 2. The fine-tuned DPA-3.1-3M achieves
+comparable accuracy to the DPA3-L12 model, albeit with a slightly larger parameter count (3.3M vs.
+2.5M). However, it performs less favorably compared to DPA3-L24, which has approximately 50% more
+parameters. The similar performance between the fine-tuned DPA-3.1-3M and the smaller DPA3-L12
+model may be due to the fact that DPA-3.1-3M was effectively pretrained on SPICE2 for only 60 epochs,
+significantly fewer than the 400 epochs used to train DPA3-L12 and DPA3-L24.
+In contrast to previous works23, 24, which employ separate fitting networks for each dataset during
+multi-task training, our method utilizes a unified dataset encoding scheme as defined in Eq. (3). This
+design ensures that the complexity of the model remains independent of the number of datasets. To
+evaluate the scalability and effectiveness of this approach, we conducted a comparative analysis using the
+OpenLAM-v1 dataset collection. We applied the same model architecture as DPA-3.1-3M, with a reduced
+number of training steps for demonstration purposes, and compared the unified dataset encoding method
+with the separate fitting strategy, see Sec. S-3.3 and Table S-11 for details. Generalizability results on
+force field prediction tasks indicate that the dataset encoding approach achieves comparable performance
+across all domains while requiring significantly fewer model parameters (3.26M compared to 7.69M) than
+separate fitting networks. These findings demonstrate the method’s advantage as a scalable and efficient
+solution for LAM development amid increasing dataset diversity.
+13/36
+
+[page 14]
+3 Discussion
+In this work, we introduce the DPA3 model architecture, specifically designed to meet the requirements of
+large atomistic models (LAMs). The DPA3 model adheres to the physical principles inherent in universal
+potential energy surfaces (PES), exhibiting scaling laws and maintaining a constant parameter scale
+that remains independent of the number of tasks in a multi-task training scheme. The performance of
+the DPA3 model is demonstrated through two benchmarking approaches. Firstly, the DPA3 model is
+assessed in standard potential energy fitting tasks that are well-established in the literature. Its accuracy is
+assessed across five benchmark cases spanning diverse research domains, including molecular systems,
+bulk materials, surface and cluster catalysis, two-dimensional materials, and battery materials. The model
+demonstrates superior performance in the majority of test cases. Secondly, the model is evaluated as
+a LAM, specifically the DPA-3.1-3M model trained on the OpenLAM-v1 dataset under a multi-task
+scheme. The DPA-3.1-3M model showcases exceptional generalizability in zero-shot force field tasks
+across 12 downstream datasets spanning distinct scientific domains, indicating its ability to achieve
+high accuracy as an out-of-the-box potential energy model for scientific inquiries, or requiring minimal
+data when fine-tuned for downstream tasks. The DPA3 model is characterized by its smoothness and
+conservativeness, indicating that higher accuracy in force field generalizability typically correlates with
+enhanced performance in property calculation tasks43.
+The pathway to enhancing the generalizability of the DPA3 model as a LAM is evident. According
+to the scaling law, increasing the model size can be achieved through optimizing the implementation
+or by integrating model parallelization mechanisms. Additionally, expanding the scale of training data
+by incorporating datasets from a diverse range of application domains will further enhance the model’s
+generalizability. For instance, integrating the recently published OMol25 dataset 78, which comprises
+102 million configurations, into the training of the DPA3 model is expected to remarkably enhance its
+generalizability, especially within molecular systems.
+It is noteworthy that the DPA3 model currently employs invariant features within the LiGS framework.
+Its performance is observed to be suboptimal compared to equivariant models such as MACE when tested
+on datasets generated by AIMD simulations of small molecules, including the rMD17 dataset79, 3BPA
+dataset80 and acetylacetone dataset81. The potential advantages of incorporating equivariant features to
+enhance generalizability in these molecular systems remain uncertain and warrant further investigation.
+4 Methods
+4.1 Datasets
+Here, we elaborate on all the benchmark datasets used in Section 2.3, which span both small molecular
+systems (e.g. SPICE-MACE-OFF) and material systems (e.g. Water, Zeolite, MPtrj, etc.). We used
+the same dataset splits as prior studies where available. For datasets requiring additional processing or
+splitting, the scripts and processed data have been made publicly available82.
+The SPICE-MACE-OFF36.This small-molecule dataset, developed for training the MACE-OFF23
+model36, combines 85% of the SPICE83 v1 subset (neutral molecules containing H, C, N, O, F, P, S, Cl,
+Br, and I) with geometries from classical MD simulations at 300K and 500K for diverse conformations
+(≤ 50 atoms). It extends to larger systems through GFN2-xTB84 MD-generated 50–90 atom molecules
+(QMugs-derived85) and water clusters (up to 50 molecules) from liquid water MD trajectories. All
+energies and forces were computed at the ωB97M-D3(BJ)/def2-TZVPPD58–62 level using PSI486. Data
+partitioning follows molecule-level splitting, 95% training/validation (951,005 structures) and 5% testing
+(50,195 structures), to prevent conformation overlap. Additional test cases included COMP6 tripeptides87
+14/36
+
+[page 15]
+recomputed at the SPICE level of theory; however, due to the unavailability of these tripeptides in the test
+set, accuracy comparisons were limited to other molecular systems.
+The TorsionNet-50055.This dataset comprises 500 drug-like molecules (H, C, N, O, F, S, Cl) with 24
+conformations per molecule, generated by rotating a single bond in 15° increments. These structures were
+initially optimized at the B3LYP/6-31G(d) DFT level and span diverse pharmaceutical chemical space.
+Liquid Water and Ice Dynamics8.This dataset consists of reference structures for training and validating
+machine learning potentials (MLPs), encompassing liquid water and ice Ih configurations generated from
+classical AIMD and PI-AIMD simulations under varying thermodynamic conditions (1-2.13 kbar, 238-330
+K) using the PBE0-TS functional. It contains 140,000 structures partitioned into 100,000 liquid water
+configurations (64 H2O molecules) and 40,000 ice Ih configurations (96 H2O molecules), including three
+distinct ice phases simulated at PI-AIMD and classical AIMD levels with different pressure-temperature
+combinations. We uniformly sampled <0.1% of the data (133 structures) for training consistent with
+previous work10, with 50 frames allocated for validation and all remaining data reserved for testing.
+The Formate Decomposition on Cu 10.This dataset consists of configurations characterizing the
+decomposition process of formate on Cu(110), focusing on C-H bond cleavage. It includes initial states
+(monodentate/bidentate formate), intermediate configurations, and final states (H ad-atom with gas-phase
+CO2). The Nudged Elastic Band (NEB) method generated reaction pathways, followed by 12ab initio
+molecular dynamics (AIMD) simulations using the CP2K88 code. These simulations produced 6,855 DFT
+structures with a 0.5 fs time step over 500-step trajectories, capturing dynamic evolution across reaction
+coordinates. The dataset provides atomistic-scale insights into catalytic decomposition mechanisms
+through systematically sampled configurations. The full dataset was partitioned into training (2,500
+structures), validation (250 structures), and test (remaining 4,105 structures) sets via uniform random
+sampling.
+The Defected Bilayer Graphene89.This dataset consists of reference structures designed to train and
+validate MLPs, encompassing three bilayer systems: V0V0 (pristine), V0V1 (single vacancy on the top
+layer), and V1V1 (single vacancy in both layers). The dataset includes single-point DFT (PBE+MBD)
+energies and atomic forces for configurations with varying interlayer distances, stacking modes, and
+manual deformations, supplemented by snapshot configurations from classical and DFT-based molecular
+dynamics (MD) simulations at different temperatures. The data were partitioned into training (3,988
+structures), validation (4,467 structures), and test (200 structures) sets. The splitting was based on farthest
+point sampling (FPS), by performing principal components analysis (PCA) and choosing sufficiently
+distant random points for different sets to ensure representative sampling.
+The Zeolite Dataset57.This dataset comprises 16 different types of zeolite relevant to catalysis, adsorp-
+tion, and separation applications. It contains atomic trajectories generated through AIMD simulations
+at 2000 K using V ASP90, 91, with 80,000 snapshots per zeolite providing calculated energies and atomic
+forces. The dataset is partitioned into training (48,000 structures), validation (16,000), and test (16,000)
+sets using a random 6:2:2 split ratio. This standardized division ensures systematic evaluation of MLPs
+while maintaining consistency across computational frameworks.
+The DPA2 Test Sets24.This composite dataset comprises 18 specialized sub-datasets (totaling 5,119,379
+structures: 4,045,094 training, 1,074,285 test) for pre-training the DPA2 model, integratingdomain-
+specific collectionsincluding metallic alloys (Alloy), cathode materials (Cathode-P), semiconductors
+(SemiCond-P), drug-like molecules (Drug), catalytic reaction trajectories (OC2M) and etc., alongside with
+specialized systems such as H2O configurations, metallic materials (Sn, AgAu, AlMgCu), and n-dodecane
+15/36
+
+[page 16]
+Figure 6.Graphic illustration of line graph transform. (a) The initial graph, denoted as G, is depicted in
+purple and comprises three vertices (atoms), labeled A, B, and C. (b) The vertices of the transformed line
+graph, designated asL(G), are illustrated in green and labeled AB, AC, and BC, corresponding to the
+edges AB, AC, and BC in G. (c) Edges in L(G) , shown in green, are established between vertices when
+their corresponding edges inGshare a common vertex. The correspondence between an edge inL(G),
+specifically AB-BC, and the angle ACB is highlighted by a gray arrow.
+pyrolysis (C12H26). The ’-P’ suffix indicates datasets reformulated with pretraining splits in the DPA2
+paper (see Ref.24 for details). Aggregated from the DeepModeling community 92 and external sources,
+these 73-element datasets employ calculations from various DFT softwares like the V ASP90, 91, Gaussian93,
+and ABACUS94, 95 for multi-task training. Following Ref.24, we conduct per-dataset training with averaged
+error metrics for fair benchmarking.
+Materials Project Trajectory Dataset (MPtrj)17.This dataset provides a comprehensive collection of
+DFT calculations for ∼146,000 inorganic materials spanning 89 elements, derived from 1.37 million
+structural relaxation and static calculation tasks in the Materials Project Database96. Calculations employ
+generalized gradient approximation (GGA) or GGA+U exchange-correlation methods, generating 1.58
+million atomic configurations with associated energies, magnetic moments (7.94 million), atomic forces
+(49.3 million), and stress tensors (14.22 million). By systematically sampling trajectories from relaxation
+pathways and equilibrium states, the dataset captures the potential energy surfaces from diverse regions of
+inorganic materials, serving as a foundational resource for training and benchmarking machine learning
+models in computational materials science. We employ this dataset to train models and test their ability to
+predict ground-state (0 K) thermodynamic stability through geometry optimization and energy prediction
+within the Matbench Discovery Benchmark66.
+4.2 Line graph transform
+The line graph transformation is depicted in Fig. 6. Consider three atoms, labeled A, B, and C, which are
+treated as vertices in a graph. These atoms are sufficiently proximate such that each pair is considered
+neighbors. A fully connected graph G is constructed by connecting the vertex pairs AB, BC, and AC
+with edges, as shown in Fig. 6(a). The line graph transformation initially assigns the vertices of L(G) to
+each edge of the graph G, as illustrated in Fig. 6(b). Consequently, each vertex in L(G) corresponds to a
+neighboring atom pair. If two edges in G share a common vertex, their corresponding vertices in L(G)
+are connected by an edge, as demonstrated in Fig. 6(c). For instance, the edges AC and BC in G share
+the common vertex C, resulting in the nodes AC and BC in L(G) being linked by an edge, denoted as
+AC-BC. This edge directly corresponds to the angle A-C-B in the original graph G, as highlighted by the
+16/36
+
+[page 17]
+gray arrow in Fig. 6(c).
+4.3 DPA3 model architecture
+In this study, we investigate a system composed ofN atoms, where the atomic numbers are represented
+by the list Z= (Z 1, . . . ,Zi, . . . ,ZN) and the atomic positions are denoted by R= (rrr1, . . . ,rrri, . . . ,rrrN). The
+PES of the system, indicated by E=E(Z,R) , is postulated to be decomposable into a sum of atomic
+contributions Ei, such that E= ∑i Ei. The atomic force Fi exerted on atom i and the virial tensor Ξpq
+are defined as the negative gradients of the total energy with respect to the atomic coordinates and the
+simulation cell vectors, respectively:
+Fi =−∇ rrriE,Ξ pq =− ∑
+r
+∂E
+∂h r p
+hrq.(2)
+In Eq. (2)Ξ pq corresponds to the pq component of the virial tensor, and hpq yields the q-th component of
+thep-th cell vector.
+The DPA3 model constructs the atomic energy contribution as follows:
+Ei =F
+
+v(1,L)
+i ,c(D m)
+
++e m(Zi),(3)
+In this formulation, F denotes the fitting network, with v(1,L)
+i representing the vertex feature of graph
+G(1) after L layers of updates. This vertex feature functions as a descriptor of the atomic environment
+surrounding atom i. Furthermore, c(Dm) refers to the encoding of the dataset Dm. The energy bias, em(Zi),
+is obtained through least squares fitting to the training energy of datasetDm, utilizing the chemical formula.
+This approach effectively mitigates the arbitrariness associated with selecting the energy zero point across
+different DFT calculations.
+The DPA3 model evolves vertex and edge features through a recursive formulation applied to each
+graph within the LiGS. Let v(k,l)
+α and e(k,l)
+αβ denote the vertex and edge features of graph k after l layers,
+respectively. The features of the l+1 layer are initialized by the features of the previous layer, i.e.,
+v(k,l+1)
+α ←v (k,l)
+α and e(k,l+1)
+αβ ←e (k,l)
+αβ . The features are subsequently refined using a residual update
+mechanism:
+v(k,l+1)
+α ←v (k,l+1)
+α +δ (k,l)
+c u(k,l)
+α ,(4)
+e(k,l+1)
+αβ ←e (k,l+1)
+αβ +δ (k,l)
+s m(k,l)
+s,αβ ,(5)
+where δ (k,l)
+c and δ (k,l)
+s represent trainable step sizes for the updates. The term u(k,l)
+α indicates the vertex
+feature update, defined as a convolution of messages of all the edges connecting to the vertex. m(k,l)
+s,αβ
+denotes the self-message used in the edge feature update. These updates are defined as follows:
+u(k,l)
+α =φ u
+
+N−αk
+m ∑
+β∈E (k)(α)
+wk
+αβ m(k,l)
+c,αβ
+
+ ,(6)
+m(k,l)
+c,αβ =φ c(v(k,l)
+α ,v (k,l)
+β ,e (k,l)
+αβ )(7)
+m(k,l)
+s,αβ =φ s(v(k,l)
+α ,v (k,l)
+β ,e (k,l)
+αβ )(8)
+17/36
+
+[page 18]
+where φu may be either a multi-layer perceptron (MLP) or an identity mapping, andφc and φs are MLPs. In
+Eq. (6), E (k)(α) represents the set of all edges connected to vertex α in the graph G(k). The normalization
+factor N−αk
+m involves Nm, which estimates the maximum possible number of neighbors, and a power factor
+αk >0 . Notably, the vertex feature v(k,l) is identical to the edge feature e(k−1,l) from the preceding graph
+in the LiGS. Consequently, we avoid maintaining redundant information regarding vertex features for any
+graph G(k) where k>1 . Instead, the vertex feature updates u(k,l)
+α are transferred to graph G(k−1) to update
+the edge features e(k−1,l). Subsequently, the updated edge features e(k−1,l+1) of graph G(k−1) determine
+the vertex featurev (k,l+1) of graphG (k), as depicted in Fig. 1(e).
+In Eq. (6), the message m(k,l)
+c,αβ is appropriately smoothed by incorporating a prefactor wk
+αβ to ensure
+that it gradually diminish as the distance between the atoms approaches the cut-off radius at different
+orders k. Specifically, in G(1), we define a smooth switch fu

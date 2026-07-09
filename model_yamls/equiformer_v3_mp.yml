@@ -1,5 +1,5 @@
 model_name: EquiformerV3+DeNS-MP
-model_key: equiformer_v3_mp
+model_key: equiformer-v3-mp
 model_version: v2026.04.07
 date_added: '2026-04-07'
 date_published: '2026-04-07'
@@ -52,7 +52,7 @@ train_task: S2EFS
 test_task: IS2RE-SR
 targets: EFS_G
 model_type: UIP
-model_params: 30_278_113
+model_params: 30278113
 n_estimators: 1
 
 

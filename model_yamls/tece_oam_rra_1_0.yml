@@ -1,0 +1,204 @@
+model_name: TECE-OAM-RRA-1.0
+model_key: tece-oam-rra-1.0
+model_version: v2026.07.05
+date_added: '2026-07-05'
+date_published: '2026-07-05'
+authors:
+  - name: Zemin Xu
+    affiliation: ShanghaiTech University, Nanjing University
+    email: xv_chana@foxmail.com
+    github: https://github.com/xvzemin
+    corresponding: false
+  - name: Wenbo Xie
+    affiliation: ShanghaiTech University
+    email: xiewb1@shanghaitech.edu.cn
+    orcid: https://orcid.org/0000-0001-5321-2494
+    corresponding: true
+  - name: P. Hu
+    affiliation: ShanghaiTech University
+    email: hupj@shanghaitech.edu.cn
+    orcid: https://orcid.org/0000-0002-6318-1051
+    corresponding: true
+trained_by:
+  - name: Zemin Xu
+    affiliation: ShanghaiTech University, Nanjing University
+    email: xv_chana@foxmail.com
+    github: https://github.com/xvzemin
+    corresponding: false
+
+repo: https://github.com/xvzemin/tace
+checkpoint_url: https://huggingface.co/xvzemin/tace-foundations/resolve/main/TECE-OAM-RRA-1.0.pt
+url: https://github.com/xvzemin/tace
+pr_url: https://github.com/janosh/matbench-discovery/pull/365
+doi: https://doi.org/10.57967/hf/7458
+paper: https://arxiv.org/abs/2509.14961
+
+openness: OSOD
+train_task: S2EFS
+test_task: IS2RE-SR
+targets: EFS_G
+model_type: UIP
+model_params: 221853358
+trained_for_benchmark: false
+n_estimators: 1
+
+license:
+  code: MIT
+  code_url: https://github.com/xvzemin/tace/blob/main/LICENSE.md
+  checkpoint: CC-BY-4.0
+  checkpoint_url: https://creativecommons.org/licenses/by/4.0/legalcode
+
+hyperparams:
+  max_force: 0.02
+  max_steps: 500
+  ase_optimizer: FIRE
+  cell_filter: FrechetCellFilter
+  graph_construction_radius: 6.0
+  max_neighbors: .inf
+  epochs: 3
+  batch: 512
+  loss_weights:
+    energy: 1
+    force: 1
+    stress: 1
+  num_interaction_channel: 64
+  num_product_channel: 256
+  mmax: 4
+  Lmax: 4
+  lmax: 4
+  l1l2: <=
+  num_layers: 8
+  correlation: 2
+
+training_cost:
+  Nvidia H20 GPUs: {amount: 32, hours: 240, cost: 7680}
+
+requirements:
+  torch: '>=2.8'
+  tace: '>=0.2.0'
+
+training_set: [OMat24, sAlex, MPtrj]
+
+notes:
+  Description: |
+    This model is based on Atomic Cluster Expansion, Edge Cluster Expansion
+    and Radial Rotary Attention.
+
+metrics:
+  phonons:
+    kappa_103:
+      pred_file: models/tace/tece-oam-rra-1.0/2026-07-05-kappa-103-FIRE-dist=0.03-fmax=0.0001-symprec=1e-05.json.gz
+      pred_file_url: https://figshare.com/files/66313763
+      κ_SRME: 0.0927
+      κ_SRE: 0.0447
+  geo_opt:
+    pred_file: models/tace/tece-oam-rra-1.0/2026-07-05-wbm-IS2RE-FIRE.jsonl.gz
+    pred_file_url: https://figshare.com/files/66313751
+    struct_col: tace_structure
+    symprec=1e-2:
+      rmsd: 0.0575
+      n_sym_ops_mae: 1.6991
+      symmetry_decrease: 0.0498
+      symmetry_match: 0.8183
+      symmetry_increase: 0.1245
+      n_structures: 256963
+      analysis_file: models/tace/tece-oam-rra-1.0/2026-07-05-wbm-IS2RE-FIRE-symprec=1e-2-moyo=0.14.0.csv.gz
+      analysis_file_url: https://figshare.com/files/66313874
+    symprec=1e-5:
+      rmsd: 0.0575
+      n_sym_ops_mae: 2.7951
+      symmetry_decrease: 0.1846
+      symmetry_match: 0.5907
+      symmetry_increase: 0.2102
+      n_structures: 256963
+      analysis_file: models/tace/tece-oam-rra-1.0/2026-07-05-wbm-IS2RE-FIRE-symprec=1e-5-moyo=0.14.0.csv.gz
+      analysis_file_url: https://figshare.com/files/66313868
+  discovery:
+    pred_file: models/tace/tece-oam-rra-1.0/2026-07-05-wbm-IS2RE.csv.gz
+    pred_file_url: https://figshare.com/files/66313757
+    pred_col: e_form_per_atom_tace
+    full_test_set:
+      F1: 0.91
+      DAF: 5.3
+      Precision: 0.909
+      Recall: 0.911
+      Accuracy: 0.969
+      TPR: 0.911
+      FPR: 0.019
+      TNR: 0.981
+      FNR: 0.089
+      TP: 40171.0
+      FP: 4000.0
+      TN: 208871.0
+      FN: 3921.0
+      MAE: 0.017
+      RMSE: 0.066
+      R2: 0.865
+      missing_preds: 2
+    most_stable_10k:
+      F1: 0.987
+      DAF: 6.367
+      Precision: 0.973
+      Recall: 1.0
+      Accuracy: 0.973
+      TPR: 1.0
+      FPR: 1.0
+      TNR: 0.0
+      FNR: 0.0
+      TP: 9734.0
+      FP: 266.0
+      TN: 0.0
+      FN: 0.0
+      MAE: 0.015
+      RMSE: 0.065
+      R2: 0.905
+      missing_preds: 0
+    unique_prototypes:
+      F1: 0.929
+      DAF: 6.073
+      Precision: 0.928
+      Recall: 0.93
+      Accuracy: 0.978
+      TPR: 0.93
+      FPR: 0.013
+      TNR: 0.987
+      FNR: 0.07
+      TP: 31027.0
+      FP: 2392.0
+      TN: 179722.0
+      FN: 2347.0
+      MAE: 0.018
+      RMSE: 0.066
+      R2: 0.871
+      missing_preds: 0
+  diatomics:
+    pred_file: models/tace/tece-oam-rra-1.0/2026-07-05-diatomics.json.gz
+    pred_file_url: https://figshare.com/files/66313844
+    hardware: NVIDIA GeForce RTX 4090
+    run_time_sec: 4505.61
+    pbe_wall_dist_mae: 0.3124
+    pbe_energy_mae: 3.918
+    pbe_bond_length_error: 0.6949
+    pbe_well_depth_error: 0.773
+    pbe_vib_freq_error: 82.56
+    tortuosity: 1.335
+    energy_diff_flips: 3.805
+    energy_jump: 2.718
+    force_flips: 3.586
+    force_total_variation: 299.6
+    force_jump: 70.17
+    pbe_force_mae: 2.312
+  md:
+    pred_file: models/tace/tece-oam-rra-1.0/2026-07-05-tece_oam_rra_1_0-md-metrics.csv.gz
+    pred_file_url: https://figshare.com/files/66323729
+    hardware: NVIDIA H200
+    run_time_sec: 401724.73
+    energy_rmse: 0.4353
+    force_rmse: 42.3737
+    rdf_error: 3.1337
+    adf_error: 1.3021
+    vdos_error: 21.6274
+    pressure_mae: 0.81
+    pressure_wasserstein: 0.8162
+    pressure_error: 44.5257
+    n_systems: 17

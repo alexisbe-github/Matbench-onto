@@ -1,8 +1,8 @@
-model_name: MACE-MP-0
-model_key: mace-mp-0
-model_version: v0.3.5
-date_added: '2023-07-14'
-date_published: '2022-05-13'
+model_name: MACE-MPA-0
+model_key: mace-mpa-0
+model_version: v0.3.9
+date_added: '2024-12-09'
+date_published: '2024-12-09'
 authors:
   - name: Ilyes Batatia
     affiliation: University of Cambridge
@@ -21,22 +21,23 @@ authors:
     affiliation: University of Cambridge
     orcid: https://orcid.org/0000-0002-8180-2034
 trained_by:
-  - name: Philipp Benner
-    affiliation: German Federal Institute of Materials Research and Testing (BAM)
-    orcid: https://orcid.org/0000-0002-0912-8137
-    github: https://github.com/pbenner
-  - name: Yuan Chiang
-    affiliation: Lawrence Berkeley National Laboratory
-    orcid: https://orcid.org/0000-0002-4017-7084
-    github: https://github.com/chiang-yuan
+  - name: Chen Lin
+    affiliation: University of Oxford
+    github: https://github.com/birdyLinch
+    email: will.c.lynch@gmail.com
+    orcid: https://orcid.org/0000-0002-0854-2635
+  - name: Ilyes Batatia
+    affiliation: University of Cambridge
+    email: ilyes.batatia@ens-paris-saclay.fr
+    orcid: https://orcid.org/0000-0001-6915-9851
 
 repo: https://github.com/ACEsuit/mace
 doi: https://doi.org/10.48550/arXiv.2401.00096
 paper: https://arxiv.org/abs/2401.00096
 pypi: https://pypi.org/project/mace-torch
-pr_url: https://github.com/janosh/matbench-discovery/pull/48
-# checkpoint URL copied from https://github.com/ACEsuit/mace-foundations/releases/tag/mace_mp_0
-checkpoint_url: https://github.com/ACEsuit/mace-foundations/releases/download/mace_mp_0/2023-12-03-mace-128-L1_epoch-199.model
+pr_url: https://github.com/janosh/matbench-discovery/pull/175
+# checkpoint URL copied from https://github.com/ACEsuit/mace-foundations/releases/tag/mace_mpa_0
+checkpoint_url: https://github.com/ACEsuit/mace-foundations/releases/download/mace_mpa_0/mace-mpa-0-medium.model
 
 license:
   code: MIT
@@ -45,24 +46,22 @@ license:
   checkpoint_url: https://github.com/ACEsuit/mace-foundations/blob/1ff8786eb/LICENSE
 
 requirements:
-  mace-torch: 0.3.3
-  torch: 2.0.1
-  ase: 3.22.1
-  pymatgen: 2023.7.14
-  numpy: 1.25.0
+  mace-torch: 0.3.9
+  torch: 2.5.1
+  ase: 3.23.0
+  pymatgen: 2024.11.13
+  numpy: 1.26.4
 
 openness: OSOD
-trained_for_benchmark: true
+trained_for_benchmark: false
 train_task: S2EFS
 test_task: IS2RE-SR
 targets: EFS_G
 model_type: UIP
-# model_params: 2_026_624 # 2023-09-03-mace-yuan-mptrj-slower-14-lr-13_run-3
-# model_params: 15_847_440 # 2023-10-29-mace-pbenner-mptrj-no-conditional-loss
-model_params: 4_688_656 # 2023-12-03-mace-128-L1: https://tinyurl.com/y7uhwpje
+model_params: 9063204
 n_estimators: 1
 
-training_set: [MPtrj]
+training_set: [MPtrj, sAlex]
 training_cost: missing
 
 hyperparams:
@@ -76,95 +75,95 @@ hyperparams:
 notes:
   Description: |
     MACE is a higher-order equivariant message-passing neural network for fast and accurate force fields.
-  Training: The Matbench Discovery submission uses the same MPtrj-trained 'medium' checkpoint used for all analysis in the MACE-MP preprint.
+  Training: Using model pre-trained on MPTraj and Alexandria.
 
 metrics:
   phonons:
     kappa_103:
-      κ_SRME: 0.6823
-      pred_file: models/mace/mace-mp-0/2024-11-09-kappa-103-FIRE-dist=0.01-fmax=1e-4-symprec=1e-5.json.gz
-      pred_file_url: https://figshare.com/files/52134872
-      κ_SRE: 0.471
+      κ_SRME: 0.4123
+      pred_file: models/mace/mace-mpa-0/2024-11-25-kappa-103-FIRE-dist=0.01-fmax=1e-4-symprec=1e-5.json.gz
+      pred_file_url: https://figshare.com/files/52134875
+      κ_SRE: 0.2048
   geo_opt:
-    pred_file: models/mace/mace-mp-0/2023-12-11-wbm-IS2RE-FIRE.jsonl.gz
-    pred_file_url: https://figshare.com/files/57751033
+    pred_file: models/mace/mace-mpa-0/2025-01-30-wbm-IS2RE-FIRE.jsonl.gz
+    pred_file_url: https://figshare.com/files/57751036
     struct_col: mace_structure
-    symprec=1e-5:
-      rmsd: 0.0915 # unitless
-      n_sym_ops_mae: 1.838 # unitless
-      symmetry_decrease: 0.0335 # fraction
-      symmetry_match: 0.7385 # fraction
-      symmetry_increase: 0.2239 # fraction
-      n_structures: 249254 # count
-      analysis_file: models/mace/mace-mp-0/2023-12-11-wbm-IS2RE-FIRE-symprec=1e-5-moyo=0.4.2.csv.gz
-      analysis_file_url: https://figshare.com/files/53504606
     symprec=1e-2:
-      rmsd: 0.0915 # unitless
-      n_sym_ops_mae: 1.8464 # unitless
-      symmetry_decrease: 0.0599 # fraction
-      symmetry_match: 0.8112 # fraction
-      symmetry_increase: 0.122 # fraction
-      n_structures: 249254 # count
-      analysis_file: models/mace/mace-mp-0/2023-12-11-wbm-IS2RE-FIRE-symprec=1e-2-moyo=0.4.2.csv.gz
-      analysis_file_url: https://figshare.com/files/53504657
+      rmsd: 0.0731 # unitless
+      n_sym_ops_mae: 1.8086 # unitless
+      symmetry_decrease: 0.0556 # fraction
+      symmetry_match: 0.8144 # fraction
+      symmetry_increase: 0.1231 # fraction
+      n_structures: 256963 # count
+      analysis_file: models/mace/mace-mpa-0/2025-01-30-wbm-IS2RE-FIRE-symprec=1e-2-moyo=0.4.2.csv.gz
+      analysis_file_url: https://figshare.com/files/53504660
+    symprec=1e-5:
+      rmsd: 0.0731 # unitless
+      n_sym_ops_mae: 1.8808 # unitless
+      symmetry_decrease: 0.0328 # fraction
+      symmetry_match: 0.7324 # fraction
+      symmetry_increase: 0.2305 # fraction
+      n_structures: 256963 # count
+      analysis_file: models/mace/mace-mpa-0/2025-01-30-wbm-IS2RE-FIRE-symprec=1e-5-moyo=0.4.2.csv.gz
+      analysis_file_url: https://figshare.com/files/53504663
   discovery:
-    pred_file: models/mace/mace-mp-0/2023-12-11-wbm-IS2RE-FIRE.csv.gz
-    pred_file_url: https://figshare.com/files/52057538
+    pred_file: models/mace/mace-mpa-0/2024-12-09-wbm-IS2RE-FIRE.csv.gz
+    pred_file_url: https://figshare.com/files/52057541
     pred_col: e_form_per_atom_mace
     full_test_set:
-      F1: 0.668 # fraction
-      DAF: 3.4 # dimensionless
-      Precision: 0.583 # fraction
-      Recall: 0.781 # fraction
-      Accuracy: 0.867 # fraction
-      TPR: 0.781 # fraction
-      FPR: 0.115 # fraction
-      TNR: 0.885 # fraction
-      FNR: 0.219 # fraction
-      TP: 34420.0 # count
-      FP: 24576.0 # count
-      TN: 188295.0 # count
-      FN: 9672.0 # count
-      MAE: 0.055 # eV/atom
-      RMSE: 0.099 # eV/atom
-      R2: 0.698 # dimensionless
-      missing_preds: 38 # count
+      F1: 0.836 # fraction
+      DAF: 4.869 # dimensionless
+      Precision: 0.836 # fraction
+      Recall: 0.836 # fraction
+      Accuracy: 0.944 # fraction
+      TPR: 0.836 # fraction
+      FPR: 0.034 # fraction
+      TNR: 0.966 # fraction
+      FNR: 0.164 # fraction
+      TP: 36844.0 # count
+      FP: 7253.0 # count
+      TN: 205618.0 # count
+      FN: 7248.0 # count
+      MAE: 0.028 # eV/atom
+      RMSE: 0.073 # eV/atom
+      R2: 0.837 # dimensionless
+      missing_preds: 4 # count
     most_stable_10k:
-      F1: 0.888 # fraction
-      DAF: 5.221 # dimensionless
-      Precision: 0.798 # fraction
+      F1: 0.978 # fraction
+      DAF: 6.258 # dimensionless
+      Precision: 0.957 # fraction
       Recall: 1.0 # fraction
-      Accuracy: 0.798 # fraction
+      Accuracy: 0.957 # fraction
       TPR: 1.0 # fraction
       FPR: 1.0 # fraction
       TNR: 0.0 # fraction
       FNR: 0.0 # fraction
-      TP: 7982.0 # count
-      FP: 2018.0 # count
+      TP: 9566.0 # count
+      FP: 434.0 # count
       TN: 0.0 # count
       FN: 0.0 # count
-      MAE: 0.087 # eV/atom
-      RMSE: 0.165 # eV/atom
-      R2: 0.508 # dimensionless
+      MAE: 0.032 # eV/atom
+      RMSE: 0.105 # eV/atom
+      R2: 0.776 # dimensionless
       missing_preds: 0 # count
     unique_prototypes:
-      F1: 0.669 # fraction
-      DAF: 3.777 # dimensionless
-      Precision: 0.577 # fraction
-      Recall: 0.796 # fraction
-      Accuracy: 0.878 # fraction
-      TPR: 0.796 # fraction
-      FPR: 0.107 # fraction
-      TNR: 0.893 # fraction
-      FNR: 0.204 # fraction
-      TP: 26582.0 # count
-      FP: 19457.0 # count
-      TN: 162657.0 # count
-      FN: 6792.0 # count
-      MAE: 0.057 # eV/atom
-      RMSE: 0.101 # eV/atom
-      R2: 0.697 # dimensionless
-      missing_preds: 34 # count
+      F1: 0.852 # fraction
+      DAF: 5.582 # dimensionless
+      Precision: 0.853 # fraction
+      Recall: 0.851 # fraction
+      Accuracy: 0.954 # fraction
+      TPR: 0.851 # fraction
+      FPR: 0.027 # fraction
+      TNR: 0.973 # fraction
+      FNR: 0.149 # fraction
+      TP: 28417.0 # count
+      FP: 4886.0 # count
+      TN: 177228.0 # count
+      FN: 4957.0 # count
+      MAE: 0.028 # eV/atom
+      RMSE: 0.073 # eV/atom
+      R2: 0.842 # dimensionless
+      missing_preds: 2 # count
   diatomics:
-    pred_file: models/mace/mace-mp-0/2025-02-13-diatomics.json.gz
-    pred_file_url: https://figshare.com/files/52449434
+    pred_file: models/mace/mace-mpa-0/2025-02-13-diatomics.json.gz
+    pred_file_url: https://figshare.com/files/52449437

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>grace_2l_oam_l - preview</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="../index.html" class="back">Tous les modèles</a>
+    <span>grace_2l_oam_l</span>
+  </header>
+  <main>
+    <section class="hero">
+      <p>GRACE</p>
+      <h1>grace_2l_oam_l</h1>
+      <div class="facts">
+        <span>26394284 paramètres</span>
+        <span>4 fichiers de prédiction</span>
+        <span>TTL OK</span>
+      </div>
+    </section>
+    <section class="band"><h2>Identité du modèle</h2><table class="attrs"><tr><th>model_name</th><td>GRACE-2L-OAM-L</td></tr><tr><th>model_key</th><td>grace-2l-oam-l</td></tr><tr><th>model_params</th><td><span class="number">26394284</span></td></tr><tr><th>date_added</th><td>2025-09-09</td></tr><tr><th>url</th><td><a href="https://gracemaker.readthedocs.io/en/latest/gracemaker/foundation">https://gracemaker.readthedocs.io/en/latest/gracemaker/foundation</a></td></tr><tr><th>paper</th><td><a href="https://arxiv.org/abs/2508.17936">https://arxiv.org/abs/2508.17936</a></td></tr><tr><th>pr_url</th><td><a href="https://github.com/janosh/matbench-discovery/pull/283">https://github.com/janosh/matbench-discovery/pull/283</a></td></tr><tr><th>checkpoint_url</th><td><a href="https://ruhr-uni-bochum.sciebo.de/s/s6YrAAk9aTjQBd8">https://ruhr-uni-bochum.sciebo.de/s/s6YrAAk9aTjQBd8</a></td></tr><tr><th>license</th><td><table class="attrs"><tr><th>code</th><td>ASL</td></tr><tr><th>code_url</th><td><a href="https://github.com/ICAMS/grace-tensorpotential/blob/3f614c8ae6/LICENSE.md">https://github.com/ICAMS/grace-tensorpotential/blob/3f614c8ae6/LICENSE.md</a></td></tr><tr><th>checkpoint</th><td>ASL</td></tr><tr><th>checkpoint_url</th><td><a href="https://github.com/ICAMS/grace-tensorpotential/blob/3f614c8ae6/LICENSE.md">https://github.com/ICAMS/grace-tensorpotential/blob/3f614c8ae6/LICENSE.md</a></td></tr></table></td></tr><tr><th>family</th><td><div class="value">GRACE</div><div class="evidence">YAML model_name: GRACE-2L-OAM-L; PDF: &#x27;Graph Atomic Cluster Expansion (GRACE) framework&#x27;</div></td></tr><tr><th>variant</th><td><div class="value">grace_2l_oam_l</div><div class="evidence">YAML model_name: GRACE-2L-OAM-L, lowercased with underscores</div></td></tr><tr><th>parameter_number</th><td><div class="value"><span class="number">26394284</span></div><div class="evidence">YAML model_params: 26394284</div></td></tr></table></section><section class="band"><h2>Tasks et protocole</h2><table class="attrs compact"><tr><th>Champ</th><th>Valeur</th></tr><tr><td>Training task</td><td>S2EF</td></tr><tr><td>Test task</td><td>IS2RE-SR</td></tr><tr><td>Targets</td><td>EFS_G</td></tr><tr><td>Model type</td><td>UIP</td></tr><tr><td>Openness</td><td>OSOD</td></tr><tr><td>Benchmark tasks</td><td><ul><li>phonons (available)</li><li>geo_opt (available)</li><li>discovery (available)</li><li>diatomics (available)</li></ul></td></tr></table></section><section class="band"><h2>Métriques et résultats</h2><table class="attrs compact"><tr><th>Task</th><th>Jeu / split</th><th>Métriques</th></tr><tr><td>phonons</td><td>kappa_103</td><td><div class="metric-list"><span class="metric"><strong>κ_SRME</strong> <span class="number">0.1688</span></span><span class="metric"><strong>κ_SRE</strong> <span class="number">0.064</span></span></div></td></tr><tr><td>geo_opt</td><td>symprec=1e-2</td><td><div class="metric-list"><span class="metric"><strong>rmsd</strong> <span class="number">0.0639</span></span><span class="metric"><strong>n_sym_ops_mae</strong> <span class="number">1.7371</span></span><span class="metric"><strong>symmetry_decrease</strong> <span class="number">0.0537</span></span><span class="metric"><strong>symmetry_match</strong> <span class="number">0.8166</span></span><span class="metric"><strong>symmetry_increase</strong> <span class="number">0.1226</span></span><span class="metric"><strong>n_structures</strong> <span class="number">256958</span></span></div></td></tr><tr><td>geo_opt</td><td>symprec=1e-5</td><td><div class="metric-list"><span class="metric"><strong>rmsd</strong> <span class="number">0.0639</span></span><span class="metric"><strong>n_sym_ops_mae</strong> <span class="number">1.8197</span></span><span class="metric"><strong>symmetry_decrease</strong> <span class="number">0.0539</span></span><span class="metric"><strong>symmetry_match</strong> <span class="number">0.7343</span></span><span class="metric"><strong>symmetry_increase</strong> <span class="number">0.2067</span></span><span class="metric"><strong>n_structures</strong> <span class="number">256958</span></span></div></td></tr><tr><td>discovery</td><td>full_test_set</td><td><div class="metric-list"><span class="metric"><strong>F1</strong> <span class="number">0.862</span></span><span class="metric"><strong>DAF</strong> <span class="number">5.093</span></span><span class="metric"><strong>Precision</strong> <span class="number">0.874</span></span><span class="metric"><strong>Recall</strong> <span class="number">0.851</span></span><span class="metric"><strong>Accuracy</strong> <span class="number">0.953</span></span><span class="metric"><strong>TPR</strong> <span class="number">0.851</span></span><span class="metric"><strong>FPR</strong> <span class="number">0.025</span></span><span class="metric"><strong>TNR</strong> <span class="number">0.975</span></span><span class="metric"><strong>FNR</strong> <span class="number">0.149</span></span><span class="metric"><strong>TP</strong> <span class="number">37509.0</span></span><span class="metric"><strong>FP</strong> <span class="number">5415.0</span></span><span class="metric"><strong>TN</strong> <span class="number">207456.0</span></span><span class="metric"><strong>FN</strong> <span class="number">6583.0</span></span><span class="metric"><strong>MAE</strong> <span class="number">0.022</span></span><span class="metric"><strong>RMSE</strong> <span class="number">0.068</span></span><span class="metric"><strong>R2</strong> <span class="number">0.856</span></span><span class="metric"><strong>missing_preds</strong> <span class="number">7</span></span></div></td></tr><tr><td>discovery</td><td>most_stable_10k</td><td><div class="metric-list"><span class="metric"><strong>F1</strong> <span class="number">0.98</span></span><span class="metric"><strong>DAF</strong> <span class="number">6.28</span></span><span class="metric"><strong>Precision</strong> <span class="number">0.96</span></span><span class="metric"><strong>Recall</strong> <span class="number">1.0</span></span><span class="metric"><strong>Accuracy</strong> <span class="number">0.96</span></span><span class="metric"><strong>TPR</strong> <span class="number">1.0</span></span><span class="metric"><strong>FPR</strong> <span class="number">1.0</span></span><span class="metric"><strong>TNR</strong> <span class="number">0.0</span></span><span class="metric"><strong>FNR</strong> <span class="number">0.0</span></span><span class="metric"><strong>TP</strong> <span class="number">9600.0</span></span><span class="metric"><strong>FP</strong> <span class="number">400.0</span></span><span class="metric"><strong>TN</strong> <span class="number">0.0</span></span><span class="metric"><strong>FN</strong> <span class="number">0.0</span></span><span class="metric"><strong>MAE</strong> <span class="number">0.025</span></span><span class="metric"><strong>RMSE</strong> <span class="number">0.088</span></span><span class="metric"><strong>R2</strong> <span class="number">0.835</span></span><span class="metric"><strong>missing_preds</strong> <span class="number">0</span></span></div></td></tr><tr><td>discovery</td><td>unique_prototypes</td><td><div class="metric-list"><span class="metric"><strong>F1</strong> <span class="number">0.883</span></span><span class="metric"><strong>DAF</strong> <span class="number">5.84</span></span><span class="metric"><strong>Precision</strong> <span class="number">0.893</span></span><span class="metric"><strong>Recall</strong> <span class="number">0.874</span></span><span class="metric"><strong>Accuracy</strong> <span class="number">0.964</span></span><span class="metric"><strong>TPR</strong> <span class="number">0.874</span></span><span class="metric"><strong>FPR</strong> <span class="number">0.019</span></span><span class="metric"><strong>TNR</strong> <span class="number">0.981</span></span><span class="metric"><strong>FNR</strong> <span class="number">0.126</span></span><span class="metric"><strong>TP</strong> <span class="number">29178.0</span></span><span class="metric"><strong>FP</strong> <span class="number">3506.0</span></span><span class="metric"><strong>TN</strong> <span class="number">178608.0</span></span><span class="metric"><strong>FN</strong> <span class="number">4196.0</span></span><span class="metric"><strong>MAE</strong> <span class="number">0.022</span></span><span class="metric"><strong>RMSE</strong> <span class="number">0.068</span></span><span class="metric"><strong>R2</strong> <span class="number">0.862</span></span><span class="metric"><strong>missing_preds</strong> <span class="number">5</span></span></div></td></tr></table></section><section class="band"><h2>Fichiers de résultats / prédictions</h2><table class="attrs compact"><tr><th>Fichier</th><th>Statut</th><th>Taille</th><th>URL</th><th>Chemin local</th></tr><tr><td>grace_2l_oam_l_LTC_FIRE_2SR_force1e-05_sym1e-05_k_srme.json.gz</td><td><span class='pill missing'>missing</span></td><td>N/A</td><td><a href="https://figshare.com/files/59046998">https://figshare.com/files/59046998</a></td><td>outputs\pred_files\grace_2l_oam_l\grace_2l_oam_l_LTC_FIRE_2SR_force1e-05_sym1e-05_k_srme.json.gz</td></tr><tr><td>grace_2l_oam_l-wbm-IS2RE-FIRE.jsonl.gz</td><td><span class='pill missing'>missing</span></td><td>N/A</td><td><a href="https://figshare.com/files/59046950">https://figshare.com/files/59046950</a></td><td>outputs\pred_files\grace_2l_oam_l\grace_2l_oam_l-wbm-IS2RE-FIRE.jsonl.gz</td></tr><tr><td>grace_2l_oam_l-preds.csv.gz</td><td><span class='pill missing'>missing</span></td><td>N/A</td><td><a href="https://figshare.com/files/59046947">https://figshare.com/files/59046947</a></td><td>outputs\pred_files\grace_2l_oam_l\grace_2l_oam_l-preds.csv.gz</td></tr><tr><td>2025-02-19-diatomics.json.gz</td><td><span class='pill missing'>missing</span></td><td>N/A</td><td><a href="https://figshare.com/files/59047001">https://figshare.com/files/59047001</a></td><td>outputs\pred_files\grace_2l_oam_l\2025-02-19-diatomics.json.gz</td></tr></table></section><section class="band"><h2>Datasets</h2><table class="attrs compact"><tr><th>Dataset</th><th>Contexte</th></tr><tr><td>OMat24</td><td>YAML training_set</td></tr><tr><td>sAlex</td><td>YAML training_set</td></tr><tr><td>MPtrj</td><td>YAML training_set</td></tr><tr><td>OMat24</td><td>Architecture: GRACE-2L</td></tr><tr><td>sAlex</td><td>Architecture: GRACE-2L</td></tr><tr><td>MPtrj</td><td>Architecture: GRACE-2L</td></tr></table></section><section class="band"><h2>Hyperparamètres</h2><p class="muted">Aucun hyperparamètre structuré trouvé.</p></section><section class="band"><h2>Architecture</h2><table class="attrs"><tr><th>GRACE-2L</th><td><table class="attrs"><tr><th>ontology_class</th><td><div class="value">EquivariantMessagePassingNeuralNetworkArchitecture</div><div class="evidence">PDF: GRACE extends ACE to tree-graphs with equivariant message passing; ontology: EquivariantMessagePassingNeuralNetworkArchitecture</div></td></tr><tr><th>parameter_number</th><td><div class="value"><span class="number">26394284</span></div><div class="evidence">YAML model_params: 26394284 for GRACE-2L-OAM-L</div></td></tr><tr><th>datasets</th><td><div class="value"><ul><li>OMat24</li><li>sAlex</li><li>MPtrj</li></ul></div><div class="evidence">YAML training_set: [OMat24, sAlex, MPtrj]; PDF Section II.A</div></td></tr><tr><th>hyperparameters</th><td><div class="value"><ul><li>learning_rate</li><li>batch_size</li><li>loss_weights</li><li>cutoff_radius</li><li>max_angular_momentum</li><li>radial_basis_size</li><li>product_order</li><li>chemical_embedding_dimension</li></ul></div><div class="evidence">PDF Section IV.A and Supplementary Table S1</div></td></tr><tr><th>components</th><td><div class="value"><ul><li>ACE_star_graph_basis</li><li>equivariant_message_passing_layer</li><li>tree_graph_GRACE_basis</li><li>atomic_energy_readout</li></ul></div><div class="evidence">PDF Section IV.A and Fig S1</div></td></tr><tr><th>backbone_architecture</th><td><div class="value">AtomicClusterExpansion</div><div class="evidence">PDF: GRACE builds on Atomic Cluster Expansion (ACE) method</div></td></tr><tr><th>head_architecture</th><td><div class="value">MLP_energy_readout</div><div class="evidence">PDF Section IV.A: atomic energy computed via embedding scheme with MLP</div></td></tr><tr><th>layer_count</th><td><div class="value"><span class="number">2</span></div><div class="evidence">YAML model_name: GRACE-2L; PDF: two-layer models include semi-local interactions</div></td></tr><tr><th>hidden_dimension</th><td><div class="value"><span class="number">128</span></div><div class="evidence">Supplementary Table S1: chemical embedding dimension 128</div></td></tr></table></td></tr></table></section><section class="band"><h2>Training runs</h2><table class="attrs"><tr><th>training_runs</th><td><ul><li><table class="attrs"><tr><th>id</th><td>omat24_pretraining</td></tr><tr><th>type</th><td><div class="value">PretrainingRun</div><div class="evidence">PDF Section IV.A: models initially trained on OMat24 dataset</div></td></tr><tr><th>architectures</th><td><div class="value"><ul><li>GRACE-2L</li></ul></div><div class="evidence">PDF Section IV.A</div></td></tr><tr><th>datasets</th><td><div class="value"><ul><li>OMat24</li></ul></div><div class="evidence">PDF Section IV.A: trained on OMat24 dataset for 8 epochs (2L)</div></td></tr><tr><th>optimizer</th><td><div class="value">Adam</div><div class="evidence">PDF Section IV.A: employed the Adam optimizer</div></td></tr><tr><th>loss_function</th><td><div class="value">Huber_loss</div><div class="evidence">PDF Section IV.A: utilize the Huber loss with delta=0.01</div></td></tr><tr><th>description</th><td><div class="value">Initial pretraining of GRACE-2L on OMat24 dataset for 8 epochs with equal weighting of energy, force, and stress losses</div><div class="evidence">PDF Section IV.A</div></td></tr><tr><th>objective_function</th><td><div class="value">combined_energy_force_stress_loss</div><div class="evidence">PDF Section IV.A: L = αE*Le + αF*Lf + αS*Ls with αE:αF:αS = 16:128:128</div></td></tr><tr><th>sampling_method</th><td><div class="value"><span class="muted">null</span></div><div class="evidence">Not specified</div></td></tr><tr><th>uses_batched_selection</th><td><div class="value"><span class="muted">null</span></div><div class="evidence">Not specified</div></td></tr><tr><th>initialized_from_model_materialization</th><td><div class="value"><span class="muted">null</span></div><div class="evidence">Trained from scratch</div></td></tr><tr><th>teacher_model</th><td><div class="value"><span class="muted">null</span></div><div class="evidence">Not a distillation run</div></td></tr><tr><th>student_model</th><td><div class="value"><span class="muted">null</span></div><div class="evidence">Not a distillation run</div></td></tr><tr><th>model_materializations</th><td><div class="value"><ul><li>GRACE-2L-OMAT-base</li></ul></div><div class="evidence">PDF Section IV.A: initial parameterizations designated as OMAT-base</div></td></tr></table></li><li><table class="attrs"><tr><th>id</th><td>oam_finetuning</td></tr><tr><th>type</th><td><div class="value">MachineLearningFinetuningRun</div><div class="evidence">PDF Section IV.A: fine-tuned OMAT-base models on combined MPTraj and sAlex datasets</div></td></tr><tr><th>architectures</th><td><div class="value"><ul><li>GRACE-2L</li></ul></div><div class="evidence">PDF Section IV.A</div></td></tr><tr><th>datasets</th><td><div class="value"><ul><li>MPtrj</li><li>sAlex</li></ul></div><div class="evidence">PDF Section IV.A: fine-tuned on combination of MPTraj and sAlex datasets</div></td></tr><tr><th>optimizer</th><td><div class="value">Adam</div><div class="evidence">PDF Section IV.A: employed the Adam optimizer</div></td></tr><tr><th>loss_function</th><td><div class="value">Huber_loss</div><div class="evidence">PDF Section IV.A: Huber loss with delta=0.01</div></td></tr><tr><th>description</th><td><div class="value">Fine-tuning of GRACE-2L-OMAT-base on MPTraj and sAlex combined dataset for 4 epochs with adjusted loss weights</div><div class="evidence">PDF Section IV.A</div></td></tr><tr><th>objective_function</th><td><div class="value">combined_energy_force_stress_loss</div><div class="evidence">PDF Section IV.A: αE:αF:αS = 128:128:256</div></td></tr><tr><th>sampling_method</th><td><div class="value"><span class="muted">null</span></div><div class="evidence">Not specified</div></td></tr><tr><th>uses_batched_selection</th><td><div class="value"><span class="muted">null</span></div><div class="evidence">Not specified</div></td></tr><tr><th>initialized_from_model_materialization</th><td><div class="value">GRACE-2L-OMAT-base</div><div class="evidence">PDF Section IV.A: fine-tuned OMAT-base models</div></td></tr><tr><th>teacher_model</th><td><div class="value"><span class="muted">null</span></div><div class="evidence">Not a distillation run</div></td></tr><tr><th>student_model</th><td><div class="value"><span class="muted">null</span></div><div class="evidence">Not a distillation run</div></td></tr><tr><th>model_materializations</th><td><div class="value"><ul><li>GRACE-2L-OAM-L</li></ul></div><div class="evidence">PDF Section IV.A: resulting models denoted with OAM suffix</div></td></tr></table></li></ul></td></tr></table></section><section class="band"><h2>Sources locales</h2><table class="attrs"><tr><th>yaml</th><td>model_yamls\grace_2l_oam_l.yml</td></tr><tr><th>json</th><td>outputs\json\grace_2l_oam_l_model_extraction.json</td></tr><tr><th>ttl_repaired</th><td>outputs\ttl_repaired\grace_2l_oam_l_model_individuals_generated.ttl</td></tr></table></section><section class="band"><h2>Sources d&#x27;extraction</h2><table class="attrs"><tr><th>pdf_file</th><td>C:\Users\user\Desktop\Matbench-onto\papers\grace_2l_oam_l.pdf</td></tr><tr><th>pdf_url</th><td><a href="https://arxiv.org/pdf/2508.17936.pdf">https://arxiv.org/pdf/2508.17936.pdf</a></td></tr><tr><th>yaml_file</th><td>C:\Users\user\Desktop\Matbench-onto\model_yamls\grace_2l_oam_l.yml</td></tr></table></section>
+  </main>
+  
+<aside id="object-inspector" class="inspector" aria-live="polite">
+  <button type="button" class="inspector-close" data-inspector-close>×</button>
+  <p data-inspector-kind>objet</p>
+  <h2 data-inspector-title>Sélectionne un objet</h2>
+  <div class="inspector-body" data-inspector-body>
+    Clique sur une métrique, un dataset, une task, un hyperparamètre, un lien ou une ligne du tableau.
+  </div>
+  <div class="inspector-source" data-inspector-source>La description apparaîtra ici.</div>
+</aside>
+
+  
+<script>
+(() => {
+  const panel = document.querySelector('#object-inspector');
+  const title = panel?.querySelector('[data-inspector-title]');
+  const kind = panel?.querySelector('[data-inspector-kind]');
+  const body = panel?.querySelector('[data-inspector-body]');
+  const source = panel?.querySelector('[data-inspector-source]');
+  const close = panel?.querySelector('[data-inspector-close]');
+  if (!panel || !title || !kind || !body || !source) return;
+
+  const clean = (text) => (text || '').replace(/\s+/g, ' ').trim();
+
+  function describe(target) {
+    const metric = target.closest('.metric');
+    if (metric) {
+      return {
+        title: clean(metric.querySelector('strong')?.textContent) || 'Métrique',
+        kind: 'metric',
+        body: clean(metric.textContent),
+        source: clean(metric.closest('tr')?.querySelector('td:nth-child(2)')?.textContent)
+      };
+    }
+
+    const row = target.closest('tr');
+    if (row) {
+      const header = clean(row.querySelector(':scope > th')?.textContent)
+        || clean(row.querySelector(':scope > td:first-child')?.textContent)
+        || 'Objet';
+      const section = clean(row.closest('section')?.querySelector('h2')?.textContent);
+      const evidence = clean(row.querySelector('.evidence')?.textContent);
+      const sourceText = clean(row.querySelector('.source')?.textContent)
+        || clean(row.querySelector('a')?.getAttribute('href'));
+      return {
+        title: header,
+        kind: section || 'attribut',
+        body: clean(row.textContent),
+        source: evidence || sourceText
+      };
+    }
+
+    const item = target.closest('li, .facts span, h1, h2, a, .pill, .value');
+    if (item) {
+      return {
+        title: clean(item.textContent) || clean(item.getAttribute('href')) || 'Objet',
+        kind: clean(item.closest('section')?.querySelector('h2')?.textContent) || item.tagName.toLowerCase(),
+        body: clean(item.textContent) || clean(item.getAttribute('href')),
+        source: clean(item.getAttribute('href')) || clean(item.closest('tr')?.querySelector('.evidence')?.textContent)
+      };
+    }
+
+    return null;
+  }
+
+  document.addEventListener('click', (event) => {
+    const candidate = event.target.closest('tr, li, .metric, .facts span, h1, h2, a, .pill, .value');
+    if (!candidate || candidate.closest('#object-inspector')) return;
+    const info = describe(candidate);
+    if (!info) return;
+
+    if (candidate.closest('a') && !(event.ctrlKey || event.metaKey || event.shiftKey)) {
+      event.preventDefault();
+    }
+    event.stopPropagation();
+
+    title.textContent = info.title || 'Objet';
+    kind.textContent = info.kind || 'objet';
+    body.textContent = info.body || 'Pas de description disponible.';
+    source.textContent = info.source || 'Source non renseignée pour cet objet.';
+    panel.classList.add('open');
+  });
+
+  close?.addEventListener('click', () => panel.classList.remove('open'));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') panel.classList.remove('open');
+  });
+})();
+</script>
+
+</body>
+</html>

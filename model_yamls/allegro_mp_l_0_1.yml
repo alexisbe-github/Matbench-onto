@@ -44,7 +44,7 @@ train_task: S2EFS # see `Task` enum in matbench_discovery/enums.py
 test_task: IS2RE-SR # see `Task` enum in matbench_discovery/enums.py
 targets: EFS_G # see `Targets` enum in matbench_discovery/enums.py
 model_type: UIP # see `ModelType` enum in matbench_discovery/enums.py
-model_params: 18_700_000
+model_params: 18700000
 trained_for_benchmark: true
 n_estimators: 1
 
@@ -85,7 +85,7 @@ hyperparams:
   max_neighbors: .inf
 
 training_cost:
-  Nvidia H100 GPUs: { amount: 8, hours: 50, cost: 400 }
+  Nvidia H100 GPUs: {amount: 8, hours: 50, cost: 400}
 
 requirements:
   torch: '2'
@@ -185,3 +185,33 @@ metrics:
       RMSE: 0.124 # eV/atom
       R2: 0.706 # dimensionless
       missing_preds: 0 # count
+  md:
+    pred_file: models/allegro/allegro-MP-L-0.1/2026-06-28-allegro_mp_l_0_1-md-metrics.csv.gz
+    energy_rmse: 1.0896 # meV/atom
+    force_rmse: 114.7238 # meV/Å
+    rdf_error: 4.2778 # %
+    adf_error: 1.7265 # %
+    vdos_error: 24.3299 # %
+    pressure_mae: 0.8126 # GPa
+    pressure_wasserstein: 0.8159 # GPa
+    pressure_error: 56.5183 # %
+    combined_score: 0.782869
+    n_systems: 17 # count
+    pred_file_url: https://figshare.com/files/66048845
+  diatomics:
+    pred_file: models/allegro/allegro-MP-L-0.1/2026-06-28-diatomics.json.gz
+    hardware: NVIDIA H200
+    run_time_sec: 84.64
+    pbe_wall_dist_mae: 0.1521
+    pbe_energy_mae: 1.451
+    pbe_bond_length_error: 0.1623
+    pbe_well_depth_error: 1.588
+    pbe_vib_freq_error: 138.7
+    tortuosity: 1.036
+    energy_diff_flips: 1.46
+    energy_jump: 0.06922
+    force_flips: 1.483
+    force_total_variation: 100.8
+    force_jump: 3.301
+    pbe_force_mae: 1.8
+    pred_file_url: https://figshare.com/files/66104582

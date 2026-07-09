@@ -1,0 +1,923 @@
+[page 1]
+Published as a conference paper at ICLR 2026
+MATRIS: TOWARDRELIABLE ANDEFFICIENTPRE-
+TRAINEDMACHINELEARNINGINTERATOMICPOTEN-
+TIALS
+Yuanchang Zhou1,2 Siyu Hu1,2 Xiangyu Zhang1,2 Hongyu Wang1,2,3
+Guangming Tan1,2∗ Weile Jia1,2,∗
+1State Key Lab of Processors, Institute of Computing Technology, Chinese Academy of Sciences
+2University of Chinese Academy of Sciences
+3School of Advanced Interdisciplinary Sciences, UCAS
+{zhouyuanchang23s, jiaweile}@ict.ac.cn
+ABSTRACT
+Foundation MLIPs demonstrate broad applicability across diverse material sys-
+tems and have emerged as a powerful and transformative paradigm in chemical
+and computational materials science. Equivariant MLIPs achieve state-of-the-art
+accuracy in a wide range of benchmarks by incorporating equivariant inductive
+bias. However, the reliance on tensor products and high-degree representations
+makes them computationally costly. This raises a fundamental question: as quan-
+tum mechanical-based datasets continue to expand, can we develop a more com-
+pact model to thoroughly exploit high-dimensional atomic interactions? In this
+work, we present MatRIS (MaterialsRepresentation andInteractionSimulation),
+an invariant MLIP that introduces attention-based modeling of three-body inter-
+actions. MatRIS leverages a novel separable attention mechanism with linear
+complexityO(N), enabling both scalability and expressiveness. MatRIS deliv-
+ers accuracy comparable to that of leading equivariant models on a wide range
+of popular benchmarks (Matbench-Discovery, MatPES, MDR phonon, Molecular
+dataset, etc). Taking Matbench-Discovery as an example, MatRIS achieves an F1
+score of up to 0.847 and attains comparable accuracy at a lower training cost. The
+work indicates that our carefully designed invariant models can match or exceed
+the accuracy of equivariant models at a fraction of the cost, shedding light on the
+development of accurate and efficient MLIPs.
+1 INTRODUCTION
+Quantum Mechanics (QM)-based calculations are the cornerstone of modern drug and material re-
+search, providing highly accurate modeling of interatomic interactions. However, their prohibitive
+computational cost makes large-scale simulations intractable (De Vivo et al., 2016; Jain et al., 2013b;
+Merchant et al., 2023). Machine learning interatomic potentials (MLIPs) have emerged as a pow-
+erful alternative, enabling accelerated, long-timescale molecular dynamics (MD) simulations while
+retaining near-quantum-chemical accuracy. With the increase in QM-based reference data and model
+innovations, MLIPs have demonstrated remarkable accuracy and generalization in property predic-
+tion and materials discovery (Merchant et al., 2023; Barroso-Luque et al., 2024; Zhang et al., 2024;
+Yang et al., 2024; Zhang et al., 2025; Fu et al., 2025; Wood et al., 2025).
+Graph neural networks (GNNs) have been widely adopted for 3D molecular modeling, where atoms
+are represented as nodes and interatomic interactions as edges (Qu & Krishnapriyan, 2024; Liao &
+Smidt, 2023; Liao et al., 2024b; Fu et al., 2025). Through Message Passing (MP), node features are
+iteratively updated to capture local and global structural interactions. To enhance model expressive-
+ness and generalization, many MLIPs incorporate domain-specific inductive biases (e.g., translation,
+∗Corresponding author
+1
+arXiv:2603.02002v3  [cs.LG]  6 Mar 2026
+
+[page 2]
+Published as a conference paper at ICLR 2026
+rotation, permutation, reflection invariance, or equivariance). Depending on how these symme-
+tries are encoded, MLIPs are broadly divided into invariant, equivariant and unconstrained architec-
+tures (Duval et al., 2024; Jacobs et al., 2025). In invariant models, the structural descriptor is encoded
+based on attributes such as interatomic distances, bond angles, and dihedral angles (Gasteiger et al.,
+2020; 2022b; Klicpera et al., 2021; Deng et al., 2023; Zhang et al., 2025). In equivariant models,
+higher-order equivariance is typically enforced through computationally intensive tensor products of
+rotation orderL(Batzner et al., 2022; Batatia et al., 2022; Liao & Smidt, 2023; Liao et al., 2024b).
+eSEN-30MeqV2 S DeNSDPA3SevenNet
+HIENetMACE-MP-0Nequix
+601201800 240300360420
+SML13.0x6.4x
+0.650.690.730.770.810.85
+Training time (A100 GPU-days)
+F1 score (higher is better)MatRIS
++8%
+Eqnorm
+Figure 1: Trade-offs between training time and F1
+score of foundation MLIPs. Training times for
+eSEN and eqV2 are estimated on Nvidia-A100.
+Nequix (Koker & Smidt, 2025) was trained on
+JAX; all others onPyTorch. Larger marks in-
+dicate models with more parameters.
+Previous work demonstrates that equiv-
+ariant models often deliver superior accu-
+racy (Batzner et al., 2022). In contrast,
+unconstrained models do not explicitly encode
+symmetries; instead, the model learns them
+from data or approximates them through data
+augmentation or auxiliary losses, leading
+to more flexible architectural design (Duval
+et al., 2024; Neumann et al., 2024; Rhodes
+et al., 2025). Meanwhile, the results in a
+popular benchmark (Matbench-Discovery
+leaderboard (Riebesell et al., 2025)) indicate
+that equivariant GNNs achieve higher accuracy.
+When the training data is MPTrj (Deng et al.,
+2023), eSEN-30M-MP (Fu et al., 2025) and
+eqV2 S DeNS (Barroso-Luque et al., 2024)
+reach F1 scores of 0.831 and 0.815, with
+energy errors of 0.033 and 0.036 meV/atom,
+respectively. Despite the accuracy gains, the
+heavy equivariant operations make equivariant
+methods significantly more computationally
+expensive and memory-intensive. Our in-
+vestigation into the training cost of several
+mainstream pretrained models is summarized in Figure 1. eSEN-30M-MP and eqV2 S DeNS show
+superior F1 score while requiring 335 and 228 GPU days, respectively. This high computational
+demand can be caused by three main factors: 1) the intensive equivariant operations such as
+tensor products, 2) the large number of model parameters, and 3) the prolonged training schedules
+(e.g., 100, 150, and 600 training epochs are reported for eSEN-30M-MP, eqV2 S DeNS, and
+SevenNet-l3i5 (Kim et al., 2025), respectively).
+Incorporating equivariance into the GNN MLIPs serves as an implicit form of data augmentation.
+AlphaFold has shown that, with sufficient data, non-equivariant models can accurately predict pro-
+tein secondary structures (Jumper et al., 2021; Abramson et al., 2024). In MLIPs, the rapid increase
+in QM-based reference datasets (Barroso-Luque et al., 2024; Levine et al., 2025; Gharakhanyan
+et al., 2025; Sriram et al., 2025) motivates us to ask:Is the equivariance indispensable as the
+QM-based dataset continues to increase? Can we develop a more compact architecture to
+capture the high-dimensional atomic interactions encoded in QM-based data sufficiently?
+We have the following findings: 1) Recent studies (Yang et al., 2024; Zhang et al., 2024; 2025)
+show that invariant models offer reliable property predictions and enable a wide range of scien-
+tific applications while maintaining computational efficiency. 2) For a more compact architecture
+(i.e., one that can fully exploit QM-based data). Element types and pairwise interactions have been
+shown to be insufficient for distinguishing graphs with different chemical properties (Xu et al.,
+2019). Incorporating three-body interactions is needed to exploit the knowledge in QM-based data.
+Self-attention mechanisms (Mazitov et al., 2025; Qu & Krishnapriyan, 2024) have proven to be a
+promising method in improving model expressiveness, also benefiting in model scalability.
+Building on these insights, we introduce an invariant MLIP: interatomic potential forMaterials
+Representation andInteractionSimulation (MatRIS). To the best of our knowledge, our model
+is the first to explicitly leverage anO(N)attention mechanism to model three-body interactions.
+MatRIS consists of graph generation, feature embedding, graph attention, refinement, and a readout
+block. We provide the ablation study of these modules in this paper. Putting all these modules
+together, MatRIS achieves state-of-the-art (SOTA) accuracy and efficiency across a wide range of
+2
+
+[page 3]
+Published as a conference paper at ICLR 2026
+chemical applications. Additionally, the novel separable attention has lower complexity (O(N))
+compared to full attention (O(N 2)). Across diverse benchmarks, MatRIS achieves competitive
+results. MatRIS-L achieves SOTA results on compliant Matbench-Discovery with an F1 of0.847
+and a root mean square displacement (RMSD) of0.0717. Moreover, MatRIS-S and MatRIS-M
+deliver accuracy comparable to eqV2 S DeNS and eSEN-30M-MP, respectively, while improving
+training efficiency by13.0×and6.4×, respectively. These results demonstrate MatRIS’s strong
+potential for applications in materials science and drug discovery.
+2 RELATED WORKS
+Invariant MLIPs.Invariant MLIPs are models whose intermediate representations are invari-
+ant under rotations and translations (Duval et al., 2024). This invariance is achieved by using
+internal coordinates instead of Cartesian coordinates, with features such as interatomic distances,
+bond angles, and dihedral angles remaining unchanged under rotations and translations of the sys-
+tem (Sch¨utt et al., 2017; Gasteiger et al., 2020; Novikov et al., 2020; Fan et al., 2022; Gasteiger et al.,
+2022b; Chen & Ong, 2022; Deng et al., 2023; Zhang et al., 2025). Early invariant MLIPs, such as
+SchNet (Sch ¨utt et al., 2017), CGCNN (Xie & Grossman, 2018), and PhysNet (Unke & Meuwly,
+2019), employ relative distances between node pairs and encode local geometric information via
+learnable radial basis functions. More recent MLIPs enhance representational expressiveness by
+incorporating higher-order many-body scalar features. For example, the DimeNet (Gasteiger et al.,
+2020; 2022a) series introduced directional message passing, allowing angular information to be em-
+bedded in edge updates between atoms. The GemNet series (Gasteiger et al., 2022b; Klicpera et al.,
+2021) further incorporates dihedral angles to improve performance. SphereNet (Liu et al., 2022) and
+ComENet (Wang et al., 2022) proposed methods to efficiently extract four-body angles within local
+neighborhoods, avoiding the need to iterate over all three-hop neighbors. DPA3 (Zhang et al., 2025)
+builds upon the line graph series (LiGS), capturing higher-order interactions. Invariant MLIPs are
+progressively increasing their representational expressiveness while maintaining inherent computa-
+tional efficiency. Building upon these insights, we design MatRIS from an invariant perspective. We
+further provide a detailed discussion in Appendix A, highlighting how MatRIS differs from other
+MLIPs that incorporate three-body encodings or attention-based mechanisms.
+Equivariant MLIPs.Equivariant MLIPs are models where intermediate representations are in-
+variant (e.g., scalars) or equivariant (e.g., vectors or higher-order tensors) under rotations (Duval
+et al., 2024). Current equivariant MLIPs can be divided into scalarization-based models (Sch ¨utt
+et al., 2021; Du et al., 2023; Th ¨olke & Fabritiis, 2022; Aykent & Xia, 2025) and high-degree steer-
+able models (Musaelian et al., 2023; Batzner et al., 2022; Batatia et al., 2022; Liao & Smidt, 2023).
+Scalarization-based MLIPs model interatomic interactions in the Cartesian coordinate system while
+restricting the set of operations on geometric features to preserve equivariance (Duval et al., 2024;
+Wang et al., 2024; Yin et al., 2025). On the other hand, high-degree steerable equivariant MLIPs
+use irreducible representations (irreps) to encode features, ensuring equivariance under 3D rotations.
+Each irrep of degreeLcorresponds to a(2L+ 1)-dimensional vector space (Batzner et al., 2022;
+Batatia et al., 2022; Liao & Smidt, 2023). In equivariant GNN-based MLIPs, MP involves trans-
+forming and combining these type-Lvectors. To interact across degrees during MP, tensor products
+(by using Clebsch–Gordan coefficients to combine) are employed. To avoid excessive computational
+complexity, these models typically employ only low-degree equivariant representations (Park et al.,
+2024; Liao et al., 2024b; Fu et al., 2025). Equivariant MLIPs continue to deliver SOTA accuracy
+on various benchmarks (Tran et al., 2023; Riebesell et al., 2025), while remaining computationally
+demanding.
+Unconstrained MLIPs.Unconstrained MLIPs do not impose strict constraints on their interme-
+diate representations. Instead, these models typically learn symmetries directly from the data or
+incorporate additional loss terms to encourage symmetry learning (Duval et al., 2024; Rhodes et al.,
+2025). For example, Qu & Krishnapriyan (2024); Neumann et al. (2024); Rhodes et al. (2025)
+use data augmentation (applying random rotations to training samples) to learn rotational equiv-
+ariance and have demonstrated promising results. In addition, Neumann et al. (2024) enhances
+stability in MD simulations by removing net force and torque, while Rhodes et al. (2025) intro-
+duces an ‘Equigrad’ loss to incentivize rotational invariance of energy. Unconstrained MLIPs have
+inference efficiency comparable to invariant MLIPs and more flexible architectures. These models
+3
+
+[page 4]
+Published as a conference paper at ICLR 2026
+demonstrate competitive accuracy in multiple benchmarks (Chanussot et al., 2021; Tran et al., 2023;
+Riebesell et al., 2025). However, studies indicate that they may lead to errors in certain property
+prediction tasks (Fu et al., 2023; P´ota et al., 2025; Bigi et al., 2025).
+3 MATRIS
+In this section, we introduce the detailed architecture of MatRIS. The interaction between the atom
+graph and the line graph is described in Section 3.1. The Graph Attention module is depicted in
+Section 3.2. In Section 3.3, we describe other key components of MatRIS. An overview of MatRIS
+is shown in Figure 3, and the model formalizations are detailed in Appendix B.
+3.1 LINE–ATOMGRAPHINTERACTION
+To model three-body interactions, we explicitly construct a Line Graph. In the Atom Graph,
+nodes represent atom types and edges represent pairwise interactions (bonds), whereas in the Line
+Graph, nodes represent edges of the atom graph and edges represent three-body interactions (an-
+gles) (Harary & Norman, 1960; Whitney, 1992).
+Atom graph213
+Line graph𝑒!"𝑒"#
+Figure 2: Conversion from an
+Atom Graph to a Line Graph.
+Specifically, given an Atom GraphGa = (V a, Ea), whereV a
+is the set of atoms andE a is the set of edges within a cutoff
+distancer a
+cut, the corresponding Line GraphG l = (V l, El)is
+constructed as follows:➀Each node inV l corresponds to an
+edge inE a;➁An edgee∈E l is added between two nodes
+if their corresponding edges inE a share a common atom, rep-
+resenting the angular information formed by the three atoms
+(i.e., the three-body interaction). The conversion from the
+atom graph to the line graph is illustrated in Figure 2.
+For graph information fusion, we update the Line Graph to
+obtain edge and angular features that encode three-body inter-
+actions. These updated edge features are then propagated back
+to the Atom Graph, enabling the atomic features to incorporate higher-order information from the
+Line Graph.
+3.2 GRAPHATTENTION
+In this section, we introduce the design motivation and implementation of the Dim-wise Softmax
+and Separable Attention mechanisms.
+Dim-wise Softmax.Recent studies have shown that attention mechanisms play an important role
+in improving both the accuracy and scalability of MLIPs (Liao & Smidt, 2023; Liao et al., 2024b;
+Qu & Krishnapriyan, 2024). Existing approaches (Liao & Smidt, 2023; Wang et al., 2024; Shao
+et al., 2025; Liao et al., 2024b) typically compute attention weightsa id to weight the value vectors
+V∈R neighbors×D, whereDdenotes the hidden dimension. The weightsa id depend on the fea-
+tures of nodeiand its neighborsN(i), while the valuesVare obtained by applying a nonlinear
+transformation to the fused edge and node features.
+In these methods, the same attention weights are applied to all feature dimensions, implicitly as-
+suming equal importance across dimensions. However, this assumption limits the model’s ability
+to distinguish the independent contributions of different feature dimensions. Our proposed Dim-
+wise Softmax computes attention scores independently for each feature dimension. Given an input
+featurex∈R neighbors×D and a neighbor listN, the Dim-wise Softmax is computed as follows:
+αid =Dim-wise Softmax(x id,N(i)) = exp(xid)P
+k∈N(i) exp(xkd) (1)
+whereα∈R neighbors×D is the attention weight matrix,x id denotes thed-th feature of nodei, and
+N(i)represents the set of neighboring nodes of nodei. This approach preserves the independence
+4
+
+[page 5]
+Published as a conference paper at ICLR 2026
+of feature dimensions while emphasizing the relative importance of different neighbors in each di-
+mension, thereby enhancing the model’s ability to capture local structural information.
+Separable Attention.In molecular systems, interatomic interactions are directional, and each
+atom plays two roles: target node and source node. Most existing methods only aggregate informa-
+tion from the source node to the target node (Liao & Smidt, 2023; Liao et al., 2024b; Wang et al.,
+2024; Shao et al., 2025), which assumes symmetric information flow. However, this is not always
+true in real physical systems. For example, in polar bonds, charged environments, or local defect
+structures, the effect of the source node on the target node can differ from the effect of the target node
+on the source node (Bengtsson, 1999; K¨uhne & Khaliullin, 2013). To address this, we introduce two
+independent sets of attention weights: source attention weights and target attention weights. The
+first models how neighboring nodes affect the central node, while the second captures how the cen-
+tral node influences its neighbors. In this way, the two roles of nodes are explicitly separated during
+aggregation. The overall workflow is illustrated in Figure 3(b). Given the interactione ij between a
+target nodev i and a source nodev j, we compute the attention weights as follows:
+tij =Linear(e ij)andta ij =Dim-wise Softmax(t ij,N(i))(2)
+sij =Linear(e ij)andsa ij =Dim-wise Softmax(s ij,N(j))(3)
+Here,N(i)andN(j)denote the indices of the target and source nodes, respectively. The final
+attention outputs are obtained as the weighted sum ofta ij,sa ij, ande ′
+ij. Here,e ′
+ij is obtained by
+concatenatinge ij,v i, andv j, followed by target and source feature fusion through a gMLP (see
+Figure 3(d)). The two attention branches share the same computational flow and can therefore be
+executed in parallel. We also implement optimized kernels to improve training efficiency.
+Generality Analysis.As mentioned earlier, many MLIPs are either unconstrained or equivari-
+ant. Unconstrained MLIPs are flexible, allowing Dim-wise Softmax and Separable Attention to be
+applied directly. For equivariant MLIPs, symmetry must be preserved. To ensure this, Dim-wise
+Softmax is computed on invariant features (e.g.,L= 0), producing attention weights that are in-
+variant. These weights are then applied to equivariant features within each irrep channel, without
+mixing components of different orders, ensuring the features remain equivariant under geometric
+transformations. Separable Attention extends this approach with two branches, computing attention
+equivariantly and aggregating information separately over the indices of the target and source nodes.
+3.3 OVERALLARCHITECTURE
+(a) MatRIS Architecture(b) Graph Attention(c) Refinement
+(d) gMLP
+𝑧𝑖
+𝜃𝑖𝑗𝑘
+BesselLinearnn.EmbFourierLinearLinear𝑒𝑖𝑗𝑣𝑖
+(e) Feature Embedding
+(f) Readout BlockNormMLPMLPPooling
+Autograd
+Graph Generation𝐺(𝑍,𝑋,𝐿)
+Feature Embedding
+Readout Block
+Line Graph Attention
+Line Graph Refinement
+×N
+⨁
+⨁Atom Graph Refinement
+Atom Graph Attention
+MLPMLPNormNorm⊙𝑜SiLUSigmoid
+𝑥
+Linear
+gMLP
+gMLP
+Agg⊙
+Concat
+Concat
+𝑣𝑖!𝑒𝑖𝑗!𝑣𝑗!
+gMLPEnvelope
+𝑣𝑖𝑒𝑖𝑗
+Agg
+Concat
+MLPMLP∆∆
+Linear
+E, F, S, M
+𝑒𝑖𝑗𝑣𝑖𝑣𝑗
+𝑡𝑎𝑖𝑗𝑒𝑖𝑗!
+𝑒𝑖𝑗!𝑣𝑖!
+𝑟𝑖𝑗
+EMFS
+Dim-wise Softmax𝑠𝑎𝑖𝑗⊙Agg 𝑣𝑖𝑁
+Figure 3: Overview of MatRIS. The model architecture (a) consists of feature embedding (e), graph
+attention (b), refinement (c), and a readout block(f).
+5
+
+[page 6]
+Published as a conference paper at ICLR 2026
+Graph Generation.Given a crystalline systemG(Z, X, L), whereZ∈R natoms denotes the
+atomic numbers,X∈R natoms×3 represents the atomic coordinates, andL∈R 3×3 refers to the
+lattice. We first perform periodic repetition of the structure and then employ a radius-cutoff graph
+construction to represent it. Inspired by CHGNet (Deng et al., 2023), we construct the atom graph
+Ga (with atoms as nodes and bonds as edges) based onr a
+cut and the line graphG l (with bonds as
+nodes and angles as edges) based onr l
+cut for the crystal structure.
+Feature Embedding.Atomic numbers are initialized using trainable embeddings, while pairwise
+distances are encoded via a learnable radial Bessel basis with envelope functions (Gasteiger et al.,
+2020). For bond angles, we employ a learnable Fourier basis expansion following Deng et al. (2023).
+These input features are then passed through a linear layer to generate initial node, edge, and three-
+body representations. This block is illustrated in Figure 3(e).
+Refinement.The output of Graph Attentionv ′
+i ande ′
+ij is concatenated and processed by a gMLP
+operator (shown in Figure 3(c)). This representation is further refined by an Envelope func-
+tion (Gasteiger et al., 2020) (ensures smoothness). The refined signals are then aggregated over
+neighboring interactions, enabling each edge to integrate local information. Finally, the output is
+transformed by a MLP operator to produce the residual node features∆v i and edge features∆e ij.
+Readout Block.The Readout Block (Figure 3(f)) takes node featuresv i from the last layer. Af-
+ter the normalization layer, the features are passed through MLPs to predict atomic energies and
+magnetic moments (M). Atomic energies are summed to obtain total energy (E). To ensure the
+reliability (Bigi et al., 2025), forces (Fi) and stress (σ) are computed by Equation 4.Vis volume.
+Fi =− ∂E
+∂Xi
+, σ= 1
+V
+∂E
+∂ϵ (4)
+4 EXPERIMENTS
+We evaluated MatRIS on Matbench-Discovery benchmark (Section 4.1), MatPES benchmark (Sec-
+tion 4.2), MDR phonon benchmark (Section 4.3), Molecular zero-shot benchmark (Section 4.4).
+The best results are in bold, and the second best are underlined. Moreover, we conducted ablation
+studies on the network modules and training methods (Section 4.5). Finally, we analyzed the effi-
+ciency of MatRIS (Section 4.6). In addition, the results of experiments on the Matbench-Discovery
+benchmark (non-compliant), LAMBench benchmark (Peng et al., 2026), Zeolite benchmark (Yin
+et al., 2025), DPA2 test sets (Zhang et al., 2024) and MD stability evaluation are provided in Ap-
+pendix D. The training strategies are introduced in Appendix C, and the training hyperparameter
+settings are detailed in Appendix E.
+4.1 MATBENCHDISCOVERY
+Dataset and Setting.The Matbench-Discovery benchmark (Riebesell et al., 2025) is a well-
+established benchmark for evaluating the ability of models in new material discovery. In this bench-
+mark, all models are required to optimize the geometry and predict the formation energy of each
+of the 256k structures in the WBM test set (Wang et al., 2021). These results are then used to as-
+sess thermodynamic stability at the ground state (0 K). In the “compliant” setting, all models are
+required to use MPTrj (Deng et al., 2023) as the training dataset, whereas in the “non-compliant”
+setting, this requirement is relaxed (the results are reported in Appendix D.1). More details on
+the hyperparameters can be found in Table 12. Moreover, inspired by Zaidi et al. (2023) and Liao
+et al. (2024a), we apply denoising pretraining to MatRIS-M and MatRIS-L. The specific details are
+described in Appendix E. Notably, this denoising is also adopted in several other works (ORB v2
+MPTrj (Neumann et al., 2024), eqV2 S DeNS, and eSEN-30M-MP). Structures are relaxed using
+MatRIS and the FIRE (Bitzek et al., 2006) optimizer, with convergence reached after 500 steps or
+when the maximum force falls below 0.05 eV/ ˚A.
+Results of the Compliant BenchmarkWe summarize the comparison with other models in Ta-
+ble 1. MatRIS-S/M achieves performance comparable to eqV2 S DeNS/eSEN-30M-MP while using
+fewer parameters and lower computational costs (see Figure 1 for a comparison of training cost).
+6
+
+[page 7]
+Published as a conference paper at ICLR 2026
+Table 1: MatRIS performance on the compliant Matbench-Discovery benchmark with results on
+unique structure prototypes. ‘↑’/‘↓’ stands for higher/lower is better.
+Model Param. F1↑DAF↑Precision↑Recall↑Accuracy↑ MAE↓R2↑ Ksrme↓ RMSD↓
+CHGNet 0.41M 0.613 3.361 0.514 0.758 0.851 0.063 0.689 1.717 0.0949
+MACE-MP-0 4.69M 0.669 3.777 0.577 0.796 0.878 0.057 0.697 0.647 0.0915
+GRACE-2L 15.3M 0.691 4.163 0.636 0.757 0.896 0.052 0.741 0.525 0.0897
+Allegro-MP-L 18.7M 0.751 4.516 0.690 0.823 0.915 0.044 0.778 0.504 0.0816
+Nequix MP 0.71M 0.751 4.455 0.681 0.836 0.914 0.044 0.782 0.446 0.0853
+SevenNet-l3i5 1.17M0.760 4.629 0.708 0.821 0.920 0.044 0.776 0.550 0.0847
+NequIP-MP-L 9.6M 0.761 4.704 0.719 0.809 0.921 0.043 0.791 0.452 0.0856
+ORB v2 MPTrj 25.2M0.765 4.702 0.719 0.817 0.922 0.045 0.756 1.725 0.1007
+HIENet 7.51M 0.777 4.932 0.754 0.801 0.929 0.041 0.793 0.642 0.0795
+Eqnorm MPTrj 1.31M0.786 4.844 0.741 0.838 0.929 0.040 0.799 0.408 0.0837
+DPA-3.1-MPTrj 4.81M0.803 5.024 0.768 0.841 0.936 0.037 0.812 0.650 0.0801
+eqV2 S DeNS 31.2M 0.815 5.042 0.771 0.864 0.941 0.036 0.788 1.676 0.0757
+eSEN-30M-MP 30.1M0.831 5.260 0.804 0.861 0.946 0.033 0.822 0.340 0.0752
+MatRIS-S 4.3M 0.811 5.127 0.784 0.840 0.940 0.036 0.803 0.730 0.0766
+MatRIS-M 6.3M 0.833 5.363 0.820 0.847 0.948 0.033 0.820 0.542 0.0742
+MatRIS-L 10.4M 0.847 5.422 0.829 0.865 0.951 0.031 0.829 0.489 0.0717
+These results demonstrate the effectiveness of MatRIS. Moreover, MatRIS-L achieves SOTA per-
+formance across all metrics, with an F1 score of 0.847. It also achieves an RMSD of 0.0717 when
+comparing relaxed structures to DFT reference values.
+4.2 MATCALCBENCHMARK
+Table 2: Summary of model performance on the MatCalc benchmark. All results were obtained
+using theMatCalcpackage and its associated dataset.
+Model Param. Equilibrium Near-equilibrium
+d↓Ef↓K↓G↓CV↓f /f DF T↑
+MatPES-trained models
+M3GNet 0.66M 0.42 0.11 26 25 270.97
+CHGNet 2.7M 0.43 0.082 24 21 23 0.91
+TensorNet 0.84M 0.370.081 18 15 130.93
+MatRIS 1.4M 0.540.068 15 1316 0.96
+MPTrj-trained models
+CHGNet 2.7M 0.51 0.092 17.0 30.0 24.0 0.830
+MACE-L 5.7M 0.43 – 25.3 22.5 11.6 0.829
+SevenNet-l3i5 1.17M 0.55 0.057 13.2 170.2 8.03 0.922
+eqV2 S DeNS 31.2M 0.25 0.03327.2 29.1 25.9 0.964
+eSEN-30M-MP 30.1M 0.34 0.039 18.8 77.34.66 0.986
+MatRIS-M 6.3M 0.32 0.04112.4 16.47.39 0.983
+OAM-trained models
+SevenNet-MF-ompa 25.7M 0.502 0.028 13.3 32.2 4.60 0.976
+eqV2 M 86.6M 0.235 0.01725.4 17.5 80.40.999
+eSEN-30M-OAM 30.1M 0.299 0.089 11.9 14.8 4.35 0.996
+MatRIS-10M-OAM 10.4M 0.316 0.025 10.6 13.3 3.970.985
+Dataset and Settings.MatCalc benchmark (Kaplan et al., 2025) covers equilibrium properties
+(relaxed structure similarityd, formation energyEf), near-equilibrium properties (bulk modulus
+K, shear modulusG, constant-volume heat capacityCV, force softeningf /f DFT), and is con-
+structed from test data collected from the Materials Project (Jain et al., 2013a), Alexandria (Schmidt
+et al., 2024), WBM high-energy states (Wang et al., 2021). We compare models trained on MatPES-
+PBE (Kaplan et al., 2025), MPTrj and OAM, with the results reported in Table 2. We maintained con-
+sistent evaluation settings for all MPTrj- and OAM-trained models. Specifically, for elastic moduli
+calculations, we applied normal (diagonal) strain magnitudes of±0.01and±0.005forϵ 11, ϵ22, ϵ33,
+and off-diagonal strain magnitudes of±0.06and±0.03forϵ 23, ϵ13, ϵ12.
+7
+
+[page 8]
+Published as a conference paper at ICLR 2026
+Results and Analysis.Table 2 summarizes the performance of models trained on the MatPES-
+PBE, MPTrj and OAM datasets. For models trained on MatPES-PBE, MatRIS achieves the best
+overall performance, clearly outperforming other models in predicting formation energyEf.
+For models trained on MPTrj, MatRIS attains SOTA or near-SOTA results on 83% of the evaluated
+metrics. Notably, MatRIS remains robust on “Near-equilibrium” tasks regardless of the training
+dataset. Although the higher fraction of near-equilibrium structures in MPTrj amplifies PES “Soft-
+ening” (f /fDF T ) (Deng et al., 2024; Kaplan et al., 2025), MatRIS maintains stable performance.
+Comparisons with CHGNet further indicate that changing the training dataset does not result in
+significant softening, underscoring the effectiveness of the architectural design.
+The same trend is observed for models trained on OAM, where MatRIS-10M-OAM performs ro-
+bustly across all metrics and achieves SOTA performance overall.
+4.3 MDRPHONON BENCHMARK
+(a) MDR phonon benchmark
+6160
+2413
+402528132628105211354
+2830127010203040506070
+1916
+64
+1914
+54
+15
+833
+151043893205101520
+𝜔!"#𝑆𝐹𝐶$
+MACEGRACESevenNetORBv3eSENMatRIS
+(b) Phonon dispersion
+Si (mp-149)BeSe(mp-1541)
+CsCl(mp-22865)GaAgS2(mp-5432)
+Frequency (THZ)
+Wave vector
+OAM-trained models
+MPTrj-trained models
+Figure 4: (a) Summary of model performance on the MDR phonon benchmark. The evaluation
+metrics includeω max (K),S(J/K/mol),F(kJ/mol), andC V (J/K/mol), where the reported values
+represent the MAE between the model predictions and the DFT results. (b) Predicted phonon dis-
+persion obtained using MatRIS with a 0.01 ˚A displacement. The DFT results are taken from the
+phononDB dataset.
+Dataset and Settings.The MDR phonon benchmark (Loew et al., 2025) is used to evaluate the
+ability of MLIPs to predict phonon properties. It requires MLIPs to compute the maximum phonon
+frequency (ω max), entropy (S), free energy (F), and heat capacity at constant volume (C V ) for
+approximately 10,000 structures. To ensure a fair comparison, we follow the evaluation protocol
+adopted in Loew et al. (2025). Specifically, we first optimize the structures using the FIRE optimizer
+(max steps=500, fmax=0.005). Displacements are generated with a magnitude of 0.01 ˚A, and the
+properties are computed at 300 K.
+Results and Analysis.Results for both the MPTrj-trained and OAM-trained models are shown in
+Figure 4(a). MatRIS achieves competitive results among the MPTrj-trained models. As the training
+dataset grows, MatRIS-10M-OAM achieves SOTA accuracy on most metrics, with a particularly
+significant improvement in the maximum phonon frequency (ωmax). It is worth noting that MatRIS-
+10M-OMat achieves higher accuracy, with values ofω max,S,F, andC V being 7.08, 7.12, 2.12,
+and 1.91, respectively.
+8
+
+[page 9]
+Published as a conference paper at ICLR 2026
+We also selected four representative structures from the phononDB dataset (Togo) for visualization,
+as shown in Figure 4(b). We find that MatRIS-MP-L not only reproduces the highest frequencies
+but also aligns well with the DFT results overall.
+4.4 MOLECULARZERO-SHOT BENCHMARK
+Table 3: MatRIS performance on the Molecular zero-shot benchmark. Energy (E) is reported in
+kcal/mol and Force (F) in kcal/mol/ ˚A.
+Model TorsionNet-500 MD22
+(Ac-Ala3-NHMe) ANI-1x AIMD-Chig
+E MAE E RMSE MAEB a NABHb
+h E F E F E F
+AIMNet2 0.38 0.55 0.58 82 – – – – – –
+DPA2-Drug 0.24 0.35 0.36 18 – – – – – –
+MACE-OFF-L 0.14 0.21 0.23 4 2.29 5.205 5.82 3.948 8.25 3.853
+DPA3-L24 0.06 0.09 0.09 0 – – – – – –
+MatRIS-M 0.04 0.07 0.07 0 2.23 5.140 4.154.414 1.55 3.604
+a The MAE of the torsional barrier height is defined as the energy difference between the minimum and maxi-
+mum along the torsional rotation.
+b The number of molecules with barrier height errors exceeding 1 kcal/mol.
+Dataset and Settings.AIMNet and DPA2-Drug were trained on the datasets from Anstine et al.
+(2025) and Yang et al. (2025), respectively, while the other models were pre-trained on SPICE-
+MACE-OFF23 (Kov´acs et al., 2025), which contains 951,005 small-molecule configurations. The
+energies and forces of all configurations were computed at theωB97M-D3(BJ)/def2-TZVPPD level.
+Following Peng et al. (2026), we selected the Ac-Ala3-NHMe from the MD22 (Chmiela et al., 2023),
+ANI-1x (Smith et al., 2018), and AIMD-Chig (Wang et al., 2023) datasets, which contain 2,212,
+8,861, and 19,800 configurations, respectively. The training parameters can be found at Table 12
+in appendix. For the MD22, ANI-1x, and AIMD-Chig benchmarks, we corrected inconsistencies
+caused by differences between DFT functionals.
+Results and Analysis.We selected available molecular pre-trained models (MACE-OFF-
+L (Kov´acs et al., 2025) and DPA3-L24 for comparison, and the results are summarized in Table 3.
+MatRIS-M performs well across four downstream datasets. On the TorsionNet-500 test set, its en-
+ergy prediction error is reduced by about 22.2%–33.3% compared to the current SOTA model DPA3.
+In the remaining three datasets, MatRIS-M ranks first in five out of six metrics and second in the re-
+maining one, demonstrating that it effectively leverages the knowledge from the pre-training dataset
+to achieve more reliable performance on downstream tasks.
+4.5 ABLATIONSTUDY
+We conduct ablation studies on various modules of MatRIS and their corresponding training meth-
+ods. We train the MatRIS-S on MPTrj and evaluate it on 15,000 randomly sampled structures from
+the WBM dataset, reporting performance using the MAE of formation energies.
+Table 4: Ablation studies. Formation energy (Ef) MAE is in meV/atom, lower is better.
+Index Dim-wise
+softmax
+Separable
+attention
+Learnable
+envelope Ef (MAE)
+1✓ ✓ ✓ 28.0
+2✗ ✓ ✓ 28.4
+3✗ ✗ ✓ 29.1
+4✗ ✗ ✗ 31.3
+(a) Effect of modules: dim-wise softmax, separable
+attention and learnable envelope.
+Index Denoising
+pretraining
+With
+magmom
+Graph-level
+loss Ef (MAE)
+1✓ ✓ ✓ 27.2
+2✗ ✓ ✓ 28.0
+3✗ ✗ ✓ 29.7
+4✗ ✗ ✗ 30.2
+(b) Effect of training methods: denoising pretraining,
+magnetic moment prediction, and graph-level loss.
+9
+
+[page 10]
+Published as a conference paper at ICLR 2026
+Module Ablation.We evaluated the impact of Dim-wise Softmax, Separable Attention, and
+Learnable Envelope on model accuracy, as shown in Table 4(a). Specifically, replacing Dim-wise
+Softmax with standard softmax (i.e., sharing the same weight across all feature dimensions) in-
+creased MAE to 28.4 meV/atom (Index 2). Subsequently, restricting attention-based aggregation
+to the source-to-target direction further increased MAE (Index 3). Finally, replacing the learnable
+envelope function with a fixed one also degraded performance (Index 4).
+Training Method Ablation.We further analyze the contributions of different training strategies
+to model performance, as shown in Table 4(b). Pretraining with denoising (see Section C.3 in ap-
+pendix) effectively improves performance, as predicting noise helps mitigate over-smoothing (God-
+win et al., 2022; Zaidi et al., 2023). Notably, predicting magmoms also enhances accuracy, since
+magmoms help distinguish features in different chemical environments and, being a node-level task,
+likely reduce over-smoothing during training (Deng et al., 2023). Finally, performing loss reduc-
+tion at the graph level prevents the force loss from being biased by differences in system size (see
+Section C.2 in appendix for more detail), further improving performance.
+4.6 EFFICIENCY-ACCURACYANALYSIS.
+In this section, we compare the computational efficiency of MatRIS with several SOTA models
+(benchmarked withouttorch.compileor optimized kernels).
+Inference time (ms)
+103
+102
+(a) System scaling test
+10020050010000.00.40.81.2
+Energy MAE (mev/atom)
+354045
+5550
+(b) Relaxation test
+System size (atoms)Throughput (samples/s)
+MatRIS-familySevenNet-l3i5MACEeSEN-30MeqV2 S
+betterbetterMS
+MS
+Figure 5: Efficiency-accuracy comparison.
+The inference time across system sizes (excluding graph construction) is summarized in Figure 5(a).
+MatRIS demonstrates higher efficiency than eqV2 and eSEN but lower than MACE-L, as MACE-L
+utilizes only 2 layers while MatRIS-S and MatRIS-M employ 4 and 6 layers, respectively.
+We further evaluate the models in practical applications. We randomly select 500 structures from
+the WBM dataset (Wang et al., 2021) and perform relaxations using ASE, recording the throughput
+and energy MAE for each model. As shown in Figure 5(b), MatRIS achieves a favorable balance
+between speed and accuracy, maintaining high precision while enabling faster computation.
+5 CONCLUSION AND FUTURE WORK
+In this work, we review the characteristics of invariant, equivariant and unconstrained MLIPs in the
+era of rapidly expanding QM-based datasets. Equivariant MLIPs deliver superior accuracy while
+their reliance on tensor products and high-degree representations leads to prohibitive computational
+costs. Motivated by the question of whether strict equivariance remains indispensable, we introduce
+MatRIS, an invariant MLIP that leverages attention to model three-body interactions. Across mul-
+tiple benchmarks, MatRIS attains SOTA results, opening a new path toward accurate and efficient
+MLIPs.
+In future work, we will scale MatRIS to even larger QM-based datasets to further validate its ex-
+pressiveness. We aim to develop a reliable distillation strategy to develop student MLIPs. We also
+plan to expand MatRIS to incorporate long-range electrostatics, thereby enhancing its applicability
+to more complex downstream tasks.
+10
+
+[page 11]
+Published as a conference paper at ICLR 2026
+ACKNOWLEDGMENTS
+This work is supported by the following funding: National Science Foundation of China (T2125013,
+92270206, 62372435), the Innovation Funding of ICT, CAS. Part of the training is performed on
+the robotic AI-Scientist platform of Chinese Academy of Sciences. The authors thank the ICT
+operations team for their strong support.
+We thank Duo Zhang for helpful discussions. We also thank Lijun Liu (Osaka University) for
+evaluating the eqV2 Liao et al. (2024b); Barroso-Luque et al. (2024) and eSEN Fu et al. (2025).
+REFERENCES
+Josh Abramson, Jonas Adler, Jack Dunger, Richard Evans, Tim Green, Alexander Pritzel, Olaf
+Ronneberger, Lindsay Willmore, Andrew J. Ballard, Joshua Bambrick, Sebastian W. Boden-
+stein, David A. Evans, Chia-Chun Hung, Michael O’Neill, David Reiman, Kathryn Tunyasuvu-
+nakool, Zachary Wu, Akvil ˙e ˇZemgulyt˙e, Eirini Arvaniti, Charles Beattie, Ottavia Bertolli, Alex
+Bridgland, Alexey Cherepanov, Miles Congreve, Alexander I. Cowen-Rivers, Andrew Cowie,
+Michael Figurnov, Fabian B. Fuchs, Hannah Gladman, Rishub Jain, Yousuf A. Khan, Caro-
+line M. R. Low, Kuba Perlin, Anna Potapenko, Pascal Savy, Sukhdeep Singh, Adrian Stecula,
+Ashok Thillaisundaram, Catherine Tong, Sergei Yakneen, Ellen D. Zhong, Michal Zielinski,
+Augustin ˇZ´ıdek, Victor Bapst, Pushmeet Kohli, Max Jaderberg, Demis Hassabis, and John M.
+Jumper. Accurate structure prediction of biomolecular interactions with AlphaFold 3.Nature,
+630(8016):493–500, June 2024. ISSN 1476-4687. doi: 10.1038/s41586-024-07487-w. URL
+https://doi.org/10.1038/s41586-024-07487-w.
+Marco Anselmi, Greg Slabaugh, Rachel Crespo-Otero, and Devis Di Tommaso. Molecular
+graph transformer: stepping beyond alignn into long-range interactions.Digital Discovery, 3:
+1048–1057, 2024. doi: 10.1039/D4DD00014E. URLhttp://dx.doi.org/10.1039/
+D4DD00014E.
+Dylan M. Anstine, Roman Zubatyuk, and Olexandr Isayev. Aimnet2: a neural network potential to
+meet your neutral, charged, organic, and elemental-organic needs.Chem. Sci., 16:10228–10244,
+2025. doi: 10.1039/D4SC08572H. URLhttp://dx.doi.org/10.1039/D4SC08572H.
+Sarp Aykent and Tian Xia. Gotennet: Rethinking efficient 3d equivariant graph neural networks.
+InThe Thirteenth International Conference on Learning Representations, 2025. URLhttps:
+//openreview.net/forum?id=5wxCQDtbMo.
+Luis Barroso-Luque, Muhammed Shuaibi, Xiang Fu, Brandon M Wood, Misko Dzamba, Meng
+Gao, Ammar Rizvi, C Lawrence Zitnick, and Zachary W Ulissi. Open materials 2024 (omat24)
+inorganic materials dataset and models.arXiv preprint arXiv:2410.12771, 2024.
+Ilyes Batatia, David Peter Kovacs, Gregor N. C. Simm, Christoph Ortner, and Gabor Csanyi. MACE:
+Higher order equivariant message passing neural networks for fast and accurate force fields. In
+Alice H. Oh, Alekh Agarwal, Danielle Belgrave, and Kyunghyun Cho (eds.),Advances in Neu-
+ral Information Processing Systems, 2022. URLhttps://openreview.net/forum?id=
+YPpSngE-ZU.
+Simon Batzner, Albert Musaelian, Lixin Sun, Mario Geiger, Jonathan P. Mailoa, Mordechai Korn-
+bluth, Nicola Molinari, Tess E. Smidt, and Boris Kozinsky. E(3)-equivariant graph neural net-
+works for data-efficient and accurate interatomic potentials.Nature Communications, 13(1), May
+2022. ISSN 2041-1723. doi: 10.1038/s41467-022-29939-5. URLhttp://dx.doi.org/
+10.1038/s41467-022-29939-5.
+Lennart Bengtsson. Dipole correction for surface supercell calculations.Phys. Rev. B, 59:12301–
+12304, May 1999. doi: 10.1103/PhysRevB.59.12301. URLhttps://link.aps.org/doi/
+10.1103/PhysRevB.59.12301.
+Filippo Bigi, Marcel F. Langer, and Michele Ceriotti. The dark side of the forces: assessing non-
+conservative force models for atomistic machine learning. InForty-second International Confer-
+ence on Machine Learning, 2025.
+11
+
+[page 12]
+Published as a conference paper at ICLR 2026
+Erik Bitzek, Pekka Koskinen, Franz G¨ahler, Michael Moseler, and Peter Gumbsch. Structural relax-
+ation made simple.Phys. Rev. Lett., 97:170201, Oct 2006. doi: 10.1103/PhysRevLett.97.170201.
+URLhttps://link.aps.org/doi/10.1103/PhysRevLett.97.170201.
+Rebecca R. Brew, Ian A. Nelson, Meruyert Binayeva, Amlan S. Nayak, Wyatt J. Simmons, Joseph J.
+Gair, and Corin C. Wagen. Wiggle150: Benchmarking Density Functionals and Neural Network
+Potentials on Highly Strained Conformers.Journal of Chemical Theory and Computation, 21
+(8):3922–3929, April 2025. ISSN 1549-9618. doi: 10.1021/acs.jctc.5c00015. URLhttps:
+//doi.org/10.1021/acs.jctc.5c00015. Publisher: American Chemical Society.
+Shaked Brody, Uri Alon, and Eran Yahav. How attentive are graph attention networks? InInterna-
+tional Conference on Learning Representations, 2022. URLhttps://openreview.net/
+forum?id=F72ximsx7C1.
+Lowik Chanussot, Abhishek Das, Siddharth Goyal, Thibaut Lavril, Muhammed Shuaibi, Morgane
+Riviere, Kevin Tran, Javier Heras-Domingo, Caleb Ho, Weihua Hu, Aini Palizhati, Anuroop Sri-
+ram, Brandon Wood, Junwoong Yoon, Devi Parikh, C. Lawrence Zitnick, and Zachary Ulissi.
+Open catalyst 2020 (oc20) dataset and community challenges.ACS Catalysis, 11(10):6059–6072,
+May 2021. ISSN 2155-5435. doi: 10.1021/acscatal.0c04525. URLhttp://dx.doi.org/
+10.1021/acscatal.0c04525.
+Chi Chen and Shyue Ping Ong. A universal graph deep learning interatomic potential for the periodic
+table.Nature Computational Science, 2(11):718–728, November 2022. ISSN 2662-8457. URL
+https://doi.org/10.1038/s43588-022-00349-3.
+Stefan Chmiela, Valentin Vassilev-Galindo, Oliver T. Unke, Adil Kabylda, Huziel E. Sauceda,
+Alexandre Tkatchenko, and Klaus-Robert M ¨uller. Accurate global machine learning force
+fields for molecules with hundreds of atoms.Science Advances, 9(2):eadf0873, 2023.
+doi: 10.1126/sciadv.adf0873. URLhttps://www.science.org/doi/abs/10.1126/
+sciadv.adf0873.
+Kamal Choudhary and Brian DeCost. Atomistic Line Graph Neural Network for improved ma-
+terials property predictions.npj Computational Materials, 7(1):185, November 2021. ISSN
+2057-3960. doi: 10.1038/s41524-021-00650-1. URLhttps://doi.org/10.1038/
+s41524-021-00650-1.
+Kamal Choudhary, Brian DeCost, Lily Major, Keith Butler, Jeyan Thiyagalingam, and Francesca
+Tavazza. Unified graph neural network force-field for the periodic table: solid state applications.
+Digital Discovery, 2(2):346–355, 2023. ISSN 2635-098X. doi: 10.1039/d2dd00096b. URL
+http://dx.doi.org/10.1039/D2DD00096B.
+Marco De Vivo, Matteo Masetti, Giovanni Bottegoni, and Andrea Cavalli. Role of Molecular Dy-
+namics and Related Methods in Drug Discovery.Journal of Medicinal Chemistry, 59(9):4035–
+4061, 2016.
+Bowen Deng, Peichen Zhong, KyuJung Jun, Janosh Riebesell, Kevin Han, Christopher J. Bartel,
+and Gerbrand Ceder. Chgnet as a pretrained universal neural network potential for charge-
+informed atomistic modelling.Nature Machine Intelligence, pp. 1–11, 2023. doi: 10.1038/
+s42256-023-00716-3.
+Bowen Deng, Yunyeong Choi, Peichen Zhong, Janosh Riebesell, Shashwat Anand, Zhuohan Li,
+KyuJung Jun, Kristin A. Persson, and Gerbrand Ceder. Overcoming systematic softening in uni-
+versal machine learning interatomic potentials by fine-tuning, 2024. URLhttps://arxiv.
+org/abs/2405.07105.
+Weitao Du, Yuanqi Du, Limei Wang, Dieqiao Feng, Guifeng Wang, Shuiwang Ji, Carla P Gomes,
+and Zhi-Ming Ma. A new perspective on building efficient and expressive 3d equivariant graph
+neural networks. InProceedings of the 37th International Conference on Neural Information
+Processing Systems. Curran Associates Inc., 2023.
+Alexandre Duval, Simon V . Mathis, Chaitanya K. Joshi, Victor Schmidt, Santiago Miret,
+Fragkiskos D. Malliaros, Taco Cohen, Pietro Li `o, Yoshua Bengio, and Michael Bronstein. A
+hitchhiker’s guide to geometric gnns for 3d atomic systems, 2024. URLhttps://arxiv.
+org/abs/2312.07511.
+12
+
+[page 13]
+Published as a conference paper at ICLR 2026
+Zheyong Fan, Yanzhou Wang, Penghua Ying, Keke Song, Junjie Wang, Yong Wang, Zezhu Zeng,
+Ke Xu, Eric Lindgren, J Magnus Rahm, et al. Gpumd: A package for constructing accurate
+machine-learned potentials and performing highly efficient atomistic simulations.The Journal of
+Chemical Physics, 157(11), 2022.
+Estefan´ıa Fern´andez-Villanueva, Pablo G. Lustemberg, Minjie Zhao, Jose Soriano Rodriguez, Patri-
+cia Concepci´on, and M. Ver´onica Ganduglia-Pirovano. Water and Cu+ Synergy in Selective CO2
+Hydrogenation to Methanol over Cu-MgO-Al2O3 Catalysts.Journal of the American Chemical
+Society, 146(3):2024–2032, January 2024. ISSN 0002-7863. doi: 10.1021/jacs.3c10685. URL
+https://doi.org/10.1021/jacs.3c10685. Publisher: American Chemical Society.
+Xiang Fu, Zhenghao Wu, Wujie Wang, Tian Xie, Sinan Keten, Rafael Gomez-Bombarelli, and
+Tommi Jaakkola. Forces are not enough: Benchmark and critical evaluation for machine learning
+force fields with molecular simulations.Transactions on Machine Learning Research, 2023.
+ISSN 2835-8856. URLhttps://openreview.net/forum?id=A8pqQipwkt. Survey
+Certification.
+Xiang Fu, Brandon M Wood, Luis Barroso-Luque, Daniel S. Levine, Meng Gao, Misko Dzamba,
+and C. Lawrence Zitnick. Learning smooth and expressive interatomic potentials for physical
+property prediction. InForty-second International Conference on Machine Learning, 2025. URL
+https://openreview.net/forum?id=R0PBjxIbgm.
+Yuxiang Gao, Fenglin Deng, Ri He, and Zhicheng Zhong. Spontaneous curvature in two-
+dimensional van der Waals heterostructures.Nature Communications, 16(1):717, January 2025.
+ISSN 2041-1723. doi: 10.1038/s41467-025-56055-x. URLhttps://doi.org/10.1038/
+s41467-025-56055-x.
+Johannes Gasteiger, Janek Groß, and Stephan G¨unnemann. Directional message passing for molec-
+ular graphs. InInternational Conference on Learning Representations, 2020. URLhttps:
+//openreview.net/forum?id=B1eWbxStPH.
+Johannes Gasteiger, Shankari Giri, Johannes T. Margraf, and Stephan G ¨unnemann. Fast and
+uncertainty-aware directional message passing for non-equilibrium molecules, 2022a. URL
+https://arxiv.org/abs/2011.14115.
+Johannes Gasteiger, Muhammed Shuaibi, Anuroop Sriram, Stephan G ¨unnemann, Zachary Ward
+Ulissi, C. Lawrence Zitnick, and Abhishek Das. Gemnet-OC: Developing graph neural networks
+for large and diverse molecular simulation datasets.Transactions on Machine Learning Research,
+2022b. ISSN 2835-8856. URLhttps://openreview.net/forum?id=u8tvSxm4Bs.
+Vahe Gharakhanyan, Luis Barroso-Luque, Yi Yang, Muhammed Shuaibi, Kyle Michel, Daniel S.
+Levine, Misko Dzamba, Xiang Fu, Meng Gao, Xingyu Liu, Haoran Ni, Keian Noori, Brandon M.
+Wood, Matt Uyttendaele, Arman Boromand, C. Lawrence Zitnick, Noa Marom, Zachary W.
+Ulissi, and Anuroop Sriram. Open molecular crystals 2025 (omc25) dataset and models, 2025.
+URLhttps://arxiv.org/abs/2508.02651.
+Jonathan Godwin, Michael Schaarschmidt, Alexander L Gaunt, Alvaro Sanchez-Gonzalez, Yulia
+Rubanova, Petar Veli ˇckovi´c, James Kirkpatrick, and Peter Battaglia. Simple GNN regularisa-
+tion for 3d molecular property prediction and beyond. InInternational Conference on Learning
+Representations, 2022. URLhttps://openreview.net/forum?id=1wVvweK3oIb.
+Frank Harary and Robert Z. Norman. Some properties of line digraphs.Rendiconti del Circolo
+Matematico di Palermo, 9(2):161–168, May 1960. ISSN 1973-4409. doi: 10.1007/BF02854581.
+URLhttps://doi.org/10.1007/BF02854581.
+Ryan Jacobs, Dane Morgan, Siamak Attarian, Jun Meng, Chen Shen, Zhenghao Wu, Clare Yijia
+Xie, Julia H. Yang, Nongnuch Artrith, Ben Blaiszik, Gerbrand Ceder, Kamal Choudhary, Gabor
+Csanyi, Ekin Dogus Cubuk, Bowen Deng, Ralf Drautz, Xiang Fu, Jonathan Godwin, Vasant
+Honavar, Olexandr Isayev, Anders Johansson, Boris Kozinsky, Stefano Martiniani, Shyue Ping
+Ong, Igor Poltavsky, KJ Schmidt, So Takamoto, Aidan P. Thompson, Julia Westermayr, and
+Brandon M. Wood. A practical guide to machine learning interatomic potentials – status and
+future.Current Opinion in Solid State and Materials Science, 35:101214, March 2025. ISSN
+13
+
+[page 14]
+Published as a conference paper at ICLR 2026
+1359-0286. doi: 10.1016/j.cossms.2025.101214. URLhttp://dx.doi.org/10.1016/j.
+cossms.2025.101214.
+Anubhav Jain, Shyue Ping Ong, Geoffroy Hautier, Wei Chen, William Davidson Richards, Stephen
+Dacek, Shreyas Cholia, Dan Gunter, David Skinner, Gerbrand Ceder, and Kristin A. Persson.
+Commentary: The materials project: A materials genome approach to accelerating materials in-
+novation.APL Materials, 1(1):011002, 07 2013a. ISSN 2166-532X. doi: 10.1063/1.4812323.
+URLhttps://doi.org/10.1063/1.4812323.
+Anubhav Jain, Shyue Ping Ong, Geoffroy Hautier, Wei Chen, William Davidson Richards, Stephen
+Dacek, Shreyas Cholia, Dan Gunter, David Skinner, Gerbrand Ceder, et al. Commentary: The ma-
+terials project: A materials genome approach to accelerating materials innovation.APL materials,
+1(1), 2013b.
+John Jumper, Richard Evans, Alexander Pritzel, Tim Green, Michael Figurnov, Olaf Ronneberger,
+Kathryn Tunyasuvunakool, Russ Bates, Augustin ˇZ´ıdek, Anna Potapenko, Alex Bridgland,
+Clemens Meyer, Simon A. A. Kohl, Andrew J. Ballard, Andrew Cowie, Bernardino Romera-
+Paredes, Stanislav Nikolov, Rishub Jain, Jonas Adler, Trevor Back, Stig Petersen, David Reiman,
+Ellen Clancy, Michal Zielinski, Martin Steinegger, Michalina Pacholska, Tamas Berghammer, Se-
+bastian Bodenstein, David Silver, Oriol Vinyals, Andrew W. Senior, Koray Kavukcuoglu, Push-
+meet Kohli, and Demis Hassabis. Highly accurate protein structure prediction with AlphaFold.
+Nature, 596(7873):583–589, August 2021. ISSN 1476-4687. doi: 10.1038/s41586-021-03819-2.
+URLhttps://doi.org/10.1038/s41586-021-03819-2.
+Aaron D. Kaplan, Runze Liu, Ji Qi, Tsz Wai Ko, Bowen Deng, Janosh Riebesell, Gerbrand Ceder,
+Kristin A. Persson, and Shyue Ping Ong. A foundational potential energy surface dataset for
+materials, 2025. URLhttps://arxiv.org/abs/2503.04070.
+Jaesun Kim, Jisu Kim, Jaehoon Kim, Jiho Lee, Yutack Park, Youngho Kang, and Seungwu Han.
+Data-Efficient Multifidelity Training for High-Fidelity Machine Learning Interatomic Potentials.
+Journal of the American Chemical Society, 147(1):1042–1054, January 2025. ISSN 0002-7863.
+doi: 10.1021/jacs.4c14455. URLhttps://doi.org/10.1021/jacs.4c14455.
+Johannes Klicpera, Florian Becker, and Stephan G ¨unnemann. Gemnet: Universal directional
+graph neural networks for molecules. In A. Beygelzimer, Y . Dauphin, P. Liang, and J. Wort-
+man Vaughan (eds.),Advances in Neural Information Processing Systems, 2021. URLhttps:
+//openreview.net/forum?id=HS_sOaxS9K-.
+Teddy Koker and Tess Smidt. Training a foundation model for materials on a budget, 2025. URL
+https://arxiv.org/abs/2508.16067.
+D´avid P´eter Kov´acs, J. Harry Moore, Nicholas J. Browning, Ilyes Batatia, Joshua T. Horton, Yixuan
+Pu, Venkat Kapil, William C. Witt, Ioan-Bogdan Magd ˘au, Daniel J. Cole, and G ´abor Cs ´anyi.
+MACE-OFF: Short-Range Transferable Machine Learning Force Fields for Organic Molecules.
+Journal of the American Chemical Society, 147(21):17598–17611, May 2025. ISSN 0002-7863.
+doi: 10.1021/jacs.4c07099. URLhttps://doi.org/10.1021/jacs.4c07099.
+Thomas D. K ¨uhne and Rustam Z. Khaliullin. Electronic signature of the instantaneous asymme-
+try in the first coordination shell of liquid water.Nature Communications, 4(1):1450, February
+2013. ISSN 2041-1723. doi: 10.1038/ncomms2459. URLhttps://doi.org/10.1038/
+ncomms2459.
+Daniel S. Levine, Muhammed Shuaibi, Evan Walter Clark Spotte-Smith, Michael G. Taylor,
+Muhammad R. Hasyim, Kyle Michel, Ilyes Batatia, G ´abor Cs´anyi, Misko Dzamba, Peter East-
+man, Nathan C. Frey, Xiang Fu, Vahe Gharakhanyan, Aditi S. Krishnapriyan, Joshua A. Rackers,
+Sanjeev Raja, Ammar Rizvi, Andrew S. Rosen, Zachary Ulissi, Santiago Vargas, C. Lawrence
+Zitnick, Samuel M. Blau, and Brandon M. Wood. The open molecules 2025 (omol25) dataset,
+evaluations, and models, 2025. URLhttps://arxiv.org/abs/2505.08762.
+Yi-Lun Liao and Tess Smidt. Equiformer: Equivariant graph attention transformer for 3d atomistic
+graphs. InThe Eleventh International Conference on Learning Representations, 2023. URL
+https://openreview.net/forum?id=KwmPfARgOTD.
+14
+
+[page 15]
+Published as a conference paper at ICLR 2026
+Yi-Lun Liao, Tess Smidt, Muhammed Shuaibi, and Abhishek Das. Generalizing denoising to
+non-equilibrium structures improves equivariant force fields.Transactions on Machine Learn-
+ing Research, 2024a. ISSN 2835-8856. URLhttps://openreview.net/forum?id=
+whGzYUbIWA.
+Yi-Lun Liao, Brandon M Wood, Abhishek Das, and Tess Smidt. Equiformerv2: Improved equivari-
+ant transformer for scaling to higher-degree representations. InThe Twelfth International Confer-
+ence on Learning Representations, 2024b. URLhttps://openreview.net/forum?id=
+mCOBKZmrzD.
+Yi Liu, Limei Wang, Meng Liu, Yuchao Lin, Xuan Zhang, Bora Oztekin, and Shuiwang Ji. Spherical
+message passing for 3d molecular graphs. InInternational Conference on Learning Representa-
+tions, 2022. URLhttps://openreview.net/forum?id=givsRXsOt9r.
+Antoine Loew, Dewen Sun, Hai-Chen Wang, Silvana Botti, and Miguel A. L. Marques. Universal
+machine learning interatomic potentials are ready for phonons.npj Computational Materials,
+11(1):178, June 2025. ISSN 2057-3960. doi: 10.1038/s41524-025-01650-1. URLhttps:
+//doi.org/10.1038/s41524-025-01650-1.
+Nataliya Lopanitsyna, Guillaume Fraux, Maximilian A. Springer, Sandip De, and Michele Ceriotti.
+Modeling high-entropy transition metal alloys with alchemical compression.Phys. Rev. Mater.,
+7:045802, Apr 2023. doi: 10.1103/PhysRevMaterials.7.045802. URLhttps://link.aps.
+org/doi/10.1103/PhysRevMaterials.7.045802.
+Arslan Mazitov, Filippo Bigi, Matthias Kellner, Paolo Pegolo, Davide Tisi, Guillaume Fraux, Sergey
+Pozdnyakov, Philip Loche, and Michele Ceriotti. Pet-mad, a lightweight universal interatomic
+potential for advanced materials modeling, 2025. URLhttps://arxiv.org/abs/2503.
+14118.
+Amil Merchant, Simon Batzner, Samuel S. Schoenholz, Muratahan Aykol, Gowoon Cheon, and
+Ekin Dogus Cubuk. Scaling deep learning for materials discovery.Nature, 624(7990):80–85,
+2023.
+Albert Musaelian, Simon Batzner, Anders Johansson, Lixin Sun, Cameron J. Owen, Mordechai Ko-
+rnbluth, and Boris Kozinsky. Learning local equivariant representations for large-scale atomistic
+dynamics.Nature Communications, 14(1):579, February 2023. ISSN 2041-1723. doi: 10.1038/
+s41467-023-36329-y. URLhttps://doi.org/10.1038/s41467-023-36329-y.
+Mark Neumann, James Gin, Benjamin Rhodes, Steven Bennett, Zhiyi Li, Hitarth Choubisa, Arthur
+Hussey, and Jonathan Godwin. Orb: A fast, scalable neural network potential, 2024. URL
+https://arxiv.org/abs/2410.22570.
+Ivan S Novikov, Konstantin Gubaev, Evgeny V Podryabinkin, and Alexander V Shapeev. The mlip
+package: moment tensor potentials with mpi and active learning.Machine Learning: Science
+and Technology, 2(2):025002, dec 2020. doi: 10.1088/2632-2153/abc9fe. URLhttps://dx.
+doi.org/10.1088/2632-2153/abc9fe.
+Yutack Park, Jaesun Kim, Seungwoo Hwang, and Seungwu Han. Scalable parallel algorithm
+for graph neural network interatomic potentials in molecular dynamics simulations.Journal
+of Chemical Theory and Computation, 20(11):4857–4868, May 2024. ISSN 1549-9626. doi:
+10.1021/acs.jctc.4c00190. URLhttp://dx.doi.org/10.1021/acs.jctc.4c00190.
+Anyang Peng, Chun Cai, Mingyu Guo, Duo Zhang, Chengqian Zhang, Wanrun Jiang, Yinan Wang,
+Antoine Loew, Chengkun Wu, Weinan E, Linfeng Zhang, and Han Wang. LAMBench: a
+benchmark for large atomistic models.npj Computational Materials, 12(1):62, January 2026.
+ISSN 2057-3960. doi: 10.1038/s41524-025-01929-3. URLhttps://doi.org/10.1038/
+s41524-025-01929-3.
+Sergey N. Pozdnyakov and Michele Ceriotti. Smooth, exact rotational symmetrization for deep
+learning on point clouds. InProceedings of the 37th International Conference on Neural Infor-
+mation Processing Systems, NIPS ’23, Red Hook, NY , USA, 2023. Curran Associates Inc.
+15
+
+[page 16]
+Published as a conference paper at ICLR 2026
+Bal´azs P´ota, Paramvir Ahlawat, G´abor Cs´anyi, and Michele Simoncelli. Thermal conductivity pre-
+dictions with foundation atomistic models, 2025. URLhttps://arxiv.org/abs/2408.
+00755.
+Eric Qu and Aditi S. Krishnapriyan. The importance of being scalable: Improving the speed and
+accuracy of neural network interatomic potentials across chemical domains. InThe Thirty-
+eighth Annual Conference on Neural Information Processing Systems, 2024. URLhttps:
+//openreview.net/forum?id=Y4mBaZu4vy.
+Benjamin Rhodes, Sander Vandenhaute, Vaidotas ˇSimkus, James Gin, Jonathan Godwin, Tim
+Duignan, and Mark Neumann. Orb-v3: atomistic simulation at scale, 2025. URLhttps:
+//arxiv.org/abs/2504.06231.
+Janosh Riebesell, Rhys E. A. Goodall, Philipp Benner, Yuan Chiang, Bowen Deng, Gerbrand Ceder,
+Mark Asta, Alpha A. Lee, Anubhav Jain, and Kristin A. Persson. A framework to evaluate
+machine learning crystal stability predictions.Nature Machine Intelligence, 7(6):836–847, 2025.
+Jonathan Schmidt, Tiago F.T. Cerqueira, Aldo H. Romero, Antoine Loew, Fabian J ¨ager, Hai-Chen
+Wang, Silvana Botti, and Miguel A.L. Marques. Improving machine-learning models in materials
+science through large datasets.Materials Today Physics, 48:101560, 2024. ISSN 2542-5293. doi:
+https://doi.org/10.1016/j.mtphys.2024.101560.
+K. T. Sch¨utt, P.-J. Kindermans, H. E. Sauceda, S. Chmiela, A. Tkatchenko, and K.-R. M¨uller. Schnet:
+a continuous-filter convolutional neural network for modeling quantum interactions. InProceed-
+ings of the 31st International Conference on Neural Information Processing Systems, NIPS’17,
+pp. 992–1002, Red Hook, NY , USA, 2017. Curran Associates Inc. ISBN 9781510860964.
+Kristof T. Sch ¨utt, Oliver T. Unke, and Michael Gastegger. Equivariant message passing for the
+prediction of tensorial properties and molecular spectra, 2021. URLhttps://arxiv.org/
+abs/2102.03150.
+Shihao Shao, Haoran Geng, Zun Wang, and Qinghua Cui. FreeCG: Free the design space of clebsch-
+gordan transform for machine learning force fields. InThe Thirteenth International Confer-
+ence on Learning Representations, 2025. URLhttps://openreview.net/forum?id=
+sfi2j1Ot6j.
+Justin S. Smith, Ben Nebgen, Nicholas Lubbers, Olexandr Isayev, and Adrian E. Roitberg. Less is
+more: Sampling chemical space with active learning.The Journal of Chemical Physics, 148(24):
+241733, 05 2018. ISSN 0021-9606. doi: 10.1063/1.5023802. URLhttps://doi.org/10.
+1063/1.5023802.
+Tyler G. Sours and Ambarish R. Kulkarni. Predicting Structural Properties of Pure Silica Zeolites
+Using Deep Neural Network Potentials.The Journal of Physical Chemistry C, 127(3):1455–1463,
+January 2023. ISSN 1932-7447. doi: 10.1021/acs.jpcc.2c08429. URLhttps://doi.org/
+10.1021/acs.jpcc.2c08429. Publisher: American Chemical Society.
+Anuroop Sriram, Logan M. Brabson, Xiaohan Yu, Sihoon Choi, Kareem Abdelmaqsoud, Elias
+Moubarak, Pim de Haan, Sindy L ¨owe, Johann Brehmer, John R. Kitchin, Max Welling,
+C. Lawrence Zi

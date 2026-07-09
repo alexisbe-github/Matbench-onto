@@ -1,0 +1,55 @@
+@prefix : <https://k.loria.fr/ontologies/tckg_materials#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://k.loria.fr/ontologies/tckg_materials> rdf:type owl:Ontology ;
+    owl:versionIRI <https://k.loria.fr/ontologies/tckg_materials> .
+
+:Material rdf:type owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:comment "A material, crystal, molecule, or structure instance identified in a dataset." .
+
+:MaterialProperty rdf:type owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:comment "A measured, computed, or predicted property value associated with a material." .
+
+:ComputedMaterialProperty rdf:type owl:Class ;
+    rdfs:subClassOf :MaterialProperty ;
+    rdfs:comment "A property value obtained from a computational dataset or calculation." .
+
+:PredictedMaterialProperty rdf:type owl:Class ;
+    rdfs:subClassOf :MaterialProperty ;
+    rdfs:comment "A property value predicted by a machine-learning model." .
+
+:hasChemicalFormula rdf:type owl:DatatypeProperty ;
+    rdfs:domain :Material ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Chemical formula associated with a material record." .
+
+:hasNumberOfSites rdf:type owl:DatatypeProperty ;
+    rdfs:domain :Material ;
+    rdfs:range xsd:double ;
+    rdfs:comment "Number of atomic sites in the material structure." .
+
+:hasVolume rdf:type owl:DatatypeProperty ;
+    rdfs:domain :Material ;
+    rdfs:range xsd:double ;
+    rdfs:comment "Structure volume associated with a material record." .
+
+:hasProtostructure rdf:type owl:DatatypeProperty ;
+    rdfs:domain :Material ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Protostructure label associated with a material record." .
+
+:hasInitialProtostructure rdf:type owl:DatatypeProperty ;
+    rdfs:domain :Material ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Initial protostructure label before relaxation or normalization." .
+
+:isUniquePrototype rdf:type owl:DatatypeProperty ;
+    rdfs:domain :Material ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "Whether the material belongs to a unique prototype entry in its source dataset." .

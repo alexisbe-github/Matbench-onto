@@ -1,0 +1,1026 @@
+[page 1]
+arXiv:2503.05771v2  [cs.LG]  29 May 2025
+A Materials Foundation Model via Hybrid
+Invariant-Equivariant Architectures
+Keqiang Yan1∗, Montgomery Bohde1∗, Andrii Kryvenko1∗, Ziyu Xiang1, Kaiji Zhao1,
+Siya Zhu1, Saagar Kolachina1, Do˘guhan Sarıtürk1, Jianwen Xie2, Raymundo Arróyave1,
+Xiaoning Qian1 3, Xiaofeng Qian1, Shuiwang Ji1
+1Texas A&M University
+2Lambda Inc.
+3Brookhaven National Laboratory
+{keqiangyan,sji}@tamu.edu
+Abstract
+Machine learning interatomic potentials (MLIPs) can predict energy, force, and
+stress of materials and enable a wide range of downstream discovery tasks. A key
+design choice in MLIPs involves the trade-off between invariant and equivariant
+architectures. Invariant models offer computational efficiency but may not perform
+as well, especially when predicting high-order outputs. In contrast, equivariant
+models can capture high-order symmetries, but are computationally expensive. In
+this work, we propose HIENet, a hybrid invariant-equivariant materials interatomic
+potential model that integrates both invariant and equivariant message passing
+layers, while provably satisfying key physical constraints. HIENet achieves state-of-
+the-art performance with considerable computational speedups over prior models.
+Experimental results on both common benchmarks and downstream materials
+discovery tasks demonstrate the efficiency and effectiveness of HIENet.
+1 Introduction
+The discovery of materials with desired properties underpins a wide range of technological advance-
+ments [1, 2, 3, 4, 5, 6]. However, traditional materials discovery relies heavily on time-consuming and
+costly trial-and-error experimental methods. Computational approaches, particularly those leveraging
+advanced quantum mechanical methods including density functional theory (DFT), have accelerated
+this process [7]. Despite their benefits, these methods come with significant computational costs,
+making simulating systems with a large number of atoms extremely expensive.
+Recent progress in machine learning interatomic potentials (MLIPs) offers a promising path forward
+by enabling the prediction of energies, forces, and stresses of materials while achieving signifi-
+cant speedups compared to traditional DFT methods. However, existing MLIP models still face a
+fundamental trade-off: invariant models are computationally efficient but struggle with high-order
+property predictions and incorporating physical constraints, while equivariant models can better
+capture high-order interactions but are computationally expensive.
+An additional design choice is whether to enforce model predictions to adhere to key physical con-
+straints detailed in Sec. 3.1. Recent works have tried to learn these physical constraints, such as
+EquiformerV2 [8], which enforces global symmetry operations but not the other physical laws, and
+ORB [9], which doesn’t impose any constraints on model predictions. While it is more computation-
+∗Equal contribution.
+Preprint. Under review.
+
+[page 2]
+HIENet
+Equivariant Message Passing
+Invariant Message Passing
+Energy
+Forces
+Stress Phase Diagrams
+ Bulk Modulus
+Phonon Band
+Structure
+Materials Discovery
+Applications
+Materials StructureMaterials GraphsHybrid Inv.-Equi. NetworkProperties
+Unstable Structure Stable Structure
+Dynamic Simulations
+Equivariant Message Passing
+Figure 1: HIENet overview. The model converts material structures into graph representations and
+processes them through a hybrid architecture combining invariant and equivariant message passing
+networks to predict physical properties. The model supports accurate dynamic simulations (bottom)
+and enables diverse materials science applications (right).
+ally expensive to enforce these physical constraints, it is also necessary for MLIPs to perform well,
+especially on downstream discovery tasks beyond energy, force, and stress prediction.
+In this work, we propose HIENet, a materials MLIP that satisfies key physical constraints for
+energy, force, and stress predictions while integrating both invariant and equivariant designs to
+achieve state-of-the-art (SOTA) performance with considerable computational speedups compared
+to existing models. An overview of HIENet is provided in Figure 1. Unlike prior approaches that
+rely exclusively on either invariant or equivariant layers, HIENet balances these strategies to leverage
+the scalability of invariant layers while utilizing equivariant layers to effectively capture high-order
+interactions. Moreover, in contrast to existing models like EquiformerV2 [8] and Orb [9], HIENet
+rigorously satisfies physical constraints, including O(3) equivariance for force and stress, and adheres
+to physical conservation laws through physics-informed derivative-based methods. Experimental
+results on common benchmarks including Materials Project Trajectory, Matbench Discovery, and
+downstream materials discovery tasks including evaluations on phonons, bulk moduli, ab initio
+molecular dynamics, and alloys as detailed in Sec. 5.1, 5.2, 5.3 and Appendix B,C demonstrate the
+efficiency and effectiveness of HIENet. Additional ablations in Sec. 5.5 further demonstrate that our
+hybrid invariant-equivariant approach scales well with increasing model capacity and works with
+different equivariant layer architectures, providing powerful insights into future MLIP designs.
+2 Preliminaries
+Problem definition. The core task in developing MLIPs is to learn a mapping from materials atomic
+structures to quantum mechanical properties. Specifically, given a crystal structure, we aim to predict
+three quantities; the total energy E, the forces acting on each atom F = {Fi ∈ R3, 1 ≤ i ≤ n},
+where n denotes number of atoms in a cell, and the stress tensor σ ∈ R3×3, which governs cell
+deformation. While these properties are directly useful for many applications such as structural
+relaxation and predicting thermodynamic stability, from these we can derive many other important
+material properties such as phonon band structures and bulk moduli as shown in Sec. 5.3. We also
+provide preliminaries about molecular dynamics simulation of materials in Appendix A.
+Crystal structures. Unlike regular molecules, crystals are periodic in nature and are characterized as
+three-dimensional lattices with infinitely repeating unit cells. Adopting the notation of [10], a crystal
+structure can be described as a triple M = (Z, P, L), which represents both atomic and geometric
+information. The atomic composition is denoted by Z = [z1, z2, · · · , zn] ∈ Rn, where zi represents
+the atomic number of i-th atom in the unit cell. The arrangement of these atoms in the Euclidean
+space is given by 3D coordinates P = [p1, p2, · · · , pn] ∈ R3×n. The periodicity of the unit cell is
+specified by the lattice matrix L = [ℓ1, ℓ2, ℓ3] ∈ R3×3, whose columns are the three lattice vectors.
+2
+
+[page 3]
+3 Hybrid Invariant-Equivariant Networks
+We propose Hybrid Invariant-Equivariant Network (HIENet), a materials interatomic potential model
+that integrates both invariant and equivariant message passing layers. HIENet is carefully designed to
+satisfy important physical constraints detailed in Sec. 3.1, consisting of physics-informed geometric
+crystal graphs detailed in Sec. 3.2, a hybrid invariant-equivariant network design detailed in Sec. 3.3,
+and physics-informed property predictions detailed in Sec. 3.4. All together, HIENet achieves state-
+of-the-art performance on common benchmarks and downstream materials discovery tasks while
+significantly improving computational efficiency compared to prior models. Additionally, HIENet
+satisfies all desirable physical constraints with mathematical proofs as shown in Sec. 3.5.
+3.1 Physical Constraints for MLIPs
+As detailed in Sec. 2, MLIPs are developed to predict energy, forces, and stress of materials atomic
+systems. While some MLIPs such as EqV2 and ORB can achieve moderate performance on some tasks
+without satisfying key physical constraints, such models under-perform on many important materials
+discovery tasks such as phonon frequency calculations, bulk moduli prediction, and molecular
+dynamics simulations. As such, in order for MLIPs to generalize well and have robust performance
+across downstream tasks, it is essential that model predictions satisfy key physical constraints.
+Rototranslational Symmetries. Crystal structures exhibit inherent symmetry under global rotations,
+translations, and reflections. To respect these symmetries, the predicted energy must be E(3) invariant,
+while forces and stress must be O(3) equivariant. We formalize these requirements as follows:
+Definition 3.1 (O(3) Equivariance). A MLIP produces O(3) equivariant predictions if, for a crystal
+structure M = ( Z, P, L), its predicted energy ˆE, forces ˆF = ( ˆF1, . . . , ˆFn), and stress tensor ˆσ
+transform under any rotation R ∈ R3×3, |R| = ±1 and translation b ∈ R3 as follows:
+ˆE(Z, P, L) = ˆE(Z, RP + b, RL)
+ˆFi(Z, P, L) = R⊤ ˆFi(Z, RP + b, RL),
+ˆσ(Z, P, L) = R⊤ ˆσ(Z, RP + b, RL)R.
+Importantly, there is a distinction between invariant/equivariant layers and invariant/equivariant
+predictions. For example, CHGNet [11] exclusively uses E(3) invariant message passing layers, yet
+CHGNet force and stress predictions are O(3) equivariant because they use gradient-based force and
+stress calculations. When we refer to a model being O(3) equivariant, we are referring to the outputs,
+not the individual layers, unless otherwise specified.
+Physical Plausibility. Beyond symmetry considerations, MLIPs must satisfy several key physical
+laws to be reliable for downstream applications. These include force conservation, force equilibrium,
+and stress tensor symmetry. We define these constraints formally as follows:
+Definition 3.2 (Force Conservation and Equilibrium). Forces must form a conservative vector field
+derived from the potential energy surface, and in the absence of external influences, the sum of forces
+on all atoms is zero:
+F = −∇PE,
+nX
+i=1
+Fi = 0, (1)
+Definition 3.3 (Stress Tensor Symmetry). The predicted stress tensor must be symmetric:
+σij = σji ∀i, j ∈ 1, 2, 3 (2)
+In addition to these physical laws, the potential energy surface must be continuously differentiable to
+enable accurate downstream property calculations requiring higher-order derivatives.
+Our HIENet model rigorously enforces all the outlined symmetry and physical constraints through
+the carefully designed geometric crystal graphs, model architecture, and gradient-based force and
+stress computation, with details provided in Sec. 3.2, 3.3, 3.4, and 3.5.
+3.2 Geometric Graph Representations Satisfying Physical Constraints
+For a crystal structure, M = (Z, P, L) we construct an O(3) equivariant crystal graph G = (V, E)
+that preserves physical symmetries inherent in crystal structures. Specifically, for a crystal structure
+3
+
+[page 4]
+Node + Edge 
+Embedding
+E(3)-Invariant 
+Message Passing Layer
+O(3)-Equivariant 
+Message Passing Layer × 𝑁
+Crystal Graph
+෠𝐸
+෡𝑭𝑖
+∇𝐩i
+1
+𝑉
+𝜕𝐸
+𝜕𝜖𝑖𝑗
+𝑧𝑖 𝒓𝑗𝑖
+𝒉𝑖
+Poly Cutoff
+BesselOne-Hot
+Lin
+𝒉𝑗𝑖
+𝒇𝑖 𝒇𝑗 𝒓𝑗𝑖
+Lin Lin 𝑌𝑙
+TP
+Lin
+Gate
+𝒇′𝑖
+Σ
+Concat
+𝒉𝑖 𝒉𝑗 𝒉𝑗𝑖
+Lin Lin
+Layer NormLin
+Gate
+𝒉′𝑖
+ො𝜎𝑖𝑗
+Figure 2: HIENet Model Architecture. We construct O(3) equivariant crystal graphs. We then apply
+an invariant message passing layer followed by several equivariant message passing layers before
+predicting the total energy, ˆE and using physical laws to compute ˆF , ˆσ.
+M = (Z, P, L), each atom i in the unit cell and all its periodic duplicates are represented by a single
+node i ∈ V with node features hi = Wembzi, where Wemb ∈ Rd×nz is a learnable embedding
+matrix and zi is the one-hot encoding of atomic number zi. An edge will be built from node j to i
+when the Euclidean distance between a periodic duplicate j′ of j and i satisfies
+||rj′i||2 = ∥pj + k1ℓ1 + k2ℓ2 + k3ℓ3 − pi∥2 ≤ Rcut, k 1, k2, k3 ∈ Z, (3)
+where Rcut is a fixed cutoff radius.
+Edge features hji are then embedded using radial Bessel basis functions with a polynomial enve-
+lope [12] function fpoly:
+hji =
+2 sin
+
+nπ
+Rcut
+∥rji∥2
+
+Rcut∥rji∥2
+fpoly (∥rji∥2, Rcut) . (4)
+Importance of using envelope function . It is worth noting that the smooth envelope is crucial
+for energy conservation and computing physically meaningful force predictions. It ensures that the
+energy and its derivatives smoothly decay to zero at the cutoff boundary.
+Importance of constructing O(3) equivariant crystal graphs. Unlike previous work [13, 10], our
+constructed crystal graphs are O(3) equivariant due to the use of a fixed cutoff radius and edge vectors
+rji that are O(3) equivariant by definition. It is important to note that O(3) equivariance of the input
+crystal graphs is a necessary condition for achieving O(3) equivariant predictions in MLIPs. As
+shown in our experiments in Appendix E, violating this equivariance in the graph construction leads
+to a measurable drop in MLIP performance.
+3.3 Hybrid Invariant-Equivariant Design
+Our HIENet model consists of several invariant and equivariant message passing layers which
+iteratively update node features for each atom.
+E(3) Invariant Layer. In the invariant message passing layers, we update node features hi using a
+graph transformer mechanism. Specifically, we compute key kji, query qji, and value vji vectors as:
+kji = WK (hi||hj||hij) , qji = WQ (hi||hj||hij) , vji = Φ (hi||hj||hji) , (5)
+where Φ is an MLP with SiLU nonlinearities [ 14] and || denotes vector concatenation. We then
+compute attention scores and aggregate the values over neighboring nodes to update the node features:
+h′
+i = φ(hi) + (1 − φ(hi))
+X
+j∈Ni
+vji ⊙ σ
+ qji ⊙ kji√
+d
+
+, (6)
+where ⊙ represents element-wise multiplication, σ is the sigmoid activation function, and φ is an
+MLP with a sigmoid activation in the final layer that acts as a learnable gating mechanism.
+4
+
+[page 5]
+O(3) Equivariant Layer. The HIENet equivariant layers build node features fi,ℓ for each rotation
+order ℓ ≤ Lmax. In practice we use Lmax = 3. In the first equivariant message passing layer, we
+initialize fi,0 = hi, the output of the previous invariant layer. In each equivariant layer, we embed
+edge vectors rji using spherical harmonics Y l( rji
+||rji ||) and update the equivariant features as:
+f ′
+i,ℓ = 1
+|Ni|
+LmaxX
+l=0
+X
+j∈Ni
+TPℓ
+
+Wfi, Y l
+ rji
+||rji||
+
+(7)
+where TPℓ is the standard tensor product operation yielding outputs with rotation order ℓ. We further
+add a skip connection and gate mechanism to output updated node features:
+f ′
+i = ψ (Wskipfi + WEf ′
+i) (8)
+where ψ is an equivariant gate activation function defined as:
+ψ(fi) = ϕ(fi,0) ⊕
+
+ M
+0<l≤Lmax
+ϕ(fi,0)fi,l
+
+ (9)
+where ϕ is the SiLU activation function and ⊕ is the direct sum operation.
+Hybrid MLIPs. Our HIENet model consists of one or more invariant message passing layers
+followed by several equivariant layers. The final equivariant layer outputs are aggregated across the
+graph and the energy is predicted as E =P
+i Wefi,0. In practice, we find that one invariant message
+passing layer achieves a good balance between performance and efficiency. We provide additional
+details and ablations on the model design in Appendix F and E.
+3.4 Physics Informed Property Predictions
+In order to ensure that our force and stress predictions obey the aforementioned physical constraints,
+we use gradient-based methods to compute force and stress. Specifically, our model directly predicts
+the total energy, ˆE and we compute the force acting on atomi as ˆFi = −∇pi
+ˆE, where ∇pi represents
+the gradient with respect to the position vector pi. This approach automatically guarantees that:
+Proposition 3.4. HIENet predictions ˆFi form a conservative vector field.
+Proposition 3.5. HIENet predictions satisfy force equilibrium PN
+i=1 ˆFi = 0 when no external
+influences are applied.
+Similarly, we compute the stress tensor through strain derivatives ˆσij = 1
+V
+∂ ˆE
+∂ϵij
+, where ϵ is the lattice
+strain tensor and V is the volume of the unit cell. We ensure that ˆσ will be symmetric by first
+symmetrizing the strain matrix ϵsym = 1
+2(ϵ + ϵ⊤). All together, our approach guarantees that:
+Proposition 3.6. HIENet predictions are O(3) equivariant as defined in Sec. 3.1.
+3.5 Proofs of Satisfying Physical Constraints
+While previous works [15, 16, 17, 11, 18] used gradient-based calculations, none of these works prove
+that their proposed methods satisfy desired physical laws. In this section, we rigorously prove each
+of the previously stated propositions and show that HIENet satisfies all desirable physical constraints.
+Proof of Proposition 3.4. By definition, a vector field v : R → Rn is conservative if there exists a
+continuously differentiable scalar field φ such that v = ∇φ.
+We compute forces as ˆF = −∇P ˆE, so HIENet predictions form a conservative force-field as long as
+the energy E is continuously differentiable with respect to the atom positions, pi. The composition of
+continuously differentiable functions is continuously differentiable, so it suffices for each operation
+in HIENet to be continuously differentiable.
+Clearly linear operations are continuously differentiable, and we exclusively use sigmoid and
+SiLU [14] activations throughout the model. The spherical harmonics Y l( rji
+||rji ||) are continuously
+5
+
+[page 6]
+differentiable within the domain of possible interatomic distances, i.e. for ||rji|| ̸= 0. Finally, the
+edge embedding function that produces hji is continuously differentiable for ||rji|| ̸= 0 because fpoly
+is specifically chosen so that it is continuously differentiable and decays to 0 at Rcut [12].
+Because each operation in HIENet is continuously differentiable, the force predictions therefore form
+a conservative vector field, as desired.
+Proof of Proposition 3.5. We define edge force as ˆFji = − ∂ ˆE
+∂rji
+.
+Forces acting on each atom can be decomposed as:
+ˆFi = − ∂ ˆE
+∂pi
+= −
+X
+j∈Ni
+ 
+∂ ˆE
+∂rji
+∂rji
+∂pi
++ ∂ ˆE
+∂rij
+∂rij
+∂pi
+!
+(10)
+= −
+X
+j∈Ni
+ 
+∂ ˆE
+∂rji
+− ∂ ˆE
+∂rij
+!
+=
+X
+j∈Ni
+
+ˆFji − ˆFij
+
+(11)
+Summing over all atoms:
+nX
+i=1
+ˆFi =
+nX
+i=1
+X
+j∈Ni
+
+ˆFji − ˆFij
+
+=
+X
+(i,j)∈E
+
+ˆFji − ˆFij
+
+= 0 (12)
+Therefore the forces acting on each atom sum to 0 as desired.
+Proof of Proposition 3.6. First, the radius-based graph construction ϑgraph described in Sec. 3.2 is
+O(3) equivariant. This is because it only depends on the relative positions between atoms and the
+resulting displacement vectors rji will rotate accordingly.
+Second, the proposed HIENet message passing layers ϑHIENet are E(3) invariant for the final energy
+prediction. The invariant message passing layers are E(3) invariant by construction because they only
+operate the magnitude ||rji|| and for the equivariant message passing layers, we only extract the final
+l = 0 features, which are invariant. Because of this:
+ˆE(Z, RP + b, RL) = ϑHIENet(ϑgraph(Z, RP + b, RL)) = ϑHIENet(Rϑgraph(Z, P, L)) (13)
+= ϑHIENet(ϑgraph(Z, P, L)) = ˆE(Z, P, L), (14)
+Based on the physics informed property predictions described in Sec. 3.4, we then have:
+ˆFi(Z, RP + b, RL) = −∇Rpi
+ˆE(Z, P, L) = −R∇pi
+ˆE(Z, P, L) = R ˆFi(Z, P, L), (15)
+ˆσ(Z, RP + b, RL) = 1
+V ∇Rϵij RT ˆE = 1
+V R∇ϵij
+ˆERT = Rˆσ(Z, P, L)RT , (16)
+therefore energy, force, and stress each transform appropriately under rototranslation and HIENet
+predictions are O(3) equivariant.
+4 Related Work
+In this section, we focus on materials MLIPs and provide related works on conventional computation
+methods in Appendix A.2. Recent advances in MLIPs [ 15, 19, 20, 21, 22, 23] and the availability
+of high-quality materials dynamics datasets [ 17, 24, 25] generated using DFT-based algorithms
+have facilitated the development of powerful materials MLIPs [ 26, 27, 13, 28, 29, 10]. Among
+these MLIPs, models with only invariant layers, such as M3GNet [ 17], CHGNet [ 24], Orb [ 9],
+and EScAIP [30], are computationally efficient but struggle to produce physically meaningful and
+robust predictions, especially on downstream tasks. In contrast, models with purely equivariant
+layers, including MACE [ 31], SevenNet [ 32], and EquiformerV2 [ 25], are more powerful, but
+also more computationally expensive. Their extensive use of tensor product operations limits
+their scalability. Moreover, even some equivariant models, such as EquiformerV2, violate force
+conservation, undermining its utility in realistic materials tasks as seen in Sec. 5.
+Different from these existing MLIPs, our proposed HIENet satisfies all key physical constraints
+and combines the scalability and efficiency of invariant designs with the robustness and symmetry-
+capturing capabilities of equivariant designs. This novel integration offers a promising direction for
+the next generation of MLIPs design.
+6
+
+[page 7]
+Table 1: Model performance on the Unique Prototype split of the Matbench Discovery benchmark. DAF is
+the Discovery Acceleration Factor from [33] which measures model performance to classify thermodynamic
+stability. MAE and RMSE are in meV/atom. RMSD is the root mean squared displacement between predicted
+and reference structures after relaxation. Missing results from corresponding model marked by -.
+Model HIENet EquiformerV2 ORB SevenNet-l3i5 MACE CHGNet
+DAF ↑ 4.879 4.64 4.70 4.63 3.78 3.361
+MAE ↓ 40 42 45 48 57 63
+RMSE ↓ 73 87 91 87 101 103
+R2 ↑ 0.84 0.778 0.756 0.776 0.697 0.689
+F1 ↑ 0.761 0.77 0.765 0.76 0.669 0.613
+Accuracy ↑ 0.93 0.93 0.92 0.92 0.88 0.851
+Precision ↑ 0.749 0.709 0.719 0.708 0.577 0.514
+RMSD ↓ 0.084 - 0.101 0.085 0.091 0.095
+5 Experimental Evaluations
+In this section, we evaluate HIENet’s overall modeling capacity as a MLIP. We assess its performance
+on the widely used Matbench Discovery benchmark [33] and Materials Project Trajectory (MPtrj)
+dataset [24] in Sec. 5.1 and 5.2. We then provide evaluations on important downstream materials
+discovery tasks in Sec. 5.3, where we find that models which do not satisfy physical constraints
+perform poorly. In Sec. 5.4 we compare the computational efficiency of HIENet to top performing
+equivariant models and demonstrate that HIENet is able to achieve SOTA performance across all
+tasks while still providing considerable computational speedups. Finally, in Sec. 5.5 we provide
+ablations studies to demonstrate the robustness and generality of our hybrid invariant-equivariant
+network design. We provide additional downstream materials discovery evaluations on ab initio
+molecule dynamics simulations and phase diagram prediction for alloy design in Appendix B and
+Appendix C.
+Experimental setup. We train our HIENet on the MPtrj dataset [11], which contains 1.58M crystal
+structures. We split the dataset and use 95% for training and 5% for validation following [31]. For fair
+comparison, we compare with models trained on this dataset and without any auxiliary data or training
+objectives. Specifically, we compare against state-of-the-art methods including EquiformerV2 [8],
+ORB [9], SevenNet [18], MACE [31], and CHGNet [ 11]. Of these baselines, all but ORB have
+equivariant force and stress predictions, and all but EquiformerV2 and ORB satisfy the physical
+constraints listed in Sec. 3.1. More detailed model settings and training details can be found in
+Appendix F. In all tables, we mark best performing model in bold and second best in underlined.
+5.1 Evaluation on Matbench Discovery
+Matbench Discovery benchmark [33] is a comprehensive testbed for crystalline materials structure
+optimizations and stability predictions. Notably, the Matbench Discovery benchmark structures come
+from a different distribution from the MPtrj training dataset, thus posing an out-of-distribution (OOD)
+generalization problem. As shown in Table 1, HIENet performs best on six out of seven metrics
+and has a significant performance gain on the Discovery Acceleration Factor (DAF). Additionally,
+we observe that while ORB performs well on all of the energy-related metrics, it has the worst
+performance of all models on RMSD, a metric that measures the models ability to accurately relax
+structures to stability. This aligns with out intuitions that downstream tasks such as structural
+optimization require models to obey physical symmetries.
+5.2 Materials Project Trajectory Dataset
+We then evaluate HIENet’s ability to accurately predict energy, force, and stress on a held-out MPtrj
+validation set following [24, 31]. SevenNet does not hold-out any validation split and trains their
+model on the entire 1.58M structures. To compare with SevenNet, we also report HIENet performance
+on the training split. As seen in Table 2, HIENet achieves state-of-the-art performance across train
+and validation splits. Notably, HIENet reduces the energy mean absolute error (MAE) by nearly 50%
+and the force MAE by 23% compared to the previous state-of-the-art EquiformerV2.
+7
+
+[page 8]
+Table 3: Error in phonon frequency prediction on structures from [34]. MAE and MSE computed against each
+q-point, and RMSE taken as the root of MSE over all q-points and bands. Band structures shown in Appendix.
+Model HIENet EquiformerV2 ORB SevenNet-l3i5 MACE CHGNet
+MAE (THz) 0.316 1.359 1.601 0.325 0.529 1.359
+MSE (THz2) 0.332 4.65 5.441 0.358 0.837 4.21
+RMSE (THz) 0.446 1.657 1.973 0.455 0.699 1.604
+Table 4: Error in bulk modulus KV RH prediction across 1,763 crystal structures sampled from Material Project.
+Model HIENet EquiformerV2 ORB SevenNet-l3i5 MACE CHGNet
+MAE (GPa) ↓ 10.52 24.76 34.7 11.5 28.84 21.67
+R2 ↑ 0.93 0.64 -21.9 0.9 -54.1 0.7
+5.3 Evaluations on Phonons and Bulk Modulus Prediction
+Table 2: MAE on train and validation splits. Inv. and Eqv. denote
+whether the model uses invariant or equivariant message passing
+layers. ORB [9] does not report results on MPtrj and MACE does
+not report stress performance.
+Model Inv. Eqv. Energy↓ Forces↓ Stress↓
+(meV/atom) (meV/Å) (kBar)
+Train
+SevenNet-0 ✗ ✓ 11.5 41 2.78
+SevenNet-l3i5 ✗ ✓ 8.3 29 2.33
+HIENet ✓ ✓ 5.91 20.76 1.95
+Validation
+CHGNet ✓ ✗ 33 79 3.51
+MACE ✗ ✓ 20 45 -
+EquiformerV2 ✗ ✓ 12.4 32.22 2.48
+HIENet ✓ ✓ 6.77 24.82 2.31
+Phonon frequency evaluation .
+Phonons are collective excitations of
+atomic vibrations in crystal structures
+with translational symmetry, playing
+a crucial role in determining the
+dynamical stability and thermal con-
+ductivity of materials. The calculation
+of phonon band structure relies on
+the atomic forces upon displacement
+of atoms in different phonon modes
+along high-symmetry paths in the
+first Brillouin zone. Because of this,
+it is critical for model predictions
+to obey physical symmetries and for
+the forces to be conservative. Here
+we perform a phonon band structure
+calculation workflow using Phonopy [ 35, 36] on the set of structures from [ 34]. We provide
+additional details on the dataset, workflow, and additional results on the phonon band structures in
+Appendix D.1.
+As shown in Table 3, HIENet outperforms all baseline models across all metrics for phonon frequency
+calculations. Additionally, while EquiformerV2 and ORB have good performance on MPtrj and
+Matbench Discovery, they have the worst performance among all models on this task. As previously
+mentioned, this may be because this task requires models predictions to obey physical constraints
+and be physically meaningful in order for the phonon calculations to be accurate.
+Evaluation on bulk modulus. Model efficacy on zero-shot prediction of material properties was
+further evaluated on calculations of the fourth-order elastic tensor and the corresponding VRH average
+bulk modulus KV RH [37]. A test set was generated by querying the Materials Project Database [38]
+for entries with between 1 and 6 sites that also had reported elasticity values. Following [ 31], we
+remove entries with highly unphysical bulk modulus reference values less than -50 GPa or greater
+than 600 GPa as well as those resulting in a calculated singular matrix, resulting in a final evaluation
+set of 1,763 crystal systems. Elastic tensors and bulk moduli were computed using the MatCalc’s
+Elasticity module [39]. Additional details on our workflow and dataset are provided in Appendix D.2.
+As shown in Table 4, HIENet outperforms all models on MAE andR2. In fact, HIENet and SevenNet
+are the only models capable of achieving reasonable accuracy, demonstrating both the difficulty of
+this task and the robustness of our model. We provide parity plots for all models in Appendix.
+5.4 HIENet efficiency
+In addition to demonstrating improved performance across all benchmarks and downstream tasks,
+we show that HIENet is more computationally efficient than competing equivariant models. This is
+highly important for downstream materials discovery applications such as structural relaxation and
+8
+
+[page 9]
+2829210211
+Model Throughput (samples/second)
+0.5
+1.0
+1.5
+2.0Validation LossModel
+HIENet
+EqvNet
+InvNet
+Figure 3: Hybrid Architecture Ablation. Model
+throughput measured on an Nvidia H100 GPU with
+a batch size of 128. EqvNet uses only equivariant
+message passing layers and InvNet uses only invari-
+ant layers. Validation loss measured on the MPtrj
+validation set. Hybrid invariant-equivariant models
+(HIENet) consistently outperform equivariant-only
+and invariant-only models across all model sizes.
+2829210211
+Model Throughput (samples/second)
+0.5
+1.0
+1.5
+2.0Validation Loss
+Model
+HIENet
+InvSevNet
+SevenNet
+Figure 4: Hybrid Architecture Generality. Model
+throughput measured on an Nvidia H100 GPU with a
+batch size of 128. InvSevNet represents the SevenNet
+model [18] with an additional invariant message pass-
+ing layer. InvSevNet outperforms SevenNet across
+all tested model sizes, but still performs worse than
+HIENet.
+random structure search, which require thousands of forward passes of the model. As seen in Table 5,
+HIENet is 90% faster than SevenNet-l3i5 and over 140% faster than EquiformerV2, all while having
+better performance than both models. Both EquiformerV2 and SevenNet exclusively use equivariant
+message passing layers, which limits the throughput and scalability of these models. At the same
+time, models without O(3) equivariant force and stress predictions, such as ORB, may be faster, but
+will perform poorly on realistic materials discovery tasks, as shown in Sec. 5.1 and 5.3.
+5.5 Generality and Robustness of Hybrid Network Design
+Table 5: Number of parameters and inference throughput
+of HIENet compared with top performing equivariant mod-
+els. Throughput evaluated using random samples from the
+MPtrj dataset on a single Nvidia A100 GPU with batch
+size 1.
+Model Num. of Param. Throughput↑
+(Samples / sec.)
+SevenNet-l3i5 1,171,327 11.9
+EquiformerV2 31,207,434 9.4
+HIENet 7,860,155 22.6
+Hybrid architecture ablation. We provide an
+ablation study to demonstrate that our hybrid
+invariant-equivariant architecture outperforms
+invariant-only and equivariant-only models.
+In Figure 3 we see that HIENet outperforms
+EqvNet (only equivariant layers) and InvNet
+(only invariant layers) across a wide range
+of model sizes. Additionally, we see that
+InvNet consistently performs poorly, which
+aligns with our intuitions that equivariant mes-
+sage passing layers are important to capture
+high-order atomic interactions and accurately
+predict force and stress.
+Hybrid architecture generality. To show that our idea of combining invariant and equivariant
+layers works well across different model designs, we add our invariant layer to SevenNet to form a
+hybrid model based on their equivariant designs. As shown in Figure 4, this InvSevNet consistently
+outperforms the base SevenNet even when controlling for model speed. Additionally, we observe
+that HIENet still outperforms the InvSevNet model across all tested model sizes. Because our hybrid
+invariant-equivariant works well with different models, we believe this approach provides a general
+new direction to design powerful and efficient MLIP models.
+6 Conclusion, Limitations, and Societal Impacts
+We propose HIENet, a machine learning interatomic potential for materials, and demonstrate the
+importance of (1) integrating both invariant and equivariant message-passing layers and (2) satisfying
+physical constraints to construct powerful and efficient MLIPs. HIENet achieves state-of-the-art per-
+formance across a range of benchmarks and downstream applications, while being significantly faster
+than existing equivariant models. We provide ablation studies to further demonstrate the generality
+and robustness of our hybrid network designs. Current limitations include (1) we currently focus on
+9
+
+[page 10]
+materials discovery tasks, while extensions to molecular and protein science are underexplored and (2)
+due to limited computing resources, we face challenges in training HIENet on hundred-million-scale
+datasets, where we believe its full potential could be realized. We plan to explore these directions in
+the future work. The societal impacts of novel materials discovery may apply to this work.
+References
+[1] Juan J de Pablo, Nicholas E Jackson, Michael A Webb, Long-Qing Chen, Joel E Moore, Dane
+Morgan, Ryan Jacobs, Tresa Pollock, Darrell G Schlom, Eric S Toberer, et al. New frontiers for
+the materials genome initiative. npj Computational Materials, 5(1):41, 2019.
+[2] Eric Stach, Brian DeCost, A Gilad Kusne, Jason Hattrick-Simpers, Keith A Brown, Kristofer G
+Reyes, Joshua Schrier, Simon Billinge, Tonio Buonassisi, Ian Foster, et al. Autonomous experi-
+mentation systems for materials development: A community perspective. Matter, 4(9):2702–
+2726, 2021.
+[3] Shafidah Shafian, Fitri Norizatie Mohd Salehin, Sojeong Lee, Azlan Ismail, Shuhaida Mo-
+hamed Shuhidan, Lin Xie, and Kyungkon Kim. Development of Organic Semiconductor
+Materials for Organic Solar Cells via the Integration of Computational Quantum Chemistry and
+AI-Powered Machine Learning. ACS Applied Energy Materials, 2025.
+[4] Chade Lv, Xin Zhou, Lixiang Zhong, Chunshuang Yan, Madhavi Srinivasan, Zhi Wei Seh,
+Chuntai Liu, Hongge Pan, Shuzhou Li, Yonggang Wen, et al. Machine learning: an advanced
+platform for materials development and state prediction in lithium-ion batteries. Advanced
+Materials, 34(25):2101474, 2022.
+[5] Youbin Zheng, Ning Tang, Rawan Omar, Zhipeng Hu, Tuan Duong, Jing Wang, Weiwei Wu,
+and Hossam Haick. Smart materials enabled with artificial intelligence for healthcare wearables.
+Advanced Functional Materials, 31(51):2105482, 2021.
+[6] DB Miracle and DJ Thoma. Autonomous research and development of structural materials–an
+introduction and vision. Current Opinion in Solid State and Materials Science , 33:101188,
+2024.
+[7] Xuan Zhang, Limei Wang, Jacob Helwig, Youzhi Luo, Cong Fu, Yaochen Xie, Meng Liu,
+Yuchao Lin, Zhao Xu, Keqiang Yan, Keir Adams, Maurice Weiler, Xiner Li, Tianfan Fu,
+Yucheng Wang, Haiyang Yu, YuQing Xie, Xiang Fu, Alex Strasser, Shenglong Xu, Yi Liu,
+Yuanqi Du, Alexandra Saxton, Hongyi Ling, Hannah Lawrence, Hannes Stärk, Shurui Gui, Carl
+Edwards, Nicholas Gao, Adriana Ladera, Tailin Wu, Elyssa F. Hofgard, Aria Mansouri Tehrani,
+Rui Wang, Ameya Daigavane, Montgomery Bohde, Jerry Kurtin, Qian Huang, Tuong Phung,
+Minkai Xu, Chaitanya K. Joshi, Simon V . Mathis, Kamyar Azizzadenesheli, Ada Fang, Alán
+Aspuru-Guzik, Erik Bekkers, Michael Bronstein, Marinka Zitnik, Anima Anandkumar, Stefano
+Ermon, Pietro Liò, Rose Yu, Stephan Günnemann, Jure Leskovec, Heng Ji, Jimeng Sun, Regina
+Barzilay, Tommi Jaakkola, Connor W. Coley, Xiaoning Qian, Xiaofeng Qian, Tess Smidt, and
+Shuiwang Ji. Artificial intelligence for science in quantum, atomistic, and continuum systems.
+arXiv preprint arXiv:2307.08423, 2023.
+[8] Yi-Lun Liao, Brandon M Wood, Abhishek Das, and Tess Smidt. EquiformerV2: Improved
+Equivariant Transformer for Scaling to Higher-Degree Representations. In The Twelfth Interna-
+tional Conference on Learning Representations, 2024.
+[9] Mark Neumann, James Gin, Benjamin Rhodes, Steven Bennett, Zhiyi Li, Hitarth Choubisa,
+Arthur Hussey, and Jonathan Godwin. Orb: A Fast, Scalable Neural Network Potential, 2024.
+[10] Keqiang Yan, Cong Fu, Xiaofeng Qian, Xiaoning Qian, and Shuiwang Ji. Complete and efficient
+graph transformers for crystal material property prediction. In International Conference on
+Learning Representations, 2024.
+[11] Bowen Deng, Peichen Zhong, KyuJung Jun, Janosh Riebesell, Kevin Han, Christopher J.
+Bartel, and Gerbrand Ceder. Chgnet as a pretrained universal neural network potential for
+charge-informed atomistic modelling. Nature Machine Intelligence, page 1–11, 2023.
+10
+
+[page 11]
+[12] Johannes Gasteiger, Florian Becker, and Stephan Günnemann. GemNet: Universal Directional
+Graph Neural Networks for Molecules. In Advances in Neural Information Processing Systems,
+2021.
+[13] Keqiang Yan, Yi Liu, Yuchao Lin, and Shuiwang Ji. Periodic graph transformers for crystal
+material property prediction. In The 36th Annual Conference on Neural Information Processing
+Systems, pages 15066–15080, 2022.
+[14] Stefan Elfwing, Eiji Uchibe, and Kenji Doya. Sigmoid-weighted linear units for neural network
+function approximation in reinforcement learning. Neural networks, 107:3–11, 2018.
+[15] Kristof Schütt, Pieter-Jan Kindermans, Huziel Enoc Sauceda Felix, Stefan Chmiela, Alexandre
+Tkatchenko, and Klaus-Robert Müller. Schnet: A continuous-filter convolutional neural network
+for modeling quantum interactions. Advances in neural information processing systems, 30,
+2017.
+[16] Kristof Schütt, Oliver Unke, and Michael Gastegger. Equivariant message passing for the
+prediction of tensorial properties and molecular spectra. In International Conference on
+Machine Learning, pages 9377–9388. PMLR, 2021.
+[17] Chi Chen and Shyue Ping Ong. A universal graph deep learning interatomic potential for the
+periodic table. Nature Computational Science, 2(11):718–728, 2022.
+[18] Yutack Park, Jaesun Kim, Seungwoo Hwang, and Seungwu Han. Scalable parallel algorithm
+for graph neural network interatomic potentials in molecular dynamics simulations. J. Chem.
+Theory Comput., 20(11):4857–4868, 2024.
+[19] Nathaniel Thomas, Tess Smidt, Steven Kearnes, Lusann Yang, Li Li, Kai Kohlhoff, and Patrick
+Riley. Tensor field networks: Rotation- and translation-equivariant neural networks for 3d point
+clouds, 2018.
+[20] Yi Liu, Limei Wang, Meng Liu, Yuchao Lin, Xuan Zhang, Bora Oztekin, and Shuiwang Ji.
+Spherical message passing for 3D molecular graphs. In International Conference on Learning
+Representations, 2022.
+[21] Simon Batzner, Albert Musaelian, Lixin Sun, Mario Geiger, Jonathan P Mailoa, Mordechai
+Kornbluth, Nicola Molinari, Tess E Smidt, and Boris Kozinsky. E(3)-equivariant graph neu-
+ral networks for data-efficient and accurate interatomic potentials. Nature Communications,
+13(1):2453, 2022.
+[22] Ilyes Batatia, David P Kovacs, Gregor Simm, Christoph Ortner, and Gábor Csányi. Mace:
+Higher order equivariant message passing neural networks for fast and accurate force fields.
+Advances in Neural Information Processing Systems, 35:11423–11436, 2022.
+[23] Zhao Xu, Haiyang Yu, Montgomery Bohde, and Shuiwang Ji. Equivariant graph network
+approximations of high-degree polynomials for force field prediction. Transactions on Machine
+Learning Research, 2024.
+[24] Bowen Deng, Peichen Zhong, KyuJung Jun, Janosh Riebesell, Kevin Han, Christopher J
+Bartel, and Gerbrand Ceder. CHGNet as a pretrained universal neural network potential for
+charge-informed atomistic modelling. Nature Machine Intelligence, 5(9):1031–1041, 2023.
+[25] Luis Barroso-Luque, Muhammed Shuaibi, Xiang Fu, Brandon M Wood, Misko Dzamba, Meng
+Gao, Ammar Rizvi, C Lawrence Zitnick, and Zachary W Ulissi. Open Materials 2024 (OMat24)
+Inorganic Materials Dataset and Models. arXiv preprint arXiv:2410.12771, 2024.
+[26] Tian Xie and Jeffrey C Grossman. Crystal graph convolutional neural networks for an accurate
+and interpretable prediction of material properties. Physical review letters, 120(14):145301,
+2018.
+[27] Kamal Choudhary and Brian DeCost. Atomistic line graph neural network for improved
+materials property predictions. npj Computational Materials, 7(1):185, 2021.
+11
+
+[page 12]
+[28] Yuchao Lin, Keqiang Yan, Youzhi Luo, Yi Liu, Xiaoning Qian, and Shuiwang Ji. Efficient ap-
+proximations of complete interatomic potentials for crystal property prediction. In Proceedings
+of the 40th International Conference on Machine Learning, pages 21260–21287, 2023.
+[29] Kamal Choudhary, Daniel Wines, Kangming Li, Kevin F Garrity, Vishu Gupta, Aldo H
+Romero, Jaron T Krogel, Kayahan Saritas, Addis Fuhr, Panchapakesan Ganesh, et al. JARVIS-
+Leaderboard: a large scale benchmark of materials design methods. npj Computational Materi-
+als, 10(1):93, 2024.
+[30] Eric Qu and Aditi S Krishnapriyan. The Importance of Being Scalable: Improving the Speed
+and Accuracy of Neural Network Interatomic Potentials Across Chemical Domains. In The
+Thirty-eighth Annual Conference on Neural Information Processing Systems, 2024.
+[31] Ilyes Batatia, Philipp Benner, Yuan Chiang, Alin M Elena, Dávid P Kovács, Janosh Riebesell,
+Xavier R Advincula, Mark Asta, Matthew Avaylon, William J Baldwin, et al. A foundation
+model for atomistic materials chemistry. arXiv preprint arXiv:2401.00096, 2023.
+[32] Yutack Park, Jaesun Kim, Seungwoo Hwang, and Seungwu Han. Scalable Parallel Algorithm
+for Graph Neural Network Interatomic Potentials in Molecular Dynamics Simulations. Journal
+of Chemical Theory and Computation, 20:4857–4868, 2024.
+[33] Janosh Riebesell, Rhys EA Goodall, Anubhav Jain, Philipp Benner, Kristin A Persson, and
+Alpha A Lee. Matbench Discovery–An evaluation framework for machine learning crystal
+stability prediction. arXiv preprint arXiv:2308.14920, 2023.
+[34] Janosh Riebesell and Aakaash A Naik. ffonons, 2024.
+[35] Atsushi Togo, Laurent Chaput, Terumasa Tadano, and Isao Tanaka. Implementation strategies
+in phonopy and phono3py. J. Phys. Condens. Matter, 35(35):353001, 2023.
+[36] Atsushi Togo. First-principles phonon calculations with phonopy and phono3py. J. Phys. Soc.
+Jpn., 92(1):012001, 2023.
+[37] Richard Hill. The elastic behaviour of a crystalline aggregate. Proceedings of the Physical
+Society. Section A, 65(5):349, 1952.
+[38] Anubhav Jain, Shyue Ping Ong, Geoffroy Hautier, Wei Chen, William Davidson Richards,
+Stephen Dacek, Shreyas Cholia, Dan Gunter, David Skinner, Gerbrand Ceder, et al. Commentary:
+The materials project: A materials genome approach to accelerating materials innovation. APL
+materials, 1(1), 2013.
+[39] Runze Liu, Elliott Liu, Janosh Riebesell, Ji Qi, Shyue Ping Ong, and Tsz Wai Ko. MatCalc,
+January 2024.
+[40] B. J. Alder and T. E. Wainwright. Studies in molecular dynamics. i. general method. The
+Journal of Chemical Physics, 31(2):459–466, 08 1959.
+[41] Magnus Rudolph Hestenes, Eduard Stiefel, et al. Methods of conjugate gradients for solving
+linear systems, volume 49. NBS Washington, DC, 1952.
+[42] Roger Fletcher. Practical methods of optimization. John Wiley & Sons, 2000.
+[43] P Hohenberg and WJPR Kohn. Density functional theory (dft). Phys. Rev, 136(1964):B864,
+1964.
+[44] Walter Kohn and Lu Jeu Sham. Self-consistent equations including exchange and correlation
+effects. Physical review, 140(4A):A1133, 1965.
+[45] Nicholas Metropolis, Arianna W Rosenbluth, Marshall N Rosenbluth, Augusta H Teller, and
+Edward Teller. Equation of state calculations by fast computing machines. The journal of
+chemical physics, 21(6):1087–1092, 1953.
+[46] Hendrik J. Monkhorst and James D. Pack. Special points for brillouin-zone integrations. Phys.
+Rev. B, 13:5188–5192, Jun 1976.
+12
+
+[page 13]
+[47] Axel Van De Walle, M Asta, and G Ceder. The alloy theoretic automated toolkit: A user guide.
+Calphad, 26(4):539–553, 2002.
+[48] Siya Zhu, Do˘guhan Sarıtürk, and Raymundo Arróyave. Accelerating calphad-based phase dia-
+gram predictions in complex alloys using universal machine learning potentials: Opportunities
+and challenges. Acta Materialia, page 120747, 2025.
+[49] Raymundo Arróyave. Phase stability through machine learning. Journal of Phase Equilibria
+and Diffusion, 43(6):606–628, 2022.
+[50] Alex Zunger, S-H Wei, LG Ferreira, and James E Bernard. Special quasirandom structures.
+Physical Review Letters, 65(3):353, 1990.
+[51] Georg Kresse and Jürgen Hafner. Ab initio molecular dynamics for liquid metals. Physical
+Review B, 47(1):558, 1993.
+[52] Georg Kresse and Jürgen Hafner. Ab initio molecular-dynamics simulation of the liquid-
+metal–amorphous-semiconductor transition in germanium. Physical Review B, 49(20):14251,
+1994.
+[53] Georg Kresse and Jürgen Furthmüller. Efficiency of ab-initio total energy calculations for
+metals and semiconductors using a plane-wave basis set. Computational Materials Science,
+6(1):15–50, 1996.
+[54] Georg Kresse and Jürgen Furthmüller. Efficient iterative schemes for ab initio total-energy
+calculations using a plane-wave basis set. Physical Review B, 54(16):11169, 1996.
+[55] Peter E Blöchl. Projector augmented-wave method. Physical Review B, 50(24):17953, 1994.
+[56] John P Perdew, Kieron Burke, and Matthias Ernzerhof. Generalized gradient approximation
+made simple. Physical Review Letters, 77(18):3865, 1996.
+[57] S-L Chen, S Daniel, FCYA Zhang, YA Chang, X-Y Yan, F-Y Xie, R Schmid-Fetzer, and
+W A Oates. The pandat software package and its applications.Calphad, 26(2):175–188, 2002.
+[58] Yoyo Hinuma, Giovanni Pizzi, Yu Kumagai, Fumiyasu Oba, and Isao Tanaka. Band structure
+diagram paths based on crystallography. Computational Materials Science, 128:140–184, 2017.
+[59] Kohei Shinohara Atsushi Togo and Isao Tanaka. Spglib: a software library for crystal symmetry
+search. Science and Technology of Advanced Materials: Methods, 4(1):2384822, 2024.
+[60] David C. Langreth and M. J. Mehl. Beyond the local-density approximation in calculations of
+ground-state electronic properties. Phys. Rev. B, 28:1809–1834, Aug 1983.
+[61] Maarten De Jong, Wei Chen, Thomas Angsten, Anubhav Jain, Randy Notestine, Anthony
+Gamst, Marcel Sluiter, Chaitanya Krishna Ande, Sybrand Van Der Zwaag, Jose J Plata, et al.
+Charting the complete elastic properties of inorganic crystalline compounds. Scientific data,
+2(1):1–13, 2015.
+[62] Johannes Gasteiger, Janek Groß, and Stephan Günnemann. Directional Message Passing for
+Molecular Graphs. In International Conference on Learning Representations, 2020.
+[63] Ilya Loshchilov and Frank Hutter. Decoupled Weight Decay Regularization. In International
+Conference on Learning Representations, 2019.
+[64] Ilya Loshchilov and Frank Hutter. SGDR: Stochastic Gradient Descent with Warm Restarts. In
+International Conference on Learning Representations, 2022.
+[65] Anton Bochkarev, Yury Lysogorskiy, and Ralf Drautz. Graph atomic cluster expansion for
+semilocal interactions beyond equivariant message passing. Physical Review X, 14(2):021036,
+2024.
+13
+
+[page 14]
+A Molecular Dynamics Simulation
+A.1 Molecular Dynamics Simulations and Structural Optimization of Materials
+Molecular dynamics simulation . Molecular dynamics (MD) simulation [ 40] is an important
+computational method to compute structural, chemical, and thermodynamic properties, which allows
+for in-depth mechanistic understanding and materials discovery. MD simulation essentially solves
+Newton’s equations of motion for both atomic positions and cell parameters of a material system
+under a specific thermodynamic ensemble. Specifically, the simulation workflow relies on iterative
+computation of the total system energy E, atomic forces Fi, and stress tensor σ. For a given
+starting structure configuration, E, Fi, and σ can be calculated using classical methods or machine
+learning interatomic potentials. The acceleration, velocity, and position of atoms can be subsequently
+determined over a time step through numerical integration methods such as the Velocity-Verlet
+algorithm under a thermodynamic ensemble. The atomic forces of the new structure will then be
+updated for the next time step. By iterative numerical integration, the system will evolve under the
+thermodynamic ensemble and interatomic interactions determined by the force field. Stress also plays
+a crucial role in MD simulations when controlling pressure, such as in an NPT ensemble (i.e. under
+the constant number of particle, constant pressure, and constant temperature condition). In order to
+obtain statistically averaged physical quantities, such calculation needs to be performed iteratively
+for many time steps, hence computational efficiency becomes critical.
+Structural optimization. Different from molecular dynamics, structural optimization usually aims
+to relax the structure and/or cell parameters to their ground state or metastable state. It also involves
+the calculation of energy, force and stress, which are subsequently used by optimization algorithms
+or optimizers to update the structure, such as Conjugate Gradient algorithm (CG) [ 41] and Broy-
+den–Fletcher–Goldfarb–Shanno algorithm (BFGS) [ 42]. This process is repeated until the final
+convergence criteria is reached,
+A.2 Conventional Computation Methods
+Several kinds of simulation techniques are widely used in computational materials science at various
+scales, such as Density Functional Theory (DFT) [43, 44], MD simulations [40], and Monte Carlo
+(MC) simulations [45]. DFT is a quantum mechanical method that can be used to simulate material
+systems at the electronic level. Its key principle is that the ground-state energy of a system can be
+expressed as a functional of electron density, which reduces 3Ne-dimensional interacting many-body
+system down to a fictitious 3-dimensional non-interacting system. However, DFT is computationally
+expensive and is limited to small systems. MD simulation method has already been elaborated in
+Appendix A.1 where a force field is required for calculating energy, force, and stress. There are two
+types of MD simulations depending on the underlying force field: ab initio MD (AIMD) simulations
+where atomic forces are calculated by quantum mechanical method such as DFT, and classical MD
+simulations where empirical force fields are used to calculate atomic forces. AIMDs are relatively
+more accurate but computationally expensive, limiting its application to small systems. Classical
+MD simulations are computationally efficient and can handle large systems, but very often they
+either lack the accuracy required for highly precise simulations, or cannot be transferred to different
+simulation conditions. MC simulations are based on statistical mechanics which rely on iterative
+energy calculations and configuration sampling and updates. Another key challenge is that both
+classical MD and MC simulations depend on the availability of empirical force fields for the system
+of interest. Therefore, it is highly desirable to develop machine learning interatomic potentials that
+can provide accurate and efficient calculations of energy, force, and stress of arbitrary materials
+system, which will significantly advance materials science, physics and chemistry and allow for
+studying fundamental mechanism and discovering new materials.
+B Evaluations on Ab Initio Molecular Dynamics
+As mentioned in Appendix A.1, Ab initio molecular dynamics (AIMD) simulation is an incredibly
+important application of machine learning interatomic potentials (MLIPs). Here we evaluate HIENet
+and baseline MLIPs on AIMD simulations.
+To evaluate MLIPs performance, we generate a testing dataset consisting of silicon (Si) systems
+containing 64 atoms in a 2 × 2 × 2 supercell. A Γ-centered Monkhorst–Pack k-point sampling
+14
+
+[page 15]
+HIENet
+SevenNet
+MACE
+ a)
+ b)
+ c)
+ d)
+ EquiformerV2
+ e)
+ ORB
+Energy
+Energy
+Energy
+Energy
+Energy
+Force
+Force
+Force
+Force
+Force Stress
+Stress
+Stress
+Stress
+Stress
+Figure 5: Evaluation of energy, force, and stress predictions for 64-atom Si system calculated by foun-
+dation models: a) HIENet, b) SevenNet-l3i5, c) MACE-MP-0, d) CHGNet, and e) eqV2_31M_mp
+with respect to the DFT results.
+15
+
+[page 16]
+Table 6: MLIP prediction accuracy across 4,000 configurations of Si systems. Energy MAE is in
+meV/atom, Force MAE is in meV/Å, and Stress MAE is in kBar. Best performing model for each
+metric in bold and second best underlined.
+HIENet EquiformerV2 ORB SevenNet-l3i5 MACE CHGNet
+Energy MAE 2 19 48 10 55 79
+R2 0.995 0.794 -0.344 0.932 -0.762 -2.617
+Force MAE 62 29 65 98 208 267
+R2 0.989 0.998 0.988 0.974 0.885 0.805
+Stress MAE 0.995 2.065 2.693 2.171 2.918 4.224
+R2 0.938 0.706 0.507 0.652 0.466 -0.102
+grid of 2 × 2 × 2 [46] was used. AIMD simulations were performed in the NVT ensemble with
+a Nosé-Hoover thermostat at four temperatures of 300, 500, 700, and 900 K with time step of 1
+fs for 1,000 steps at each temperature. In total, 4,000 configurations were generated for model
+evaluation. Since configurations are sampled from a variety of temperatures, this task represents
+an out-of-distribution generalization problem compared to the MPtrj training dataset. We select Si
+systems because it is a representative material of great interest and importance to the semiconductor
+industry.
+AIMD simulations were conducted using DFT as implemented in V ASP with the PBE exchange-
+correlation energy functional. A plane-wave basis set with a cutoff energy of 520 eV was used to
+ensure numerical accuracy in the simulations. To ensure consistency between training and evaluation,
+all input settings were generated using the MPRelaxSet class.
+For each system configuration, we compute MLIP energy, forces, and stress and compare with
+DFT reference data. As shown in Table 6, HIENet achieves vastly better accuracy on energy and
+stress performance compared to baseline models, though EquiformerV2 has better accuracy on
+force predictions. Parity plots for each model are shown in Fig. 5, where we observe that HIENet
+consistently performs well across all system configurations.
+C Evaluations on Alloys
+We also evaluate MLIP performance on phase diagram calculations using the Alloy Theoretic
+Automated Toolkit (ATAT) [47] framework following the approach outlined in [48]. Phase diagrams
+are graphical representations of the state of materials under arbitrary conditions and accurately
+predicting them is a necessary condition for the further development of complex materials [49].
+Starting with the simple Au-Pt binary systems, we first generate Special Quasirandom Structures
+(SQS) [50] of FCC Au-Pt with different compositions using ATAT, with 32 atoms in a 2 × 2 × 2
+supercell—the SQS structures are designed to mimic disordered alloys within a certain precision.
+Then, the relaxation and free energy calculations are carried out using ab initio calculations and
+MLIPs. For all ab initio calculations, V ASP [51, 52, 53, 54] is used with the PBE exchange-correlation
+functional and PAW pseudopotentials at the level of GGA [55, 56]. The k-point density is set to 8,000
+k-points per reciprocal atom for all calculations.
+In Figure 6, we plot the formation energies of the Au-Pt FCC binary systems calculated by HIENet
+and baseline MLIPs. We see that HIENet shows strong agreement with first-principles DFT results as
+our model predictions closely match the true formation energy across all Au concentrations.
+In addition, although all the models successfully give a positive formation energy for the SQS’s,
+predicting the miscibility gap in the phase diagram, most of the models including CHGNet, MACE,
+ORB, GRACE and EquiformerV2 fail to reproduce the correct ordering of the formation energies:
+∆G (xAu = 0.5) > ∆G (xAu = 0.25) > ∆G (xAu = 0.75), as shown in Table 7. Such ordering of
+formation energies is highly important in thermodynamics and materials science, as it governs the
+stability of the phases.
+Finally, we demonstrate how HIENet can be used for multi-element systems. In Figure 7, we present
+a ternary phase diagram for the Cr-Mo-V system at 1,000 K calculated with ATAT and HIENet. The
+16
+
+[page 17]
+0.00 0.25 0.50 0.75 1.00
+Au Concentration
+10
+20
+30
+40
+50
+60
+70Formation Energy (meV/atom)
+V ASP
+HIENet
+CHGNet
+MACE
+ORB
+SevenNet
+GRACE
+eqV2
+Figure 6: Formation energies per atom of the Au-Pt binary FCC system calculated with models
+trained on the MPtrj dataset. eqV2 refers to EquiformerV2 and SevenNet is the SevenNet-l3i5 model.
+Table 7: Ordering of Au-Pt formation energies calculated with different potentials (1 for the lowest
+formation energy and 3 for the highest). Ideally, MLIP predictions should match the V ASP ordering
+of formation energies.
+Model Ordering of Formation Energies
+∆G (xAu = 0.25) ∆ G (xAu = 0.5) ∆ G (xAu = 0.75)
+CHGNet 1 2 3
+MACE 1 3 2
+ORB 1 2 3
+SevenNet-l3i5 2 3 1
+GRACE 1 3 2
+EquiformerV2 1 3 2
+HIENet 2 3 1
+V ASP 2 3 1
+ternary phase diagram calculation correctly identifies the BCC phase miscibility gap in the Cr-Mo
+region.
+D Evaluations on Phonon and Bulk Modulus
+D.1 Phonon Frequency Evaluation
+As the calculations of the Material Project phonon dataset were performed using the PBEsol exchange-
+correlation energy functional, it would be inconsistent to compare them with the models trained
+on the data using the Perdew-Burke-Ernzerhof (PBE) [56] exchange-correlation energy functional.
+PhononDB, a database of phonon calculations including band structure, DOS, and thermal properties
+for over 10,000 materials evaluated using the PBE functional, provides a more effective reference
+for comparison, hence was used as the reference for the evaluation as detailed below. Phonon
+frequencies and corresponding band structures were computed using the Phonopy package via the
+finite displacement method [35, 36] where MLIPs were employed to compute the dynamical matrices
+and corresponding phonon band structures of each crystal structure. To ensure direct comparison
+between PhononDB and calculated data, the Phonopy objects were initialized with the same unit cell
+and supercell matrices as used in PhononDB calculations. Additionally, the primitive cell matrix was
+included if defined. Displaced supercells were generated using a default displacement of 0.01 Å and
+the corresponding forces were evaluated with our model. High-symmetry k-path in the Brillouin zone
+was computed using SeeK-Path [58, 59]. Using this workflow, the high-symmetry k-paths and the
+17
+
+[page 18]
+Figure 7: Cr-Mo-V ternary phase diagram at 1,000 K calculated with ATAT and HIENet. Only the
+BCC phase is included in the calculation. The phase diagram is plotted with the Pandat [ 57] software
+package.
+sampling grids were identical between the reference phonon band structure from PhononDB and the
+predicted band structure from our model.
+In addition to the frequency evaluation in Table 3, we provide several phonon band structure diagrams
+calculated using HIENet in Figure 8 for Si, CdTe, Cs2KInF6, and GaAgS2 systems. We observe that
+the HIENet-predicted phonon band structures of Si exhibits reasonable accuracy, and the phonon band
+structures for CdTe, Cs2KInF6, and GaAgS2 are in very good agreement with the PhononDB DFT
+results across the entire frequency range and high-symmetry k-paths. Furthermore, the phonon band
+structure of Cs2KInF6 contains negative phonon frequencies, indicating the dynamical instability of
+the crystal structure despite its local stability. Impressively, the HIENet predictions agree with the
+DFT data extremely well even in this negative frequency regime across all high-symmetry pathways.
+As such, HIENet can be a powerful MLIP for predicting a materials thermal conductivity and
+structural stability.
+D.2 Bulk Modulus Evaluation
+To compute bulk modulus, we need to calculate the elastic tensor for each crystal. The latter is
+calculated by first relaxing the input structure to the default force tolerance of 0.1 eV/Å using each
+MLIP. The relaxed structure is then deformed with strains of ( ±0.005, ±0.01) applied to normal
+modes and strains of (±0.06, ±0.03) applied to shear modes for a total of 4 strain magnitudes for
+each of the 6 strain modes. The resulting stress-strain values are fit linearly to compute the elastic
+tensor. The reference elastic constants in the Materials Project were calculated using DFT with the
+PBE functional in the generalized gradient approximation (GGA) [60] as implemented the Vienna
+Ab-initio Simulation Package (V ASP) [54]. For metallic entries, a plane wave cutoff energy of 700
+eV with k-point density of 7,000 per reciprocal atom was used. For non-metallic entries such as
+insulators or semiconductors, a plane wave cutoff energy of 700 eV was once again used with a
+k-poin

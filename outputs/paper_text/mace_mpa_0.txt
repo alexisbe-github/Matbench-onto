@@ -1,0 +1,934 @@
+[page 1]
+A foundation model for atomistic materials chemistry
+Ilyes Batatia†1, Philipp Benner†2, Yuan Chiang†3,4, Alin M. Elena†17, Dávid P. Kovács†1,
+Janosh Riebesell†4,13, Xavier R. Advincula12,13, Mark Asta3,4, Matthew Avaylon30, William
+J. Baldwin1, Fabian Berger12, Noam Bernstein11, Arghya Bhowmik25, Filippo Bigi32,
+Samuel M. Blau10, Vlad Cărare1,13, Michele Ceriotti32, Sanggyu Chong32, James P. Darby1,
+Sandip De18, Flaviano Della Pia12, Volker L. Deringer16, Rokas Elijošius1, Zakariya
+El-Machachi16, Fabio Falcioni31, Edvin Fako18, Andrea C. Ferrari26, John L. A. Gardner16,
+Mikołaj J. Gawkowski38, Annalena Genreith-Schriever12, Janine George2,6, Rhys E. A.
+Goodall15, Jonas Grandel6,2, Clare P. Grey12, Petr Grigorev27,36, Shuang Han18, Will
+Handley13,19, Hendrik H. Heenen9, Kersti Hermansson23, Christian Holm22, Cheuk Hin Ho5,
+Stephan Hofmann1, Jad Jaafar1, Konstantin S. Jakob9, Hyunwook Jung9, Venkat
+Kapil12, 38, Aaron D. Kaplan4, Nima Karimitari20, James R. Kermode28, Panagiotis
+Kourtis24, Namu Kroupa13,19,1, Jolla Kullgren23, Matthew C. Kuner3,4, Domantas Kuryla12,
+Guoda Liepuoniute1,26, Chen Lin1,35, Johannes T. Margraf8, Ioan-Bogdan Magdău24,
+Angelos Michaelides12, J. Harry Moore1, Aakash A. Naik2,6, Samuel P. Niblett12, Sam
+Walton Norwood25, Niamh O’Neill12,13, Christoph Ortner5, Kristin A. Persson3,4,7, Karsten
+Reuter9, Andrew S. Rosen33, Louise A. M. Rosset16, Lars L. Schaaf1, Christoph Schran13,
+Benjamin X. Shi12, Eric Sivonxay10, Tamás K. Stenczel1, Viktor Svahn23, Christopher
+Sutton20, Thomas D. Swinburne27,37, Jules Tilly31, Cas van der Oord1, Santiago Vargas29,
+Eszter Varga-Umbrich1, Tejs Vegge25, Martin Vondrák8,9, Yangshuai Wang5, William C.
+Witt14, Thomas Wolf34, Fabian Zills22, and Gábor Csányi∗1
+1Engineering Laboratory, University of Cambridge, Trumpington St and JJ Thomson Ave,
+Cambridge, UK
+2Federal Institute of Materials Research and Testing (BAM), Berlin, Germany
+3Department of Materials Science and Engineering, University of California, Berkeley, CA
+94720, USA
+4Materials Sciences Division, Lawrence Berkeley National Laboratory, Berkeley, CA 94720,
+USA
+5Mathematics Department, University of British Columbia, 1984 Mathematics Rd,
+Vancouver, BC V6T 1Z2, Canada
+6Institute of Condensed Matter Theory and Solid State Optics, Friedrich Schiller
+University Jena, Germany
+7Molecular Foundry, Lawrence Berkeley National Laboratory, Berkeley, California 94720,
+USA
+8University of Bayreuth, Bavarian Center for Battery Technology (BayBatt), Bayreuth,
+Germany
+9Fritz-Haber-Institute of the Max-Planck-Society, Berlin, Germany
+10Energy Technologies Area, Lawrence Berkeley National Laboratory, Berkeley, CA 94720,
+USA
+†These authors, ordered alphabetically, contributed equally. All others, except for the corresponding
+author, are also ordered alphabetically.
+∗Corresponding author: gc121@cam.ac.uk
+1
+arXiv:2401.00096v3  [physics.chem-ph]  4 Sep 2025
+
+[page 2]
+11U. S. Naval Research Laboratory, Washington DC 20375, USA
+12Yusuf Hamied Department of Chemistry, University of Cambridge, Lensfield Road,
+Cambridge, UK
+13Cavendish Laboratory, University of Cambridge, J. J. Thomson Ave, Cambridge, UK
+14Department of Materials Science and Metallurgy, University of Cambridge, 27 Charles
+Babbage Road, CB3 0FS, Cambridge, United Kingdom
+15Chemix, Inc., Sunnyvale, CA 94085, USA
+16Inorganic Chemistry Laboratory, Department of Chemistry, University of Oxford, Oxford
+OX1 3QR, UK
+17Scientific Computing Department, Science and Technology Facilities Council, Daresbury
+Laboratory, Keckwick Lane, Daresbury WA4 4AD, UK
+18BASF SE, Carl-Bosch-Straße 38, 67056 Ludwigshafen, Germany
+19Kavli Institute for Cosmology, University of Cambridge, Madingley Road, Cambridge
+CB3 0HA, UK
+20Department of Chemistry and Biochemistry, University of South Carolina, South
+Carolina 29208, USA
+22Institute for Computational Physics, University of Stuttgart, 70569 Stuttgart, Germany
+23Department of Chemistry–Ångström, Uppsala University, Box 538, S-751 21, Uppsala,
+Sweden
+24School of Natural and Environmental Science, Newcastle University, Newcastle upon
+Tyne, NE1 7RU, UK
+25Department of Energy Conversion and Storage, Technical University of Denmark, Anker
+Engelunds Vej 301, 2800 Kgs. Lyngby, Denmark
+26Cambridge Graphene Centre, University of Cambridge, Cambridge, CB3 0FA, UK
+27Aix-Marseille Université, CNRS, CINaM UMR 7325, Campus de Luminy, 13288
+Marseille, France
+28Warwick Centre for Predictive Modelling, School of Engineering, University of Warwick,
+Coventry CV4 7AL, United Kingdom
+29Department of Chemistry and Biochemistry, University of California – Los Angeles, 607
+Charles E. Young Drive East, Los Angeles, CA, 90095 USA
+30Computing Sciences Area, Lawrence Berkeley National Laboratory, Berkeley, CA 94720,
+USA
+31InstaDeep, London, W2 1AY, United Kingdom
+32Laboratory of Computational Science and Modeling, Institute of Materials, École
+Polytechnique Fédérale de Lausanne, 1015 Lausanne, Switzerland
+33Department of Chemical and Biological Engineering, Princeton University, Princeton, NJ
+08544, USA
+34Hugging Face Inc., Brooklyn, NY 11201, USA
+35Information Engineering, University of Oxford, Oxford, OX1 3PA, UK
+36CNRS, INSA Lyon, Universite Claude Bernard Lyon 1, MATEIS, UMR5510, 69621
+Villeurbanne, France
+37Department of Mechanical Engineering, University of Michigan, Ann Arbor, Michigan
+48109, USA
+38Department of Physics and Astronomy, University College London, London, WC1E 6BT,
+UK
+2
+
+[page 3]
+September 8, 2025
+Atomistic simulations of matter, especially those that leverage first-principles (ab
+initio) electronic structure theory, provide a microscopic view of the world, under-
+pinning much of our understanding of chemistry and materials science. Over the
+last decade or so, machine-learned force fields have transformed atomistic model-
+ing by enabling simulations ofab initio quality over unprecedented time and length
+scales. However, early ML force fields have largely been limited by: (i) the sub-
+stantial computational and human effort of developing and validating potentials for
+each particular system of interest; and (ii) a general lack of transferability from one
+chemical system to the next. Here we show that it is possible to create a general-
+purpose atomistic ML model, trained on a public dataset of moderate size, that is
+capable of running stable molecular dynamics for a wide range of molecules and ma-
+terials. We demonstrate the power of the MACE-MP-0 model — and its qualitative
+and at times quantitative accuracy — on a diverse set of problems in the physical
+sciences, including properties of solids, liquids, gases, chemical reactions, interfaces
+and even the dynamics of a small protein. The model can be applied out of the
+box as a starting or “foundation” model for any atomistic system of interest and,
+when desired, can be fine-tuned on just a handful of application-specific data points
+to reach ab initio accuracy. Establishing that a stable force-field model can cover
+almost all materials changes atomistic modeling in a fundamental way: experienced
+users get reliable results much faster, and beginners face a lower barrier to entry.
+Foundation models thus represent a step towards democratising the revolution in
+atomic-scale modeling that has been brought about by ML force fields.
+1 Introduction
+An overarching goal in the field of atomistic modeling is to develop an interatomic potential (alternatively
+also called a “force field”) that quickly and accurately predicts the total energy and atomic forces for an
+arbitrary chemical structure. Existing methods are not capable of this feat: whileab initio methods such
+as density functional theory (DFT) (1–7) are widely applicable and accurate, their high computational cost
+prohibits their use in many important cases, including high-throughput workflows and those in which large
+(≫1000 atom) systems need to be simulated over long timescales. Conversely, empirical force-field models
+that use simple functional forms are extremely cheap and so quick to use, but fail to accurately capture the
+important subtleties of the many-body interactions between collections of atoms induced by quantum me-
+chanics (8). Finally, modern machine-learning based interatomic potentials (MLIPs) are capable of faithfully
+approximating ab initio methods for orders of magnitude less cost, but typically require significant upfront
+investment and human effort when generating and labeling the training dataset (9–17). Furthermore, these
+datasets and models typically need to be re-developed from scratch for each new system of interest (18). As a
+remedy to these issues, and as a step towards a truly universal MLIP, we present MACE-MP-0, a foundation
+model for materials chemistry that displays an impressive out-of-the-box ability to model a wide variety of
+chemical systems. Crucially, we also demostrate that fine-tuning MACE-MP-0 using just a handful of new
+configurations leads to quantitatively accurate models, dramatically reducing the cost and barrier to entry
+for the modeling of novel chemical systems.
+MACE-MP-0 uses the MACE architecture (19), which unified the atomic cluster expansion (ACE) (14,
+20–22) and equivariant graph neural networks (16,23). MACE was designed to keep only what appear to
+be essential components of the latter (23): the element embedding (12,24) and the equivariant messages
+constructed through the symmetric tensor product operation. MACE’s unique innovations are that (i) it uses
+high body-order equivariant features in each layer (4-body in the present case), and consequently only two
+layers of message passing are sufficient; (25) (ii) it is only mildly nonlinear, as the only nonlinear activations
+are in the radial basis and the final readout layer, hence its classification as a graph tensor network, (iii) it uses
+tensor decomposition (24) for efficient parameterization of high body-order features. The MACE architecture
+3
+
+[page 4]
+allows MACE-MP-0 to accurately model its training data while remaining competitively performant with
+other graph neural networks, presently allowing simulations of around a thousand atoms for nanoseconds
+per day on a GPU.
+Despite training MACE-MP-0 on a dataset with a specific materials focus (MPtrj), the most striking
+finding is that our model shows remarkable out-of-distribution performance, and leads to stable molecular
+dynamics (MD) simulations for arbitrary systems over long timescales showing chemically sensible structures,
+reactions and transformations. In the main body of this paper, we showcase the generality of MACE-MP-0
+by considering three disparate classes of chemical systems: solid and liquid water, heterogeneous catalysis,
+and metal-organic frameworks. In the Supplementary Information, we further demonstrate MACE-MP-0’s
+capabilities on an unprecedented range of qualitative and quantitative examples drawn from computational
+chemistry and materials science, including running molecular dynamics simulations for a wide variety of
+chemistries, predicting phonon spectra, calculating activation energies for point defect and dislocation mo-
+tion, simulating solvent mixtures, combusting hydrogen gas, modeling a complete rechargeable battery cell,
+and many more.
+There are several versions of the MACE-MP-0 model, all trained on the same data set, with minor
+variations in the model architecture. Unless otherwise stated, all results in this paper were obtained with
+the MACE-MP-0b3 version, and this is emphasized in figures and captions, while we retrain the simpler
+“MACE-MP-0” name in the text for readability. All model versions are publicly available.
+4
+
+[page 5]
+2 Applications
+2.1 Water and aqueous systems
+Proton transfer in ice and water
+0.5 0.0 0.5
+Proton transfer coordinate [Å]
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Free energy [kcal/mol]
+OH
+Ice Water
+0.5 0.0 0.5
+Proton transfer coordinate [Å]
+H3O+
+Ice Water
+0 1000 2000 3000 4000
+ [1/cm]
+IR spectra
+Exp. Water (300K)
+Exp. Ice Ih (250K)
+Water (330K)
+Ice Ih (250K)
+2 3 4 5 6
+O-O distance [Å]
+0
+2
+4
+g(rOO)
+Structure and dynamics of water
+Exp. Water (300K)
+PBE-D3 (330K)
+Ice Ih (250K)
+Water (330K)
+II III IV VI VII VIII IX XI XIII XIV XV XVII
+Ice polymorphs
+0
+50
+100
+Relative lattice
+energy [meV]
+Ice polymorphs
+PBE-D3
+MACE-
+MP-0b3+D3
+0.00 0.05 0.10 0.15 0.20 0.25
+Simulation length [ns]
+0
+20
+40
+60Crystal Size
+NaCl dissolution
+NNP revPBE-D3
+MACE-MP-0b3+D3
+0.0 0.5 1.0 1.5 2.0
+Density [g/cm3]
+0
+5
+10
+15
+20
+25
+Distance above surface [Å]
+SiO2 dissociative water adsorption
+1.0 1.5 2.0 2.5 3.0
+O-H distance [Å]
+0
+5
+10
+15Free energy [kcal/mol]
+Nanoconfined superionic water
+PBE-D3 MACE-MP-0b3+D3
+δ =r
+O*H ′
+-r
+O ′ H ′
+H ′
+O*
+O ′
+δ =r
+O ′ H*
+-r
+O*H*
+H*
+O*
+O ′
+a
+b
+c
+d e
+f g
+Figure 1:Aqueous systems.(a) Oxygen–oxygen radial distribution function for bulk water (experimental
+result from Ref. (26)) and ice Ih. (b) Experimental (Ref. (27,28)) and computed infrared spectra of bulk
+water and ice Ih. (c) Free energy profiles as a function of the proton transfer barrier for a hydroxide ion and
+excess proton in ice Ih at250 K and bulk water at330 K. Snapshots at the top show the simulation cells.
+(d) Performance of MACE-MP-0b3 (red squares) on the relative lattice energies of the DMC-ICE13 dataset,
+compared to the reference method, PBE-D3 (29) (black circles). (e) Dissolution of a 4 × 4 × 4 unit-cell
+NaCl nanocrystal in water at400 K, monitoring the extent of dissolution over the simulation time via the
+crystal size. Performance of the MACE-MP-0b3 (red lines) is compared to a neural network potential (30)
+trained explicitly to capture NaCl dissolution (black dashed lines). (f) SiO 2/water interface simulation
+showing density modulations and dissociative water adsorption, with an inset highlighting the deprotonation
+of water as indicated by a shoulder in the water density plot. H3O+ defects in the liquid are highlighted
+in green. (g) The free energy profile of the O–H distance in the superionic phase of monolayer water in a
+confining potential. The inset shows a snapshot of the monolayer superionic phase with lines indicating the
+50 ps-long trajectory of randomly chosen hydrogen atoms with “×” indicating their initial positions.
+5
+
+[page 6]
+Water is ubiquitous in nature and technology and has long been a major focus of computational work.
+Driven by the delicate balance between directional hydrogen bonding and primarily non-directional van der
+Waals interactions, aqueous systems remain a challenge for simulations (31). For example, the study of
+proton transfer in water, a fundamental process characterized by the continuous breaking and forming of
+covalent bonds, has long required usingab initiomolecular dynamics for detailed atomistic insight (32–34).
+We demonstrate in this section how MACE-MP-0 describes various aqueous systems.
+We start by examining the structure of liquid water and hexagonal ice (ice Ih). The oxygen–oxygen radial
+distribution function, depicted in Fig. 1a, shows reasonable agreement with reference simulations. The infra-
+red vibrational spectra of both phases, shown in panel Fig. 1b, align well with experimental observations,
+albeit with a notable red shift in the stretching vibrations indicating a softer description of the OH bond
+as is well-known for PBE-D3 (29,31). In panel Fig. 1d, the relative stabilities of 12 ice polymorphs with
+respect to ice Ih, used in a recent benchmark (35), show excellent agreement with respect to PBE-D3 with a
+MAE of around5 meV. Proton defects (OH–and H3O+) in ice Ih and liquid water were simulated, revealing
+robust descriptions of proton transfer, as shown in Fig. 1c. The proton transfer barrier for hydroxide is
+higher than for hydronium in liquid water, consistent with experimental diffusion trends.
+Next, we evaluate MACE-MP-0 for describing solid–liquid interfaces. First, we focus on NaCl in water
+in two cases: a NaCl(001) interface in contact with water and a small nanocrystal surrounded by water.
+Simulations were performed at400 K to promote dissolution, and compared to simulations with a custom-
+trainedMLpotentialbased onrevPBE-D3 fromRef. ( 30). As expected, for theflat surfacethe modelpredicts
+no dissolution events on the timescale of the simulation (0.5 ns). Meanwhile, for the nanocrystal surrounded
+by water, MACE-MP-0 captures a dissolution mechanism resembling that in Ref. (30) as shown in Fig. 1e.
+The dissolution proceeds via a crumbling mechanism, where an initial steady loss of ions is followed by the
+rapid disintegration of the crystal. As ions dissolve from the crystal, they are hydrated by water. The
+dissolution process is stochastic, leading to an intrinsic variation between independent simulations, as shown
+by three examples. The final structure of the dissolved ions in water also displays the expected orientation
+of the water molecules with respect to the ions.
+We then model the SiO2/water interface, Fig. 1f, revealing the expected density modulations in the first
+few contact layers. As before, the liquid phase is found to be overstructured, a common characteristic of
+the PBE functional (31) used by MPTraj and therefore by MACE-MP-0. SiO2 is known for its dissociative
+water adsorption, which we observe in our simulations. Deprotonation of water is evidenced by the shoulder
+in the water density plot and can also be seen in the inset of a snapshot of this system in Fig. 1f.
+Finally, we investigate nanoconfined water in graphene-like nanocapillaries (36,37), which exhibits dra-
+maticallydifferentpropertiesfrombulkwater. MACE-MP-0provedrobustinsimulatingnanoconfinedwater.
+Stable simulations were conducted at4 GPaand 600 K, conditions under which a superionic phase with high
+ionic conductivity was previously predicted (38) using a custom-trained ML potential. The MACE-MP-0
+model accurately captured the dynamical characteristics of this phase, including extensive proton transfer on
+the ten pico-seconds timescale, as illustrated in the inset of Fig. 1g. Comparing the free energy profile asso-
+ciated with the O–H distance [Fig. 1g] against the PBE-D3 reference, MACE-MP-0 shows near quantitative
+agreement and an overall very good description of nanoconfined water.
+2.2 Catalysis
+The study of heterogeneous (44–46) and electrocatalysis (47–49) is another major area where DFT excels.
+It provides atomistic insight into the underlying reaction mechanisms and enables the prediction of the
+properties of new catalytic materials, (50) including reaction barriers and rates, which are in turn used
+to predict turnover frequencies (51). The latter is essential for the computational discovery of new solid
+catalysts for overcoming the dependence on rare and toxic elements and improving the efficiency of critical
+processes for energy conversion. However, the computational cost of DFT is a serious impediment. Empirical
+interatomic potentials are typically inadequate for catalysis applications as they rarely describe chemical
+reactions accurately. Machine learning has already had strong impact in computational catalysis (41,52,53),
+e.g., enabling fast screening of materials spaces (54–56), and free energy calculations beyond the harmonic
+approximation(41,57,58). However, developingsuchaccuratepotentialsfromscratchstillrequiressignificant
+human and computational effort. We now test the performance of MACE-MP-0 for different catalysis
+applications and summarise the results in Fig. 2.
+6
+
+[page 7]
+Figure 2:Heterogeneous catalysis.(a) Pourbaix diagrams of CuO bulk systems constructed with MACE-
+MP-0b3 (left) and Materials Project reference data (right). (b) MACE-MP-0b3+D3-calculated Pt(111)
+surface Pourbaix diagram, in overall good agreement with the literature (39). (c) The relative adsorption
+energy scaling relation between O and OH on transition metal surfaces is captured correctly by MACE-
+MP-0b3+D3, as is the lack of linear scaling between C and O (40). Metals are colored according to rows
+in the Periodic Table as 3d, 4d and 5d. (d) Reaction profile of multistep electrochemical CO oxidation
+on Cu. CO–OH coupling and dehydrogenation reactions are characterised in the upper and lower panel,
+respectively. EnergyprofilesfromMACE-MP-0b3+D3andPBE+D3nudgedelasticband(NEB)calculations
+show significant deviations although the qualitative features agree. Fine-tuning (FT) yields a model that
+is in excellent agreement with the reference. (e) MACE-MP-0b3 reaction profile for a key reaction step
+(CH2O2 CH2 + O) in the CO2-to-methanol conversion on In2O3 (41) and the profile of an FT model.
+(f) Comparison of the atomic environments in the training data (blue) and in the In2O3 NEB images (red) in
+the form of a UMAP plot (42,43). Insets show local environments with similar MACE features (inset frames
+in blue for training data and in red for NEB configurations), exemplifying which bulk training environments
+influence predictions for the out-of-domain catalytic test case.
+7
+
+[page 8]
+Potential–pH Pourbaix diagrams are central to understanding the aqueous stability of solid materials
+in an electrochemical environment (59,60), and thus allow predicting the active phase of an electrocatalyst
+undergivenconditions. Withinthecomputationalhydrogenelectrode(CHE)framework( 61), thesediagrams
+can be computed without an explicit electrostatic model. Figure 2a–b show the Pourbaix diagrams for bulk
+CuO and a Pt(111) surface calculated with MACE-MP-0 using the D3 correction. The Pourbaix diagrams
+are constructed via the formalism described in (62,63), where only the energies of the relevant solids are
+calculated while corrected experimentally-derived energies are used for the aqueous ions. In both cases, the
+MACE-MP-0 results show remarkably good agreement with DFT (39), predicting the correct sequence of
+stable phases (with the exception of a very narrow region of Cu2O stability) and corresponding pH and
+potential ranges. While this accuracy may be expected for the bulk CuO system that is represented in the
+training set, the electrosorption at the Pt(111) surface is also well described despite being out of domain.
+In Fig. 2c, adsorption energy scaling relations between atomic and hydrogenated adsorbates on transition-
+metal surfaces are shown for MACE-MP-0 and PBE (see SI for more examples). Such scaling relations are
+central to understanding the activity of heterogeneous catalysts (64,65). MACE-MP-0 captures these trends
+well, and the slopes of the linear fits are in reasonable agreement with DFT (e.g. 0.71 for O vs. OH,
+compared to0.64 for PBE). Importantly, the lack of correlation between O and C adsorption energies is also
+captured, indicating that the model is not merely sorting metals according to their general reactivity (40,66).
+Figure 2d–e show reaction energy profiles for CO oxidation on Cu (67) and a key step in CO2 conversion
+to methanol on In2O3 (41,68), respectively. While these are not quantitatively accurate when compared to
+DFT, MACE-MP-0b3 nevertheless captures the location and magnitude of the barriers surprisingly well. To
+obtain quantitative agreement, MACE-MP-0b3 is fine-tuned with five single-point DFT calculations from
+each energy profile. NEB calculations with the fine-tuned (FT) model then yield excellent agreement with the
+DFT reference in almost all cases, with the exception of the energy of the final state of CO oxidation, which
+is slightly overestimated by the FT model. Here, describing the subtle non-covalent interactions between the
+surface and molecular CO2 and H2O would require additional training. Nonetheless, this shows that fine-
+tuning with very small datasets is sufficient to obtain quantitatively accurate potentials for heterogeneous
+catalysis.
+Figure 2f illustrates how MACE-MP-0b3 generalizes to out-of-domain catalysis tasks from bulk training
+configurations. To this end, the high-dimensional MACE features are projected to 2D using a Uniform
+Manifold Approximation Projection (UMAP) (42), with local atomic environments in the training set shown
+in blue and those found in the In2O3 transition path shown in red. Representative environments with similar
+features are highlighted, indicating that the internal representation of the atomic environments in the NEB
+configurations is similar to the representation of under-coordinated environments and metal–organic systems
+in the training set.
+While MACE-MP-0b3 is not always quantitatively accurate for the most challenging catalysis applica-
+tions, its stability in MD and exploring reactive pathways is remarkable and provides a starting point for
+further optimisations. Relevant configurations or phase space regions thus identified may subsequently be
+validated either by first-principles calculations or serve to initiate active-learning for refining the model, as
+demonstrated forthe NEBcalculations. Even at its currentfoundation level, MACE-MP-0b3 alreadyallows a
+statistical sampling far beyond the present DFT-based state of the art which is still largely thermochemistry-
+centered, whereas the foundational MACE model will pave the way for true kinetic modeling by explicit
+evaluations of reaction profiles and the reactive flux along them.
+2.3 Metal–organic frameworks
+Metal–organic frameworks (MOFs) are a class of nanoporous materials comprised of metal cations or clusters
+connected by organic linkers arranged in a periodic lattice (75). Due to their large surface areas, tunable
+building blocks, and permanent porosity, MOFs hold substantial promise for various applications, including
+but not limited to catalysis, energy storage, gas adsorption and separations, and optoelectronic devices (75).
+We tested our pre-trained model directly against version 14 of the Quantum MOF (QMOF) database, which
+contains DFT-computed properties at several levels of theory for 13,912 MOFs and structurally related
+coordination polymers (69,70). MACE-MP-0b3 was not trained on any data from the QMOF database,
+making this a challenging test of its transferability to largely unseen chemistries.
+As shown in Fig. 3a, MACE-MP-0b3 performs well out-of-box in predicting the PBE energies of MOFs,
+8
+
+[page 9]
+8.0
+ 7.5
+ 7.0
+ 6.5
+ 6.0
+ 5.5
+ 5.0
+ 4.5
+PBE energy [eV/atom]
+8.0
+7.5
+7.0
+6.5
+6.0
+5.5
+5.0
+4.5
+MACE energy [eV/atom]
+MAE = 0.040
+R2 = 0.985
+QMOF (13912 MOF structures)
+0.0 0.1 0.2
+EMACE EPBE [eV/atom]
+10 2
+10 1
+atom/Å3
+100
+101
+102
+bin count
+a
+b
+MACE-MP-0
+ DeePMD
+ UFF(DDEC)+TraPPE
+0.486
+0.432
+0.378
+0.324
+0.270
+0.216
+0.162
+0.108
+0.054
+0.000
+free energy [eV] c
+Mg
+Mn
+Fe
+Co
+Ni
+Cu
+Zn
+104e204
+ 1cf2337
+ 2d6e25d
+ 38eac89
+ 6f636df
+ 73fcf88
+ 807cae8
+ 88883f2
+ 92d0491
+ 966fade
+ c4528f3
+ db02aaa
+ f22081b
+-0.32
+-0.29
+-0.25
+-0.22
+-0.18
+-0.14
+-0.11
+-0.07
+-0.04
+0.00
+free energy [eV]
+d
+Figure 3:Metal–organic frameworks.(a) Comparison between MACE-MP-0b3 and DFT (PBE) energies
+on 13,912 relaxed structures with compatible GGA calculations (i.e. without the Hubbard-U correction) and
+pseudopotentials in the QMOF database (69,70). The inset presents the energy error distribution in relation
+with the atomic density (number of atoms per volume). The protocol for filtering incompatible calculations
+is provided in Appendix A.28. (b) Mg-MOF-74 structure with chemisorbed CO2 optimized with MACE-
+MP-0b3. Color key: Mg (orange), O (red), C (brown), H (white). (c) Left: free energy landscape of CO2
+in Mg-MOF-74. Middle: free energy landscape from Ref. (71) using a custom-trained DeePMD ML force
+field. Right: free energy landscape using the UFF classical force field (72) with DDEC6 charges (73) for the
+framework and TraPPE for CO2 (74). (d) Free energy maps of 91 hypothetical MOF-74 analogues, with
+the QMOF ID of the parent Mg-containing frameworks indicated at the bottom of each column and the
+transition metal to the left of each row.
+9
+
+[page 10]
+achieving an MAE of0.040 eV/atom (with the full range of energies spanning nearly 4 eV/atom, about100
+times larger), despite the pronounced difference between the inorganic crystals of the MPtrj training set and
+the MOF structures that make up the QMOF database. This accuracy spans most of the periodic table, after
+exclusion of elements with incompatible pseudopotentials and calculation parameters (see Appendix A.28
+and Figure S41).
+To validate the use of MACE-MP-0b3 for capturing dynamic processes, we investigate CO2 adsorption in
+a prototypical MOF known as Mg-MOF-74. The MOF-74 family, including the Mg-containing version, has
+been extensively studied for the selective adsorption of CO2 (76–78). Of particular note, the coordinatively
+unsaturated metal sites (79) of Mg-MOF-74 enable chemical bonding interactions between the metal and
+CO2 adsorbate (76) that cannot be captured from classical force fields alone. We directly compare the
+adsorption dynamics against the results presented in Ref. (80), which considered the same system using a
+custom-trained ML force field generated using DeePMD-Kit (71) and PBE-D3 calculations in CP2K (3).
+MACE-MP-0b3 accurately and efficiently captures the CO2 adsorption process in Mg-MOF-74. As shown
+in Fig. 3c, the CO2 adsorbate favorably binds to the Mg center in a tilted configuration that is in agreement
+with both experimental neutron diffraction data (77,81) and the previous custom-trained ML model (80).
+The mean bond distance between the Mg center and CO2 adsorbate is predicted to be2.27Å from MACE-
+MP-0b3 (Figure S41a), in agreement with the experimental value of2.27Å (77) and the value of2.23Å
+from the custom ML model in Ref. (80). The mean Mg–O–C bond angle is predicted to be137.3◦ from
+MACE-MP-0b3 (Fig. S41a), substantially closer to the experimentally determined bond angle of 131◦ (77)
+than the 118.6◦ value from the ML model in Ref. (80). The projected density map for the CO2 adsorption
+site (Fig. 3b) is, again, in excellent agreement with prior work (80,81) and shows how the adsorbed CO2
+molecules are mobile but largely confined to the vicinity of the Mg binding site due to chemisorption.
+To showcase an example of how one might use the foundation model in a high-throughput setting, we
+considered 91 hypothetical MOF-74 analogues derived from those in Ref. (82) based on 13 (out of 58)
+different frameworks and seven different metal cations (M) that have been used to synthesize M-MOF-
+74 (77). Figure 3e shows the resulting free energy maps, comprising over357 ns of simulation altogether,
+displaying diverse and dynamic behaviour of the CO2 adsorbate across the range of hypothetical MOF-74
+analogues.
+Given the nature of our foundation model, we anticipate many additional application areas where MACE-
+MP-0(oroneofitsfuturevariants)couldbeofvalueintheMOFfield. BasedontheCO 2adsorptionexample,
+we envision applications in capturing dynamic processes, particularly those that cannot be accurately mod-
+eled using classical force fields and are prohibitively expensive to carry out withab initioMD given the large
+unit-cell size required to describe most MOFs. Foundation models are promising for modeling competitive
+multi-component physisorption and chemisorption processes, especially across many families of composition-
+ally different MOFs and combinations of gas mixtures, for which training a system-specific, on-the-fly active
+learning model would be expensive or even prohibitive. In addition to the compositional diversity relevant
+to high-throughput screening, not all MOFs can be described via a static picture and based on an ideal
+crystalline structure: in fact, there has been recent interest in liquid and amorphous MOFs (83,84), and
+the dynamic behavior of crystalline frameworks (85) — such as in the so-called “flexible” and “breathing”
+MOFs — has been leveraged for highly selective separation processes (86). This dynamic behavior cannot
+be completely captured from static DFT calculations alone, and accurate and easily accessible interatomic
+potentials are expected to accelerate the modeling of spatio-temporal processes in future studies (87).
+2.4 A wide range of applications and benchmarks
+In the Supplementary Information in 32 subsections, we provide a rather wide ranging set of application
+examples to support the claim that the MACE-MP-0 is a robust modeling tool, and when fine-tuned can
+reach ab initio accuracy. We also give the results of a comprehensive set of benchmarks, including the
+performance on calculating phonon dispersions, bulk and shear moduli of crystals, atomisation energies and
+lattice constants of elemental solids, the cohesive energies of the S66 set (88) of molecular dimers and the
+X23 set (89) of molecular crystals, the CRBH20 set (90) of reaction barrier heights, and the homonuclear
+diatomic binding curves. The full set of heteronuclear diatomic curves is provided in the Supplementary
+Materials.
+We also give more details on the training protocol, a graphical exploration of the data, including his-
+10
+
+[page 11]
+MACE-MP-0b3
+MACE-MP-0b3-FT
+Trained from scratch
+Force RMSE (meV/Å)
+Supplementary Information subsection task number
+Figure 4:Fine-tuning. A comparison of force RMS error on selected applications in the SI for which fine-
+tuning was performed. The MACE-MP-0b3 model is shown with pink diamonds and the fine-tuned model
+(MACE-MP-0b3-FT) for each application with red squares. For comparison, in each case we also show the
+results corresponding to a model trained “from scratch” only to the small amount of fine-tuning data (blue
+circles).
+tograms of energies, forces, stresses, magnetic moments, and element and composition counts, and a discus-
+sion of the quantification of the uncertainty in the model predictions.
+3 Fine-tuning
+Although the multitude of applications demonstrates that MACE-MP-0 is a robust model, it is also clear
+that, in many cases, it is not accurate enough out of the box to rival or replaceab initio calculations. For
+a selection of examples, we performed fine-tuning on configurations generated using MACE-MP-0, typically
+via molecular dynamics or other downstream tasks appropriate for the application. We used approximately
+100 new configurations for each application during fine-tuning. To prevent catastrophic forgetting (91) and
+retain the robustness of the foundation model, we introduce a new fine-tuning protocol:multi-head replay
+fine-tuning. This approach includes a subset of the foundation model training data in the loss function
+while fine-tuning on the new data (see Appendix C.2 for details). We train a separate model for each case
+using this multi-head fine-tuning protocol with replay. Figure 4 shows the resulting force errors, which
+decrease significantly in every case. For comparison, we also present the force errors of a MACE model
+trained just on the small fine-tuning dataset. In almost all cases, the force errors of the model trained from
+scratch are significantly worse than those of the fine-tuned model. In each corresponding subsection of the
+SI, we demonstrate the performance of the fine-tuned model on application-relevant observables, showing
+considerable improvement over the original model in every case.
+11
+
+[page 12]
+4 Related work: general purpose MLIPs
+The development of the MACE-MP-0 models as a foundation models for atomistic materials simulation
+follows more than a decade of intense activity and progress in making MLIPs for specific materials. General
+purpose MLIPs –i.e., models that aim to target a wide range of chemical systems spanning many possible
+combinationofelements–aremuchmorerecent. Here, wesummarisethebriefhistoryofsuchgeneralpurpose
+models as well as the culmination of this trend into the creation of true “foundation models”. Within this
+commentary, weseektohighlighttheparticularmeritsofMACE-MP-0incomparisontoexistingalternatives.
+It is worth noting that the reason we call MACE-MP-0 “foundational” is because of how it can be used, as
+already mentioned in the introduction: the model is suitable for many different applications as a tool for
+initial exploration, but it likely requires fine-tuning for specific simulation tasks to achieve quantatively
+accurate predictions.
+A key advance towards making general purpose MLIP models was made by MEGNet, introduced in
+2019 (92). This model, which provides property prediction for inorganic crystals, was trained on minimum
+energy configurations in the Materials Project (MP) (93) that includes most elements of the periodic table
+(89).Subsequently, models that predict atomic forces were also trained on MP-based datasets, including
+M3GNet (94) and CHGNet (95), which were trained on snapshots of DFT relaxations of MP structures,
+with CHGNet using the MPtrj dataset introduced at the same time (95). The ALIGNN-FF model (96)
+was trained on a database of inorganic crystals, JARVIS-DFT (97), which covers 89 elements and uses
+the optB88vdW exchange-correlation functional (98). The proprietary GNoME (99) (based on the NequIP
+architecture (16)) model also starts from MP, but uses a complex active learning workflow to generate and
+train on a dataset of inorganic crystals nearly two orders of magnitude larger than MPtrj. The above models
+were created primarily for the purpose of “materials discovery”, i.e. predicting thermodynamic stability of
+hypothetical inorganic crystals. In addition, they were capable of molecular dynamics for such crystals, and
+indeed both CHGNet and GNoME were used to study alkali metal ion diffusion in battery materials. More
+recently, the DPA models (DPA-1 (100) and DPA-2 (101)) were trained to a wide variety of datasets (with
+56 and 73 elements, respectively), a combination of some previously available and some released with the
+models (altogether 4M configurations). The second paper reports MD results for versions of the baseline
+model fine-tuned separately to specific systems (e.g. water, solid-state electrolytes, ferroelectric oxide). To
+date, the most general and transferable force field for molecular dynamics is the PFP model (102) (TeaNet
+architecture (103)), also proprietary (including its training set that originally covered 45 elements, recently
+updated to 72 elements (104), and is significantly larger than MP and also covers molecules and surfaces).
+PFP was demonstrated for running simulations on solid-state ionic conductors, and a molecular adsorption
+and a heterogeneous catalysis example—systems that formed part of its training data set. There are also
+ML force fields specialized for organic molecules (with a much more limited number of elements) such as
+the ANI (and later AimNET) series of models (105–107) and the MACE-OFF models (108), as well as for
+metal alloys (109). However, there has yet to be a comprehensive demonstration that a single ML potential
+can describe solid, liquid, and gaseous systems of materials and molecules across the periodic table and well
+beyond the distribution of the underlying training set.1
+5 Outlook
+The stable MD propagation for a wide range of materials across the periodic table and the DFT-quality
+simulation (in some cases after fine-tuning) that we have shown here are landmark achievements for a single
+machine-learned interatomic potential. In this sense, we expect that the present study will have implica-
+tions for the wider development of the field, beyond any specific model parameterisation. Yet there are a
+number of limitations of the current (“b3” and “MPA-0”) versions of the MACE-MP-0 foundation model.
+1Since the first preprint version of this manuscript, a number of models have been fitted to the same MPtrj data set and
+also to larger extended datasets including the Alexandria (110) and OMat24. (111). Notable models (reported in preprint
+form) that showed high in-domain accuracy include SevenNet (112) (based on the NEquIP architecture (16)), GRACE (113),
+Orb (114, 115), EquiformerV2 (111), MatterSim (116)and eSEN (117). Of these, the MatterSim models, have been tested
+in the molecular dynamics for some materials including polymers and surfaces. The GRACE theoretical framework formally
+generalises MACE, but actual released GRACE models remain in close correspondence with the MACE design choices. To
+compare with these newer models we also include results for a new model termed MACE-MPA-0 in the SI, which has been
+trained on an extended dataset including MPtrj and Alexandria.
+12
+
+[page 13]
+The exchange–correlation functional used in the MPtrj dataset is PBE (118), which must be augmented
+with Hubbard U terms to improve electronic correlations for particular element combinations (introducing
+inconsistencies in the PES that must be compensated (6)), and dispersion corrections, such as D3 (29).
+Recent developments in DFT are beginning to supersede conventional GGA functionals by achieving im-
+proved accuracy at comparable computational cost (119,120), and methods beyond DFT such as hybrid
+functionals (121) and the random phase approximation (122) improve upon this even further, but at much
+larger computational cost. Refitting or fine-tuning the model to a more modern functional is expected to
+increase its predictive power, and will reduce the need for system-dependent corrections such as the use of
+Hubbard U terms and dispersion. (Note that the above mentioned inconsistency is not present in the more
+recent MATPES dataset, (123) which removes the Hubbard U correction altogether.)
+The MACE architecture that we used to fit the data presently does not contain explicit long-range
+interactions (beyond the12Å receptive field afforded by two steps of message passing), nor does it take into
+account magnetic or spin degrees of freedom. Despite the success in describing many different chemistries
+demonstratedherein, therewillbeobservables, particularlyinthecontextofdilutesolutionsandatinterfaces,
+that cannot be calculated with a short-range model. There are several approaches to incorporating explicit
+electrostatic interactions into atomistic ML models in the literature (124–127), as well as spin degrees of
+freedom (95,128,129 ). In the future, foundation models could undoubtedly benefit from such an extension.
+Considering the results for the diverse systems shown in the SI, a particular area where the model clearly
+needs improvement is describing intermolecular interactions. While the overarching goal of MD stability is
+achieved, for many systems there is room for improvement in a quantitative sense, for example in obtaining
+more accurate densities of molecular liquids, such as ethanol-water mixtures (section appendix A.17). The
+present version of the potential includes a repulsive pair potential (130) that helps describe the repulsive
+interaction of atoms at close range, the accuracy of the model (e.g., in predicting the equation of state) at
+high pressures is limited due to the absence of data in this regime. This can easily be remedied either by
+active learning (116) or a more systematic approach, e.g. replicating part of the MP dataset at lower and
+higher densities.
+Although we have described an example of a model with wide generalisation, we expect that there will be
+considerable improvements possible both in the model architecture and in optimising the way in which data
+is assembled, and the model is fine-tuned. (101,131,132 ) It is an open question whether the biggest gains
+will be obtained by improving the underlying data (both the amount and the consistency) or by scaling the
+size and expressivity of the model. There is good evidence that reaching higher levels of electronic structure
+theory (such as improved XC functionals) from a DFT baseline and beyond requires significantly less data
+than fitting to DFT itself (106,133,134 ), and we show an example of this in the SI, where we fine-tune the
+model to data computed with the r2SCAN functional (135).
+Finally, there is the tantalising possibility that with some improvements, it will be possible to make an
+ML force field model that achieves quantitative agreement with explicit electronic structure theory across
+the full range of chemistry and structure. If this turns out to be true, future foundation models may truly
+provide a universal model for carrying out atomistic simulations at scale.
+13
+
+[page 14]
+6 Methods
+MACE All models trained in the paper use the MACE (19) architecture implemented in PyTorch (136)
+and employing thee3nn library (137). The MACE training and evaluation codes are distributed via GitHub
+under the MIT license, available athttps://github.com/ACEsuit/mace/. The models used in this paper
+are available athttps://github.com/ACEsuit/mace-mp/. MACE is an equivariant message-passing graph
+tensor network where each layer encodes many-body information of atomic geometry. At each layer, many-
+body messages are formed using a linear combination of a tensor product basis (23,24). This is constructed
+by taking tensor products of a sum of two-body permutation-invariant polynomials, expanded in a spherical
+basis. The final output is the energy contribution of each atom to the total potential energy. For a more
+detailed description of the architecture, see Refs. (19) and (138).
+Model versions Different model versions have been released based on this work, including the models used
+in the first version of the manuscript, now named MACE-MP-0a, and the model used in the present version,
+named MACE-MP-0b3. All previous models can be found at https://github.com/ACEsuit/mace-mp/.
+Unless otherwise stated in the text, all models used in this paper correspond to MACE-MP-0b3. We use the
+label “MACE-MP-0” to refer to this model series generally.
+Hyper-parameters The model referred to in this work uses two MACE layers, a spherical expansion of
+up to lmax = 3, and 4-body messages in each layer (correlation order 3). The model uses a128-channel
+dimension for tensor decomposition. We use a radial cutoff of6Å and expand the interatomic distances
+into 10 Bessel functions multiplied by a smooth polynomial cutoff function to construct radial features, in
+turn fed into a fully-connected feed-forward neural network with three hidden layers of64 hidden units and
+SiLU non-linearities. We fit anL = 1 model, corresponding to a “medium sized” model, as it represents a
+good compromise. More efficient models that only pass invariants during the message passing step (L = 0)
+or those that pass higher order tensors (L ≥ 2) are straightforward to train, and can form part of the
+accuracy/efficiency tradeoff in selecting the optimal model in the future. The irreducible representations of
+the messages have alternating parity (ine3nn notation, 128x0e + 128x1o ).
+Distance transforms and pair repulsionSmooth behavior of the potential at close approach is essential
+for a broadly applicable model. We use a combination of Ziegler–Biersack–Littmark (ZBL) (139) core
+potential to the short-range repulsive forces, and distance transformation to smoothly connect this behavior
+to equilibrium interactions. The ZBL energy is given by,
+EZBL =
+X
+j
+14.3996 · Zi · Zj
+rij
+· ϕ(rij/a) ·Envelope(rij, rmax, p), (1)
+ϕ(r/a) = c0e−3.2(r/a) + c1e−0.9423(r/a) + c2e−0.4028(r/a) + c3e−0.2016(r/a). (2)
+where Zu and Zv are the atomic numbers of the interacting atoms, andrij is the interatomic distance between
+atoms i and j. The screening lengtha is given bya = 0.529 · aprefactor/(Z aexp
+i + Z aexp
+j ). The coefficients are
+c = {0.1818, 0.5099, 0.2802, 0.02817}. The maximum cutoff radius is defined asrmax = Rcov(Zu) +Rcov(Zv).
+The envelope function Envelope(r, rmax, p) is a polynomial cutoff function applied to smooth the potential.
+We use the same envelope as the radial basis. To smoothly transition from the the ZBL to the MACE energy,
+we use the Agnesi distance transform (140),
+yij =
+
+1 + a · (rij/r0)q
+1 + (rij/r0)q−p
+−1
+. (3)
+where yij is the transformed distance, and the parametersa, q, andp control the shape of the transformation,
+r0 = 1
+2(Rcov(Zu) +Rcov(Zv)). We then evaluate the radial basis in this transformed space instead of directly
+on the distances.
+14
+
+[page 15]
+Normalization To ensure internal normalization of the weights and smooth extrapolation to high pressure
+systems, we divide the atomic basis in each layer by a learnable quantity called density normalizationei,
+ei = 1 +
+X
+j
+tanh
+ 
+SiLU
+ X
+k
+WkBk(rij)
+2
+(4)
+where B denotesasetofBesselbasisand W arelearnableweights. Thepredicteddensitynormalizationvaries
+between 1 and the number of neighbors of atomi, depending on the local environment. This normalization
+corresponds to a smooth version of the node degree normalization in graph neural networks (141). The node
+energy ϵa of atom a is shifted by the isolated atoms energies. Therefore, the prediction of the energy for the
+whole structure is constructed as
+ˆE =
+NX
+a=1
+"
+σ
+ KX
+k=1
+ϵ(k)
+a
+!
++ µZa
+#
+where K denotes the total number of message passing layers andϵ(k)
+a is the energy of atoma at layer k. µ
+and σ are the isolated atomic energies and the mean square of the atomic forces computed on the training
+set. The predicted forces and stresses are computed as derivatives of the total energy with respect to the
+atomic positions and the strain tensor, respectively.
+Training loss The models were trained using a weighted sum of Huber losses of energy, forces, and stress:
+L = λE
+Nb
+NbX
+b=1
+LHuber
+ ˆEb
+Na
+, Eb
+Na
+, δE
+
++ λF
+3PNb
+b=1 Na
+NbX
+b=1
+NaX
+a=1
+3X
+i=1
+L⋆
+Huber
+
+− ∂ ˆEb
+∂rb,a,i
+, Fb,a,i, δF
+
++ λσ
+9Nb
+NbX
+b=1
+3X
+i=1
+3X
+j=1
+LHuber
+ 1
+Vb
+∂ ˆEb
+∂εb,ij
+, σb,ij, δσ
+
+,
+(5)
+where λE, λF , λσ are predetermined weights of energy (E), forces (F), and stress (σ) losses, the symbols
+under a hat correspond to predicted values, andNb and Na are the batch size and the number of atoms in
+each structure. In the last term involving the stress,εb and σb correspond to the strain and stress tensors,
+respectively. We used(λE, λF , λσ) = (1, 10, 10) and Huber deltas ofδE = 0.01, δF = 0.01, δσ = 0.01. We use
+a conditional Huber lossL⋆
+Huber for forces, where the Huber deltaδF is adaptive to the force magnitude on
+each atom. The Huber deltaδF decreases step-wise by a factor from1.0 to 0.1 as the atomic force increases
+from 0 to 300 eV/Å. For more details, see the section C.1 in the SI.
+Optimization The models are trained with the AMSGrad (142) variant of Adam (143) with default
+parameters β1 = 0.9, β2 = 0.999, and ϵ = 10−8. We use a learning rate of 0.001 and a exponential moving
+average (EMA) learning scheduler with decaying factor of 0.99999. We employ a gradient clipping of 100.
+The training curves for the medium model is presented in Fig. S63 in the SI. Model is trained for 100 epochs
+on 40–80 NVIDIA H100 GPUs across10–20 nodes. Training the medium-sized model took approx. 2,600
+GPU hours. We find that MACE-MP-0 achieves an energy MAE of18 meV/atom and a force MAE of
+39 meV/Å for the medium model. After fine-tuning with higher weights for energies for an additional 50
+epochs, the small model is able to achieve an energy MAE of13 meV/atom (see SI C.1).
+Performance ThespeedofevaluationoftheMACE-MP-0modeldependsontheatomicdensity, hardware,
+floating point precision, size of model,etc. (see section SI A.32 for details), but a rough guide is that on
+a single NVIDIA A100 GPU with 80GB of RAM, it can do several nanoseconds per day for 1000 atoms.
+When run in parallel using domain decomposition, weak scaling at0.1 ns/day is perfect up to 32,000 atoms
+and 64 GPUs for a dense metallic alloy.
+15
+
+[page 16]
+Training data The MACE-MP-0b3 model was trained on theMPtrj dataset which was compiled orig-
+inally for CHGNet (95). This dataset consists of a large number of static calculations and structural op-
+timization trajectories from the Materials Project (MP) (93). These include approx. 1.5M configurations
+(roughly ten times the approx.150k unique MP structures), mainly small periodic unit cells (90% under70
+atoms) describing inorganic crystals with some molecular components. The DFT calculations use the PBE
+exchange-correlation functional with HubbardU terms applied to some transition metal oxide systems, but
+no additional dispersion correction (144).
+Since the potential we fit calculates the energy based only on structural information, ideally we would
+like to use consistent electronic calculation parameters and the lowest energy electronic state for each con-
+figuration. One significant source of inconsistency is the application of HubbardU, which is used in MP
+calculations only when O or F are present together with any of 8 transition metals (Co, Cr, Fe, Mn, Mo,
+Ni, V, W) (145). The application ofU leads to a shift in energy correlated with the value ofU, i.e. a few
+eV, not explicitly accounted for in our fit. Thus, energies from calculations using those8 elements with
+and without O or F are inconsistent (in the sense that the energy along a continuous deformation path that
+removes the O or F atoms from around these metals would be discontinuous). The pre-trained CHGNet fit
+to MPtrj used energies corrected to account for the presence or absence ofU (146). In our fit, this shift only
+occurs between structures with different compositions and for any given composition the energies should be
+consistent. As a result, we expect configurations that include local regions of these metals with very different
+O or F content,e.g. an interface between a metal and an oxide, may be poorly described.
+In addition, the current fitting database includes a variety of magnetic orders generated as part of a
+systematicsearchforthemagneticgroundstate( 147), chosenfromthefulldatabaseonlybasedoncalculation
+type (“GGA Static” and “GGA Structure Optimization”) and energy-difference criteria (95). To quantify the
+effect of this additional and unaccounted-for degree of freedom, we classify the magnetic order associated
+with each calculation task into one of four categories: 1) no atomic magnetic moment listed, 2) moment
+converged to zero on all atoms, 3) converged to ferromagnetic order, and 4) converged to another magnetic
+order. Of the approx.150k MP-IDs present, about48k have more than one magnetic order present in the
+fitting database. In the vast majority of cases, this includes a calculation where the moments areunknown
+(i.e. not recorded) and a single other magnetic order, and we can hope that they are actually consistent.
+However, for5186 MP-IDs we find multiple non-trivial magnetic orders. To quantify the effect on the fitting
+quantities, we calculate the minimum energies of each magnetic order for each material, and analyze the
+range of minima values seen for each material (distribution is plotted in SI Fig. S69). While the vast majority
+of materials have negligible variation, there are hundreds with variation>100 meV/atom (i.e. an order of
+magnitude larger than the energy error on the validation set), and a few that vary by<0.5 eV/atom.
+Long-range dispersion corrections Dispersion interactions, sometimes called van der Waals interac-
+tions, are crucial for describing the weak, long-range interactions between electrons. Common approxi-
+mations in DFT, such as PBE (118), cannot capture such long-ranged interactions, motivating the use of
+additive non-local corrections, such as DFT-D3 (29) or rVV10 (148). Inclusion of a dispersion correction
+to DFT is necessary to describe the dynamics of liquid water (149), the geometries and binding energies of
+layered solids (150), and stability of metal–organic frameworks (151), among many other examples.
+Additive dispersion corrections typically employ a physical model for dispersion interactions with em-
+pirical parameters optimized to cut off the correction at interatomic distances where approximate DFT
+is reliable. DFT-D3 is an interatomic potential which uses tabulated values of atomic polarizabilities to
+describe two-body and, optionally, three-body Axilrod–Teller (152) dispersion interactions. As MACE-
+MP-0b3 is trained to PBE energies, forces, and stresses, it inherits PBE’s lack of long-range dispersion
+interactions. An optional, additive DFT-D3 dispersion correction can be applied to MACE-MP-0b3. The
+PyTorch implementation of DFT-D3 used in this work is described in Ref. (102). The same parameters used
+in PBE-D3(BJ), i.e., DFT-D3 with a Becke-Johnson damping function (153), are used in the D3 correction
+to MACE-MP-0b3.
+16
+
+[page 17]
+Author contributions
+Model training:YC, PB, IB, CL;Data/Model analysis:PB, YC, JR, NB, RE, MCK, ES, IB;MACE
+code: IB, YC, SWN, DPK, PB, WCW, MA, SV, ES, CL;Application examples: WJB (CsPbI3, ap-
+pendix A.5); LLS (catalysis: In2O3, section 2.2 and appendix A.24.4); IB (a-C quenches, appendix A.3.1);
+ZEM (a-C graphitisation, appendix A.3.2); NK (Si interstitials, appendix A.1); EVU, XRA, NON (aqueous
+interfaces, section 2.1 and appendix A.19); YC (molten salts, appendix A.20); CSc, VK, FDP, XRA (water
+and ice, section 2.1 and appendix A.16); SPN and AGS (LiNiO2, appendix A.12); SWN (lithiated graphite,
+appendix A.11); AME (zeolites appendix A.10); JJ (transition metal dichalcogenides, appendix A.26); JHM
+(ethanol/water, appendix A.17, trialanine, appendix A.30); GL, LAMR (a-Si appendix A.2); DK (carborane,
+appendix A.25, ammonia-borane, appendix A.23); VC (S polymerisation, appendix A.9); JR, JaG, JoG and
+AAN (phonons, appendix B.1); JR, REAG (materials discovery: formation energy, appendix A.29.1); KSJ
+(materials discovery: stoichiometric substitutions, appendix A.29.2); ADK (materials discovery: highly-
+coordinated structures, appendix A.29.3); ASR, YC and AME (MOFs, section 2.3 and appendix A.28);
+MV (solvent mixtures, appendix A.18); DPK, ES, SMB (hydrogen combustion, appendix A.8); NKa, CSu
+(HOIPs, appendix A.6); FF, JT (protein dynamics and stability appendix A.7); PG, YW, TDS, JRK and
+CO (point and extended defects in BCC metals, appendix A.13); BXS, FB (molecule-surface interactions,
+appendix A.31) ;WCW (HEA, appendix A.32); EF, SD (catalysis: linear scaling relationships, section 2.2
+and appendix A.24.2); HJ, HHH (catalysis: CO oxidation on Cu, section 2.2 and appendix A.24.3); SH,
+SD (catalysis: Pourbaix diagrams, section 2.2 and appendix A.24.1); MCK (benchmarks: bulk and shear
+moduli, appendix B.2); FDP (benchmarks: cohesive energies and lattice constants of solids, appendix B.3,
+atomization energies appendix B.4, and reaction barrier heights, appendix B.5); TKS (Al2O3, appendix A.14,
+diatomics, appendix B.6); JPD (Arsenic random structure search, appendix A.15); IBM (high-pressure hy-
+drogen, appendix A.22); IBM, CvdO (electrode-electrolyte interface / battery system, appendix A.27); JK,
+VS and KH (CeO2, appendix A.4); FZ (ionic liquids, appendix A.21);Fine-tuning: IB, NB, TW Un-
+certainty quantification: FBi, MC, SC, CHH, CO and YW (appendix D);Supervision of research:
+AB, ACF, AM, ASR, CH, CO, CPG, CSu, GC, HHH, JaG, JK, JTM, KAP, KH, KR, MA, MC, SD, SMB,
+TV, VLD, WH;Drafted manuscript: IB, NB, YC, GC, SD, HHH, MCK, JR, ASR, CSc, JTM;Edited
+manuscript: IB, NB, YC, GC, VLD, JaG, REAG, JR, MCK, KAP, ASR, LLS, JTM, AM, CO, AME,
+WCW, JLAG;Supervised manuscript writing:NB, GC, VLD, VK, JTM, CSc.
+Acknowledgments
+Model training made use of resources of the National Energy Research Scientific Computing Center, a DOE
+Office of Science User Facility supported by the Office of Science of the U.S. Department of Energy under
+contract no. DE-AC02-05CH11231 using awards BES-ERCAP0023528 and BES-ERCAP0022838. Part of
+this work was performed using the Cambridge Service for Data-Driven Discovery (CSD3), part of which is
+operated by the University of Cambridge Research Computing on behalf of the STFC DiRAC HPC Facil-
+ity (www.dirac.ac.uk). The DiRAC component of CSD3 was funded by BEIS capital funding via STFC
+capital grants ST/P002307/1 and ST/R002452/1 and STFC operations grant ST/R00689X/1. DiRAC is
+part of the National e-Infrastructure. The work of YC, JR, ADK, MCK, MA and KAP was supported by
+the US Department of Energy, Office of Science, Office of Basic Energy Sciences, Materials Sciences and
+Engineering Division, under contract no. DE-AC02-05-CH11231 (Materials Project program KC23MP). We
+could not have done this work without the DFT relaxation trajectories freely provided by the Materials
+Project and carefully curated into the MPtrj training set by Bowen Deng (95). JR acknowledges support
+from the German Academic Scholarship Foundation (Studienstiftung). YC acknowledges financial support
+from UC Berkeley and Taiwan-UC Berkel

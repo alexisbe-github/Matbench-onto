@@ -1,49 +1,6 @@
-@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 [] a sh:ValidationReport ;
-    sh:conforms false ;
-    sh:result [ a sh:ValidationResult ;
-            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture> ;
-            sh:resultMessage "only a MachineLearningArchitecture should have an architecture configuration." ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
-            sh:sourceShape arch:HasArchitectureConfigurationSubjectShape ;
-            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture> ],
-        [ a sh:ValidationResult ;
-            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture> ;
-            sh:resultMessage "arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture." ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
-            sh:sourceShape arch:HasArchitectureObjectShape ;
-            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture> ],
-        [ a sh:ValidationResult ;
-            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_variant> ;
-            sh:resultMessage "every ModelVariant should link to a MachineLearningArchitecture." ;
-            sh:resultPath arch:hasMachineLearningArchitecture ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
-            sh:sourceShape _:n69580b6108a0492ca2748704929c65aab1 ],
-        [ a sh:ValidationResult ;
-            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_model_variant> ;
-            sh:resultMessage "every ModelVariant should link to a MachineLearningArchitecture." ;
-            sh:resultPath arch:hasMachineLearningArchitecture ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
-            sh:sourceShape _:n69580b6108a0492ca2748704929c65aab1 ;
-            sh:value <https://k.loria.fr/ontologies/architectureonto-individuals#nequip_mp_l_equivariantmessagepassingneuralnetworkarchitecture_architecture> ],
-        [ a sh:ValidationResult ;
-            sh:focusNode <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> ;
-            sh:resultMessage "train:usesDataset must have a MachineLearningTrainingRun as subject." ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:ClassConstraintComponent ;
-            sh:sourceShape train:UsesDatasetSubjectShape ;
-            sh:value <https://k.loria.fr/ontologies/trainingonto-individuals#allegro_spice2_pretraining> ] .
-
-_:n69580b6108a0492ca2748704929c65aab1 sh:class arch:MachineLearningArchitecture ;
-    sh:message "every ModelVariant should link to a MachineLearningArchitecture." ;
-    sh:minCount 1 ;
-    sh:path arch:hasMachineLearningArchitecture .
+    sh:conforms true .
 

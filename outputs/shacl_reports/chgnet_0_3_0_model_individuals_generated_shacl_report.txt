@@ -1,28 +1,2 @@
 Validation Report
-Conforms: False
-Results (4):
-Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
-	Severity: sh:Violation
-	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
-	Focus Node: archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_model_variant
-	Value Node: archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture
-	Result Path: arch:hasMachineLearningArchitecture
-	Message: every ModelVariant should link to a MachineLearningArchitecture.
-Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
-	Severity: sh:Violation
-	Source Shape: arch:HasArchitectureConfigurationSubjectShape
-	Focus Node: archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture
-	Value Node: archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture
-	Message: only a MachineLearningArchitecture should have an architecture configuration.
-Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
-	Severity: sh:Violation
-	Source Shape: arch:HasArchitectureObjectShape
-	Focus Node: archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture
-	Value Node: archind:chgnet_0_3_0_crystal_hamiltonian_graph_neural_network_architecture
-	Message: arch:hasMachineLearningArchitecture must point to a MachineLearningArchitecture.
-Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
-	Severity: sh:Violation
-	Source Shape: [ sh:class arch:MachineLearningArchitecture ; sh:message Literal("every ModelVariant should link to a MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path arch:hasMachineLearningArchitecture ]
-	Focus Node: archind:chgnet_0_3_0_variant
-	Result Path: arch:hasMachineLearningArchitecture
-	Message: every ModelVariant should link to a MachineLearningArchitecture.
+Conforms: True

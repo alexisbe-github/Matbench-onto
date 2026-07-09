@@ -5,6 +5,8 @@
     <uri id="Imports Wizard Entry" name="http://www.w3.org/ns/dcat3" uri="http://www.w3.org/ns/dcat#"/>
     <uri id="User Entered Import Resolution" name="https://k.loria.fr/ontologies/trainingonto" uri="trainingonto.ttl"/>
     <uri id="Imports Wizard Entry" name="https://k.loria.fr/ontologies/architectureonto" uri="architecture.ttl"/>
+    <uri id="User Entered Import Resolution" name="https://k.loria.fr/ontologies/evaluationonto" uri="evaluationonto.ttl"/>
+    <uri id="User Entered Import Resolution" name="https://k.loria.fr/ontologies/evaluationonto-individuals" uri="evaluation_individuals.ttl"/>
     <uri id="User Entered Import Resolution" name="https://k.loria.fr/ontologies/architectureonto#" uri="architecture.ttl"/>
     <uri id="Imports Wizard Entry" name="https://k.loria.fr/ontologies/architectureonto" uri="architecture.ttl"/>
     <uri id="Imports Wizard Entry" name="http://www.w3.org/ns/prov-o-20130430" uri="http://www.w3.org/ns/prov-o.owl"/>

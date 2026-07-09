@@ -1,0 +1,1391 @@
+[page 1]
+Graph atomic cluster expansion for foundational machine learning interatomic
+potentials
+Yury Lysogorskiy, ∗ Anton Bochkarev, and Ralf Drautz
+Interdisciplinary Centre for Advanced Materials Simulation (ICAMS),
+Ruhr-University Bochum, 44780 Bochum, Germany
+(Dated: Originally submitted: August 26 2025; Revised: January 3 2026)
+Foundational machine learning interatomic potentials that can accurately and efficiently model
+a vast range of materials are critical for accelerating atomistic discovery. We introduce universal
+potentials based on the graph atomic cluster expansion (GRACE) framework, trained on several
+of the largest available materials datasets. Through comprehensive benchmarks, we demonstrate
+that the GRACE models establish a new Pareto front for accuracy versus efficiency among founda-
+tional interatomic potentials. We further showcase their exceptional versatility by adapting them
+to specialized tasks and simpler architectures via fine-tuning and knowledge distillation, achieving
+high accuracy while preventing catastrophic forgetting. This work establishes GRACE as a ro-
+bust and adaptable foundation for the next generation of atomistic modeling, enabling high-fidelity
+simulations across the periodic table.
+I. INTRODUCTION
+The ability to predict materials properties from atom-
+istic simulations is essential for modern materials de-
+sign. Machine learning interatomic potentials (MLIPs),
+trained on data from electronic structure methods like
+density functional theory, have recently emerged as a
+powerful tool, achieving excellent accuracy for diverse
+systems1–11. However, the applicability of conventional
+MLIPs is constrained by their limited elemental scope.
+Extending an existing MLIP to include a new chemical
+element requires generating thousands of new reference
+calculations and retraining the entire model - a process
+that represents a significant computational bottleneck.
+Foundational interatomic potentials seek to resolve this
+bottleneck by creating a single, universal model that en-
+compasses the entire periodic table from the outset. This
+ambitious goal requires both enormous training datasets
+and an efficient method for representing the vast space
+of chemical interactions. A brute-force enumeration of
+interactions is unfeasible; parameterizing just the four-
+body interactions would involve on the order of 10 8 in-
+teractions.
+Foundational MLIPs resolve this problem by embed-
+ding complex chemistry into a low-dimensional space;
+a long-standing concept in materials simulation. Early
+tight-binding models, for example, used the valence elec-
+tron count to effectively describe chemical trends and
+structural stability across multiple elements 12. Modern
+foundational MLIPs build upon this legacy, using multi-
+dimensional embeddings to leverage the inherent corre-
+lations between elements. This approach is remarkably
+effective, enabling the entire periodic table’s chemistry
+to be captured in few dimensions. 13–20
+The first universal force field was published more than
+30 years ago 21. Parameterizations of MLIPs across the
+periodic table started to appear when large training
+datasets became available22–32.
+To date the development of universal MLIPs was
+tightly bound to the progress in message passing graph
+neural networks33–49, despite the fact that universal pa-
+rameterizations across the periodic table are in princi-
+ple independent of MLIP architecture. The first uni-
+versal MLIPs that built on the Atomic Cluster Expan-
+sion (ACE)4 became available two years ago, within the
+framework of Multi-ACE 50 that employs general many-
+body messages and as implemented in MACE 24,51.
+Here we employ the Graph Atomic Cluster Expansion
+(GRACE)49. By extending ACE to tree-graphs, GRACE
+stands out from graph neural networks by providing a
+complete basis for the parameterization of atomic in-
+teractions as a function of atomic positions and chem-
+ical species. By straightforward tensor decomposition of
+the GRACE expansion coefficients one directly obtains
+sparse representations with efficient chemical embedding
+that can be evaluated recursively. The recursive evalua-
+tion of graph basis functions can be understood as mes-
+sage passing and because of its complete basis, GRACE
+is able to rationalize and represent other message pass-
+ing graph neural networks architectures in general. As
+GRACE further facilitates recursive evaluation of effec-
+tive ACE on each message passing layer, it benefits from
+linear scaling with the number of recursion layers as well
+as linear scaling with the complexity of ACE messages
+within each layer for efficient double-recursive evaluation.
+Training data for universal force fields needs to cover
+the periodic table comprehensively. Only few publicly
+available datasets are suitable, notably the Materials
+Project52,53, Alexandria54,55 and the OMat24 56 datasets
+that are in the focus of our work here, but also the
+Open Quantum Mechanical Database 57 (OQMD) and
+AFLOWLIB58 and more recent additions such as Mat-
+PES59 and MP-ALOE60.
+Validation of universal force fields is challenging. Tra-
+ditional strategies that are employed for MLIPs with only
+few elements and that probe test errors for specifically
+arXiv:2508.17936v2  [cond-mat.mtrl-sci]  3 Jan 2026
+
+[page 2]
+2
+relevant simulation tasks are not possible because of the
+combinatorically many different simulations that would
+be required across the periodic table. Validation there-
+fore is necessarily limited to tests that seem particularly
+relevant or are widely adopted in the community.
+In this work we present a number of GRACE models
+with varying complexity that were parameterized on the
+OMat2456, Alexandria 54,55 and MPTraj 53 datasets and
+can serve as a foundation models for atomistic modelling
+in materials science.
+II. RESUL TS
+A. F oundational GRACE interatomic potentials
+Developing foundational MLIPs capable of accurate
+predictions across a wide array of chemical elements and
+diverse structures requires exceptionally large and var-
+ied datasets. The GRACE framework is designed to ef-
+fectively manage this inherent complexity. Our primary
+training source was the OMat24 dataset 56, which cur-
+rently is the largest publicly available compilation for ma-
+terials property prediction. It encompasses 110 million
+DFT calculations, primarily computed with VASP 61–63
+with the GGA-PBE functional 64, including Hubbard U
+corrections for specific oxides and fluorides, consistent
+with Materials Project defaults 52. Importantly, OMat24
+extends beyond near-equilibrium structures, distinguish-
+ing it from datasets like Alexandria and MPTraj, but
+covers same 89 elements as those two. The dataset’s
+diversity comes from its generation methods, which in-
+clude Boltzmann sampling of structures with randomly
+displaced atomic positions, ab initio molecular dynamics
+(AIMD), and subsequent relaxations of these configura-
+tions.
+We developed a number of GRACE models with
+one- (1L) and two-layer (2L) architectures, systemati-
+cally varying their complexity through small (no suf-
+fix), medium (-M suffix), and large (-L suffix) setups.
+The one-layer models are built on ACE star-graphs with
+direct interactions, the two-layer models include semi-
+local interactions mediated by equivariant message pass-
+ing. Both, one-layer and two-layer models employ chem-
+ical embedding for efficiently condensing chemical in-
+teractions into low rank representations. The initial
+parameterizations, designated as “-OMAT-base”, were
+conducted using the OMat24 dataset and employed a
+loss function that equally weighted energies, forces, and
+stresses. Further fine-tuning, which used larger weights
+for the energy loss component, resulted in a series of mod-
+els designated with an “-OMAT-ft-E” or just “-OMAT”
+suffix.
+While OMat24 provides a robust foundation, its DFT
+and pseudopotential settings differ from those used in
+Alexandria and the Materials Project. To address this,
+we fine-tuned the OMAT-base models using a combined
+dataset of MPTraj and a subsampled Alexandria (sAlex)
+TABLE I: Performance of foundational MLIPs in
+materials discovery task (F1), thermal conductivity task
+(κSRME) and computational performance (in
+µs/atom/step) for W-BCC crystal with 1024 atoms on
+A100-80GB GPU in ASE and LAMMPS molecular
+dynamics simulations. Top part of the table corresponds
+to models compliant with MatBench Discovery task,
+bottom part to models trained on OMat24 dataset only.
+Model F1 κSRME tASE tLAMMPS
+UMA-M-1.1 0.930 0.195 2981
+eSEN-30M-OAM 0.925 0.170 1897
+eqV2 M 0.917 1.771 -
+UMA-S-1.1 0.916 0.203 401
+ORB-v3 0.906 0.210 197
+SevenNet-MF-ompa 0.901 0.317 651
+GRACE-2L-OAM-L 0.890 0.168 91 51
+DPA-3.1-3M-FT 0.884 0.469 227
+GRACE-2L-OAM-M 0.881 0.200 71 31
+GRACE-2L-OAM 0.880 0.294 64 23
+MatterSim-v1 0.862 0.574 198
+MACE-MPA-0 0.852 0.412 198
+GNOME 0.829 - -
+GRACE-1L-OAM 0.824 0.516 51 10
+GRACE-1L-OAM-L 0.815 0.377 54 13
+GRACE-2L-OMA T-L - 0.186 91 51
+GRACE-2L-OMA T-M - 0.217 71 31
+MACE-OMAT-0 - 0.245 202
+GRACE-2L-OMA T - 0.288 64 23
+GRACE-1L-OMA T-L - 0.383 54 13
+GRACE-1L-OMA T - 0.398 51 10
+dataset54–56. The sAlex subset was curated to prevent
+data leakage with the WBM test set 65, a crucial step to
+ensure model compatibility with Matbench Discovery 66.
+The resulting models are denoted with suffix “-OAM”.
+These GRACE models are designed to serve as robust
+foundational interatomic potentials and to provide uni-
+form accuracy across a broad range of chemical composi-
+tions and structural configurations. More details on the
+models architecture and parameterization can be found
+in Supplementary Information X A.
+B. V alidation
+Foundational MLIPs must demonstrate uniform accu-
+racy across multiple application domains. In this section,
+we present several critical validation tests. We evalu-
+ate our models against the MatBench Discovery bench-
+mark66 for formation energies and thermodynamic sta-
+bility and theκ-SRME 67 test for thermal conductiv-
+ity, which reflects second- and third-order derivatives.
+We further determine the performance of our models on
+elastic properties and for non-equilibrium and defective
+configurations by predicting formation energies of grain
+boundaries, surfaces, and point defects in pure elements.
+This suite of tests provides a good assessment of the mod-
+els’ capabilities and limitations.
+
+[page 3]
+3
+FIG. 1: Model performance for stable structure identification (F1 score in MatBench Discovery benchmark) and
+thermal conductivity prediction (κ SRME) versus computational time per atom. A higher F1 score and lowerκ SRME
+indicate better performance. The blue dashed line links Pareto optimal models. Computational performance is
+estimated via ASE (filled symbols) and LAMMPS (open symbols), with GRACE models indicated in red.
+1. MatBench Discovery benchmark
+Matbench Discovery66 serves as a benchmark for high-
+throughput discovery of stable inorganic crystals. It is
+specifically designed to evaluate the efficacy of various
+foundational MLIPs in predicting formation energy and
+thermodynamic stability of novel crystal structures. The
+benchmark task involves geometry optimization of struc-
+tures sourced from the WBM dataset, a diverse collection
+of 257,000 candidate crystal structures spanning a wide
+range of compositions. The central goal is to predict
+formation energies and assess the stability of these struc-
+tures relative to the original convex hull from Materials
+Project52 with high fidelity. Achieving this requires mod-
+els to accurately predict potential energy, atomic forces,
+and stress tensors, with an accuracy comparable to the
+Materials Project’s density functional theory (DFT) cal-
+culations.
+Figure 1 (left panel) illustrates the performance of
+GRACE models, specifically the OAM-fine-tuned ver-
+sions, against other publicly available foundational
+MLIPs in relation to their computational efficiency. The
+figure shows that GRACE models consistently occupy the
+Pareto optimality front, demonstrating a superior bal-
+ance of performance and computational speed. This ef-
+ficiency can be further enhanced by using the LAMMPS
+molecular dynamics code 68, with specific timings avail-
+able in Table I. While the F1 metric reflects a model’s
+accuracy for identifying stable structures, the mean ab-
+solute error (MAE) of formation energies offers a more
+general measure of accuracy. The performance of the
+models for formation energy MAE, which shows a sim-
+ilar trend with GRACE models on the Pareto front, is
+provided in the supplementary materials.
+2. Thermal conductivity
+To evaluate the ability of foundational MLIPs to pre-
+dict force-dependent properties like phonons and anhar-
+monic thermal conductivity, we used the symmetric rel-
+ative mean errorκ SRME metric67. This test quantifies a
+model’s performance by predicting the thermal conduc-
+tivityκacross 103 binary structures. The thermal con-
+ductivity values are calculated from forces predicted by
+the foundational MLIPs and subsequently analyzed using
+thephono3pysoftware 69,70. Accurate thermal conduc-
+tivity predictions serve as a strong indicator of a model’s
+performance for other simulation tasks, such as modeling
+metal-organic frameworks71.
+The results for various foundational MLIPs, including
+our GRACE models, are presented in Fig. 1 (right panel)
+and Table I. The family of one- and two-layer GRACE
+models notably form the Pareto front, achieving the best
+performance in thermal conductivity prediction. In par-
+ticular, the GRACE-2L-OAM-L model achieved the low-
+est error withκ SRME = 0.168, underscoring its excep-
+tional accuracy in this domain.
+3. Elastic properties
+Predicting elastic moduli is a crucial validation
+test for interatomic potentials. We categorize elas-
+
+[page 4]
+4
+tic constants into three subgroups: longitudinal
+(C11, C22, C33), Poisson’s ratio-related (C 12, C13, C23),
+and shear (C 44, C55, C66). Because these groups often
+have varying magnitudes, we primarily focused on the
+symmetric relative mean error (SRME) and MAE within
+each subgroup. Figure 2 presents both metrics with re-
+spect to reference data from the Materials Project 72.
+Among all tested models, GRACE-2L-OAM-L demon-
+strated the lowestC SRME. Generally, most models
+showed comparable performance, with the notable ex-
+ceptions of MatterSim and DPA3-openlam, whose train-
+ing sets differed from the Materials Project DFT set-
+tings used for the reference elastic constant calculations.
+A consistent trend across all models is that longitudi-
+nal constants typically exhibit lower SRME but higher
+absolute errors (∆C) due to their larger magnitudes. In
+contrast, the second and third groups of elastic constants
+tend to show smaller absolute errors but larger relative
+errors.
+0.00 0.25 0.50 0.75 1.00
+CSRME
+DPA3-openlam
+MatterSim
+GRACE-1L-OAM
+MACE-MPA-0
+GRACE-1L-OAM-L
+ORBv3-cons-inf-mpa
+MACE-OMAT-0
+GRACE-2L-OAM
+SevenNet-MF-ompa
+GRACE-2L-OAM-L
+0 50 100 150
+C (GPa)
+C11, 22, 33 C12, 13, 23 C44, 55, 66
+FIG. 2: The symmetric relative mean error (SRME)
+and MAE (∆Cin GPa) for elastic constants,
+categorized into three subgroups: longitudinal
+(C11, C22, C33), Poisson’s ratio-related (C 12, C13, C23),
+and shear (C 44, C55, C66). See text for more details.
+4. Grain boundaries
+To assess the performance of foundational MLIPs for
+bulk structural defects, we utilized an existing dataset
+of grain boundary formation energies (γ GB computed for
+pure metals 73. The models’ accuracy was quantified by
+calculating both theγ GB-SRME and the mean absolute
+error ∆γGB. The results are presented in Fig. 3.
+The relative errorγ GB-SRME generally ranges from
+0.275 to 0.4, with MatterSim and SevenNet-MF-ompa
+being notable exceptions. A largerγ GB-SRME for K,
+Rb, and Cs was consistently observed across almost all
+models, suggesting that the typically used 6 ˚A cutoff may
+be insufficient for these alkali elements. For most models,
+the absolute error ∆γ GB remains below 5 meV/˚A2, with
+a few exceptions observed for eSEN-30M-Omat, Matter-
+Sim, and SevenNet-MF-ompa. More detailed informa-
+tion can be found in the Supplementary Information.
+0.0 0.2 0.4 0.6 0.8
+GB-SRME
+SevenNet-MF-ompa
+MatterSim
+ORBv3-cons-inf-omat
+MACE-OMAT-0
+ORBv3-cons-inf-mpa
+MACE-MPA-0
+SevenNet-MF-omat
+eSEN-30M-OMat
+DPA3-openlam
+GRACE-1L-OAM-L
+GRACE-1L-OAM
+GRACE-2L-OAM-L
+eqV2_M
+GRACE-2L-OAM
+0 5 10 15 20 25 30
+GB, meV/Å2
+FIG. 3: Error metrics for unary grain boundaries
+formation energies:γ GB-SRME (left) and mean
+absolute error ∆γ GB (right). GRACE models are
+highlighted in red.
+5. Surface energies
+We assessed the ability of foundational MLIPs to pre-
+dict open structures, such as surfaces, using surface en-
+ergies (γ surf) for pure elements 74. Model accuracy was
+quantified by calculating both the symmetric relative
+mean error (γ surf-SRME) and the mean absolute error
+(∆γsurf), with results presented in Fig. 4. Here, the rela-
+tive errorγ surf-SRME ranged from 0.168 for the ORBv3-
+cons-inf-mpa model to 0.279 for the MACE-OMAT-0
+model. The absolute error ∆γ surf typically varied from 8
+to 14 meV/ ˚A2, with a few exceptions noted for MACE-
+MPA-0, MatterSim, and eqV2 M. A consistent finding
+across all models was poorγ surf-SRME metrics for Potas-
+sium (K), Rubidium (Rb), Cesium (Cs), and Indium (In).
+More detailed information can be found in the Supple-
+mentary Information.
+6. Point defects
+We used systematically computed formation energies
+for self-interstitials (SIA) and vacancies in BCC 75 and
+FCC76 metals available in the literature as references.
+Given the varying scales of these formation energies
+across different defect types and metals, we used the
+symmetric relative mean error metrics, E SIA-SRME and
+Evac-SRME, as main measure of accuracy.
+As shown in Fig. 5, the SRME metrics for both defect
+types generally fall within 0.1 to 0.3, with a few outliers
+
+[page 5]
+5
+0.0 0.2 0.4 0.6 0.8
+surf-SRME
+eqV2_M
+MatterSim
+MACE-OMAT-0
+GRACE-1L-OAM
+GRACE-1L-OAM-L
+DPA3-openlam
+MACE-MPA-0
+GRACE-2L-OAM
+GRACE-2L-OAM-L
+SevenNet-MF-ompa
+eSEN-30M-OMat
+ORBv3-cons-inf-mpa
+0 10 20 30 40 50
+surf, meV/Å2
+FIG. 4: Error metrics for unary surface formation
+energies:γ surf-SRME (left) and mean absolute error
+∆γsurf (right). GRACE models are highlighted in red.
+such as MatterSim. This discrepancy is likely due to
+the different DFT settings between MatterSim’s training
+set and the reference data, as observed in our previous
+analyses. In terms of absolute values, the mean absolute
+error (MAE) for SIA formation energies typically ranges
+from about 0.2 to 0.4 eV, while for vacancy formation
+energies, the errors are between 0.1 to 0.2 eV. Further
+details can be found in the Supplementary Information.
+C. Long-time stability of MD
+Long-time stability in molecular dynamics (MD) sim-
+ulations is essential for accurately capturing the dynam-
+ical behavior and thermodynamic properties that cannot
+be fully assessed by static property benchmarks or short
+simulations. To demonstrate the out-of-the-box MD
+stability and performance of the GRACE foundational
+MLIPs, we conducted a 1 ns MD simulation of a FLiBe
+cell containing approximately three thousand atoms at
+973 K, utilizing the GRACE-2L-OMAT-L model in
+the NVE ensemble, observing a negligible total energy
+drift of 5·10 −9 eV/atom/ns (see Supplementary Infor-
+mation for more details). We compared the resulting
+radial distribution functions (RDFs) to reference AIMD
+data from Ref. 77,78, as shown in Fig. 6. Additionally,
+we estimated diffusion coefficients for each element from
+our MD simulation, obtaining values of 1.33, 1.58, and
+5.86×10 −5 cm2s−1 for Be, F, and Li, respectively. These
+values align well with the AIMD results (0.83±0.1,
+1.73±0.17 and 5.67±0.52×10 −5 cm2s−1, respectively77).
+This simulation confirms the model’s stability and its ac-
+curacy in predicting both structural and dynamical prop-
+erties over extended timescales.
+0.0 0.2
+ESIA-SRME
+MatterSim
+ORBv3-cons-inf-omat
+MACE-OMAT-0
+MACE-MPA-0
+DPA3-openlam
+GRACE-1L-OAM-L
+SevenNet-MF-ompa
+SevenNet-MF-omat
+eSEN-30M-OMat
+GRACE-1L-OAM
+GRACE-2L-OAM
+ORBv3-cons-inf-mpa
+GRACE-2L-OMAT
+GRACE-2L-OAM-L
+0.0 0.2 0.4 0.6
+ESIA (eV)
+0.0 0.2 0.4
+EVAC-SRME
+MatterSim
+ORBv3-cons-inf-omat
+MACE-OMAT-0
+SevenNet-MF-omat
+GRACE-1L-OAM-L
+GRACE-2L-OMAT
+eSEN-30M-OMat
+ORBv3-cons-inf-mpa
+MACE-MPA-0
+GRACE-2L-OAM-L
+GRACE-1L-OAM
+GRACE-2L-OAM
+DPA3-openlam
+SevenNet-MF-ompa
+0.0 0.2
+EVAC (eV)
+FIG. 5: Error metrics for SRME of point defects
+formation energies in unaries: self-interstitials and
+vacancies. GRACE models are highlighted in red.
+FIG. 6: RDF of FLiBe salt from MD at 973K using
+GRACE in comparison to AIMD-DFT results 77,78.
+D. Computational performance
+Computational performance is a critical factor, espe-
+cially for high-throughput calculations and large-scale,
+long-duration MD simulations. We evaluated the per-
+formance of the GRACE models using LAMMPS on an
+
+[page 6]
+6
+NVIDIA A100 GPU with 80 GB of memory. Test sys-
+tems included carbon diamond, liquid water, aluminum
+FCC, and the molten salt FLiBe, which have different
+densities and numbers of atomic neighbors. All systems
+were simulated for a few steps in the NVT ensemble at
+300 K, except for FLiBe, which was at 823 K.
+To ensure accurate performance analysis, we excluded
+the initial MD step, which was significantly slower due
+to just-in-time (JIT) model compilation. System sizes
+were increased incrementally until an out-of-memory er-
+ror occurred. The computational performance, expressed
+in microseconds per atom, and the maximum number of
+atoms fitting into memory are presented in Fig. 7.
+The carbon diamond system, with the highest number
+of neighboring atoms within the cutoff radius, proved to
+be the most computationally demanding. Still, even for
+our most intensive model, GRACE-2L-L, up to 20,000
+carbon atoms could be accommodated with a perfor-
+mance of approximately 124µs per atom per step.
+Across different systems, two-layer GRACE models ex-
+hibited computational performance ranging from 27 to
+120µs/atom, while single-layer models ranged from 10
+to 28µs/atom, enabling efficient MD simulations.
+Regarding memory usage, a single A100-80GB GPU
+could accommodate between 20,000 and 55,000 atoms
+for two-layer GRACE models and 78,000 to 215,000
+atoms for one-layer GRACE models. Since the one-layer
+GRACE model is local (interactions are limited to a cut-
+off radius), it can be parallelized via domain decomposi-
+tion as implemented in LAMMPS, which further boosts
+computational performance for very large systems with
+millions or billions of atoms.
+We also measured the computational performance of
+other foundational MLIPs by running ten MD steps in
+ASE79 of W-BCC supercells with different numbers of
+atoms. These tests utilized different GPU hardware, in-
+cluding the commodity RTX3060 (12 GB), and L40s (40
+GB), A100 (80 GB), and H200 (141 GB). The result-
+ing execution times are presented in Table II. GRACE
+models deliver excellent performance even on commodity
+GPUs like the RTX 3060, despite consistently operating
+with FP64 (double-precision) accuracy. As shown in
+Fig.1, the use of ASE can introduce substantial compu-
+tational overhead, stemming primarily from Python’s ex-
+ecution speed and suboptimal neighbor list construction
+algorithms.
+E. Fine-tuning
+Foundational interatomic potentials are trained to pro-
+vide accurate simulations across the periodic table, but
+they may lack the specific precision or performance neces-
+sary for particular downstream tasks. Fine-tuning serves
+as an effective strategy to address these limitations by
+adapting a pre-existing foundational MLIP. This is done
+by continuing the training on a new, often small and
+specialized dataset. This process aims to enhance the
+0
+25
+50
+75
+100
+125
+150Comp. performance, s/at
+11 14
+27
+34
+69
+13 17
+33
+40
+79
+15 18
+37
+44
+87
+24 28
+57
+66
+124
+Structure
+Al FLiBe H2O C
+1L 1L-L 2L 2L-M 2L-L
+0
+50
+100
+150
+200
+250Max. number of atoms (103)
+215
+108
+55 54 48
+196
+106
+41 32 32
+175
+97
+36 32 32
+123
+78
+27 20 20
+FIG. 7: Computational performance and memory
+scaling (maximum number of atoms) of foundational
+GRACE potentials in LAMMPS on a single A100-80GB
+GPU, evaluated across diverse materials systems.
+model’s performance or tailor its predictions for specific
+chemical systems, properties, or higher levels of theo-
+retical accuracy, while leveraging the extensive knowl-
+edge and robust representations acquired during its ini-
+tial foundational training.
+Here we demonstrate the fine-tuning of GRACE-2L
+foundational MLIP for the Al-Li binary system 80 and
+a hydrogen combustion dataset 81.
+1. Al-Li
+For fine-tuning, we utilized a dataset for the Al-Li bi-
+nary system from Ref. 80. We curated the data by re-
+moving structures from the liquid phase and those cor-
+responding to randomly sampled space groups. This
+resulted in a total of three thousand structures within
+1 eV/atom above the convex hull, from which we allo-
+cated 5% as a test set. To study data efficiency, we then
+created a series of training subsets of varying sizes (5%,
+10%, 25%, 50%, and 75%) from the remaining data.
+Using these training and test sets, we fine-tuned
+the 1L-OMAT and 2L-OMAT models by updating all
+weights, a process we term ”naive fine-tuning.” For
+comparison, we also trained two models from scratch:
+a one-layer ACE model as implemented in the PACE
+software82,83 and a GRACE-2L model, designated 2L-
+baseline, with a complexity identical to GRACE-2L-
+OMAT.
+As shown in Fig. 8, zero-shot predictions without
+
+[page 7]
+7
+TABLE II: Computational performance of GRACE foundational potentials and other foundational MLIPs for MD
+simulations of a tungsten-BCC supercell in ASE, reported inµs/atom/step across different GPU architectures.
+GPU RTX 3060 (12 GB) L40s (40Gb) A100 (80Gb) H200 (141Gb)
+Num. of atoms 256 512 512 1k 2k 512 1k 2k 512 1k 2k
+GRACE-1L 111 103 82 70 68 54 51 48 53 44 42
+GRACE-1L-L 159 142 89 77 79 57 54 51 55 46 45
+GRACE-2L 214 200 101 92 90 68 64 62 59 50 49
+GRACE-2L-M 303 292 118 109 111 74 71 69 63 54 50
+GRACE-2L-L 405 394 142 133 140 95 91 95 76 66 63
+ORBv3(fp32) 506 470 142 129 125 208 197 195 114 97 89
+ORBv3(fp64) 15566 15328 2451 2407 2381 231 223 221 131 119 114
+MatterSim 409 319 149 124 151 288 198 163 244 145 92
+MACE-OMAT-0(cuEq) 683 640 177 153 140 288 202 129 296 162 99
+SevenNet-MF-OMPA 2744 OOM 1283 1289 OOM 700 651 633 380 357 334
+eSEN-30M-OMat OOM OOM 2120 OOM OOM 1937 1897 OOM 834 779 753
+fine-tuning demonstrate very good accuracy for both
+GRACE-1L-OMAT and GRACE-2L-OMAT. The fine-
+tuned 2L-OMAT-ft model consistently outperforms the
+other models, even with small fractions of the curated
+dataset, while the 2L-baseline model only reaches com-
+parable accuracy with more data. The fine-tuned 1L-
+OMAT-ft model is slightly less accurate than the two-
+layer models for most tests and shows comparative per-
+formance to the specialized PACE model. We attribute
+this good performance to the small number of elements
+and the relatively limited Al-Li dataset, which primarily
+includes close-to-equilibrium structures.
+These results demonstrate that fine-tuning founda-
+tional GRACE potentials can be superior to training
+from scratch, especially in low-data regimes.
+2. Hydrogen combustion
+The hydrogen combustion (H2COMB) dataset 81 in-
+cludes intrinsic reaction coordinate (IRC) calculations,
+ab initioMD simulations, and normal mode displacement
+calculations, covering 19 reaction channels for hydrogen
+combustion. This dataset was computed using Q-Chem
+withωB97X-V/cc-pVTZ. These DFT settings differ sig-
+nificantly from those of the OMat24, Alexandria, and
+MPTraj datasets that we used to train the foundational
+GRACE OMAT potentials. Consequently, zero-shot pre-
+dictions by all foundational models show a rather high
+error. For the GRACE-2L-OAM model, the force MAE
+is 740.5 meV/˚A84,85.
+Due to the systematic difference in datasets, naive
+fine-tuning may result in catastrophic forgetting - the
+tendency to forget previously learned information when
+learning a new task. To fine-tune a GRACE-2L-OAM
+model to the H2COMB dataset without this issue for
+other elements, we explored several strategies: 1) naive
+fine-tuning: all parameters are trainable; 2) frozen-
+weights approach: only ACE expansion coefficients are
+trainable, while all other parameters (including chemical
+embeddings, radial functions, and the energy readout)
+are kept unchanged. Within this approach, we consid-
+ered two cases (a) only the coefficients of the final ACE
+expansions before atomic energy readout are trainable
+and (b) the coefficients of the final ACE expansions and
+the ACE expansion coefficients for messages passed be-
+tween the first and second layers are trainable. These
+coefficients depend on the central atom type; thus, pa-
+rameters for elements absent in the fine-tuning dataset
+will not be updated.
+The results of these strategies are shown in Figure 9.
+The baseline zero-shot model shows a very high force
+MAE for the H2COMB dataset but a low error on the
+original sAlex dataset. The latter’s performance is com-
+puted on two subsets: H and O atoms, and all other el-
+ements. Naive fine-tuning (strategy 1) achieved the best
+error metrics on the downstream task (37 meV/ ˚A), but
+the error on the original dataset increased drastically to
+339×10 3 meV/˚Afor H/O and 6.5×10 3 meV/˚Afor the re-
+maining elements, confirming catastrophic forgetting for
+all elements.
+In contrast, the frozen-weights approaches show only a
+small increase in force MAE on the original sAlex dataset
+for elements excluding H and O (from 25 meV/ ˚Afor the
+baseline model to 31 meV/ ˚Aand 35 meV/ ˚Afor strate-
+gies 2a and 2b, respectively). The predictions of these
+models remain unchanged from the baseline if the struc-
+tures contain neither H nor O atoms, indicating that
+the increase in metrics is associated with the presence
+of H/O atoms within the cutoff. For H and O atoms
+from the sAlex dataset, errors increase much less than
+with naive fine-tuning (from 49 meV/ ˚Afor the baseline
+to 144 meV/ ˚Aand 174 meV/ ˚A), while downstream task
+errors became 55 and 47 meV/ ˚Afor strategies 2a and 2b,
+respectively.
+The errors on the original versus the new dataset form
+
+[page 8]
+8
+0
+10
+20
+30MAE-E (meV/at)
+0
+10
+20
+30MAE-F (meV/Å)
+0
+5
+10
+15MAE-Eform (meV/at)
+0 1000 2000 3000
+# train structures
+0
+2
+4
+6
+8
+MAE-Cij (GPa)
+0 1000 2000 3000
+# train structures
+0.00
+0.05
+0.10
+0.15
+0.201-SPhDOS
+0 1000 2000 3000
+# train structures
+0.0
+0.1
+0.2MAE-E(def)
+form (eV)
+PACE 1L-OMAT-ft 2L-OMAT-ft 2L-baseline
+FIG. 8: Error metrics for fine-tuning on Al-Li dataset. Evaluated properties and corresponding MAE: energies
+(meV/atom), forces (meV/˚A), formation energies (E form, meV/atom), elastic matrix elements (C ij, GPa), phonon
+density of states (PhDOS) and vacancy formation energies (E (def)
+form ). PhDOS error is measured by Tanimoto
+similarity 1−S PhDOS. Data at zero number of train structures correspond to zero-shot models.
+a Pareto front as displayed in Fig. 9). By freezing certain
+parts of the model, catastrophic forgetting of the origi-
+nal task can be mitigated, even for the elements that are
+updated and despite a systematic shift in reference data.
+Other methods for fine-tuning foundational GRACE po-
+tentials that can mitigate catastrophic forgetting, such
+as low-rank adaptation (LoRA) or delta tuning, will be
+considered in future work.
+F. Model distillation
+While foundational MLIPs offer high accuracy across a
+vast chemical and configurational space, they often have
+lower computational performance and limited paralleliza-
+tion compared to chemistry-specific models. To bridge
+this gap, model distillation can be employed 86,87, a pro-
+cess involving the retraining of a simpler, faster “student”
+model on a dataset labeled by a foundational “teacher”
+model. We investigate different distillation and
+fine-tuning pathways using the combined HEA25 88 and
+HEA25S89 datasets as a case study. We employ the foun-
+dational GRACE-2L-OMAT model as the “teacher” and
+the GRACE-FS architecture as the “student”, selected
+for its straightforward parallelization and CPU-only in-
+ference capabilities.
+We evaluated performance based on two tasks with
+corresponding accuracy metrics. The primary task re-
+flects model accuracy on the new downstream applica-
+tion, measured by the force component MAE on the
+HEA25S validation set. The secondary task serves as
+a proxy for the model’s retention of general chemical
+knowledge and stability, as the HEA25S dataset lacks
+pure unary or binary structures. This was measured
+by the MAE of formation energy of binaries compounds
+from the Materials Project comprised of non-magnetic
+elements covered in the HEA25 dataset.
+The different pathways for the downstream task are
+illustrated in Fig. 10. The initial foundation model
+(“Foundation”) exhibits a large error on the primary task
+due to the DFT functional mismatch between its training
+data (PBE) and the HEA25S target (PBEsol). However,
+it retains a low error (14 meV/atom) on the secondary
+task—comparable to the 23 meV/atom formation energy
+MAE on the Matbench Discovery leaderboard.
+We explored three distinct approaches to address this.
+In the first method, we fine-tuned the foundation model
+on the HEA25S dataset to create a new teacher (“Fine-
+tuned”). This teacher, having achieved the lowest er-
+ror on the primary task, was then used to re-label
+the HEA25S dataset for parameterizing the GRACE-
+FS student model called “Naive Distilled”. A second
+pathway is opposite to the first: we re-labeled the
+HEA25S dataset using the original foundation model
+(GRACE-2L-OMAT) to parameterize a “Raw distilled”
+student model, which was subsequently fine-tuned us-
+
+[page 9]
+9
+102 103
+New (H2COMB): MAE F (meV/Å)
+101
+102
+103
+104
+105
+106
+Original (sAlex): MAE F (meV/Å)
+Baseline
+Naive
+Trainable-1
+Trainable-2
+H,O
+Other elements
+FIG. 9: Mean Absolute Error (MAE) of forces for
+fine-tuned GRACE-2L-OAM models. The x-axis shows
+MAE on the new H2COMB dataset (downstream task),
+the y-axis shows MAE on the original sAlex dataset.
+Performance for sAlex is split into H,O atoms (light
+grey diamonds) and other elements (dark grey
+triangles). ’Baseline’ refers to the zero-shot model.
+’Naive’ corresponds to strategy 1 (naive fine-tuning).
+’Trainable-1’ and ’Trainable-2’ correspond to strategies
+2a and 2b, respectively, representing different
+frozen-weights approaches.
+ing the original HEA25S dataset to produce the “Dis-
+tilled/Finetuned” model. Finally, the third approach
+involved parameterizing the GRACE-FS model from
+scratch using the HEA25S dataset directly to create the
+“Bespoke” model. As shown in Fig. 10, all three ap-
+proaches yield models with similar error metrics, though
+the bespoke model performs slightly better on the pri-
+mary task due to the usage of the original DFT data.
+To improve performance on the secondary task, while
+preserving good accuracy of the primary task, we gener-
+ated a synthetic training dataset comprising structures
+from HEA25 and HEA25S, along with unary and binary
+structures (including both ideal and rattled configura-
+tions) for all 25 elements. This extended dataset was
+labeled by the GRACE-2L teacher (“Finetuned”) and
+used to parameterize a new student model (“Extended
+Distilled”). This model demonstrates significantly im-
+proved performance on the secondary task, close to the
+teacher model, while retaining metrics on the primary
+task that are only slightly worse to the bespoke model.
+We consistently observe a slight degradation in accu-
+racy for student models compared to their teachers due
+to the simpler architecture of the former. However, this
+simplicity yields substantial gains in computational effi-
+ciency. On a CPU with 10 physical cores, the GRACE-
+2L model requires approximately 34.48 ms/atom/core.
+In contrast, the GRACE-FS model, using a standalone
+C++ implementation, achieves 0.56 ms/atom/core, rep-
+0
+ 50
+ 100
+ 150
+ 200
+ 250
+Primary task MAE (meV/Å)
+10
+20
+30
+40
+50
+60
+Secondary task MAE (meV/atom)
+Bespoke
+Distilled/
+Finetuned
+Raw
+Distilled
+Extended
+Distilled
+Foundation
+Naive
+Distilled
+Finetuned
+finetuning
+distillation
+finetuning
+distillation
+distillation
+Architecture and performance
+2L (34.48 ms/at)
+FS-large (0.56 ms/at)
+FIG. 10: Comparison of distillation and fine-tuning
+strategies. The axes illustrate the trade-off between
+accuracy on the primary task (HEA25S force MAE)
+and general chemical stability (secondary task:
+formation energy MAE of non-magnetic binaries from
+the Materials Project). Computational performance for
+both GRACE-2L and GRACE-FS architectures was
+evaluated on a 10-core CPU and normalized per core.
+See text for details.
+resenting a speedup of nearly 70×. Thus, the extended
+distillation strategy offers the optimal balance, recover-
+ing the generalizability lost in standard fine-tuning or
+bespoke training. The effect of different complexities of
+teacher and student models, together with other details
+are presented in the Supplementary Information.
+III. DISCUSSION
+We present a series of foundational machine learn-
+ing interatomic potentials (MLIPs) based on the Graph
+Atomic Cluster Expansion (GRACE). GRACE builds
+on a formally complete mathematical basis of the local
+and semi-local atomic environment. Our foundational
+GRACE potentials obey fundamental physical symme-
+tries and guarantee invariance under rotation, inversion,
+translation, as well as permutation of identical atomic
+species. Forces are conservative and computed as gra-
+dients of the energy. We further demonstrate compu-
+tational efficiency at high precision (FP64). This sets
+GRACE apart from many other MLIPs that employ un-
+controlled basis approximations, replace exact symme-
+tries or exact gradients by numerical estimates, or lower
+precision to FP32 for computational efficiency.
+Our foundational GRACE potentials were trained on
+a massive dataset of DFT calculations that encompasses
+
+[page 10]
+10
+a broad range of atomic configurations and chemistries.
+Comprehensive validation across diverse simulation tasks
+demonstrates excellent performance and versatility of the
+GRACE potentials. On the MatBench Discovery leader-
+board, our models largely define the Pareto front, show-
+casing a superior trade-off between predicted thermody-
+namic stability, formation energy MAE and computa-
+tional speed. Furthermore, the two-layer GRACE models
+exhibit leading performance in predicting thermal con-
+ductivity, a property highly sensitive to a model’s ability
+to capture anharmonic contributions to atomic displace-
+ments and higher-order derivatives. This highlights the
+robustness of the GRACE framework beyond simple en-
+ergy and force predictions.
+Further validation on structural defects - grain bound-
+aries, surfaces, and point defects - confirms that the
+GRACE models are able to describe effectively non-
+equilibrium and open structures. Some outliers, for ex-
+ample, for the alkali metals K, Rb and Cs, are attributed
+simply to the cut-off radius, which is too small for these
+large elements.
+Long-time molecular dynamics simulations of FLiBe
+molten salt demonstrated the GRACE models’ ability to
+maintain stability and accurately capture dynamic prop-
+erties, such as radial distribution functions and diffusion
+coefficients, over extended timescales.
+Beyond the core validation, we explored the practical
+application of foundational GRACE potentials through
+fine-tuning and distillation. We show that fine-tuning
+GRACE models on small, specialized datasets for Al-Li
+significantly improves their accuracy for specific down-
+stream tasks. This approach is particularly effective
+in low-data regimes, outperforming models trained from
+scratch. Moreover, our investigation into catastrophic
+forgetting demonstrates that freezing specific model lay-
+ers can mitigate a model’s tendency to lose general knowl-
+edge when learning new, distinct tasks, as illustrated for
+a dataset specific for hydrogen combustion. Finally, we
+successfully distilled a complex GRACE model into a
+simpler, more computationally efficient one, while also
+improving its accuracy on a wider configurational space
+in comparison to a model trained from scratch. This
+shows that foundational potentials can act as power-
+ful “teachers” and opens a path for creating specialized,
+high-performance ACE and GRACE potentials for spe-
+cific applications without the need for extensive new DFT
+calculations.
+IV. METHODS
+A. Models architecture and parameterization
+All GRACE models were implemented in the grace-
+tensorpotential package, which is based on the Tensor-
+Flow library90. The models implement a graph extension
+of the atomic cluster expansion (ACE) method, utiliz-
+ing both star- and tree-like many-body basis functions,
+that form an orthonormal and complete basis set 49. The
+configurations for the GRACE foundation potentials to-
+gether with parametrization details are outlined in Sup-
+plementary Information X A.
+B. V alidation
+F oundational machine learning interatomic po-
+tentials.For the MACE models, the ’medium-mpa-0’
+checkpoint was used for MACE-MPA-0, and ’mace-omat-
+0-medium’ for MACE-OMAT-0. cuequivariance-ops-
+torch-cu12 0.3.0 cuequivariance-torch 0.3.0 All MACE
+models were using float64 precision and had thecuEQ
+option enabled. The MatterSim model utilized the
+’mattersim-v1.0.0-5m’ checkpoint. The ORB model was
+based on the ’v3-conservative-inf’ modification, config-
+ured for ’float32-highest’ precision, that corresponds to
+full float32 precision. SevenNet employed the ’7net-mf-
+ompa’ checkpoint with its ’mpa’ modality. For eSEN, the
+’esen 30m omat’ checkpoint with a seed of 0 was selected.
+UMA-M and UMA-S models corresponded to their ’uma-
+m-1p1’ and ’uma-s-1p1’ checkpoints, respectively, speci-
+fying the ’omat’ task. The DPA model used the ’2025-01-
+10-dpa3-openlam’ checkpoint, whereas for computational
+performance tests “DPA-3.1-3M-ft” checkpoint was used.
+For eqV2 M model “eqV2 86M omat mp salex” check-
+point was used. All GRACE models consistently oper-
+ated with float64 precision.
+Computational performance. The computational
+performance of foundational MLIPs, depicted in Fig. 1,
+was determined by measuring the averaged wall time for
+ten molecular dynamics (MD) steps. These simulations
+were performed for a 1024-atom supercell of tungsten
+BCC using ASE on a single NVIDIA A100 GPU with
+80 GB of memory. Initial runs were excluded to account
+for Just-In-Time (JIT) compilation and other caching ef-
+fects. Each MD simulation was independently repeated
+ten times and the results averaged. The final metrics are
+normalized by the number of atoms and MD steps.
+Elastic constants.We used elastic properties from
+the Materials Project 72 as our reference, employing an
+energy-based method91 to compute the elastic tensorC ij
+in Voigt notation. Out of 10073 reference elastic matrix
+calculations, we could not compute elastic constants for
+all structures due to relaxation and convergence issues
+with some potentials. Therefore, we relied on a com-
+mon subset of 7962 structures for which elastic tensors
+were successfully computed by all potentials. This subset
+serves as a robust and representative test set for evaluat-
+ing elastic matrix predictions. The eSEN model was not
+validated due to its high computational expenses.
+Grain boundaries.Grain boundary structures and
+their corresponding reference structures were sourced
+from the Crystalium project 73, a dataset closely related
+to the Materials Project52. The reference structures were
+fully relaxed using the BFGS method with a Frechet-
+CellFilter, applying a relaxation criterion of 0.001 eV/ ˚A.
+
+[page 11]
+11
+Grain boundary relaxation was carried out using the
+FIRE minimization algorithm, also with a FrechetCell-
+Filter, enforcing a maximum force threshold of 0.01 eV/˚A
+and a limit of 500 optimization steps. For eqV2 model,
+relaxation criteria was loosen to 0.02 eV/ ˚A due to nu-
+merical instabilities. In total, 327 grain boundaries were
+initially computed across 58 different elements. To en-
+sure consistency and avoid discrepancies, only structures
+with a grain boundary plane orthogonal to the z-direction
+were selected, resulting in a final set of 297 grain bound-
+ary structures.
+Surfaces.Surface structures and their correspond-
+ing reference data were sourced from the Crystal-
+ium project 74, which is associated with the Materials
+Project52. The same relaxation settings as for grain
+boundaries were applied. From an initial total of 1124
+surface structures, only those with a surface plane or-
+thogonal to the z-direction were selected, yielding a final
+set of 716 surface structures for analysis.
+Self-interstitials and vacancies.Reference data
+for self-interstitial and vacancy formation energies were
+taken from Ref. 75 for 13 BCC metals and Ref. 76 for 13
+FCC metals. All these reference values were computed
+using the PBE functional.
+V. DA T A A V AILABILITY
+Training datasets (MPTrj, sAlex and
+OMat24) are publicly available. GRACE
+foundational potentials are available at grace-
+maker.readthedocs.io/en/latest/gracemaker/foundation
+VI. CODE A V AILABILITY
+Code for GRACE potential is available at
+github.com/ICAMS/grace-tensorpotential
+VII. FUNDING
+We acknowledge funding from the Deutsche
+Forschungsgemeinschaft (DFG, German Research
+Foundation) through SFB 1394 (project number
+409476157).
+VIII. ACKNOWLEDGEMENTS
+High-performance computing (HPC) resources were
+provided by the Paderborn Center for Parallel Com-
+puting (PC 2) and the Elysium HPC cluster at Ruhr-
+University Bochum.
+IX. AUTHOR CONTRIBUTIONS
+Conceptualisation and Project Administration: All au-
+thors. Y.L. and A.B. developed the software and pa-
+rameterized the models. Writing - original draft: Y.L.
+Writing-review and editing: All authors. Resources and
+funding acquisition: Y.L., R.D.
+X. COMPETING INTERESTS
+The authors declare no competing interests.
+∗ Corresponding author: yury.lysogorskiy@rub.de
+1 J. Behler and M. Parrinello, Phys. Rev. Lett.98, 146401
+(2007).
+2 A. P. Bart´ ok, M. C. Payne, R. Kondor, and G. Cs´ anyi,
+Phys. Rev. Lett.104, 136403 (2010).
+3 A. V. Shapeev, Multiscale Model. Simul.14, 1153 (2016).
+4 R. Drautz, Phys. Rev. B99, 014104 (2019).
+5 O. T. Unke, S. Chmiela, H. E. Sauceda, M. Gastegger,
+I. Poltavsky, K. T. Sch¨ utt, A. Tkatchenko, and K.-R.
+M¨ uller, Chemical Reviews121, 10142 (2021).
+6 A. Musaelian, S. Batzner, A. Johansson, L. Sun, C. J.
+Owen, M. Kornbluth, and B. Kozinsky, Nature Commu-
+nications14, 579 (2023).
+7 R. Jacobs, D. Morgan, S. Attarian, J. Meng, C. Shen,
+Z. Wu, C. Y. Xie, J. H. Yang, N. Artrith, B. Blaiszik,et al.,
+Current Opinion in Solid State and Materials Science35,
+101214 (2025).
+8 M. Kulichenko, B. Nebgen, N. Lubbers, J. S. Smith,
+K. Barros, A. E. A. Allen, A. Habib, E. Shinkle, N. Fedik,
+Y. W. Li, R. A. Messerly, and S. Tretiak, Chemical Re-
+views124, 13681 (2024).
+9 G. Wang, C. Wang, X. Zhang, Z. Li, J. Zhou, and Z. Sun,
+iScience27, 109673 (2024).
+10 F. L. Thiemann, N. O’Neill, V. Kapil, A. Michaelides,
+and C. Schran, Journal of Physics: Condensed Matter37,
+073002 (2024).
+11 E. C. Y. Yuan, Y. Liu, J. Chen, P. Zhong, S. Raja,
+T. Kreiman, S. Vargas, W. Xu, M. Head-Gordon, C. Yang,
+S. M. Blau, B. Cheng, A. Krishnapriyan, and T. Head-
+Gordon, “Foundation models for atomistic simulation
+of chemistry and materials,” (2025), arXiv:2503.10538
+[physics.chem-ph].
+12 D. G. Pettifor, Journal of Physics C: Solid State Physics
+3, 367 (1970).
+
+[page 12]
+12
+13 D. G. Pettifor, Journal of Physics C: Solid State Physics
+19, 285 (1986).
+14 D. G. Pettifor,Bonding and Structure in Molecules and
+Solids(Oxford University Press, Oxford, 1995).
+15 B. Seiser, R. Drautz, and D. Pettifor, Acta Materialia59,
+749 (2011).
+16 A. F. Bialon, T. Hammerschmidt, and
+R. Drautz, Chemistry of Materials28, 2550 (2016),
+https://doi.org/10.1021/acs.chemmater.5b04299.
+17 F. Faber, A. Lindmaa, O. A. von Lilien-
+feld, and R. Armiento, International Jour-
+nal of Quantum Chemistry115, 1094 (2015),
+https://onlinelibrary.wiley.com/doi/pdf/10.1002/qua.24917.
+18 B. Parsaeifard, D. Sankar De, A. S. Christensen, F. A.
+Faber, E. Kocer, S. De, J. Behler, O. Anatole von Lilien-
+feld, and S. Goedecker, Machine Learning: Science and
+Technology2, 015018 (2021).
+19 N. Lopanitsyna, G. Fraux, M. A. Springer, S. De, and
+M. Ceriotti, Phys. Rev. Mater.7, 045802 (2023).
+20 T. F. T. Cerqueira, H. Wang, S. Botti, and M. A. L.
+Marques, “A non-orthogonal representation of the chemi-
+cal space,” (2025), arXiv:2406.19761 [cond-mat.mtrl-sci].
+21 A. K. Rapp´ e, C. J. Casewit, K. Colwell, W. A. God-
+dard III, and W. M. Skiff, Journal of the American chem-
+ical society114, 10024 (1992).
+22 C. Chen and S. P. Ong, Nature Computational Science2,
+718 (2022).
+23 B. Deng, P. Zhong, K. Jun, J. Riebesell, K. Han, C. J.
+Bartel, and G. Ceder, Nature Machine Intelligence5, 1031
+(2023).
+24 I. Batatia, P. Benner, Y. Chiang, A. M. Elena, D. P.
+Kov´ acs, J. Riebesell, X. R. Advincula, M. Asta, M. Avay-
+lon, W. J. Baldwin,et al., arXiv preprint arXiv:2401.00096
+(2023).
+25 L. Barroso-Luque, M. Shuaibi, X. Fu, B. M. Wood,
+M. Dzamba, M. Gao, A. Rizvi, C. L. Zitnick, and Z. W.
+Ulissi, arXiv preprint arXiv:2410.12771 (2024).
+26 H. Yang, C. Hu, Y. Zhou, X. Liu, Y. Shi, J. Li,
+G. Li, Z. Chen, S. Chen, C. Zeni,et al., arXiv preprint
+arXiv:2405.04967 (2024).
+27 J. Kim, J. Kim, J. Kim, J. Lee, Y. Park, Y. Kang, and
+S. Han, Journal of the American Chemical Society147,
+1042 (2024).
+28 B. Yin, J. Wang, W. Du, P. Wang, P. Ying, H. Jia,
+Z. Zhang, Y. Du, C. P. Gomes, C. Duan,et al., arXiv
+preprint arXiv:2501.07155 (2025).
+29 D. Zhang, A. Peng, C. Cai, W. Li, Y. Zhou, J. Zeng,
+M. Guo, C. Zhang, B. Li, H. Jiang,et al., arXiv preprint
+arXiv:2506.01686 (2025).
+30 X. Fu, B. M. Wood, L. Barroso-Luque, D. S. Levine,
+M. Gao, M. Dzamba, and C. L. Zitnick, arXiv preprint
+arXiv:2502.12147 (2025).
+31 A. Mazitov, F. Bigi, M. Kellner, P. Pegolo, D. Tisi,
+G. Fraux, S. Pozdnyakov, P. Loche, and M. Ceriotti, arXiv
+preprint arXiv:2503.14118 (2025).
+32 T. Liang, K. Xu, E. Lindgren, Z. Chen, R. Zhao, J. Liu,
+E. Berger, B. Tang, B. Zhang, Y. Wang,et al., arXiv
+preprint arXiv:2504.21286 (2025).
+33 J. Gasteiger, J. Groß, and S. G¨ unnemann, “Direc-
+tional message passing for molecular graphs,” (2020),
+arXiv:2003.03123 [cs.LG].
+34 B. Anderson, T.-S. Hy, and R. Kondor, inAdvances in
+Neural Information Processing Systems 32, Neural Infor-
+mation Processing Systems Conference, edited by H. Wal-
+lach, H. Larochelle, A. Beygelzimer, F. d’Alch´ e Buc,
+E. Fox, and R. Garnett (Neural Information Process-
+ing Systems Foundation, Inc, Vancouver, Canada, 2019)
+p. 9596.
+35 N. Lubbers, J. S. Smith, and K. Barros, The Journal of
+Chemical Physics148, 241715 (2018).
+36 N. Thomas, T. Smidt, S. Kearnes, L. Yang, L. Li,
+K. Kohlhoff, and P. Riley, arXiv preprint arXiv:1802.08219
+(2018).
+37 S. Batzner, A. Musaelian, L. Sun, M. Geiger, J. P. Mailoa,
+M. Kornbluth, N. Molinari, T. E. Smidt, and B. Kozinsky,
+Nature communications13, 2453 (2022).
+38 V. G. Satorras, E. Hoogeboom, and M. Welling, inInter-
+national conference on machine learning(PMLR, 2021)
+pp. 9323–9332.
+39 O. T. Unke and M. Meuwly, Journal of chemical theory
+and computation15, 3678 (2019).
+40 K. Sch¨ utt, P.-J. Kindermans, H. E. Sauceda Felix,
+S. Chmiela, A. Tkatchenko, and K.-R. M¨ uller, Advances
+in neural information processing systems30(2017).
+41 M. Haghighatlari, J. Li, X. Guan, O. Zhang, A. Das, C. J.
+Stein, F. Heidar-Zadeh, M. Liu, M. Head-Gordon, L. Ber-
+tels,et al., Digital Discovery1, 333 (2022).
+42 K. T. Sch¨ utt, O. T. Unke, and M. Gastegger, “Equivariant
+message passing for the prediction of tensorial properties
+and molecular spectra,” (2021), arXiv:2102.03150 [cs.LG].
+43 J. Gasteiger, F. Becker, and S. G¨ unnemann, “Gemnet:
+Universal directional graph neural networks for molecules,”
+(2022), arXiv:2106.08903 [physics.comp-ph].
+44 S. Chmiela, A. Tkatchenko, H. E. Sauceda, I. Poltavsky,
+K. T. Sch¨ utt, and K.-R. M¨ uller, Science Advances3,
+e1603015 (2017).
+45 S. Pozdnyakov and M. Ceriotti, Advances in Neural Infor-
+mation Processing Systems36, 79469 (2023).
+46 J. Nigam, S. Pozdnyakov, G. Fraux, and M. Ceriotti, J.
+Chem. Phys.156, 204115 (2022).
+47 I. Batatia, S. Batzner, D. P. Kov´ acs, A. Musaelian, G. N.
+Simm, R. Drautz, C. Ortner, B. Kozinsky, and G. Cs´ anyi,
+Nature Machine Intelligence7, 56 (2025).
+48 A. Bochkarev, Y. Lysogorskiy, C. Ortner, G. Cs´ anyi, and
+R. Drautz, Physical Review Research4, L042019 (2022).
+49 A. Bochkarev, Y. Lysogorskiy, and R. Drautz, Phys. Rev.
+X14, 021036 (2024).
+50 I. Batatia, S. Batzner, D. P. Kov´ acs, A. Musaelian, G. N.
+Simm, R. Drautz, C. Ortner, B. Kozinsky, and G. Cs´ anyi,
+Nature Machine Intelligence7, 56 (2025).
+51 I. Batatia, D. P. Kovacs, G. Simm, C. Ortner, and
+G. Cs´ anyi, Advances in neural information processing sys-
+tems35, 11423 (2022).
+52 A. Jain, S. P. Ong, G. Hautier, W. Chen, W. D. Richards,
+S. Dacek, S. Cholia, D. Gunter, D. Skinner, G. Ceder, and
+K. a. Persson, APL Materials1, 011002 (2013).
+53 B. Deng, P. Zhong, K. Jun, J. Riebesell, K. Han, C. J.
+Bartel, and G. Ceder, Nature Machine Intelligence5, 1031
+(2023).
+54 J. Schmidt, N. Hoffmann, H.-C. Wang, P. Borlido, P. J.
+Carri¸ co, T. F. Cerqueira, S. Botti, and M. A. Marques,
+Advanced Materials35, 2210788 (2023).
+55 H.-C. Wang, J. Schmidt, M. A. Marques, L. Wirtz, and
+A. H. Romero, 2D Materials10, 035007 (2023).
+56 L. Barroso-Luque, M. Shuaibi, X. Fu, B. M. Wood,
+M. Dzamba, M. Gao, A. Rizvi, C. L. Zitnick, and Z. W.
+Ulissi, “Open materials 2024 (omat24) inorganic materi-
+als dataset and models,” (2024), arXiv:2410.12771 [cond-
+
+[page 13]
+13
+mat.mtrl-sci].
+57 S. Kirklin, J. E. Saal, B. Meredig, A. Thompson, J. W.
+Doak, M. Aykol, S. R¨ uhl, and C. Wolverton, npj Compu-
+tational Materials1, 1 (2015).
+58 S. Curtarolo, W. Setyawan, S. Wang, J. Xue, K. Yang,
+R. H. Taylor, L. J. Nelson, G. L. Hart, S. Sanvito,
+M. Buongiorno-Nardelli,et al., Computational Materials
+Science58, 227 (2012).
+59 A. D. Kaplan, R. Liu, J. Qi, T. W. Ko, B. Deng, J. Riebe-
+sell, G. Ceder, K. A. Persson, and S. P. Ong, arXiv
+preprint arXiv:2503.04070 (2025).
+60 M. C. Kuner, A. D. Kaplan, K. A. Persson, M. Asta, and
+D. C. Chrzan, arXiv preprint arXiv:2507.05559 (2025).
+61 G. Kresse and J. Hafner, Phys. Rev. B47, 558 (1993).
+62 G. Kresse and J. Furthm¨ uller, Comput. Mater. Sci.6, 15
+(1996).
+63 G. Kresse and J. Furthm¨ uller, Phys. Rev. B54, 11169
+(1996).
+64 J. P. Perdew, K. Burke, and M. Ernzerhof, Phys. Rev.
+Lett.77, 3865 (1996).
+65 H.-C. Wang, S. Botti, and M. A. Marques, npj Computa-
+tional Materials7, 12 (2021).
+66 J. Riebesell, R. E. Goodall, P. Benner, Y. Chiang, B. Deng,
+G. Ceder, M. Asta, A. A. Lee, A. Jain, and K. A. Persson,
+Nature Machine Intelligence7, 836 (2025).
+67 B. P´ ota, P. Ahlawat, G. Cs´ anyi, and M. Simoncelli, arXiv
+preprint arXiv:2408.00755 (2024).
+68 A. P. Thompson, H. M. Aktulga, R. Berger, D. S. Bolin-
+tineanu, W. M. Brown, P. S. Crozier, P. J. In’t Veld,
+A. Kohlmeyer, S. G. Moore, T. D. Nguyen,et al., Com-
+puter physics communications271, 108171 (2022).
+69 A. Togo, L. Chaput, and I. Tanaka, Physical review B91,
+094306 (2015).
+70 A. Togo, L. Chaput, T. Tadano, and I. Tanaka, Journal
+of Physics: Condensed Matter35, 353001 (2023).
+71 H. Kraß, J. Huang, and S. M. Moosavi, “Mofsimbench:
+Evaluating universal machine learning interatomic poten-
+tials in metal-organic framework molecular modeling,”
+(2025), arXiv:2507.11806 [cond-mat.mtrl-sci].
+72 M. De Jong, W. Chen, T. Angsten, A. Jain, R. Notestine,
+A. Gamst, M. Sluiter, C. Krishna Ande, S. Van Der Zwaag,
+J. J. Plata,et al., Scientific data2, 1 (2015).
+73 H. Zheng, X.-G. Li, R. Tran, C. Chen, M. Horton, D. Win-
+ston, K. A. Persson, and S. P. Ong, Acta Materialia186,
+40 (2020).
+74 R. Tran, Z. Xu, B. Radhakrishnan, D. Winston, W. Sun,
+K. A. Persson, and S. P. Ong, Scientific data3, 1 (2016).
+75 P.-W. Ma and S. Dudarev, Physical Review Materials3,
+013605 (2019).
+76 P.-W. Ma and S. Dudarev, Physical Review Materials5,
+013601 (2021).
+77 S. T. Lam, Q.-J. Li, R. Ballinger, C. Forsberg, and J. Li,
+ACS Applied Materials & Interfaces13, 24582 (2021).
+78 A. Rodriguez, S. Lam, and M. Hu, ACS Applied Materials
+& Interfaces13, 55367 (2021).
+79 A. H. Larsen, J. J. Mortensen, J. Blomqvist, I. E. Castelli,
+R. Christensen, M. Du lak, J. Friis, M. N. Groves, B. Ham-
+mer, C. Hargus, E. D. Hermes, P. C. Jennings, P. B.
+Jensen, J. Kermode, J. R. Kitchin, E. L. Kolsbjerg,
+J. Kubal, K. Kaasbjerg, S. Lysgaard, J. B. Maronsson,
+T. Maxson, T. Olsen, L. Pastewka, A. Peterson, C. Ros-
+tgaard, J. Schiøtz, O. Sch¨ utt, M. Strange, K. S. Thyge-
+sen, T. Vegge, L. Vilhelmsen, M. Walter, Z. Zeng, and
+K. W. Jacobsen, Journal of Physics: Condensed Matter
+29, 273002 (2017).
+80 S. Menon, Y. Lysogorskiy, A. L. Knoll, N. Leimeroth,
+M. Poul, M. Qamar, J. Janssen, M. Mrovec, J. Rohrer,
+K. Albe,et al., npj Computational Materials10, 261
+(2024).
+81 X. Guan, A. Das, C. J. Stein, F. Heidar-Zadeh, L. Bertels,
+M. Liu, M. Haghighatlari, J. Li, O. Zhang, H. Hao,et al.,
+Scientific data9, 215 (2022).
+82 Y. Lysogorskiy, M. Rinaldi, S. Menon, C. van der Oord,
+T. Hammerschmidt, M. Mrovec, A. Thompson, G. Cs´ anyi,
+C. Ortner, and R. Drautz, Npj Comput. Mater.7, 97
+(2021).
+83 A. Bochkarev, Y. Lysogorskiy, S. Menon, M. Qamar,
+M. Mrovec, and R. Drautz, Physical Review Materials
+6, 013804 (2022).
+84 A. Peng, C. Cai, M. Guo, D. Zhang, C. Zhang, A. Loew,
+L. Zhang, and H. Wang, arXiv preprint arXiv:2504.19578
+(2025).
+85 AI Squared, “OpenLAM Benchmark Introduction,”
+https://www.aissquare.com/openlam?tab=Benchmark&
+type=Introduction(2024), accessed: 2025-07-02.
+86 J. D. Morrow and V. L. Deringer, The Journal of Chemical
+Physics157(2022).
+87 J. L. Gardner, D. F. Toit, C. B. Mahmoud, Z. F.
+Beaulieu, V. Juraskova, L.-B. Pa¸ sca, L. A. Rosset,
+F. Duarte, F. Martelli, C. J. Pickard,et al., arXiv preprint
+arXiv:2506.10956 (2025).
+88 N. Lopanitsyna, G. Fraux, M. A. Springer, S. De, and
+M. Ceriotti, Physical Review Materials7, 045802 (2023).
+89 A. Mazitov, M. A. Springer, N. Lopanitsyna, G. Fraux,
+S. De, and M. Ceriotti, Journal of Physics: Materials7,
+025007 (2024).
+90 M. Abadi, P. Barham, J. Chen, Z. Chen, A. Davis, J. Dean,
+M. Devin, S. Ghemawat, G. Irving, M. Isard,et al., in
+12th USENIX symposium on operating systems design and
+implementation (OSDI 16)(2016) pp. 265–283.
+91 R. Golesorkhtabar, P. Pavone, J. Spitaler, P. Puschnig,
+and C. Draxl, Computer Physics Communications184,
+1861 (2013).
+92 D. P. Kingma and J. Ba, arXiv preprint arXiv:1412.6980
+(2014).
+
+[page 14]
+14
+SUPPLEMENT AR Y INFORMA TION
+A. Models architecture and parameterization
+The configurations of the GRACE foundational poten-
+tials are schematically depicted in Fig. S1 and provided
+in more detail in Table S1.
+The atomic structure is represented by chemical
+species typesµ i and atomic positionsr i, which are trans-
+formed into bond vectorsr ij between neighboring atoms
+within a 6 ˚A cutoff radius. Geometric information is en-
+coded using a Chebyshev radial basis and spherical har-
+monicsY lm up tol max = 4 4,82,83. The Chebyshev poly-
+nomials are transformed into radial functionsR (...)
+nl using
+a multi-layer perceptron (MLP) with two hidden layers,
+each containing 64 units. Chemical species are embed-
+ded into a 128-dimensional spaceZ i. Single-particle basis
+functions are constructed from these inputs and summed
+into atomic basesA i,nl4,49. Many-body basis functions
+up to the fourth product order are constructed via re-
+cursive ACE evaluation using sparse coupling operations
+(see Fig. S1, bottom panel). During the recursive ACE
+basis evaluation, we utilize an equivariant sum opera-
+tion⊕, summing equivariant quantities with the same
+l-character, and a sparse equivariant coupling⊗opera-
+tion which employs Clebsch-Gordan coefficients. We em-
+ploy a specific coupling order to avoid degenerate prod-
+uct functions. The maximum angular momentum,L max,
+varies depending on the product order. In the one-layer
+model, this procedure yields a star-graph ACE basis. For
+two-layer models, equivariant basis functions are linearly
+combined to define equivariant atomic representations
+Ii,nL48. These representations carry geometric informa-
+tion about the atomic environment, effectively extending
+the interaction range

@@ -1,0 +1,1081 @@
+[page 1]
+Scalable Parallel Algorithm for Graph Neural
+Network Interatomic Potentials in Molecular
+Dynamics Simulations
+Yutack Park,† Jaesun Kim, † Seungwoo Hwang, † and Seungwu Han ∗,†,‡
+†Department of Materials Science and Engineering and Research Institute of Advanced
+Materials, Seoul National University, Seoul 08826, Korea
+‡Korea Institute for Advanced Study, Seoul 02455, Korea
+E-mail: hansw@snu.ac.kr
+Abstract
+Message-passing graph neural network interatomic potentials (GNN-IPs), particu-
+larly those with equivariant representations such as NequIP, are attracting significant
+attention due to their data efficiency and high accuracy. However, parallelizing GNN-
+IPs poses challenges because multiple message-passing layers complicate data communi-
+cation within the spatial decomposition method, which is preferred by many molecular
+dynamics (MD) packages. In this article, we propose an efficient parallelization scheme
+compatible with GNN-IPs and develop a package, SevenNet (Scalable EquiVariance-
+Enabled Neural NETwork), based on the NequIP architecture. For MD simulations,
+SevenNet interfaces with the LAMMPS package. Through benchmark tests on a 32-
+GPU cluster with examples of SiO2, SevenNet achieves over 80% parallel efficiency
+in weak-scaling scenarios and exhibits nearly ideal strong-scaling performance as long
+as GPUs are fully utilized. However, the strong-scaling performance significantly de-
+clines with suboptimal GPU utilization, particularly affecting parallel efficiency in cases
+1
+arXiv:2402.03789v1  [cond-mat.mtrl-sci]  6 Feb 2024
+
+[page 2]
+involving lightweight models or simulations with small numbers of atoms. We also
+pre-train SevenNet with a vast dataset from the Materials Project (dubbed ‘SevenNet-
+0’) and assess its performance on generating amorphous Si3N4 containing more than
+100,000 atoms. By developing scalable GNN-IPs, this work aims to bridge the gap
+between advanced machine learning models and large-scale MD simulations, offering
+researchers a powerful tool to explore complex material systems with high accuracy
+and efficiency.
+1 INTRODUCTION
+Molecular dynamics (MD) simulation is a favored method in materials science as it can
+unveil atomistic details governing the macroscopic properties of materials. To conduct MD
+simulations, it is essential to compute the energy and forces for a given atomic configuration.
+A fundamental approach for obtaining these quantities is based on quantum mechanics,
+specifically through methods like density functional theory (DFT). Grounded inab initio
+and rigorous physical principles, quantum mechanical approaches are advantageous for their
+accuracy and universal applicability. However, the computational demands associated with
+conventional DFT scale asO(N 3), where N represents the number of atoms in the system.1
+This unfavorable scaling significantly restricts the simulation size and time.
+One recent approach to tackle this challenge is to employ machine-learning potentials
+(MLPs). These data-driven models are capable of inferring energy and forces for a given
+atomistic configuration, having been trained with labeled data obtained by DFT. Typically,
+MLPs assume locality within a certain cutoff radius (rc),2–5which leads to linear scaling
+(O(N)) with the number of atoms in the system.6–8In numerous examples, MLPs have been
+demonstrated to simulate large systems, up to billions of atoms, with accuracy often nearing
+that of DFT calculations.9–14
+Recently, therehasbeenagrowinginterestingraphneuralnetworkinteratomicpotentials
+(GNN-IPs), a subset of MLPs. This interest stems from their ability to learn and generate
+2
+
+[page 3]
+atomic feature vectors through deep learning methods, bypassing the need for manual design
+and calculation of the features.15–18GNN-IPs utilize atomic graphs, where each node corre-
+sponds to an atom, and edges signify bonds between atoms within a specifiedrc. Through
+a message-passing process, GNN-IPs can incorporate geometric information beyondrc, en-
+abling them to effectively account for many-body interactions and medium- or long-range
+ordering.19,20 These characteristics make GNN-IPs a promising approach for investigating
+systems at the atomic level.21–24Furthermore, GNN-IPs can deal with multi-element sys-
+tems in terms of the embedding vector, prompting increased efforts to develop pretrained,
+general-purpose potentials.25–28
+The GNN-IPs can be categorized into two groups based on the mathematical charac-
+teristics of node features.22 The first type is the invariant GNN-IPs, where node features
+remain constant when the atomic graph undergoes rotation and inversion. This type of
+GNN-IPs typically incorporates pre-calculated invariant information, such as distances,23
+angles,29 and dihedral angles,25 to encode the geometric information of neighboring atoms.
+More recently, there has been growing interest in another category of GNN-IPs known as
+equivariant GNN-IPs,15,30–32which are recognized for their improved accuracy and data ef-
+ficiency.15,21 In equivariant GNN-IPs, node features systematically change under symmetry
+operations applied to the atomic graph. For instance, NequIP employs a spherical harmonics
+representation for node features, which undergo linear transformation through the Wigner
+D-matrix under rotational operations.15 Such GNN-IPs can capture many-body information
+through message passing using tensor products, eliminating the need for pre-computation of
+many-body information such as angle and dihedral angle.19
+One major drawback of GNN-IPs lies in the complications in parallelizing within the
+spatial decomposition method.22,33,34 Spatial decomposition is a distributed-memory paral-
+lelism that is popular in large-scale MD simulations.35–37In this framework, the simulation
+cell is partitioned into smaller domains, with each domain assigned to individual proces-
+sors. As a result, it becomes crucial to exchange information between processors regarding
+3
+
+[page 4]
+atomic positions near domain boundaries to accurately evaluate potential functions and their
+derivatives. For strictly local MLPs, only information pertaining to atoms withinrc from
+the domain boundary is necessary.2,33 In contrast, the message-passing process employed
+by the GNN-IPs extends the receptive field significantly beyondrc used in constructing the
+atomic graph.33 As a result, GNN-IPs require a broader region for communication, reaching
+up to rc multiplied by the number of message-passing steps.19,20,33 However, simply expand-
+ing the communication radius would lead to a rapid increase in redundant computations, as
+neighboring processors possess a substantial common subgraph.
+Due to the reasons mentioned above, parallelizing GNN-IPs becomes a challenging task
+when using spatial decomposition. Consequently, only few efforts have been directed towards
+developing parallel GNN-IPs. For instance, a GNN-IP model MACE was parallelized using
+the original spatial decomposition algorithm, enabling the simulation of a high-entropy alloy
+consisting of 32,000 atoms across 64 GPUs.28 However, employing multiple GPUs incurred
+significant additional costs, becoming favorable only for very large systems.
+In this article, we introduce an efficient spatial decomposition algorithm specifically de-
+signedforGNN-IPs, anditsimplementation, SevenNet(ScalableEquiVariance-EnabledNeu-
+ral NETwork). We restrict the communication range between neighboring processors to the
+original rc. During communication, atomic positions, as well as node features and gradi-
+ent information, are exchanged, which are essential for energy and force calculations. For
+a concrete implementation, we have adopted the architecture of NequIP15 and employed
+LAMMPS38 as the MD simulator. On a GPU cluster, SevenNet achieves over 80% paral-
+lel efficiency in weak-scaling scenarios and demonstrates nearly ideal strong-scaling perfor-
+mance, maintaining efficiency as long as GPUs are fully utilized. However, we also find that
+the parallel performance in strong-scaling tests significantly declines with suboptimal GPU
+utilization.
+The rest of the paper is structured as follows: In Section 2, we summarize the basic
+features of GNN-IPs and NequIP. In Section 3, we explain the parallelization scheme of
+4
+
+[page 5]
+spatial decomposition that is compatible with GNN-IPs and its implementation. In Section
+4, we present benchmark results for fixed-size or scaled-size tests of SevenNet on a multi-GPU
+system. In Section 5, we demonstrate the pre-training of SevenNet and its use in executing
+large-scale MD simulations for Si3N4 with 112,000 atoms. We provide further discussions in
+Section 6 and conclude our findings in Section 7.
+2 GRAPH NEURAL NETWORK INTERATOMIC PO-
+TENTIAL
+The GNN-IPs predict energy and forces from a set of atomic numbers and atomic positions.
+In the embedding layer, the given atomic numbers are used to initialize the node feature
+h(1). Nodes are connected by an edge if the spatial distance between two atoms is smaller
+than a pre-definedrc. For nodesv and w, based on their atomic positions, the distance and
+unit displacement vector are embedded into the edge featureevw. (Node and edge features
+are tensors in general.)
+Energy and atomic forces, which are essential for running MD simulations, are the com-
+mon outputs of GNN-IPs. Like most descriptor-based MLPs, the potential energy (E) is
+expressed as a sum of individual atomic energies, and the atomic forces are given by the
+negative gradients of the energy:
+E =
+NX
+i
+Ei (1)
+Fi = −∇iE (2)
+where Ei and Fi represent the atomic energy and force of atomi as predicted by GNN-IPs,
+respectively, N is the total number of atoms in the simulation cell, and∇i denotes the
+gradient operator with respect to the position vectorri. The formulation ofE as the sum of
+individual atomic energy is key for the linear scalability of GNN-IPs15 and other interatomic
+potentials.2–8Furthermore, the spatial decomposition is a valid strategy for parallelization
+5
+
+[page 6]
+only if the energy can be decomposed into atomic energies.
+2.1 Message-Passing Layer
+𝑤
+𝑣
+𝑤
+𝑣
+(a)
+(b)
+: Message passing
+Figure 1. Schematic illustrations of message passing in GNN-IPs. (a) depicts the node
+features of an atomv, denoted as h(t)
+v , before and after thetth message-passing layer. (b)
+shows the expansion of the receptive field of the central atom after successive message-passing
+layers.
+The GNN-IPs consist of a stack of message-passing layers. The message-passing layers
+update node features by combining messages gathered from neighboring nodes and edges
+(see Figure 1a). After the last message-passing layer, the final readout layer predicts atomic
+energies from the last node features. For the total number ofT layers, each tth message-
+passing layer includes two learnable functions; message functionMt and update function
+Ut:39
+m(t+1)
+v =
+X
+w∈N (v)
+Mt(h(t)
+v , h(t)
+w , evw) (3)
+h(t+1)
+v = Ut(h(t)
+v , m(t+1)
+v ) (4)
+where t = 1 , 2, ..., T, N (v) is a neighbor set of nodev, and m(t+1)
+v is a message gathered
+6
+
+[page 7]
+from N (v). Through Mt and Ut, node features propagate along connected edges for every
+message-passing layer. Because of the gathering of neighbor node information, the receptive
+field of GNN-IPs increases with each message-passing layer (see Figure 1b). As a conse-
+quence, the spatial decomposition, which works well with short-range force fields,35 becomes
+inefficient. We note that the GNN-IP architecture discussed in this section encompasses a
+variety of programs including NequIP,15 MACE,32 PaiNN,40 PhysNet18 and SchNet,23 but
+some programs may use varied graph architectures. (See Section 6.)
+2.2 NequIP Structure
+As briefly mentioned in the introduction, NequIP15 is an E(3)-equivariant GNN-IP that has
+been demonstrated to be both data-efficient and accurate. This efficiency and accuracy are
+achieved by leveraging the expressiveness of equivariant features within its neural network
+architecture. We utilize NequIP as the foundational GNN-IP architecture for SevenNet and
+implement our parallelization algorithm, to be discussed in the following section. Figure 2
+illustrates the schematic model structure, including three interaction blocks. The blue lines
+represent the forward path, depicting a sequence of computations to determine energy from
+given atomic numbers and positions. As elaborated in Section 3, we also introduce an orange-
+colored reverse path representing a sequence of computations for determining atomic forces
+as negative gradients of energy with respect to atomic positions.
+If we consider the message construction in eq 3 to encompass only edge-level computa-
+tions, wecancorrelatetheNequIParchitecturewitheqs3and4. InFigure2a, theinteraction
+block corresponds to the update function in eq 4, while in Figure 2b, the convolution block is
+paired with eq 3. Within the convolution block, edge features derived from atomic positions
+serve as one of the inputs for the message function (Mt). Consequently, the reverse path
+includes the accumulation of gradients from the convolution block to compute atomic forces.
+Our parallelization algorithm maintains the integrity of the original NequIP model. The
+dotted boxes in Figure 2b signify additional communication routines implemented for par-
+7
+
+[page 8]
+Self-interaction
+Forward
+comm.
+Reverse
+comm.
+Self-interaction
+Convolution
+Non-linearity
+(b)
+Interaction block
+Embedding
+Interaction block
+Interaction block
+Output block
+(a)
+𝐸
+(𝐫�, … , 𝐫�)
+(𝐅�, … , 𝐅� )
+(𝑍�, … , 𝑍�)
+(𝑍�, … , 𝑍�)
+Figure 2. (a) The simplified NequIP15 architecture, including communication routines
+for parallelization. The blue lines represent the forward path, predicting energy E from
+given atomic numbers{Zi} and atomic positions {ri}. The orange lines depict the reverse
+path, calculating atomic forces {Fi} as negative gradients of the energy with respect to
+the atomic positions. Interaction blocks with communications are colored in green. (b) The
+interaction block of NequIP featuring communication routines, including forward and reverse
+communications.
+8
+
+[page 9]
+allelization purposes but do not alter the outputs of the original NequIP model. These
+communication routines are incorporated into every interaction block except for the first
+one. The roles of forward and reverse communications within the interaction blocks, along
+with the rationale for their omission in the first interaction block, are detailed in the next
+section.
+3 PARALLELIZATION of GNN-IP
+3.1 Spatial Decomposition
+The spatial decomposition is a parallelization strategy that takes advantage of the short-
+range nature of chemical interactions. Figure 3a illustrates the schematic flow of our parallel
+implementation of spatial decomposition into GNN-IP, and Figures 3b-f depict the commu-
+nication process among subdomains. Initially, the simulation cell (Figure 3b) is spatially
+decomposed into smaller subdomains, which are then distributed among processors (Fig-
+ure 3c). Each processor evaluates Ei and Fi for every atom i in the assigned subdomain.
+In message passing, position vectors and node features of neighboring atoms withinrc are
+required. If the neighboring atoms belong to other processors, “ghost” atoms are created
+to provide the necessary information (as shown by dotted circles in Figure 3c). This is a
+common technique in spatial decomposition methods.
+The necessary information of ghost atoms is collected by the forward communication,
+where processors receive information about ghost atoms from the processors that own them
+inthesubdomain. Initially, rand Z ofghostatomsaretransferred(Figure3c). Subsequently,
+subdomain graphs are formed within each processor, depicted with solid lines in Figure 3c,
+and the first round of message passing is executed. Since the initial node featureh(1) of
+a ghost atom corresponds to the embedding vector ofZ, eqs 3 and 4 can be evaluated for
+t = 1 without further communication. For subsequent message-passing layers, the updated
+node features of ghost atoms are transferred during forward communications (Figure 3d),
+9
+
+[page 10]
+Ghost atom
+Forward communication: ℎ
+Forward communication: 𝐫, 𝑍
+Message passing Message passing
+Subdomain graph Subdomain graph
+Message passing Message passing
+Spatial decomposition
+Simulation cell
+Update atomic positionsReverse communication: ∇� 𝐸
+Reverse communication: 𝐅
+Partial forcesPartial forces
+𝐅
+(a)
+(c)
+(b)
+(d)
+(e)
+(f)
+𝐸
+𝐫, 𝑍
+ℎ
+∇� 𝐸∇� 𝐸∇� 𝐸
+∇� 𝐸 ∇� 𝐸
+Figure 3. Workflow of spatial decomposition for GNN-IPs withT message-passing layers.
+Corresponding to Figure 2, the blue and orange lines represent the forward and reverse
+paths, respectively. For simplicity, we assume the use of only two processors. (a) Overview
+of spatial decomposition for GNN-IPs: The forward path involves sequential computations
+from atomic positions r and atomic numbers Z to predict energy E. This path consists
+of a total T message-passing steps and T − 1 forward communications of node featureh.
+The reverse path involves computing the gradient ofE with respect to atomic positions,
+resulting in atomic forcesF as outputs. Similar to the forward path, it includesT gradient-
+computing steps, each pairing with a message-passing step. For communication routines,
+there areT −1 reverse communications of energy gradients∇hE, each paired with a forward
+communication of node features. (b) The simulation cell before spatial decomposition. (c)
+The forward communication of atomic positionsr and atomic numbersZ. (d) The forward
+communication of node featuresh (e) The reverse communication of∇hE. (f) The reverse
+communication of partial atomic forces.
+10
+
+[page 11]
+allowing for the evaluation of eqs 3 and 4 within each processor. This process is repeated
+(T − 1) times, as indicated in the upper green box of Figure 3a. Finally, atomic energies,
+derived from the output layer, are globally pooled to calculate the potential energyE.
+Parallelizing the computation of atomic forces is more complex than calculatingE. In
+eq 2, Fv is obtained by the negative gradient ofE with respect to rv. As illustrated in
+Figure 2, during each interaction block, the atomic position rv is used to generate edge
+features evw based on the displacement vectorrvw = rw − rv. For clarity, we distinguish the
+edge features at eachtth message-passing layer, denoting them ase(t)
+vw. We then define the
+edge force Fvw as follows:
+Fvw =
+TX
+t=1
+∂E
+∂e(t)
+vw
+∂e(t)
+vw
+∂rvw
+(5)
+The atomic forceFv is then given by:
+Fv = − ∂E
+∂rv
+=
+X
+w∈N (v)
+(Fvw − Fwv) (6)
+In eqs 3 and 4, the edge featuree(t)
+vw updates only the connected node featureh(t+1)
+v . From
+the chain rule,
+∂E
+∂e(t)
+vw
+= ∂E
+∂h(t+1)
+v
+∂h(t+1)
+v
+∂e(t)
+vw
+(7)
+Thus, eq 7 and henceFvw in eq 5 can be evaluated if∂E/∂h (t)
+v are known fort = 1, 2, ..., T+1.
+Since Ev depends only onh(T +1)
+v after the last message passing layer, evaluating∂E/∂h (T +1)
+v
+does not require communications. Next, the energy gradient with respect toh(T )
+v can be
+obtained by the chain rule:
+∂E
+∂h(T )
+v
+= ∂E
+∂h(T +1)
+v
+∂h(T +1)
+v
+∂h(T )
+v
++
+X
+w∈N (v)
+∂E
+∂h(T +1)
+w
+∂h(T +1)
+w
+∂h(T )
+v
+(8)
+The second term reflects the contribution ofh(T )
+v to E, mediated through the atomic energies
+ofitsneighbors( {Ew}). If w ineq8correspondstoaghostatom, thederivatives( ∂E/∂h (T +1)
+w
+11
+
+[page 12]
+and ∂h(T +1)
+w /∂h(T )
+v ) should be transferred from processors that own atomv as a ghost atom,
+corresponding to the reverse communication. (See arrows in Figure 3e.) The remaining
+energy gradients with respect toh(t)
+v can be obtained by iteratively decreasingt from T −1 to
+1, using chain rules similar to eq 8. Consequently, the right-hand side of eq 6 can be evaluated
+except for terms involvingFwv where w is a ghost atom. These terms must be transferred via
+reverse communication (as shown in Figure 3f). This completes the computation of atomic
+forces, after which atomic positions are updated for the next MD step. (See Figure 3a.)
+3.2 Implementation Details
+We develop SevenNet, a GNN-IP package, that implements the above parallel algorithm
+for the MD simulator LAMMPS. The GNN architecture of SevenNet is identical to that
+of NequIP and is programmed using PyTorch.41 The e3nn library42 is utilized to ensure
+equivariance in mathematical operations throughout the neural network. SevenNet lever-
+ages TorchScript, the JIT (just-in-time) compiler of PyTorch, to integrate trained models
+into parallel MD simulations run by LAMMPS. For integration, a separate TorchScript file
+is used for each message-passing layer, with LAMMPS communication routines incorporated
+between them. While SevenNet retains the NequIP architecture, it is reconstructed for the
+pairing of one message-passing layer with one TorchScript file. Since PyTorch and Torch-
+Script support both CPU and GPU systems, the present implementation is not restricted to
+specific machine types. In practice, however, neural network computations are much more
+efficient on GPU clusters, so we focus our analysis on the parallel efficiency within GPU clus-
+ters. SevenNet supports stress computation in serial mode and offers multi-GPU training,
+which significantly enhances the speed of training. Lastly, if a pre-trained model does not
+achieve sufficient accuracy in downstream tasks, users can utilize the fine-tuning interface
+provided by the SevenNet package.
+12
+
+[page 13]
+4 BENCHMARK TESTS
+In this section, we detail the outcomes of two benchmark categories: scaled-size tests (indica-
+tive of weak scaling) and fixed-size tests (representative of strong scaling), conducted with
+various model parameters. Given that the communication demands of our parallelization
+algorithm are influenced by the GNN-IP model parameters, we examine how increases in
+the size or frequency of communication data impact the overall parallel performance in both
+types of tests. The scaled-size tests assess the efficiency in handling larger systems using mul-
+tiple GPUs, while the fixed-size tests evaluate the improvements in simulation speed when
+additional GPUs are employed. Specifically, for these evaluations, we record the timing of
+the MD simulations inα-quartz SiO2.
+To investigate the impact of data size and communication frequency on parallel perfor-
+mance, we train models by varying two key parameters: the number of channels and the
+number of message-passing layers. In each message-passing layer, processors exchange node
+features or energy gradients. The data size for these exchanges is directly proportional to
+the number of channels. Thus, the number of channels influences the overall communication
+data size, while the number of message-passing layers affects the frequency of communica-
+tions. As depicted in Figure 3, the addition of each message-passing layer results in an extra
+set of forward and reverse communications.
+We train 20 potentials by varying the aforementioned parameters. These models feature
+channel counts of 4, 8, 16, 32, and 64, and message-passing layer counts of 2, 3, 4, and
+5, along with a maximum degree of representation (lmax) of 3 and a cutoff radius of 4.0
+Å. Our training set consists of snapshots from DFT MD trajectories containing 72 units
+of SiO2. These trajectories encompass melt-quench-anneal processes and vibrations of α-
+quartz at 300 K. We sample these snapshots every 40 fs, yielding 1600 structures that we
+randomly shuffle and split into training and validation sets in a 9:1 ratio. The training
+sets are generated using the VASP package.43 For the exchange-correlation functional, we
+employ the generalized gradient approximation by Perdew-Burke-Ernzerhof.44 While the
+13
+
+[page 14]
+DFT MD simulations are conducted with a default plane-wave energy cutoff, the sampled
+snapshots are recalculated with the energy cutoff of 450 eV. Only theΓ point is sampled for
+the Brillouin-zone integration.
+We conduct MD simulations using trained models in LAMMPS, benchmarking on the
+α-quartz SiO2 system. These simulations employ an NVT ensemble, maintained at 300 K
+with the Nosé-Hoover thermostat.45 For efficient GPU utilization, we dynamically balance
+the atom distribution across GPUs by adjusting spatial decomposition boundaries every 10
+MD steps usingfix balancecommand in LAMMPS. Our benchmark runs span 210 MD steps,
+but we measure wall-clock time over the final 100 steps to avoid initial-step time fluctuations.
+All benchmarks utilize a GPU cluster system, comprising HPE Apollo 6500 Gen10 nodes
+interconnected via Infiniband HDR200. Each node is equipped with 8 NVIDIA A100 80 GB
+GPUs interconnected with NVLink. LAMMPS (version 23Jun2022 - Update 4) is compiled
+using OpenMPI/4.1.2, configured for CUDA-aware MPI and integrated with the LibTorch
+library from PyTorch/1.12.0. Compilation utilizes nvcc compiler of the CUDA/11.6.2 and
+gcc/9.4.0. One CPU core is assigned to one GPU card and MPI rank. Every simulation is
+conducted with a single precision.
+4.1 Scaled-Size Test
+We evaluate the weak-scaling parallel efficiencies of 20 trained models using 1, 2, 4, 8, 16,
+and 32 GPUs. In these weak-scaling tests, we proportionally increase the atom counts in the
+system with the number of GPUs, and so the GPU utilization remains roughly the same for
+given numbers of channels and message-passing layers. For consistency, each GPU processes
+4,608 atoms, independent of the model parameters. This atom count fully utilizes an A100
+GPU in a model configured with 32 channels and 4 message-passing layers, resulting in a
+total of 147,456 atoms in simulations that employ 32 GPUs.
+The weak-scaling parallel efficiency is quantified ast(1)/t(n), where t(1) represents the
+computation time on a single GPU, andt(n) is the time forn GPUs handling a systemn
+14
+
+[page 15]
+12 4 8 16 32
+0.6
+0.7
+0.8
+0.9
+1.0
+12 4 8 16 32
+0.6
+0.7
+0.8
+0.9
+1.0
+12 4 8 16 32
+0.6
+0.7
+0.8
+0.9
+1.0
+12 4 8 16 32
+0.6
+0.7
+0.8
+0.9
+1.0
+Number of GPUs
+Parallel efficiency
+4 channels
+32 channels
+8 channels
+64 channels
+16 channels
+Ideal
+2 layers
+4 layers
+3 layers
+5 layers
+(a)
+(c)
+(b)
+(d)
+Figure 4. Scaled-size parallel efficiencies with 4,608 atoms per GPU inα-quartz SiO2,
+using the 20 models with different parameters: 4, 8, 16, 32, and 64 channels. The number
+of message-passing layers is (a) 2 layers (b) 3 layers (c) 4 layers, and (d) 5 layers. An ideal
+case, in which parallel efficiency equals 1.0 is represented as the dotted line.
+15
+
+[page 16]
+times larger. These tests are crucial for assessing how parallel performance is influenced by
+increased communication size (due to more channels) or frequency (from additional message-
+passing layers).
+Figure 4 illustrates the parallel efficiency results from the weak scaling (scaled-size) test.
+Models with fewer message-passing layers, as shown in Figure 4a, which correspond to lower
+communication frequency, demonstrate a parallel efficiency ranging from 0.83 to 0.98 with 2
+GPUs, and between 0.67 and 0.83 with 32 GPUs. Conversely, models with 5 message-passing
+layers (refer to Figure 4d) exhibit parallel efficiencies of 0.95 to 1.0 with 2 GPUs, and 0.79
+to 0.84 with 32 GPUs. These findings suggest that parallel efficiencies are well-maintained,
+even with increased communication demands. Overall, the present parallelization algorithm
+exhibits robust parallel efficiency, irrespective of the growth in communication size and fre-
+quency.
+In our benchmarks, we observe a slight increase in parallel efficiency with the addition
+of more channels or message-passing layers, indicating that models with greater complexity
+contribute to enhanced parallel efficiency. This is because both the serial computation time
+(t(1)) and the parallel computation time (t(n)) increase with model complexity, making the
+relative impact of communication costs less significant. While this trend is more pronounced
+with channels, it also concerns with message-passing layers because the computational cost
+of adding deeper message-passing layers becomes more expensive due to the increasing com-
+plexity of the convolution (tensor product).
+We note that these benchmarks were conducted on a homogeneous SiO2 bulk system,
+which facilitates uniform distribution of atoms across subdomains, thereby minimizing syn-
+chronization wait times between processors. In scenarios where the system becomes more
+heterogeneous or the number of GPUs increases, synchronization costs could become more
+substantial. Additionally, increasing the number of message-passing layers might exacerbate
+these costs.
+16
+
+[page 17]
+4.2 Fixed-Size Test
+In the fixed-size (strong scaling) test, the speed-up of 20 trained models is evaluated using
+1, 2, 4, 8, 16, and 32 GPUs. This test differs from the scaled-size test in that it maintains
+a constant number of atoms within each simulation cell. For consistency, all simulations
+are conducted with 12,960 atoms, irrespective of the model parameters. This atom count
+almost maxes out the memory capacity of an A100 80 GB GPU, particularly when operating
+a model with 32 channels and 4 message-passing layers. Consequently, it was infeasible to
+conduct fixed-size tests for models with 64 channels and 3–5 message-passing layers, as these
+exceed the memory capabilities of the A100 80 GB GPU. The efficiency improvement in the
+fixed-size test, indicative of strong scaling, is quantified byt(1)/t(n), the speed-up achieved
+by using n GPUs.
+Figure 5 illustrates the speed-up achieved through fixed-size (strong scaling) tests. In
+general, the impact of the number of message-passing layers on performance gains is minimal,
+though it exhibits a slight increase as the number of layers grows. To be specific, a model
+configured with 32 channels and between 2 to 5 message-passing layers registers performance
+gains ranging from 13.1 to 15.4 when using 32 GPUs. Considering the ideal speed-up equals
+the number of GPUs used, it shows a halved speed-up even for the best-performed model
+(32 channels and 5 message-passing layers). It is important to note that a reduction in
+the channel count leads to diminished performance gains. For example, the model with
+the minimal configuration of 4 channels and 2 message-passing layers ceases to benefit from
+additional GPUs beyond 4.
+The rapid performance saturation observed beyond a certain number of GPUs, as shown
+in Figure 5, is attributed to suboptimal GPU utilization: when a GPU is underutilized,
+dividing workloads by introducing additional GPUs does not reduce computational time. In
+the spatial decomposition method, GPU utilization plays a crucial role in fixed-size tests
+due to the diminishing number of atoms allocated per GPU. (See Figure S1 for the GPU
+utilization with respect to the number of atoms.) Similar observations were made in the
+17
+
+[page 18]
+12 4 8 16 32
+12 4 8 16 32
+12 4 8 16 32
+12 4 8 16 32
+12 4 8 16 32
+12 4 8 16 32
+12 4 8 16 32
+12 4 8 16 32
+Number of GPUs
+Speed-up
+4 channels
+32 channels
+8 channels
+64 channels
+16 channels
+Ideal
+2 layers
+4 layers
+3 layers
+5 layers
+(a)
+(c)
+(b)
+(d)
+Figure 5. Speed-up of the fixed-size tests with 12,960 atoms onα-quartz SiO2, using the 20
+models with different parameters: 4, 8, 16, 32, and 64 channels, and the number of message-
+passing layers: (a) 2 layers, (b) 3 layers, (c) 4 layers, and (d) 5 layers. The speed-up curves
+that correspond to 64 channels with 3, 4, and 5 message-passing layers are omitted because
+the times taken for one GPU were not available due to limited GPU memory. The dotted
+line represents an ideal speed-up.
+18
+
+[page 19]
+strong-scaling benchmark results of Allegro.34 Contrary to the message-passing layer, which
+requires only a small additional memory allocation, the number of channels significantly
+affects GPU utilization as it is directly correlated with the dimensionality of node features.
+Thus, performance saturation occurs later when more channels are used in the model as
+shown in Figure 5. We expect that the design of a GNN-IP model, capable of efficiently
+utilizing GPU resources even with a limited number of atoms, will exhibit enhanced speed
+improvements when deployed across multiple GPUs.
+5 GENERAL-PURPOSE GNN-IP
+Recently, a variety of GNN-IP models15,25–28trained on multi-element datasets have been
+introduced as general-purpose GNN-IPs, capable of being applied in MD simulations without
+further training steps. These can also be used as pre-trained models for fine-tuning with
+a small number of DFT calculations.24,27 To facilitate simple large-scale MD simulations
+using multiple GPUs without additional training, we develop a general-purpose GNN-IP
+named ‘SevenNet-0’, and showcase the parallel efficiency of SevenNet-0 in a melt-quench
+MD simulation aimed at generating an amorphous structure of Si3N4, involving more than
+100,000 atoms.
+5.1 Model Training
+SevenNet-0 is trained using the M3GNet dataset,25 which includes three relaxation steps
+of crystal structures obtained from the Materials Project database,46 covering 89 elements.
+Following the original paper, we divide the entire dataset into training, validation, and test
+sets in proportions of 90%, 5%, and 5%, respectively, according to the materials.
+The model hyperparameters of SevenNet-0 are in line with GNoME, a pre-trained model
+that utilizes the NequIP architecture.24 Thus, SevenNet-0 features 5 interaction blocks with
+node features comprising irreducible representations of 128 scalars (l = 0), 64 vectors (l = 1),
+19
+
+[page 20]
+and 32 tensors (l = 2). The convolutional filter employsrc of 5 Å, and a tensor product of
+learnable radial functions from bases of 8 radial Bessel functions and spherical harmonics up
+to l = 2. Within the message-passing layers, the sum of gathered messages is normalized by
+the average number of neighbors withinrc, which is calculated based on the training set.
+We have discovered that a significant portion of the element-specific model parameters
+originates from the tensor product in the self-connection layer (denoted by the ‘×’ sign
+in Figure 2b) of the NequIP architecture. By replacing the tensor product with a linear
+layer applied directly to the node features, we observe a reduction in validation error and
+an increase in training error, which suggests a mitigation of overfitting. For computational
+efficiency, we remove redundant tensor-product paths in the last interaction block, retaining
+only those paths that produce scalar outputs. These modifications substantially reduce the
+total number of model parameters from 16.24 million in GNoME to 0.84 million in SevenNet-
+0.
+For training, we employ multi-GPU training utilizing four A100 GPUs with a batch size
+of 16. We utilize the Adam optimizer47 with an initial learning rate of 0.004, reducing the
+learning rate by a factor of 0.5 if there is no improvement in validation loss over 50 epochs.
+The loss function combines contributions from energy, force, and stress:
+Γ = 1
+M
+MX
+i=1
+LHuber
+ ˆEi
+Ni
+, Ei
+Ni
+, δ
+!
++ µf
+3MPM
+i Ni
+MX
+i=1
+NiX
+j=1
+3X
+k
+LHuber
+
+ˆFi,j,k, Fi,j,k, δ
+
++ µs
+6M
+MX
+i=1
+6X
+l=1
+LHuber
+
+ˆSi,l, Si,l, δ
+ (9)
+where M is the batch size, andNi is the number of atoms in the structurei in the batch.
+In eq 9, Ei, Fi,j,k, and Si,l represent the potential energy, the kth force component (k ∈
+{x, y, z}) on atomj, and thelth (virial) stress component in DFT label, respectively, while
+the predicted values by the GNN-IP model are denoted asˆEi, ˆFi,j,k, and ˆSi,l. We set the
+force loss weight µf to 0.1 and the stress loss weightµs to 0.01. The Huber loss function,
+LHuber, is applied to reduce the impact of outliers in the M3GNet dataset. This function
+20
+
+[page 21]
+transitions from mean squared error (MSE) loss to mean absolute error (MAE) loss when
+the absolute difference between the predicted and reference values exceeds a threshold (δ),
+for which we use a value of 0.01.
+During training, atomic energies are normalized using the shift values derived from el-
+emental reference energies25 and the scale values obtained from the standard deviation of
+per-atom energy, which are fitted to the training dataset. After training for 450 epochs,
+SevenNet-0 reach MAEs for energy, force, and stress of 24 meV/atom, 0.067 eV/Å, and
+0.65 GPa, respectively, on the test set. In comparison with the performance metrics of the
+M3GNet model, which reported accuracy figures of 35 meV/atom, 0.072 eV/Å, and 0.41
+GPa,25 SevenNet-0 has shown improvements in energy and force accuracies.
+5.2 Large-Scale Si 3N4 Melt-Quench Simulation
+Determining the atomic structure is crucial in investigating amorphous materials, such as
+Ge2Sb2Te5,48 InGaZnO4,49 and Li3PO4,50 yet it presents significant challenges. A common
+method for generating amorphous structures is melt-quench MD simulations combined with
+DFT. This technique involves a heating simulation at the melting temperature to create a
+liquid phase as the starting structure. Amorphous structures are then produced by quenching
+in MD simulation from the melting temperature to room temperature.
+Because of the intensive computational demands of DFT, a typical approach involves
+generating multiple small amorphous models and averaging their properties to characterize
+the amorphous phase.51–53Although this method yields useful information, conducting large-
+scaleamorphoussimulationsiscrucialtostudysystemsinactualdevices. 54 Inthissection, we
+utilize the pre-trained SevenNet-0 potential to construct large-scale amorphous structures
+through the melt-quench MD simulation. Our material of interest is amorphous silicon
+nitrides (Si3N4), which is widely utilized as a charge-trap layer in flash memory devices.55,56
+All MD simulations are conducted using the SevenNet-0 potential on a GPU cluster
+equipped with 8 NVIDIA A100 80 GB GPUs. To prepare the initial structure for the melt-
+21
+
+[page 22]
+quench simulation, we first generate a disordered structure with 112 atoms, which is obtained
+by superheating randomly distributed atoms within a cubic cell at a density of 3.10 g/cm3
+at 5000 K for 5 ps. By replicating this cell with 10×10×10 multiplicity, we generate initial
+structures containing 112,000 atoms. The supercell is then superheated at 5000 K for 10 ps,
+followed by equilibration at 3000 K for 20 ps, and rapid quenching to 2000 K at a rate of
+−33 K/ps. Since atomic motions are negligible at 2000 K, we optimize atomic coordinates
+at 0 K and obtain the final amorphous structure.
+For a 60-ps MD simulation, the time required is 12.7 hours, approximately at a rate of
+0.1 ns per day with 0.1 million atoms. To evaluate the parallel efficiency of multi-GPU MD
+simulations, we also perform a similar melt-quench simulation on a single NVIDIA A100
+GPU within the same cluster, using 14,000 atoms (one eighth of the original supercell).
+This test serves as an example of weak scaling, as outlined in Section 4.1. In this case, the
+simulation lasted 12.0 hours, demonstrating a parallel efficiency of 0.94 for 8 GPUs. This
+finding is consistent with the parallel efficiency exceeding 0.9, as depicted in Figure 4d. We
+note that due to memory limitations, it is not feasible to run a simulation with 112,000 atoms
+on a single A100 GPU. Consequently, employing multi-GPU MD simulations is indispensable
+for large-scale simulations.
+The generated amorphous structure by SevenNet-0, consisting of 112,000 atoms, is shown
+in Figure 6a. The structure is deemed reasonable as it maintains the fourfold coordination
+for Si and threefold coordination for N atoms. In Figures 6b and c, we plot the radial distri-
+bution functions (g(r)) for Si–N, Si–Si, and N–N pairs, along with the angular distribution
+functions (g(θ)) for Si–N–Si and N–Si–N, based on a single amorphous structure. These
+results agree well with prior DFT reference data (indicated by circles),51 which were derived
+from averaging results across 40 smaller amorphous structures including 112 atoms. In par-
+ticular, shoulder peaks at 90◦ are also well reproduced ing(θ), which are indicative of square
+planar structures.51
+WenotethatSevenNet-0wastrainedsolelyonthecrystalstructuresrelatedtothespecific
+22
+
+[page 23]
+(a) (b)
+(c)
+10.6 nm
+Si N
+Figure 6. Structural properties of amorphous Si3N4 generated by the pretrained model
+SevenNet-0. (a) Atomistic structure of amorphous Si3N4 with 112,000 atoms. (b) Partial
+radial distribution function (g(r)) of Si–N, Si–Si, and N–N. (c) Angular distribution function
+(g(θ)) of Si–N–Si and N–Si–N. Solid lines represent the results reproduced by SevenNet-0
+and empty circles represent the DFT results from ref51
+23
+
+[page 24]
+composition of Si3N4, yet it could reproduce key structural features of amorphous Si3N4
+from melt-quench processes. This demonstrates the generalization capability of SevenNet-0,
+which allows it to predict energies reasonably for structures outside the training domain.
+Such emergent capability is a result of training on a large dataset with diverse chemistry.
+6 DISCUSSIONS
+The GNN-IP framework, as described in eqs 3 and 4, is general, and many neural network
+potentials can be represented within this framework.40 The need for communication of node
+features arises because eq 3 requires node features ofv and its neighborsw. Assuming edges
+are connected within rc, this implies that GNN-IP models using only two-body message-
+passing functions, such as SchNet,23 PhysNet,18 PaiNN,40 NequIP,15 and MACE,32 can be
+parallelized using our approach by adapting atomic force computations to each architecture.
+Notably, except for SchNet and PhysNet, these are all equivariant GNN-IPs, which learn
+more than two-body terms even with simple pairwise message functions. Conversely, some
+invariant GNN-IP models, such as DimeNet,29 ALIGNN,57 CHGNet,27 and M3GNet25 devi-
+ate from the two-body nature of eq 3 to incorporate explicit three-body terms. For instance,
+ALIGNN and CHGNet handle angle (triplet) features connecting two edges and an auxiliary
+line graph to facilitate message passing. Although they employ a more complex message-
+passing scheme, the locality is ensured by introducing the cutoff radius. Thus, they could
+be parallelized using a similar approach to the present work, for example, by incorporat-
+ing edge features and gradients derived from them in forward and reverse communications,
+respectively.
+7 CONCLUSION
+In this work, we have proposed a spatial decomposition scheme for GNN-IPs to enable
+large-scale MD simulations. The original spatial decomposition could be adapted to NequIP
+24
+
+[page 25]
+architecture with the inclusion of additional forward and reverse communications. We have
+conducted benchmarks to estimate the potential impact on parallel efficiency due to in-
+creased communication size and frequency. The weak-scaling benchmark, which measures
+performance as the size of the system increases, revealed that the modified spatial decompo-
+sition offers efficient scaling performance, regardless of the number of message-passing layers
+and channels. Conversely, the strong scaling benchmark, which measures performance as the
+number of processors increases while the total problem size remains constant, showed that
+speed-up is limited to a certain extent. This is primarily due to the underutilized GPUs, an
+issue that is more pronounced in models with fewer channels. As a practical application of
+our algorithm, we also introduced a general-purpose GNN-IPs model, SevenNet-0, along with
+its large-scale simulation results on generating amorphous Si3N4. The pretrained model can
+be further fine-tuned in the downstream tasks for higher accuracy. We believe our SevenNet
+package will facilitate the use of GNN-IP models in a broad spectrum of large-scale MD
+simulations.
+ASSOCIATED CONTENT
+Supporting Information A vailable
+• Supporting Information: GPU utilization curve of models with the different number
+of channels: 4, 8, 16, 32, and 64 (Figure S1) (PDF)
+Data A vailability Statement
+TheSevenNetpackageandtheSevenNet-0modelareavailableathttps://github.com/MDIL-
+SNU/SevenNet.
+25
+
+[page 26]
+AUTHOR INFORMATION
+Corresponding Author
+• Seungwu Han – Department of Materials Science and Engineering, Seoul National
+University, Seoul 08826, Korea; Korea Institute for Advanced Study; orcid.org/0000-
+0003-3958-0922; Email: hansw@snu.ac.kr
+Authors
+• Yutack Park – Department of Materials Science and Engineering, Seoul National Uni-
+versity, Seoul 08826, Korea; orcid.org/0009-0008-8690-935X;
+• Jaesun Kim – Department of Materials Science and Engineering, Seoul National Uni-
+versity, Seoul 08826, Korea; orcid.org/0009-0006-3182-9411;
+• Seungwoo Hwang – Department of Materials Science and Engineering, Seoul National
+University, Seoul 08826, Korea; orcid.org/0000-0002-1523-8340;
+Acknowledgement
+This work is supported by the Global Research Cluster program of Samsung Advanced In-
+stitute of Technology. The benchmark tests were carried out using Samsung SSC-21 cluster.
+The MD simulations for generating amorphous Si3N4 were carried out at the Korea Institute
+of Science and Technology Information (KISTI) National Supercomputing Center (KSC-
+2023-CRE-0337). The computations for training models used in benchmarks and SevenNet-
+0 were supported by the Center for Advanced Computations (CAC) at Korea Institute for
+Advanced Study (KIAS).
+26
+
+[page 27]
+References
+(1) Parr, R. G.; Yang, W. Density-Functional Theory of the Electronic Structure of
+Molecules. Annu. Rev. Phys. Chem. 1995, 46, 701–728.
+(2) Behler, J.; Parrinello, M. Generalized Neural-Network Representation of High-
+Dimensional Potential-Energy Surfaces.Phys. Rev. Lett. 2007, 98, 146401.
+(3) Bartók, A. P.; Payne, M. C.; Kondor, R.; Csányi, G. Gaussian Approximation Poten-
+tials: The Accuracy of Quantum Mechanics, without the Electrons.Phys. Rev. Lett.
+2010, 104, 136403.
+(4) Shapeev, A. V. Moment Tensor Potentials: A Class of Systematically Improvable In-
+teratomic Potentials. Multiscale Model. Simul. 2016, 14, 1153–1173.
+(5) Yoo, D.; Lee, K.; Jeong, W.; Lee, D.; Watanabe, S.; Han, S. Atomic energy mapping
+of neural network potential.Phys. Rev. Mater. 2019, 3, 093802.
+(6) Behler, J. Perspective: Machine learning potentials for atomistic simulations.J. Chem.
+Phys. 2016, 145, 170901.
+(7) Mueller, T.; Hernandez, A.; Wang, C. Machine learning for interatomic potential mod-
+els. J. Chem. Phys. 2020, 152, 050902.
+(8) Mishin, Y. Machine-learning interatomic potentials for materials science.Acta Mater.
+2021, 214, 116980.
+(9) Li, X.-G.; Chen, C.; Zheng, H.; Zuo, Y.; Ong, S. P. Complex strengthening mechanisms
+in the NbMoTaW multi-principal element alloy.npj Comput. Mater. 2020, 6, 70.
+(10) Wang, Y.; Fan, Z.; Qian, P.; Ala-Nissila, T.; Caro, M. A. Structure and Pore Size
+Distribution in Nanoporous Carbon.Chem. Mater. 2022, 34, 617–628.
+27
+
+[page 28]
+(11) Liu, J.; Byggmästar, J.; Fan, Z.; Qian, P.; Su, Y. Large-scale machine-learning molecu-
+lar dynamics simulation of primary radiation damage in tungsten.Phys. Rev. B 2023,
+108, 054312.
+(12) Jakse, N.; Sandberg, J.; Granz, L. F.; Saliou, A.; Jarry, P.; Devijver, E.; Voigtmann, T.;
+Horbach, J.; Meyer, A. Machine learning interatomic potentials for aluminium: appli-
+cation to solidification phenomena.J. Phys.: Condens. Matter 2023, 35, 035402.
+(13) Nguyen-Cong, K.; Willman, J. T.; Moore, S. G.; Belonoshko, A. B.; Gayatri, R.; Wein-
+berg, E.; Wood, M. A.; Thompson, A. P.; Oleynik, I. I. Billion atom molecular dynamics
+simulations of carbon at extreme conditions and experimental time and length scales.
+Proceedings of the International Conference for High Performance Computing, Net-
+working, Storage and Analysis. New York, NY, USA, 2021.
+(14) Yang, P.-Y.; Chiang, Y.-H.; Pao, C.-W.; Chang, C.-C. Hybrid Machine Learning-
+Enabled Potential Energy Model for Atomistic Simulation of Lithium Intercalation
+into Graphite from Plating to Overlithiation. J. Chem. Theory Comput. 2023, 19,
+4533–4545.
+(15) Batzner, S.; Musaelian, A.; Sun, L.; Geiger, M.; Mailoa, J. P.; Kornbluth, M.; Moli-
+nari, N.; Smidt, T. E.; Kozinsky, B. E(3)-equivariant graph neural networks for data-
+efficient and accurate interatomic potentials.Nat. Commun. 2022, 13, 2453.
+(16) Li, Z.; Meidani, K.; Yadav, P.; Barati Farimani, A. Graph neural networks accelerated
+molecular dynamics. J. Chem. Phys. 2022, 156, 144103.
+(17) Park, C. W.; Kornbluth, M.; Vandermause, J.; Wolverton, C.; Kozinsky, B.;
+Mailoa, J. P. Accurate and scalable graph neural network force field and molecular
+dynamics with direct force architecture.npj Comput. Mater. 2021, 7, 73.
+(18) Unke, O. T.; Meuwly, M. PhysNet: A Neural Network for Predicting Energies, Forces,
+Dipole Moments, and Partial Charges.J. Chem. Theory Comput. 2019, 15, 3678–3693.
+28
+
+[page 29]
+(19) Batatia, I.; Batzner, S.; Kovács, D. P.; Musaelian, A.; Simm, G. N. C.; Drautz, R.;
+Ortner, C.; Kozinsky, B.; Csányi, G. The Design Space of E(3)-Equivariant Atom-
+Centered Interatomic Potentials. arXiv preprint 2022, arXiv.2205.06643, DOI:
+10.48550/arXiv.2205.06643.
+(20) Frank, J. T.; Unke, O. T.; Müller, K.-R. So3krates: Equivariant attention for in-
+teractions on arbitrary length-scales in molecular systems. arXiv preprint 2023,
+arXiv:2205.14276, DOI: 10.48550/arxiv.2205.14276.
+(21) Reiser, P.; Neubert, M.; Eberhard, A.; Torresi, L.; Zhou, C.; Shao, C.; Metni, H.;
+Hoesel, C. v.; Schopmans, H.; Sommer, T.; Friederich, P. Graph neural networks for
+materials science and chemistry.Commun. Mater. 2022, 3, 93.
+(22) Ko, T. W.; Ong, S. P. Recent advances and outstanding challenges for machine learning
+interatomic potentials. Nat. Comput. Sci. 2023, 3, 998–1000.
+(23) Schütt, K. T.; Sauceda, H. E.; Kindermans, P.-J.; Tkatchenko, A.; Müller, K.-R. SchNet
+– A deep learning architecture for molecules and materials.J. Chem. Phys. 2018, 148,
+241722.
+(24) Merchant, A.; Batzner, S.; Schoenholz, S. S.; Aykol, M.; Cheon, G.; Cubuk, E. D.
+Scaling deep learning for materials discovery.Nature 2023, 624, 80–85.
+(25) Chen, C.; Ong, S. P. A universal graph deep learning interatomic potential for the
+periodic table. Nat. Comput. Sci. 2022, 2, 718–728.
+(26) Takamoto, S.; Shinagawa, C.; Motoki, D.; Nakago, K.; Li, W.; Kurata, I.; Watan-
+abe, T.; Yayama, Y.; Iriguchi, H.; Asano, Y.; Onodera, T.; Ishii, T.; Kudo, T.; Ono, H.;
+Sawada, R.; Ishitani, R.; Ong, M.; Yamaguchi, T.; Kataoka, T.; Hayashi, A.; Charoen-
+phakdee, N.; Ibuka, T. Towards universal neural network potential for material dis-
+covery applicable to arbitrary combination of 45 elements.Nat. Commun. 2022, 13,
+2991.
+29
+
+[page 30]
+(27) Deng, B.; Zhong, P.; Jun, K.; Riebesell, J.; Han, K.; Bartel, C. J.; Ceder, G. CHGNet as
+apretraineduniversalneuralnetworkpotentialforcharge-informedatomisticmodelling.
+Nat. Mach. Intell. 2023, 5, 1031–1041.
+(28) Batatia, I.; Benner, P.; Chiang, Y.; Elena, A. M.; Kovács, D. P.; Riebesell, J.; Advin-
+cula, X. R.; Asta, M.; Baldwin, W. J.; Bernstein, N.; Bhowmik, A.; Blau, S. M.;
+Cărare, V.; Darby, J. P.; De, S.; Pia, F. D.; Deringer, V. L.; Elijošius, R.; El-
+Machachi, Z.; Fako, E.; Ferrari, A. C.; Genreith-Schriever, A.; George, J.; Goodall, R.
+E. A.; Grey, C. P.; Han, S.; Handley, W.; Heenen, H. H.; Hermansson, K.; Holm, C.;
+Jaafar, J.; Hofmann, S.; Jakob, K. S.; Jung, H.; Kapil, V.; Kaplan, A. D.; Karimi-
+tari, N.; Kroupa, N.; Kullgren, J.; Kuner, M. C.; Kuryla, D.; Liepuoniute, G.; Mar-
+graf, J. T.; Magdău, I.-B.; Michaelides, A.; Moore, J. H.; Naik, A. A.; Niblett, S. P.;
+Norwood, S. W.; O’Neill, N.; Ortner, C.; Persson, K. A.; Reuter, K.; Rosen, A. S.;
+Schaaf, L. L.; Schran, C.; Sivonxay, E.; Stenczel, T. K.; Svahn, V.; Sutton, C.; Oord, C.
+v. d.; Varga-Umbrich, E.; Vegge, T.; Vondrák, M.; Wang, Y.; Witt, W. C.; Zills, F.;
+Csányi, G. A foundation model for atomistic materials chemistry.arXiv preprint 2023,
+arXiv:2401.00096, DOI: 10.48550/arXiv.2401.00096.
+(29) Gasteiger, J.; Groß, J.; Günnemann, S. Directional Message Passing for Molecular
+Graphs. arXiv preprint 2020, arXiv:2003.03123, DOI:10.48550/arxiv.2003.03123.
+(30) Fuchs, F. B.; Worrall, D. E.; Fischer, V.; Welling, M. SE(3)-Transformers: 3D Roto-
+Translation Equivariant Attention Networks.arXiv preprint 2020, arXiv:2006.10503,
+DOI: 10.48550/arxiv.2006.10503.
+(31) Gasteiger, J.; Becker, F.; Günnemann, S. GemNet: Universal Directional Graph
+Neural Networks for Molecules. arXiv preprint 2022, arXiv:2106.08903, DOI:
+10.48550/arxiv.2106.08903.
+(32) Batatia, I.; Kovács, D. P.; Simm, G. N. C.; Ortner, C.; Csányi, G. MACE: Higher Order
+30
+
+[page 31]
+EquivariantMessagePassingNeuralNetworksforFastandAccurateForceFields. arXiv
+preprint 2023, arXiv:2206.07697, DOI:10.48550/arxiv.2206.07697.
+(33) Musaelian, A.; Batzner, S.; Johansson, A.; Sun, L.; Owen, C. J.; Kornbluth, M.; Kozin-
+sky, B. Learning local equivariant representations for large-scale atomistic dynamics.
+Nat. Commun. 2023, 14, 579.
+(34) Musaelian; Albert; Johansson, A.; Batzner, S.; Kozinsky, B. Scaling the leading ac-
+curacy of deep equivariant models to biomolecular simulations of realistic size.arXiv
+preprint 2023, arXiv:2304.10061, DOI:10.48550/arxiv.2304.10061.
+(35) Plimpton,S.FastParallelAlgorithmsforShort-RangeMolecularDynamics. J. Comput.
+Phys. 1995, 117, 1–19.
+(36) Niethammer, C.; Becker, S.; Bernreuther, M.; Buchholz, M.; Eckhardt, W.; Hei-
+necke, A.; Werth, S.; Bungartz, H.-J.; Glass, C. W.; Hasse, H.; Vrabec, J.; Horsch, M.
+ls1 mardyn: The Massively Parallel Molecular Dynamics Code for Large Systems.J.
+Chem. Theory Comput. 2014, 10, 4455–4464.
+(37) Slim, H. A.; Wilson, M. R. Toward Large Scale Parallelization for Molecular Dynamics
+of Small Chemical Systems: A Combined Parallel Tempering and Domain Decomposi-
+tion Approach. J. Chem. Theory Comput. 2008, 4, 1570–1575.
+(38) Thompson, A. P.; Aktulga, H. M.; Berger, R.; Bolintineanu, D. S.; Brown, W. M.;
+Crozier, P. S.; in ’t Veld, P. J.; Kohlmeyer, A.; Moore, S. G.; Nguyen, T. D.; Shan, R.;
+Stevens, M.J.; Tranchida, J.; Trott, C.; Plimpton, S.J. LAMMPS - a flexiblesimulation
+tool for particle-based materials modeling at the atomic, meso, and continuum scales.
+Comput. Phys. Comm. 2022, 271, 108171.
+(39) Gilmer, J.; Schoenholz, S. S.; Riley, P. F.; Vinyals, O.; Dahl, G. E. Neural Mes-
+sage Passing for Quantum Chemistry.arXiv preprint 2017, arXiv:1704.01212, DOI:
+10.48550/arxiv.1704.01212.
+31
+
+[page 32]
+(40) Schütt, K. T.; Unke, O. T.; Gastegger, M. Equivariant message passing for the
+prediction of tensorial properties and molecular spectra. arXiv preprint 2021,
+arXiv:2102.03150, DOI: 10.48550/arxiv.2102.03150.
+(41) Paszke, A.; Gross, S.; Massa, F.; Lerer, A.; Bradbury, J.; Chanan, G.; Killeen, T.;
+Lin, Z.; Gimelshein, N.; Antiga, L.; Desmaison, A.; Köpf, A.; Yang, E.; DeVito, Z.;
+Raison, M.; Tejani, A.; Chilamkurthy, S.; Steiner, B.; Fang, L.; Bai, J.; Chintala, S.
+PyTorch: an imperative style, high-performance deep learning library. Proceedings
+of the 33rd International Conference on Neural Information Processing Systems. Red
+Hook, NY, USA, 2019.
+(42) Geiger, M.; Smidt, T. e3nn: Euclidean Neural Networks. arXiv preprint 2022,
+arXiv:2207.09453, DOI: 10.48550/arxiv.2207.09453.
+(43) Kresse, G.; Furthmüller, J. Efficiency of ab-initio total energy calculations for metals
+and semiconductors using a plane-wave basis set.Comput. Mater. Sci. 1996, 6, 15–50.
+(44) Perdew, J. P.; Burke, K.; Ernzerhof, M. Generalized Gradient Approximation Made
+Simple. Phys. Rev. Lett. 1996, 77, 3865–3868.
+(45) Nosé, S. A unified formulation of the constant temperature molecular dynamics meth-
+ods. J. Chem. Phys. 1984, 81, 511–519.
+(46) Jain, A.; Ong, S. P.; Hautier, G.; Chen, W.; Richards, W. D.; Dacek, S.; Cholia, S.;
+Gunter,D.; Skinner,D.; Ceder,G.; Persson,K.A.Commentary: TheMaterialsProject:
+A materials genome approach to accelerating materials innovation.APL Mater. 2013,
+1, 011002.
+(47) Kingma, D. P.; Ba, J. Adam: A Method for Stochastic Optimization.arXiv preprint
+2017, arXiv:1412.6980, DOI:10.48550/arXiv.1412.6980.
+32
+
+[page 33]
+(48) Akola, J.; Jones, R. O. Structural phase transitions on the nanoscale: The crucial
+pattern in the phase-change materials Ge2Sb2Te5 and GeTe. Phys. Rev. B 2007, 76,
+235201.
+(49) Buchanan, J. C.; Fast, D. B.; Hanken, B. E.; Mustard, T. J. L.; Laurita, G.; Chiang, T.-
+H.; Keszler, D. A.; Subramanian, M. A.; Wager, J. F.; Dolgos, M. R.; Rustad, J. R.;
+Cheong, P. H.-Y. Structural convergence properties of amorphous InGaZnO4 from sim-
+ulated liquid-quench methods.Dalton Trans. 2017, 46, 15311–15316.
+(50) Li, W.; Ando, Y.; Minamitani, E.; Watanabe, S. Study of Li atom diffusion in amor-
+phous Li3PO4 with neural network potential.J. Chem. Phys. 2017, 147, 214106.
+(51) Kang, G.; Lee, D.; Lee, K.; Kim, J.; Han, S. First-principles study on the negative-U
+behavior of K centers in amorphousSi3N4−x. Phys. Rev. Appl. 2018, 10, 064052.
+(52) Lee, D.; Kang, G.; Lee, K.; Yoon, S.; Kim, J.; Han, S. First-principles calculations
+on effects of Al and Ga dopants on atomic and electronic structures of amorphous
+Ge2Sb2Te5. J. Appl. Phys. 2019, 125, 035701.
+(53) Song, H.; Kang, G.; Kang, Y.; Han, S. The nature of the oxygen vacancy in amorphous
+oxide semiconductors: Shallow versus deep.Phys. Status Solidi B 2019, 256, 1800486.
+(54) Zhou, Y.; Zhang, W.; Ma, E.; Deringer, V. L. Device-scale atomistic modelling of
+phase-change memory materials.Nat. Electron. 2023, 6, 746–754.
+(55) Tanaka, H.; Kido, M.; Yahashi, K.; Oomura, M.; Katsumata, R.; Kito, M.;
+Fukuzumi, Y.; Sato, M.; Nagata, Y.; Matsuoka, Y.; Iwata, Y.; Aochi, H.; Nitayama, A.
+Bit Cost Scalable Technology with Punch and Plug Process for Ultra High Density
+Flash Memory. 2007 IEEE Symposium on VLSI Technology. 2007; pp 14–15.
+(56) Katsumata, R.; Kito, M.; Fukuzumi, Y.; Kido, M.; Tanaka, H.; Komori, Y.;
+Ishiduki, M.; Matsunami, J.; Fujiwara, T.; Nagata, Y.; Zhang, L.; Iwata, Y.; Kiri-
+33
+
+[page 34]
+sawa, R.; Aochi, H.; Nitayama, A. Pipe-shaped BiCS flash memory with 16 stacked
+layers and multi-level-cell operation for ultra high density storage devices. 2009 Sym-
+posium on VLSI Technology. 2009; pp 136–137.
+(57) Choudhary, K.; DeCost, B. Atomistic Line Graph Neural Network for improved mate-
+rials property predictions.npj Comput. Mater. 2021, 7, 185.
+34
+
+[page 35]
+Supporting Information for “Scalable Parallel
+Algorithm for Graph Neural Network
+Interatomic Potentials in Molecular Dynamics
+Simulations”
+Yutack Park,†Jaesun Kim,†Seungwoo Hwang,†and Seungwu Han∗,†,‡
+†Department of Materials Science and Engineering and Research Institute of Advanced
+Materials, Seoul National University, Seoul 08826, Korea
+‡Korea Institute for Advanced Study, Seoul 02455, Korea
+E-mail: hansw@snu.ac.kr
+1
+
+[page 36]
+GPU UTILIZATION
+288 5000 10000 15000
+Number of atoms
+5k
+15k
+25k
+35kNumber of atoms × steps/s
+4 channels
+32 channels
+8 channels
+64 channels
+16 channels
+Figure S1. Single GPU utilization curve of models with four message-passing layers and 4,
+8, 16, 32, and 64 channels. The red dotted line indicates the number of atoms used in the
+fixed-size test
+Figure S1 shows how the different number of channels and the number of atoms affects
+GPU utilization. The y-axis, the number of atoms multiplied by timesteps per second,
+indicates the amount of work (number of atoms multiplied by MD step) a GPU can yield
+in a unit of time (second). A plateau in this figure signifies full GPU utilization, achieved
+when a sufficient number of atoms is allocated. Conversely, a ballistic region observed at
+lower atom counts represents the GPU is in a suboptimal state. Notably, as the number of
+channels decreases, a greater number of atoms is needed to transition from this suboptimal
+state to the fully utilized state.
+2

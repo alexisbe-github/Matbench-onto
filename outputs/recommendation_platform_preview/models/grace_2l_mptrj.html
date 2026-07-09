@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>grace-2l-mptrj - preview</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="../index.html" class="back">Tous les modèles</a>
+    <span>grace_2l_mptrj</span>
+  </header>
+  <main>
+    <section class="hero">
+      <p>GRACE</p>
+      <h1>grace-2l-mptrj</h1>
+      <div class="facts">
+        <span>15346704 paramètres</span>
+        <span>4 fichiers de prédiction</span>
+        <span>TTL OK</span>
+      </div>
+    </section>
+    <section class="band"><h2>Identité du modèle</h2><table class="attrs"><tr><th>model_name</th><td>GRACE-2L-MPtrj</td></tr><tr><th>model_key</th><td>grace-2l-mptrj</td></tr><tr><th>model_params</th><td><span class="number">15346704</span></td></tr><tr><th>date_added</th><td>2024-11-21</td></tr><tr><th>url</th><td><a href="https://gracemaker.readthedocs.io/en/latest/gracemaker/foundation">https://gracemaker.readthedocs.io/en/latest/gracemaker/foundation</a></td></tr><tr><th>paper</th><td><a href="https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021036">https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021036</a></td></tr><tr><th>pr_url</th><td><a href="https://github.com/janosh/matbench-discovery/pull/160">https://github.com/janosh/matbench-discovery/pull/160</a></td></tr><tr><th>checkpoint_url</th><td><a href="https://ruhr-uni-bochum.sciebo.de/s/42Ivgi3eaLCynwC">https://ruhr-uni-bochum.sciebo.de/s/42Ivgi3eaLCynwC</a></td></tr><tr><th>license</th><td><table class="attrs"><tr><th>code</th><td>ASL</td></tr><tr><th>code_url</th><td><a href="https://github.com/ICAMS/grace-tensorpotential/blob/3f614c8ae6/LICENSE.md">https://github.com/ICAMS/grace-tensorpotential/blob/3f614c8ae6/LICENSE.md</a></td></tr><tr><th>checkpoint</th><td>ASL</td></tr><tr><th>checkpoint_url</th><td><a href="https://github.com/ICAMS/grace-tensorpotential/blob/3f614c8ae6/LICENSE.md">https://github.com/ICAMS/grace-tensorpotential/blob/3f614c8ae6/LICENSE.md</a></td></tr></table></td></tr><tr><th>family</th><td><div class="value">GRACE</div><div class="evidence">YAML model_name</div></td></tr><tr><th>variant</th><td><div class="value">grace-2l-mptrj</div><div class="evidence">YAML model_key</div></td></tr><tr><th>parameter_number</th><td><div class="value"><span class="number">15346704</span></div><div class="evidence">YAML model_params</div></td></tr></table></section><section class="band"><h2>Tasks et protocole</h2><table class="attrs compact"><tr><th>Champ</th><th>Valeur</th></tr><tr><td>Training task</td><td>S2EF</td></tr><tr><td>Test task</td><td>IS2RE-SR</td></tr><tr><td>Targets</td><td>EFS_G</td></tr><tr><td>Model type</td><td>UIP</td></tr><tr><td>Openness</td><td>OSOD</td></tr><tr><td>Benchmark tasks</td><td><ul><li>phonons (available)</li><li>geo_opt (available)</li><li>discovery (available)</li><li>diatomics (available)</li></ul></td></tr></table></section><section class="band"><h2>Métriques et résultats</h2><table class="attrs compact"><tr><th>Task</th><th>Jeu / split</th><th>Métriques</th></tr><tr><td>phonons</td><td>kappa_103</td><td><div class="metric-list"><span class="metric"><strong>κ_SRME</strong> <span class="number">0.5255</span></span><span class="metric"><strong>κ_SRE</strong> <span class="number">0.3186</span></span></div></td></tr><tr><td>geo_opt</td><td>symprec=1e-5</td><td><div class="metric-list"><span class="metric"><strong>rmsd</strong> <span class="number">0.0897</span></span><span class="metric"><strong>n_sym_ops_mae</strong> <span class="number">1.8838</span></span><span class="metric"><strong>symmetry_decrease</strong> <span class="number">0.0349</span></span><span class="metric"><strong>symmetry_match</strong> <span class="number">0.7315</span></span><span class="metric"><strong>symmetry_increase</strong> <span class="number">0.2292</span></span><span class="metric"><strong>n_structures</strong> <span class="number">256862</span></span></div></td></tr><tr><td>geo_opt</td><td>symprec=1e-2</td><td><div class="metric-list"><span class="metric"><strong>rmsd</strong> <span class="number">0.0897</span></span><span class="metric"><strong>n_sym_ops_mae</strong> <span class="number">1.8495</span></span><span class="metric"><strong>symmetry_decrease</strong> <span class="number">0.0596</span></span><span class="metric"><strong>symmetry_match</strong> <span class="number">0.8107</span></span><span class="metric"><strong>symmetry_increase</strong> <span class="number">0.1228</span></span><span class="metric"><strong>n_structures</strong> <span class="number">256862</span></span></div></td></tr><tr><td>discovery</td><td>full_test_set</td><td><div class="metric-list"><span class="metric"><strong>F1</strong> <span class="number">0.687</span></span><span class="metric"><strong>DAF</strong> <span class="number">3.714</span></span><span class="metric"><strong>Precision</strong> <span class="number">0.637</span></span><span class="metric"><strong>Recall</strong> <span class="number">0.746</span></span><span class="metric"><strong>Accuracy</strong> <span class="number">0.884</span></span><span class="metric"><strong>TPR</strong> <span class="number">0.746</span></span><span class="metric"><strong>FPR</strong> <span class="number">0.088</span></span><span class="metric"><strong>TNR</strong> <span class="number">0.912</span></span><span class="metric"><strong>FNR</strong> <span class="number">0.254</span></span><span class="metric"><strong>TP</strong> <span class="number">32880.0</span></span><span class="metric"><strong>FP</strong> <span class="number">18721.0</span></span><span class="metric"><strong>TN</strong> <span class="number">194150.0</span></span><span class="metric"><strong>FN</strong> <span class="number">11212.0</span></span><span class="metric"><strong>MAE</strong> <span class="number">0.05</span></span><span class="metric"><strong>RMSE</strong> <span class="number">0.092</span></span><span class="metric"><strong>R2</strong> <span class="number">0.74</span></span><span class="metric"><strong>missing_preds</strong> <span class="number">128</span></span></div></td></tr><tr><td>discovery</td><td>most_stable_10k</td><td><div class="metric-list"><span class="metric"><strong>F1</strong> <span class="number">0.914</span></span><span class="metric"><strong>DAF</strong> <span class="number">5.503</span></span><span class="metric"><strong>Precision</strong> <span class="number">0.841</span></span><span class="metric"><strong>Recall</strong> <span class="number">1.0</span></span><span class="metric"><strong>Accuracy</strong> <span class="number">0.841</span></span><span class="metric"><strong>TPR</strong> <span class="number">1.0</span></span><span class="metric"><strong>FPR</strong> <span class="number">1.0</span></span><span class="metric"><strong>TNR</strong> <span class="number">0.0</span></span><span class="metric"><strong>FNR</strong> <span class="number">0.0</span></span><span class="metric"><strong>TP</strong> <span class="number">8413.0</span></span><span class="metric"><strong>FP</strong> <span class="number">1587.0</span></span><span class="metric"><strong>TN</strong> <span class="number">0.0</span></span><span class="metric"><strong>FN</strong> <span class="number">0.0</span></span><span class="metric"><strong>MAE</strong> <span class="number">0.065</span></span><span class="metric"><strong>RMSE</strong> <span class="number">0.133</span></span><span class="metric"><strong>R2</strong> <span class="number">0.641</span></span><span class="metric"><strong>missing_preds</strong> <span class="number">0</span></span></div></td></tr><tr><td>discovery</td><td>unique_prototypes</td><td><div class="metric-list"><span class="metric"><strong>F1</strong> <span class="number">0.691</span></span><span class="metric"><strong>DAF</strong> <span class="number">4.163</span></span><span class="metric"><strong>Precision</strong> <span class="number">0.636</span></span><span class="metric"><strong>Recall</strong> <span class="number">0.757</span></span><span class="metric"><strong>Accuracy</strong> <span class="number">0.895</span></span><span class="metric"><strong>TPR</strong> <span class="number">0.757</span></span><span class="metric"><strong>FPR</strong> <span class="number">0.079</span></span><span class="metric"><strong>TNR</strong> <span class="number">0.921</span></span><span class="metric"><strong>FNR</strong> <span class="number">0.243</span></span><span class="metric"><strong>TP</strong> <span class="number">25255.0</span></span><span class="metric"><strong>FP</strong> <span class="number">14425.0</span></span><span class="metric"><strong>TN</strong> <span class="number">167689.0</span></span><span class="metric"><strong>FN</strong> <span class="number">8119.0</span></span><span class="metric"><strong>MAE</strong> <span class="number">0.052</span></span><span class="metric"><strong>RMSE</strong> <span class="number">0.094</span></span><span class="metric"><strong>R2</strong> <span class="number">0.741</span></span><span class="metric"><strong>missing_preds</strong> <span class="number">110</span></span></div></td></tr></table></section><section class="band"><h2>Fichiers de résultats / prédictions</h2><table class="attrs compact"><tr><th>Fichier</th><th>Statut</th><th>Taille</th><th>URL</th><th>Chemin local</th></tr><tr><td>2024-11-20-kappa-103-FIRE-fmax=1e-4-symprec=1e-5.json.gz</td><td><span class='pill missing'>missing</span></td><td>N/A</td><td><a href="https://figshare.com/files/52134896">https://figshare.com/files/52134896</a></td><td>outputs\pred_files\grace_2l_mptrj\2024-11-20-kappa-103-FIRE-fmax=1e-4-symprec=1e-5.json.gz</td></tr><tr><td>2024-11-11-relaxed-structures.jsonl.gz</td><td><span class='pill missing'>missing</span></td><td>N/A</td><td><a href="https://figshare.com/files/53153483">https://figshare.com/files/53153483</a></td><td>outputs\pred_files\grace_2l_mptrj\2024-11-11-relaxed-structures.jsonl.gz</td></tr><tr><td>2024-11-11-wbm-IS2RE-FIRE.csv.gz</td><td><span class='pill missing'>missing</span></td><td>N/A</td><td><a href="https://figshare.com/files/52057577">https://figshare.com/files/52057577</a></td><td>outputs\pred_files\grace_2l_mptrj\2024-11-11-wbm-IS2RE-FIRE.csv.gz</td></tr><tr><td>2025-02-19-diatomics.json.gz</td><td><span class='pill missing'>missing</span></td><td>N/A</td><td><a href="https://figshare.com/files/52467524">https://figshare.com/files/52467524</a></td><td>outputs\pred_files\grace_2l_mptrj\2025-02-19-diatomics.json.gz</td></tr></table></section><section class="band"><h2>Datasets</h2><table class="attrs compact"><tr><th>Dataset</th><th>Contexte</th></tr><tr><td>MPtrj</td><td>YAML training_set</td></tr></table></section><section class="band"><h2>Hyperparamètres</h2><p class="muted">Aucun hyperparamètre structuré trouvé.</p></section><section class="band"><h2>Architecture</h2><table class="attrs"><tr><th>UIP</th><td><table class="attrs"><tr><th>ontology_class</th><td><div class="value">MachineLearningArchitecture</div><div class="evidence">YAML model_type</div></td></tr><tr><th>parameter_number</th><td><div class="value"><span class="number">15346704</span></div><div class="evidence">YAML model_params</div></td></tr><tr><th>hyperparameters</th><td><div class="value"><ul><li>max_force</li><li>max_steps</li><li>ase_optimizer</li><li>cell_filter</li><li>graph_construction_radius</li><li>max_neighbors</li></ul></div><div class="evidence">YAML hyperparams</div></td></tr></table></td></tr></table></section><section class="band"><h2>Training runs</h2><table class="attrs"><tr><th>training_runs</th><td><ul><li><table class="attrs"><tr><th>id</th><td>grace_2l_mptrj_training_run</td></tr><tr><th>type</th><td><div class="value">MachineLearningTrainingRun</div><div class="evidence">ontology/trainingonto.ttl</div></td></tr><tr><th>architectures</th><td><div class="value"><ul><li>UIP</li></ul></div><div class="evidence">YAML model_type</div></td></tr><tr><th>datasets</th><td><div class="value"><ul><li>MPtrj</li></ul></div><div class="evidence">YAML training_set</div></td></tr></table></li></ul></td></tr></table></section><section class="band"><h2>Sources locales</h2><table class="attrs"><tr><th>yaml</th><td>model_yamls\grace_2l_mptrj.yml</td></tr><tr><th>json</th><td>outputs\json\grace_2l_mptrj_model_extraction.json</td></tr><tr><th>ttl_repaired</th><td>outputs\ttl_repaired\grace_2l_mptrj_model_individuals_generated.ttl</td></tr></table></section><section class="band"><h2>Sources d&#x27;extraction</h2><table class="attrs"><tr><th>pdf_file</th><td>papers/grace_2l_oam_l.pdf</td></tr><tr><th>pdf_url</th><td><a href="https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021036">https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021036</a></td></tr><tr><th>yaml_file</th><td>model_yamls\grace_2l_mptrj.yml</td></tr></table></section>
+  </main>
+  
+<aside id="object-inspector" class="inspector" aria-live="polite">
+  <button type="button" class="inspector-close" data-inspector-close>×</button>
+  <p data-inspector-kind>objet</p>
+  <h2 data-inspector-title>Sélectionne un objet</h2>
+  <div class="inspector-body" data-inspector-body>
+    Clique sur une métrique, un dataset, une task, un hyperparamètre, un lien ou une ligne du tableau.
+  </div>
+  <div class="inspector-source" data-inspector-source>La description apparaîtra ici.</div>
+</aside>
+
+  
+<script>
+(() => {
+  const panel = document.querySelector('#object-inspector');
+  const title = panel?.querySelector('[data-inspector-title]');
+  const kind = panel?.querySelector('[data-inspector-kind]');
+  const body = panel?.querySelector('[data-inspector-body]');
+  const source = panel?.querySelector('[data-inspector-source]');
+  const close = panel?.querySelector('[data-inspector-close]');
+  if (!panel || !title || !kind || !body || !source) return;
+
+  const clean = (text) => (text || '').replace(/\s+/g, ' ').trim();
+
+  function describe(target) {
+    const metric = target.closest('.metric');
+    if (metric) {
+      return {
+        title: clean(metric.querySelector('strong')?.textContent) || 'Métrique',
+        kind: 'metric',
+        body: clean(metric.textContent),
+        source: clean(metric.closest('tr')?.querySelector('td:nth-child(2)')?.textContent)
+      };
+    }
+
+    const row = target.closest('tr');
+    if (row) {
+      const header = clean(row.querySelector(':scope > th')?.textContent)
+        || clean(row.querySelector(':scope > td:first-child')?.textContent)
+        || 'Objet';
+      const section = clean(row.closest('section')?.querySelector('h2')?.textContent);
+      const evidence = clean(row.querySelector('.evidence')?.textContent);
+      const sourceText = clean(row.querySelector('.source')?.textContent)
+        || clean(row.querySelector('a')?.getAttribute('href'));
+      return {
+        title: header,
+        kind: section || 'attribut',
+        body: clean(row.textContent),
+        source: evidence || sourceText
+      };
+    }
+
+    const item = target.closest('li, .facts span, h1, h2, a, .pill, .value');
+    if (item) {
+      return {
+        title: clean(item.textContent) || clean(item.getAttribute('href')) || 'Objet',
+        kind: clean(item.closest('section')?.querySelector('h2')?.textContent) || item.tagName.toLowerCase(),
+        body: clean(item.textContent) || clean(item.getAttribute('href')),
+        source: clean(item.getAttribute('href')) || clean(item.closest('tr')?.querySelector('.evidence')?.textContent)
+      };
+    }
+
+    return null;
+  }
+
+  document.addEventListener('click', (event) => {
+    const candidate = event.target.closest('tr, li, .metric, .facts span, h1, h2, a, .pill, .value');
+    if (!candidate || candidate.closest('#object-inspector')) return;
+    const info = describe(candidate);
+    if (!info) return;
+
+    if (candidate.closest('a') && !(event.ctrlKey || event.metaKey || event.shiftKey)) {
+      event.preventDefault();
+    }
+    event.stopPropagation();
+
+    title.textContent = info.title || 'Objet';
+    kind.textContent = info.kind || 'objet';
+    body.textContent = info.body || 'Pas de description disponible.';
+    source.textContent = info.source || 'Source non renseignée pour cet objet.';
+    panel.classList.add('open');
+  });
+
+  close?.addEventListener('click', () => panel.classList.remove('open'));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') panel.classList.remove('open');
+  });
+})();
+</script>
+
+</body>
+</html>

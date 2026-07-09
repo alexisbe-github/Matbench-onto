@@ -1,0 +1,1366 @@
+[page 1]
+Learning Smooth and Expressive Interatomic
+Potentials for Physical Property Prediction
+Xiang Fu1, Brandon M. Wood1, Luis Barroso-Luque1, Daniel S. Levine1, Meng Gao1, Misko Dzamba1,
+C. Lawrence Zitnick1
+1Fundamental AI Research (FAIR) at Meta
+Machine learning interatomic potentials (MLIPs) have become increasingly effective at approximating
+quantum mechanical calculations at a fraction of the computational cost. However, lower errors
+on held out test sets do not always translate to improved results on downstream physical property
+prediction tasks. We propose testing MLIPs on their practical ability to conserve energy during
+molecular dynamic simulations. If passed, improved correlations are found between test errors and
+their performance on physical property prediction tasks. We identify choices which may lead to
+models failing this test, and use these observations to improve upon highly-expressive models. The
+resulting model, eSEN, provides state-of-the-art results on a range of physical property prediction tasks,
+including materials stability prediction, thermal conductivity prediction, and phonon calculations.
+Correspondence: Xiang Fu (xiangfu@meta.com) and C. Lawrence Zitnick (zitnick@meta.com)
+Code: https://github.com/facebookresearch/fairchem
+Checkpoints: https://huggingface.co/facebook/OMAT24
+1 Introduction
+Density Functional Theory (DFT), which models the
+electrons in materials and molecules, serves as the
+foundation for many modern drug and materials dis-
+covery workflows. Unfortunately, DFT calculations
+are notoriously computationally intensive, scaling
+cubically with the number of electrons in the sys-
+tem: O(n3). Machine learning interatomic potentials
+(MLIPs) are promising in approximating and expe-
+diting DFT calculations. With increasing data set
+sizes and model innovations, MLIPs have shown sub-
+stantial improvements in accuracy and generalization
+capabilities (Batatia et al., 2023; Merchant et al.,
+2023; Yang et al., 2024; Barroso-Luque et al., 2024).
+Predicting physical properties in chemistry and ma-
+terials science often requires complex workflows in-
+volving numerous evaluations of DFT or MLIPs. For
+example, in molecular dynamics (MD) simulations,
+forces are predicted over thousands to millions of
+time steps. However, the MLIP literature has mostly
+focused on assessing models based on energy and
+force predictions over static DFT test sets rather
+than directly assessing their performance in complex
+simulations. This approach has limitations, as im-
+proved accuracy on test sets does not always lead to
+better predictions of physical properties (Póta et al.,
+2024; Loew et al., 2024).
+In this paper, we address two questions: Why does
+higher test accuracy sometimes fail to enhance a
+model’s ability to predict physical properties, and
+how can we improve MLIPs to excel in this area? We
+first outline four critical property prediction tasks
+and identify the properties required for an MLIP
+to succeed in these tasks. These properties entail
+learning a conservative model with continuous and
+bounded energy derivatives, indicating a smoothly-
+varying and physically meaningful energy landscape.
+To test whether these properties hold, we propose
+testing the ability of MLIPs to practically conserve
+energy in MD simulations. We demonstrate models
+that pass this test have a higher correlation between
+test errors and property prediction accuracy.
+Building on these insights, we present a novel MLIP
+called eSEN and training approach that achieves
+state-of-the-art (SOTA) performance on complex
+property prediction tasks. Specifically, our model
+is capable of running energy-conserving MD simula-
+tions for out-of-distribution systems (Figure 1 (a)).
+For materials stability prediction, eSEN achieves a
+leading F1 score of0.831 and aκSRME of 0.340 on the
+compliant Matbench-Discovery benchmark (Riebe-
+sell et al., 2023; Póta et al., 2024). Previous models
+are only able to excel in one of these metrics ( Fig-
+ure 1 (b,c)). We also achieve a SOTA F1 score of
+0.925 and κSRME of 0.170 on the non-compliant cate-
+1
+arXiv:2502.12147v2  [physics.comp-ph]  23 Apr 2025
+
+[page 2]
+(a) (b)
+(c) (d)
+Figure 1 (a) Energy conservation in MD simulations.
+Direct-force models (Orb, eqV2) and CHGNet fail to con-
+serve. (b) A higher F1 score on the Matbench-Discovery
+strongly correlates with a lower test-set energy MAE.
+(c) Test-set energy MAE andκSRME on the Matbench-
+Discovery benchmark. (d) Test-set energy MAE and vi-
+brational entropy MAE on the MDR Phonon benchmark.
+Our model (eSEN) achieves the best performance on all
+benchmarks. A higher correlation between test-set energy
+MAE and physical property prediction performance can
+be observed among energy-conserving models. All models
+are trained on MPTrj.
+gory. On the MDR Phonon benchmark (Loew et al.,
+2024), SOTA results are found (Figure 1 (d)). Fi-
+nally, eSEN achieves the highest test accuracy on the
+SPICE-MACE-OFF dataset (Kovács et al., 2023).
+2 Preliminaries
+2.1 Machine learning interatomic potentials
+Under the Born-Oppenheimer approximation (Op-
+penheimer, 1927) utilized by DFT (Parr et al., 1979),
+the Potential Energy Surface (PES) can be written
+as a function of positions,r, and atomic numbers,a:
+E(r, a). Per-atom forces can be calculated by taking
+the negative gradient of the PES with respect to the
+atom positions, F = −∇rE. For periodic systems
+such as inorganic materials, the lattice parametersl
+are also considered (E(r, a, l)), and the stressσ may
+also be calculated, which can be understood as the
+gradient of the potential energy surface with respect
+to the lattice parameters.
+The goal of an MLIP (Unke et al., 2021b) is to predict
+the exact same properties as DFT from a training
+dataset of DFT calculations (Chanussot et al., 2021;
+Riebesell et al., 2023; Loew et al., 2024). The most
+straightforward benchmark for MLIPs is to evaluate
+the model on a held-out test set of DFT calculations,
+andcomparemodelsbasedonthemeanabsoluteerror
+(MAE) or root mean squared error (RMSE) of ener-
+gies, forces, or stresses. To bridge the gap between
+these performance metrics and practical applicabil-
+ity, we need to ensure they correlate with physical
+property prediction tasks, such as those described
+next.
+2.2 Physical property prediction tasks
+Geometry optimization/relaxation. Many computa-
+tional chemistry and materials science tasks rely on
+atomic systems being in stable configurations, which
+correspond to minima of the PES. Stable states are
+found by minimizing the potential energy using an
+optimization procedure that iteratively updates atom
+positions based on the predicted forces (F = −∇rE).
+Given that many physical properties are evaluated
+at or near equilibrium states, geometry optimization
+(also referred to as “relaxation”) is usually the first
+step in most computational workflows.
+MD simulations. Simulating the time evolution of
+atomic systems enables us to gain understanding of
+various chemical and biological processes, as well as
+enabling the calculation of macroscopic properties,
+such as liquid densities, that can be experimentally
+verified. For the task of molecular dynamics simu-
+lation, we typically use a potential to compute the
+per-atom forces which are then used to numerically
+integrate Newton’s equations of motion. In this work,
+we will focus on themicrocanonical ensemble (NVE),
+where the number of particles (N), the volume of the
+system (V), and the energy of the system (E) are
+kept constant.
+Phonon and thermal conductivity calculations. Precise
+predictions of phonon band structures and vibra-
+tional modes are essential for understanding various
+material properties, including dynamical stability,
+thermal stability Bartel (2022); Fultz (2010), ther-
+mal conductivity Razeghi (2002), and optoelectronic
+behavior Ganose et al. (2021). The calculation of
+phonon band structures requires the MLIP to accu-
+rately predict higher-order derivatives and capture
+the subtle curvature of the true PES around critical
+points. Recent work Póta et al. (2024) has demon-
+strated the usage of MLIPs in predicting thermal
+conductivity (κ) by solving the Wigner transport
+equation (Simoncelli et al., 2022). In order to accu-
+rately predict κ, MLIPs must reliably capture both
+2
+
+[page 3]
+harmonic and anharmonic phonon behavior, which
+necessitates the calculation of second and third deriva-
+tives of the learned PES.
+3 Desideratum for physical property
+prediction
+We begin the section by defining what it means
+for an MLIP to be energy conserving, which is a
+fundamental principle for applications such as MD
+simulations (Tuckerman, 2023). For many physical
+property prediction tasks that probe the higher-order
+derivatives of the PES it is also important that the
+PES’s derivatives are well-behaved (they exist and
+are bounded). To indicate whether a PES meets
+these criteria, we discuss how an MLIP’s ability to
+conserve energy given fixed simulation settings may
+be used.
+3.1 Conservative forces
+For a force model to be conservative, the work done
+by moving in a closed path must be zero, i.e., the
+integration of the forces along any path that starts
+and ends at the same point is zero:
+I
+F · dr = 0 (1)
+This property holds if the forces are calculated as
+the negative derivative of the PES with respect to
+the atom positions (Unke et al., 2021b). However,
+predicting forces as derivatives requires an additional
+backpropagation step through the network, which
+increases the computational cost of the MLIP. Al-
+ternatively, some networks (Liao et al., 2023; Neu-
+mann et al., 2024) directly predict forces using a
+separate force head to increase efficiency1. Although
+direct-force models can achieve high accuracy, their
+non-conservative nature leads to significantly larger
+errors in certain property prediction tasks (Fu et al.,
+2023; Loew et al., 2024; Póta et al., 2024; Bigi et al.,
+2024).
+3.2 Bounded energy derivatives
+Conservative forces is a necessary but not sufficient
+condition for an MLIP to demonstrate energy con-
+servation in MD. In practice, MD simulations use
+a finite-order numerical integration algorithm and
+a finite time step∆t, which introduces truncation
+errors. The most commonly used integrator for the
+1Strictly speaking, direct-force models are not truly “poten-
+tials”, but rather (non-conservative) “force fields”.
+NVE ensemble is the Verlet algorithm–a second-order
+integrator. The Verlet integrator is known to approx-
+imately conserve the total energy of the system in
+long-time simulations. As shown by Theorem 5.1 of
+Hairer et al. 2003, the total energy drift of a simula-
+tion satisfies
+|E(rT , a) − E(r0, a)| ≤ C∆t2 + CN∆tN T, (2)
+where T, 0 ≤ T ≤ ∆t−N, is the total simulation
+time, N is a positive integer representing the highest
+order for which the Nth-order derivative of E is
+continuously differentiable with a bounded derivative,
+and r0 and rT are the starting and ending positions
+of the atoms in the simulation respectively. The
+constants C and CN are independent ofT and ∆t.
+The energy drift bound contains two terms: the first
+term represents a time-independent fluctuation of
+O(∆t2), and the second term represents the long-
+term energy conservation. The proof for this theorem
+is long and technical, for which we refer interested
+readers to Hairer et al. 2003 and Hairer et al. 2006
+for more details.
+In Equation (2), the∆tN in the second term and the
+bound on the simulation timeT ≤ ∆t−N implies that
+the PES must be continuously differentiable to high
+orderfor energyconservationin long-timesimulations.
+The critical constantCN depends on the bounds of
+the derivatives ofE up to the(N + 1)th order. This
+implies that, given a fixed time step size,E and its
+higher-order derivatives up to the(N)th order all
+need to be continuously differentiable with bounded
+derivatives to maintain long-time conservation. If
+the derivatives of a PES are more tightly bound,
+approximate energy conservation will be maintained
+even at larger step sizes∆t. Therefore, the magnitude
+of ∆t for which the energy is stable can be viewed as a
+proxy for the derivative bounds of the estimated PES.
+Alternatively, if a certain time step is known to be
+stable when using DFT, we can determine whether an
+MLIP has similar bounds on higher-order derivatives
+by testing whether it is also stable using the same
+time step.
+4 eSEN
+We propose equivariant Smooth Energy Network
+(eSEN), a new MLIP architecture that improves upon
+architectures that demonstrate high test accuracies to
+achieve effective physical property predictions. eSEN
+is a message-passing neural network that conducts
+multiple blocks of edgewise and nodewise neural pro-
+cessing. Initially, all nodes are embedded as multi-
+channel spherical harmonic representations. Each
+3
+
+[page 4]
+Node  
+Embedding
+Natom×L(L+1)×Nchannel
+Indexing & 
+Aligning
+Nedge×2L(L+1)×Nchannel
+SO2 
+Convolution
+Edge Invariant 
+EmbeddingNon-linearity
+Nedge×Nchannel
+SO2 
+Convolution Nedge×Nchannel
+Envelope
+Scatter Sum
+Edge distance 
+Node  
+Embedding
+Natom×L(L+1)×Nchannel
+Edgewise 
+Convolution
+Add & Norm
+Nodewise 
+Feed-Forward
+Add & Norm
+Input 
+Embedding
+Nodewise 
+Feed-Forward
+Natom×L(L+1)×Nchannel
+L=0:Natom×1×Nchannel
+Energy
+Input
+Backward
+Forces 
+Stress
+×Nlayer
+Sum
+(a) (b)
+Edgewise 
+Convolution
+Figure 2 (a) The eSEN architecture. The high-level archi-
+tecture is similar to Transformer/Equiformer, while the
+edgewise/nodewise layers are simplified/enhanced. The
+final-layer L = 0 features are used to predict nodewise en-
+ergy, which is summed to get the total potential energyE.
+Forces and stress are obtained through back-propagration.
+(b) The Edgewise Convolution layer in eSEN.
+eSEN layer block updates the node embedding by
+conducting an edgewise convolution, followed by a
+nodewise feed-forward network with normalization
+layers and residual connections between all layers.
+A model diagram is shown in Figure 2. eSEN utilizes
+the same SO2 convolution layer from the equivari-
+ant spherical channel network (eSCN) architecture
+Passaro and Zitnick (2023) inside the edgewise con-
+volution block. Compared to eSCN, our edgewise
+convolution blocks first concatenate the source and
+target node embedding, then apply two SO2 convo-
+lution layers with an intermediate non-linearity. We
+also add an envelope function (details in Section 5)
+which is not in eSCN. The nodewise feed-forward
+layer uses two equivariant linear layers and an in-
+termediate SiLU-based gated non-linearity (Weiler
+et al., 2018; Geiger and Smidt, 2022), which is the
+same as Equiformer (Liao and Smidt, 2022). Unlike
+eSCN and EquiformerV2 (Liao et al., 2023), which
+projects the spherical-harmonics channels onto spa-
+tial grids for nodewise processing, the nodewise layers
+in eSEN do not discretize the node representations.
+As we demonstrate in Section 5, this design improves
+the ability of the model to conserve energy. Normal-
+ization is performed using the equivariant layer nor-
+malization (Ba, 2016) proposed by Equiformer (Liao
+and Smidt, 2022). In the next section, we conduct
+an in-depth analysis of the key design choices for
+energy conservation, which we argue is important for
+accurate physical property prediction.
+5 Design choices for enhancing phys-
+ical property prediction
+As discussed in Section 3, having conservative forces
+with continuous and bounded energy derivatives are
+properties an MLIP should obey for MD simulations.
+It can also be seen as a prerequisite for the MLIP to
+accurately capture higher-order behavior of the PES
+and thus high accuracy in physical property predic-
+tion tasks such as phonon calculations. Motivated by
+this observation, we identify design choices that im-
+pact a model’s ability to conserve energy and whether
+its PES varies smoothly. These design choices can
+be categorized into three aspects: (1) conservative
+vs. direct-force prediction; (2) discretization of the
+representation; and (3) obtaining a continuous and
+smoothly varying PES. For many of these design as-
+pects, their impact on the desired properties is not
+well understood.
+To quantify whether an MLIP’s PES is continuous
+and smoothly varying, we measure the ability of
+the resulting MLIP to conserve energy during MD
+simulations with a predetermined fixed time step.
+We trained eSEN models under the same hyperpa-
+rameters while ablating one design choice at a time.
+We construct out-of-distribution (OOD) MD simula-
+tion tasks for both inorganic materials and organic
+molecules using models trained on the MPTrj (Jain
+et al., 2013; Deng et al., 2023) and the SPICE-MACE-
+OFF (Eastman et al., 2023; Kovács et al., 2023)
+datasets. For inorganic materials, we compute an av-
+erage conservation error over 81 NVE MD simulations
+of 100 ps based on the TM23 dataset’s simulation
+settings (Owen et al., 2024). For organic molecules,
+we compute an average conservation error over 7
+NVE MD simulations of 100 ps based on the MD22
+dataset’s simulation settings (Chmiela et al., 2023).
+All eSEN models are 2-layer with 3.2M trainable
+parameters. We include details regarding the task
+protocol in Appendix A.
+5.1 Direct-force prediction
+Models that directly predict forcesˆF from the atomic
+configuration may produce forces that are inconsis-
+tent with the energy prediction, i.e., ˆF ̸= −∇r ˆE,
+and more importantly are unlikely to be conservative.
+From the perspective of minimizing the test error,
+the direct-force approach has strong motivations: it
+avoids the backward pass for force prediction, which
+4
+
+[page 5]
+significantly improves model efficiency and enables
+low-precision training which further accelerates train-
+ing. Empirically, current SOTA accuracy on the
+OC20, OC22, and Matbench-Discovery (Chanussot
+et al., 2021; Tran et al., 2023; Riebesell et al., 2023)
+benchmarks are achieved by direct-force models. De-
+spite this, the direct-force formulation results in sig-
+nificant energy drift in MD simulations, as shown in
+Figure 4 (a1, a2). For this reason, we compute forces
+as the negative gradient of the PES with respect to
+the atom positions in eSEN.
+0 20 40 60 80 100
+Epoch
+2.0
+2.5
+3.0
+3.5
+4.0Validation loss
+0 10 20 30 40
+Time (hours)
+2.0
+2.5
+3.0
+3.5
+4.0
+Direct force
+Conserved
+Finetuning
+Finetuning starts
+Figure 3 Validation loss curves for epoch and wallclock
+time.
+Direct-force pre-training. Although direct-force mod-
+els are not suitable for certain physical property pre-
+diction tasks, they may still offer advantages (Bigi
+et al., 2024; Amin et al., 2025). We demonstrate their
+efficiency can offer significant benefit as a pre-training
+strategy for a conservative model. Figure 3 shows the
+validation loss of 2-layer eSEN models trained on the
+MPTrj dataset: direct-force, conservative, and con-
+servative fine-tuning from a pre-trained direct-force
+backbone. We start from a direct-force model trained
+for 60 epochs, remove its direct-force prediction head,
+and fine-tune using conservative force prediction. The
+conservative fine-tuned model achieves a lower valida-
+tion loss after being trained for 40 epochs compared
+to the from-scratch conservative model being trained
+for 100 epochs. The fine-tuning strategy also reduces
+the wallclock time for model training by 40%. The
+strategy of combining direct-force pre-training and
+conservative fine-tuning is also shown to be effec-
+tive under different data/model settings (Bigi et al.,
+2024).
+5.2 Representation discretization
+As proposed by Cohen and Welling 2016 and later
+used in eSCN and EquiformerV2 (Zitnick et al., 2022;
+Passaro and Zitnick, 2023; Liao et al., 2023), non-
+linearities may be performed by projecting the spher-
+ical harmonics to a discrete grid. A1 × 1 convolu-
+tion or pointwise non-linearity may then be applied
+to this grid, which then get projected back to the
+spherical-harmonics space. The non-linear step may
+introduce higher-frequency signals than cannot be
+properly represented by the spherical harmonics, i.e.,
+they are beyond the Nyquist frequency. This can lead
+to sampling errors that break strict equivariance and
+energy conservation. This problem can be mitigated
+by sampling the grid at higher resolutions as shown
+in Figure 4 (b1, b2). In eSEN, we instead use the
+SiLU-based equivariant Gated non-linearity (Weiler
+et al., 2018; Geiger and Smidt, 2022) that performs
+the non-linearity directly in the spherical harmonic
+representation. This does not require a projection to
+a discrete grid, so the model is perfectly equivariant
+and conservative up to numerical accuracy.
+5.3 Smoothly varying PES
+Subtle choices in the design of MLIPs can have a
+significant impact on whether a PES varies smoothly
+and can even lead to the presence of discontinuities.
+These include how neighboring atoms are chosen,
+whether envelope functions are used near atom dis-
+tance cutoffs, and which basis functions are used to
+embed pairwise atom distances. We discuss each of
+these in turn.
+A maximum number of neighbors limit in graph con-
+struction has been found to improve training effi-
+ciency without compromising test error (Liao et al.,
+2023; Qu and Krishnapriyan, 2024). However, it re-
+sults in a discontinuity in the learned PES as the
+nearest-K neighbors may change drastically under a
+small perturbation of the atom positions. As shown
+in Figure 4 (c1, c2), having a maximum neighbor
+limit breaks energy conservation. In eSEN, instead of
+limiting the number of neighbors, we use the common
+approach of applying a distance cutoff (6Å) under
+which all neighbors are kept.
+Envelope functions were first introduced in the
+DimeNet architecture (Gasteiger et al., 2020a) to
+improve model smoothness. The radial basis func-
+tion used in MLIPs is not twice continuously differ-
+entiable due to the use of a finite cutoff during graph
+construction. By applying a polynomial envelope
+function on the edge messages, the values in an edge
+message and its first/higher-order derivatives with
+respect to atom positions decays to 0 when the edge
+distance approaches the cutoff distance. Figure 4 (c1,
+c2) shows a model fails to conserve energy without
+the envelope function.
+Radial basis functions are commonly used to embed
+interatomic distances(Bartók et al., 2013). A larger
+number of basis functions (512 in Passaro and Zit-
+nick 2023, as opposed to 10 in eSEN’s default setting)
+allows higher-frequency signals to pass through the
+5
+
+[page 6]
+(a1)
+(a2) (b2)
+(b1) (c1)
+(c2)
+Figure 4 Conservation error on the TM23 task (top row) and MD22 task (bottom row) for ablating design choices of
+eSEN. Models that conserve energy arebolded in the legends.
+Table 1 Test set MAE for design choices studied in Sec-
+tion 3. The conserved model significantly outperforms the
+direct-force model on SPICE-MACE-OFF.Nbasis = 512
+performs slightly better on SPICE but slightly worse on
+MPTrj. Other eSEN variants all have similar test er-
+rors on MPTrj/SPICE-MACE-OFF. Energy MAE is in
+meV/atom. Force MAE is in meV/Å. Stress MAE is in
+meV/Å/atom.
+MPTrj SPICE
+Model Energy Force Stress Energy Force
+eSEN 17.02 43.96 0.14 0.23 6.36
+eSEN, direct 18.66 43.62 0.16 0.56 10.98
+eSEN, neighbor limit17.30 44.11 0.14 0.24 6.52
+eSEN, no envelope17.60 44.69 0.14 0.23 6.33
+eSEN,Nbasis= 512 19.87 48.29 0.15 0.19 5.40
+eSEN, Bessel 17.65 44.83 0.15 0.20 5.54
+eSEN, discrete, res=617.05 43.10 0.14 0.26 6.34
+eSEN, discrete, res=1017.11 43.13 0.14 0.33 6.57
+eSEN, discrete, res=1417.12 43.09 0.14 0.33 6.51
+network. This can lead to the PES being more sen-
+sitive to small shifts in the atom positions. In our
+experiments, using a large number of basis functions
+breaks conservation for the TM23 tasks, but is able to
+conserve energy for the MD22 tasks. Using a Bessel
+radial basis function (as opposed to a Gaussian ra-
+dial basis in the default setting) does not impact
+conservation properties in both tasks.
+5.4 Ablation studies
+Many of the architecture choices described above
+have negligible impact on the test set errors as shown
+in Table 1. However, as shown in Figure 4, they
+can have a dramatic impact on whether a model is
+conservative in practice. If a model is found to be
+conservative, stronger correlations are found between
+test errors and property prediction tasks (Figure 1
+and Figure 6).
+6 Experiments
+In the previous section, we demonstrated the design
+of eSEN results in its ability to be energy-conserving
+in MD simulations. In this section, we evaluate eSEN
+in physical property prediction tasks: (1) materials
+stability prediction based on geometry optimization;
+(2) thermal conductivity prediction; and (3) phonon
+calculation. We also demonstrate the correlation
+between test energy MAE and physical property pre-
+diction tasks for eSEN.
+6.1 Matbench Discovery
+The Matbench-Discovery benchmark evaluates a
+model’s ability to predict ground-state (0 K) ther-
+modynamic stability through geometry optimization
+and energy prediction. It is a widely used benchmark
+for evaluating ML models in materials discovery. The
+compliant benchmark only includes models trained
+on the MPTrj (Jain et al., 2013; Deng et al., 2023)
+dataset or its subset, which facilitate a fair compar-
+ison of model architectures. The F1 score is the
+primary metric used to rank models. We train an
+eSEN with 30M parameters on MPTrj for 60 epochs
+of direct-force pre-training and 40 epochs of conser-
+6
+
+[page 7]
+Table 2 Matbench-Discovery benchmark results of compliant models (trained only on MPtrj or its subset) with results
+on the unique prototype split. MAE is in units of eV/atom. (↑/↓) stands for higher/lower the better.
+Metric eSEN-30M-MP eqV2 S DeNS MatRIS-MP AlphaNet-MP DPA3-v2-MP ORB v2 MPtrj SevenNet-l3i5 GRACE-2L-MPtrj MACE-MP-0 CHGNet M3GNet
+F1↑ 0.831 0.815 0.809 0.799 0.786 0.765 0.760 0.691 0.669 0.613 0.569DAF↑ 5.260 5.042 5.049 4.863 4.822 4.702 4.629 4.163 3.777 3.361 2.882Precision↑ 0.804 0.771 0.772 0.743 0.737 0.719 0.708 0.636 0.577 0.514 0.441Accuracy↑ 0.946 0.941 0.938 0.933 0.929 0.922 0.920 0.896 0.878 0.851 0.813MAE↓ 0.033 0.036 0.037 0.041 0.039 0.045 0.044 0.052 0.057 0.063 0.075R2↑ 0.822 0.788 0.803 0.745 0.804 0.756 0.776 0.741 0.697 0.689 0.585
+κSRME↓ 0.340 1.676 0.861 1.31 0.959 1.725 0.550 0.525 0.647 1.717 1.412RMSD↓ 0.0752 0.0757 0.0773 0.1067 0.0823 0.1007 0.0847 0.0897 0.0915 0.0949 0.1117
+Table 3 Matbench-Discovery benchmark results of non-compliant models with results on the unique prototype split.
+Model eSEN-30M-OAM eqV2-M-OAM ORB v3 SevenNet-MF-ompa DPA3-v2-OpenLAM GRACE-2L-OAM MatterSim-v1-5M MACE-MPA-0 GNoME
+F1↑ 0.925 0.917 0.905 0.901 0.890 0.880 0.862 0.852 0.829DAF↑ 6.069 6.047 5.912 5.825 5.747 5.774 5.852 5.582 5.523Precision↑ 0.928 0.924 0.904 0.879 0.879 0.883 0.895 0.853 0.844Accuracy↑ 0.977 0.975 0.971 0.969 0.966 0.963 0.959 0.954 0.955MAE↓ 0.018 0.020 0.024 0.021 0.022 0.023 0.024 0.028 0.035R2↑ 0.866 0.848 0.821 0.867 0.869 0.862 0.863 0.842 0.785
+κSRME↓ 0.170 1.771 0.210 0.317 0.687 0.294 0.574 0.412 N/ARMSD↓ 0.0608 0.0691 0.0750 0.0639 0.0679 0.0666 0.0733 0.0731 N/A
+vative fine-tuning. DeNS (Liao et al., 2024) is used
+during direct-force pre-training. As shown in Table 2,
+eSEN-30M-MP achieves an F1 score of0.831—the
+highest among all compliant models. eSEN-30M-MP
+also achieves the lowest root mean square deviation
+(RMSD) when comparing the relaxed structures to
+the ground truth DFT reference.
+The thermal conductivity prediction task requires accu-
+rate modeling of harmonic and anharmonic phonons
+in materials, which tests the accuracy of second and
+third order derivatives of the learned PES. The pri-
+mary metric is the symmetric relative mean error
+in predicting thermal conductivity (κSRME). We fol-
+low the protocol set forth in the Matbench-Discovery
+benchmark Riebesell et al. (2023); Póta et al. (2024)
+to predict thermal conductivity κ. After running
+a structural relaxation,κ is computed using second
+and third order force constants obtained from phonon
+calculations using the supercell method.
+As shown in Table 2, our model achieves aκSRME of
+0.340 under the default evaluation protocol proposed
+by Póta et al. 2024. Notably, our model excels in both
+the F1 score andκSRME, while all previous models
+only achieve SOTA performance on one or the other
+of these metrics.
+The non-compliant Matbench-Discovery benchmark in-
+cludes models trained on datasets other than MPTrj.
+eSEN-30M-OAM is an eSEN model with 30 million
+parameters pre-trained on the OMat24 (Barroso-
+Luque et al., 2024) dataset then fine-tuned on the sub-
+sampled Alexandria (sAlex) dataset (Barroso-Luque
+et al., 2024; Schmidt et al., 2024) and MPTrj dataset.
+As shown in Table 3, eSEN-30M-OAM achieves the
+best performance among all non-compliant models
+with an F1 score of0.925, a κSRME of 0.170, and an
+RMSD of0.0608, significantly advancing state-of-the-
+art.
+6.2 MDR phonon benchmark
+The MDR Phonon benchmark (Loew et al., 2024)
+assesses the performance of MLIPs in predicting key
+phonon properties, including maximum phonon fre-
+quency (ωmax), entropy (S), free energy (F) and heat
+capacity at constant volume (CV), for around 10,000
+materials. The evaluation follows the testing proto-
+col outlined by Loew et al. 2024. Section 6.2 shows
+the resulting MAE of our model and those of several
+other models2. eSEN achieves SOTA results in both
+compliant and non-compliant categories.
+Our results are consistent with those reported by
+Loew et al. 2024, showing that conservative MLIPs
+significantly outperform direct-force models in terms
+of prediction accuracy when tested using phonon cal-
+culations with a displacement of 0.01 Å. The high
+error of direct-force models can be largely attributed
+to high-frequency prediction errors at small displace-
+ments Loew et al. (2024). Increasing the displacement
+used in the finite-difference phonon calculations to 0.2
+Å can considerably improve prediction accuracy of
+direct-force models (with caveats). We include a more
+detailed analysis of the relationship between atom
+displacement and phonon prediction in Appendix B.
+In physical phonon calculations, we expect the re-
+2In addition to our model, we also run the evaluation for
+GRACE (Bochkarev et al., 2024), SevenNet (Park et al., 2024),
+Orb (Neumann et al., 2024), and eqV2-S-DeNS (Liao et al.,
+2023; Barroso-Luque et al., 2024), which were not included in
+the work by Loew et al. 2024.
+7
+
+[page 8]
+X U
+0
+5
+10
+15Frequency (THz)
+K
+ L W X 0 2
+DOS 
+ (States/THz)
+Si
+X M
+ R X
+0
+1
+2
+3
+4Frequency (THz)
+R M 0 5 10
+DOS 
+ (States/THz)
+CsCl
+M K
+ A L H A
+0
+5
+10
+15
+20
+25Frequency (THz)
+L M H K 0 2 4
+DOS 
+ (States/THz)
+AlN
+0.01
+0.02
+0.04
+0.08
+0.12
+0.16
+0.2
+DFT
+Figure 5 Predicted phonon band structure and density of states (DOS) of Si (diamond structure), CsCl (CsCl structure),
+AlN (wurtzite structure) using eSEN at different displacement values. DFT baseline is taken from the PBE MDR
+dataset Loew et al. (2024) calculated using a displacement of 0.01 Å.
+Table 4 Summary of model performance on the MDR
+Phonon benchmark. Metrics include maximum phonon
+frequency (MAE(ωmax), in K), the vibrational entropy
+(MAE(S), in J/K/mol), the Helmholtz free energy
+(MAE(F), in kJ/mol), and the heat capacity at con-
+stant volume (MAE(CV), in J/K/mol). *The OMat24
+dataset uses a slightly different DFT setting from the
+DFT setting of the MDR Phonon benchmark.
+Compliant modelsMAE(ωmax) MAE(S) MAE(F) MAE(CV)
+M3GNet 98 150 56 22
+CHGNet 89 114 45 21
+MACE 61 60 24 13
+GRACE-2L (r6) 40 25 9 5
+SevenNet-0 40 48 19 9
+SevenNet-l3i5 26 28 10 5
+eSEN-30M-MP 21 13 5 4
+Direct-force models
+Orb MPTrj [0.01 Å] 309 476 64 181
+Orb MPTrj [0.2 Å] 61 34 11 8
+eqV2-S-DeNS [0.01 Å] 280 224 54 94
+eqV2-S-DeNS [0.2 Å] 58 26 8 8
+Non-compliant models
+eqV2-M-OAM [0.01 Å] 780 403 241 100
+eqV2-M-OAM [0.2 Å] 50 25 7 9
+MatterSim 17 15 5 3
+GRACE-2L-OAM 19 14 5 4
+SevenNet-MF-ompa 15 8 3 3
+eSEN-30M-OAM 15 10 4 3
+sults to converge as the displacement goes to zero.
+By examining the resulting phonon band structure,
+we can gain insight into this behavior. Figure 5
+presents the predicted phonon band structure and
+density of states for three representative materials
+using eSEN. The predicted phonon bands exhibit
+convergence as the displacement decreases. In con-
+trast, Figures Figure C.11 and Figure C.12 display
+the phonon bands for the same three materials pre-
+dicted using eqV2-S-DeNS (direct-forces), which not
+only fail to demonstrate convergence but also exhibit
+significant errors, including missing acoustic branches
+and spurious imaginary frequencies.
+While we find that the OMat-trained models (without
+Table 5 Test set MAE for SPICE-MACE-OFF. Energy
+(E) MAE is in meV/atom. Force (F) MAE is in meV/Å.
+*EscAIP-45M is a direct-force model.
+MACE-4.7MEScAIP-45M* eSEN-3.2MeSEN-6.5M
+Dataset E F E F E F E F
+PubChem0.88 14.750.53 5.86 0.22 6.10 0.15 4.21
+DES370K M.0.59 6.58 0.41 3.48 0.17 1.85 0.13 1.24
+DES370K D.0.54 6.62 0.38 2.18 0.20 2.77 0.15 2.12
+Dipeptides0.42 10.190.31 5.21 0.10 3.04 0.07 2.00
+Sol. AA 0.98 19.430.61 11.52 0.30 5.76 0.25 3.68
+Water 0.83 13.570.72 10.31 0.24 3.88 0.15 2.50
+QMugs 0.45 16.930.41 8.74 0.16 5.70 0.12 3.78
+sAlex/MPTrj finetuning) may provide a lower error
+on phonon prediction (7/7/2/2 forωmax/S/F/CV
+MAE), we refrain from direct comparison due to
+mismatch in level of theory. We attribute this re-
+sult to the softening issue of the sAlex and MPTrj
+dataset (Deng et al., 2025; Barroso-Luque et al.,
+2024), which OMat24 addresses. We refer interested
+readers to Deng et al. 2025 and Barroso-Luque et al.
+2024 for a detailed discussion on the softening issue
+of some DFT datasets and its relation to phonon
+properties.
+6.3 SPICE-MACE-OFF
+We train and evaluate eSEN models on the SPICE-
+MACE-OFF dataset (Kovács et al., 2023), which is
+built upon the SPICE dataset (Eastman et al., 2023).
+As shown in Table 5, eSEN with 6.5M parameters
+outperforms MACE-OFF-L (4.7M parameters) and
+EscAIP (45M parameters, direct-force) on all test-
+set splits for both energy and force MAE. We also
+include results for eSEN with 3.2M parameters, which
+has inference efficiency similar to MACE-4.7M, while
+achieving lower test energy/force MAE. More details
+on the inference efficiency benchmark are included in
+Appendix C.
+8
+
+[page 9]
+40 50 60 70
+Energy MAE (meV/atom)
+0.4
+0.6
+0.8
+1.0
+1.2SRME
+40 50 60 70
+Energy MAE (meV/atom)
+20
+40
+60
+80
+100
+120
+140
+160Entropy MAE (J/K/mol)
+eSEN-30M
+eSEN-6.5M
+eSEN-3.2M
+eSEN, Bessel
+eSEN, direct-force
+eSEN, discrete
+eSEN, neighbor limit
+eSEN, no envelope
+eSEN, Nbasis=512
+Figure 6 Test error correlation across several property
+prediction tasks for eSEN variants. Conservative models
+are shown as boxes and those found to not conserve as
+crosses. Note metrics for conservative models have a
+stronger correlation with test set errors.
+6.4 Test-set error for model development
+In Figure 1, we showed the correlation between test er-
+rorandphysicalpropertypredictiontasksfordifferent
+architectures. Figure 6 demonstrates this correlation
+for different variants of eSEN (with a 1k-materials
+subset of the MDR Phonon benchmark for efficiency).
+In particular, among models that pass the MD en-
+ergy conservation test, a strong correlation between
+test error andκSRME/vibrational entropy MAE can
+be observed. We include experimental details about
+Figure 1 and Figure 6 in Appendix A and additional
+results for other phonon properties in Appendix B.
+7 Related works
+MLIP architectures have made significant progress
+since their initial proposal (Behler and Parrinello,
+2007). These architectures are usually symmetry-
+preserving (Smith et al., 2017; Schütt et al., 2017;
+Gilmer et al., 2017; Chmiela et al., 2017; Artrith et al.,
+2017; Unke and Meuwly, 2018; Zhang et al., 2018;
+Zubatyuk et al., 2019; Smith et al., 2020; Kovács
+et al., 2021), with increasingly expressive atom en-
+vironment embeddings and message-passing opera-
+tions(Gasteigeretal.,2020b,2021;Schüttetal.,2021;
+Liu et al., 2021; Unke et al., 2021a; Chen and Ong,
+2022; Deng et al., 2023; Cheng, 2024; Yin et al., 2025).
+Notably, equivariant architectures based on spheri-
+cal harmonics representations (Thomas et al., 2018;
+Thölke and De Fabritiis, 2021; Batzner et al., 2022;
+Musaelian et al., 2022; Batatia et al., 2022; Passaro
+and Zitnick, 2023; Liao et al., 2023; Bochkarev et al.,
+2024; Park et al., 2024; Batatia et al., 2025) have
+shown strong performance on large-scale datasets.
+Meanwhile, the high computational cost of these ar-
+chitectures has sparked significant interest in scalable
+architectures that may not respect physical princi-
+ples such as energy conservation (Langer et al., 2024;
+Brehmer et al., 2024; Hu et al., 2021; Yang et al.,
+2024; Qu and Krishnapriyan, 2024; Neumann et al.,
+2024; Rhodes et al., 2025). These models have demon-
+strated strong performance in accuracy, scalability,
+and relaxation tasks (Chanussot et al., 2021; Riebe-
+sell et al., 2023). While their non-physical nature
+may make them unsuitable for direct usage in some
+physical property prediction tasks, they may still
+provide benefit by using the pre-training strategy
+proposed in this paper and Bigi et al. 2024, distill-
+ing them to conservative models (Amin et al., 2025),
+or combining them with a conservative model using
+multiple-time-step integration (Bigi et al., 2024).
+MLIPs and physical observables. While MLIPs con-
+tinue to improve, it is necessary to evaluate them in
+realistic tasks that are relevant to scientific discovery.
+Physical property prediction benchmarks that involve
+geometry optimization (Riebesell et al., 2023; Lan
+et al., 2023; Wander et al., 2024), MD simulations (Fu
+et al., 2023; Kovács et al., 2023; Moore et al., 2024;
+Sabanes Zariquiey et al., 2024; Eastman et al., 2024),
+vibrational analysis and phonon calculations (Póta
+et al., 2024; Loew et al., 2024; Wines and Choudhary,
+2024), and others are increasing in scale with broader
+applications and wider adoption. Training strate-
+gies for learning from physical observables (Wang
+et al., 2020; Greener, 2024; Röcken et al., 2024; Raja
+et al., 2024) and the higher-order derivatives of the
+PES (Fang et al., 2024; Williams et al., 2025) are
+promising directions to further improve MLIPs for
+predicting physical properties.
+8 Discussion
+We identify conservative forces and a smoothly-
+varying PES as two important properties for MLIPs
+to consistently perform well in physical property pre-
+diction tasks. We offer an analysis of design choices
+to enhance these two properties. The resulting eSEN
+architecture bridges the gap between the test-set error
+and downstream applications, achieving SOTA perfor-
+mance in force/energy prediction, geometry optimiza-
+tion, phonon calculations, and thermal conductivity
+prediction. This implies it may be possible to use test
+error as a proxy metric for evaluating model perfor-
+mance during development, if a model passes energy
+conservation tests. This can accelerate innovations
+in MLIPs, since benchmarking physical properties
+usually requires significant domain knowledge and is
+usually time-consuming, whereas evaluating test set
+error is straightforward and efficient.
+9
+
+[page 10]
+Acknowledgements
+We acknowledge Zachary W. Ulissi (FAIR at Meta),
+Aditi S. Krishnapriyan (UC Berkeley), Samuel
+M. Blau (LBNL) and other members of the FAIR
+Chemistry team for helpful discussions, and Ammar
+Rizvi (FAIR at Meta) for project support.
+References
+GJ Ackland, MC Warren, and SJ Clark. Practical meth-
+ods in ab initio lattice dynamics.Journal of Physics:
+Condensed Matter, 9(37):7861, 1997.
+Ishan Amin, Sanjeev Raja, and Aditi Krishnapriyan. To-
+wards fast, specialized machine learning force fields:
+Distilling foundation models via energy hessians.arXiv
+preprint arXiv:2501.09009, 2025.
+Nongnuch Artrith, Alexander Urban, and Gerbrand
+Ceder. Efficient and accurate machine-learning inter-
+polation of atomic energies in compositions with many
+species. Physical Review B, 96(1):014112, 2017.
+Jimmy Lei Ba. Layer normalization. arXiv preprint
+arXiv:1607.06450, 2016.
+LuisBarroso-Luque, MuhammedShuaibi, XiangFu, Bran-
+donMWood, MiskoDzamba, MengGao, AmmarRizvi,
+C Lawrence Zitnick, and Zachary W Ulissi. Open ma-
+terials 2024 (omat24) inorganic materials dataset and
+models. arXiv preprint arXiv:2410.12771, 2024.
+Christopher J Bartel. Review of computational ap-
+proaches to predict the thermodynamic stability of
+inorganic solids. Journal of Materials Science, 57(23):
+10475–10498, 2022.
+Albert P Bartók, Risi Kondor, and Gábor Csányi. On
+representing chemical environments.Physical Review
+B—Condensed Matter and Materials Physics, 87(18):
+184115, 2013.
+Ilyes Batatia, David Peter Kovacs, Gregor N. C. Simm,
+Christoph Ortner, and Gabor Csanyi. MACE: Higher
+order equivariant message passing neural networks
+for fast and accurate force fields. In Alice H. Oh,
+Alekh Agarwal, Danielle Belgrave, and Kyunghyun
+Cho, editors, Advances in Neural Information Pro-
+cessing Systems, 2022.https://openreview.net/forum?
+id=YPpSngE-ZU.
+IlyesBatatia, PhilippBenner, YuanChiang, AlinMElena,
+Dávid P Kovács, Janosh Riebesell, Xavier R Advincula,
+Mark Asta, Matthew Avaylon, William J Baldwin, et al.
+A foundation model for atomistic materials chemistry.
+arXiv preprint arXiv:2401.00096, 2023.
+Ilyes Batatia, Simon Batzner, Dávid Péter Kovács, Albert
+Musaelian, Gregor NC Simm, Ralf Drautz, Christoph
+Ortner, Boris Kozinsky, and Gábor Csányi. The design
+space of e (3)-equivariant atom-centred interatomic
+potentials. Nature Machine Intelligence, pages 1–12,
+2025.
+Simon Batzner, Albert Musaelian, Lixin Sun, Mario
+Geiger, Jonathan P Mailoa, Mordechai Kornbluth,
+Nicola Molinari, Tess E Smidt, and Boris Kozinsky. E
+(3)-equivariant graph neural networks for data-efficient
+and accurate interatomic potentials.Nature communi-
+cations, 13(1):1–11, 2022.
+Jörg Behler and Michele Parrinello. Generalized neural-
+network representation of high-dimensional potential-
+energy surfaces. Physical review letters, 98(14):146401,
+2007.
+Filippo Bigi, Marcel Langer, and Michele Ceriotti. The
+dark side of the forces: assessing non-conservative force
+models for atomistic machine learning.arXiv preprint
+arXiv:2412.11569, 2024.
+Anton Bochkarev, Yury Lysogorskiy, and Ralf Drautz.
+Graph atomic cluster expansion for semilocal interac-
+tions beyond equivariant message passing.Phys. Rev.
+X, 14:021036, Jun 2024. doi: 10.1103/PhysRevX.14.
+021036. https://link.aps.org/doi/10.1103/PhysRevX.
+14.021036.
+Johann Brehmer, Sönke Behrends, Pim de Haan, and
+Taco Cohen. Does equivariance matter at scale?arXiv
+preprint arXiv:2410.23179, 2024.
+Lowik Chanussot, Abhishek Das, Siddharth Goyal,
+Thibaut Lavril, Muhammed Shuaibi, Morgane Riv-
+iere, Kevin Tran, Javier Heras-Domingo, Caleb Ho,
+Weihua Hu, Aini Palizhati, Anuroop Sriram, Brandon
+Wood, Junwoong Yoon, Devi Parikh, C. Lawrence Zit-
+nick, and Zachary Ulissi. Open catalyst 2020 (oc20)
+dataset and community challenges.ACS Catalysis, 11
+(10):6059–6072, 2021. doi: 10.1021/acscatal.0c04525.
+https://doi.org/10.1021/acscatal.0c04525.
+Chi Chen and Shyue Ping Ong. A universal graph deep
+learning interatomic potential for the periodic table.
+Nature Computational Science, 2(11):718–728, 2022.
+Bingqing Cheng. Cartesian atomic cluster expansion for
+machine learning interatomic potentials.npj Computa-
+tional Materials, 10(1):157, 2024.
+Stefan Chmiela, Alexandre Tkatchenko, Huziel E Sauceda,
+Igor Poltavsky, Kristof T Schütt, and Klaus-Robert
+Müller. Machine learning of accurate energy-conserving
+molecular force fields.Science advances, 3(5):e1603015,
+2017.
+Stefan Chmiela, Valentin Vassilev-Galindo, Oliver T
+Unke, Adil Kabylda, Huziel E Sauceda, Alexandre
+Tkatchenko, and Klaus-Robert Müller. Accurate global
+machine learning force fields for molecules with hun-
+dreds of atoms.Science Advances, 9(2):eadf0873, 2023.
+Taco Cohen and Max Welling. Group equivariant con-
+volutional networks. In International conference on
+machine learning, pages 2990–2999. PMLR, 2016.
+10
+
+[page 11]
+BowenDeng, PeichenZhong, KyuJungJun, JanoshRiebe-
+sell, Kevin Han, Christopher J Bartel, and Gerbrand
+Ceder. Chgnet as a pretrained universal neural net-
+work potential for charge-informed atomistic modelling.
+Nature Machine Intelligence, 5(9):1031–1041, 2023.
+Bowen Deng, Yunyeong Choi, Peichen Zhong, Janosh
+Riebesell, Shashwat Anand, Zhuohan Li, KyuJung Jun,
+Kristin A Persson, and Gerbrand Ceder. Systematic
+softening in universal machine learning interatomic
+potentials. npj Computational Materials, 11(1):1–9,
+2025.
+Peter Eastman, Pavan Kumar Behara, David L Dotson,
+Raimondas Galvelis, John E Herr, Josh T Horton,
+Yuezhi Mao, John D Chodera, Benjamin P Pritchard,
+Yuanqing Wang, et al. Spice, a dataset of drug-like
+molecules and peptides for training machine learning
+potentials. Scientific Data, 10(1):11, 2023.
+Peter Eastman, Benjamin P Pritchard, John D Chodera,
+and Thomas E Markland. Nutmeg and spice: models
+and data for biomolecular machine learning.Journal
+of chemical theory and computation, 20(19):8583–8593,
+2024.
+Shiang Fang, Mario Geiger, Joseph G Checkelsky,
+and Tess Smidt. Phonon predictions with e (3)-
+equivariant graph neural networks. arXiv preprint
+arXiv:2403.11347, 2024.
+Xiang Fu, Zhenghao Wu, Wujie Wang, Tian Xie,
+Sinan Keten, Rafael Gomez-Bombarelli, and Tommi S.
+Jaakkola. Forces are not enough: Benchmark and
+critical evaluation for machine learning force fields
+with molecular simulations.Transactions on Machine
+Learning Research, 2023. ISSN 2835-8856. https://
+openreview.net/forum?id=A8pqQipwkt. Survey Cer-
+tification.
+Brent Fultz. Vibrational thermodynamics of materials.
+Progress in Materials Science, 55(4):247–352, 2010.
+Alex M Ganose, Junsoo Park, Alireza Faghaninia, Rachel
+Woods-Robinson, Kristin A Persson, and Anubhav
+Jain. Efficient calculation of carrier scattering rates
+from first principles. Nature communications, 12(1):
+2222, 2021.
+Johannes Gasteiger, Janek Groß, and Stephan Gün-
+nemann. Directional message passing for molecular
+graphs. arXiv preprint arXiv:2003.03123, 2020a.
+Johannes Gasteiger, Janek Groß, and Stephan Gün-
+nemann. Directional message passing for molecular
+graphs. In International Conference on Learning Rep-
+resentations, 2020b.
+Johannes Gasteiger, Florian Becker, and Stephan Gün-
+nemann. Gemnet: Universal directional graph neural
+networks for molecules.Advances in Neural Informa-
+tion Processing Systems, 34:6790–6802, 2021.
+Mario Geiger and Tess Smidt. e3nn: Euclidean neural
+networks. arXiv preprint arXiv:2207.09453, 2022.
+Justin Gilmer, Samuel S Schoenholz, Patrick F Riley,
+Oriol Vinyals, and George E Dahl. Neural message
+passing for quantum chemistry. InInternational con-
+ference on machine learning, pages 1263–1272. PMLR,
+2017.
+Joe G Greener. Differentiable simulation to develop
+molecular dynamics force fields for disordered proteins.
+Chemical Science, 15(13):4897–4909, 2024.
+Ernst Hairer, Christian Lubich, and Gerhard Wanner.
+Geometric numerical integration illustrated by the
+störmer–verlet method.Acta numerica, 12:399–450,
+2003.
+Ernst Hairer, Marlis Hochbruck, Arieh Iserles, and Chris-
+tian Lubich. Geometric numerical integration.Ober-
+wolfach Reports, 3(1):805–882, 2006.
+Weihua Hu, Muhammed Shuaibi, Abhishek Das, Sid-
+dharth Goyal, Anuroop Sriram, Jure Leskovec, Devi
+Parikh, and C Lawrence Zitnick. Forcenet: A graph
+neural network for large-scale quantum calculations.
+arXiv preprint arXiv:2103.01436, 2021.
+A Jain, SP Ong, G Hautier, W Chen, WD Richards,
+S Dacek, S Cholia, D Gunter, D Skinner, G Ceder, et al.
+The materials project: a materials genome approach to
+accelerating materials innovation. apl mater 1: 011002,
+2013.
+Dávid Péter Kovács, Cas van der Oord, Jiri Kucera,
+Alice EA Allen, Daniel J Cole, Christoph Ortner, and
+Gábor Csányi. Linear atomic cluster expansion force
+fields for organic molecules: beyond rmse.Journal of
+chemical theory and computation, 17(12):7696–7711,
+2021.
+Dávid Péter Kovács, J Harry Moore, Nicholas J Brown-
+ing, Ilyes Batatia, Joshua T Horton, Venkat Kapil,
+William C Witt, Ioan-Bogdan Magdău, Daniel J Cole,
+and Gábor Csányi. Mace-off23: Transferable ma-
+chine learning force fields for organic molecules.arXiv
+preprint arXiv:2312.15211, 2023.
+Janice Lan, Aini Palizhati, Muhammed Shuaibi, Bran-
+don M Wood, Brook Wander, Abhishek Das, Matt Uyt-
+tendaele, C Lawrence Zitnick, and Zachary W Ulissi.
+Adsorbml: a leap in efficiency for adsorption energy
+calculations using generalizable machine learning po-
+tentials. npj Computational Materials, 9(1):172, 2023.
+Marcel F Langer, Sergey N Pozdnyakov, and Michele
+Ceriotti. Probing the effects of broken symmetries
+in machine learning.Machine Learning: Science and
+Technology, 5(4):04LT01, 2024.
+Ask Hjorth Larsen, Jens Jørgen Mortensen, Jakob
+Blomqvist, Ivano E Castelli, Rune Christensen, Marcin
+Dułak, Jesper Friis, Michael N Groves, Bjørk Hammer,
+Cory Hargus, Eric D Hermes, Paul C Jennings, Pe-
+ter Bjerre Jensen, James Kermode, John R Kitchin,
+Esben Leonhard Kolsbjerg, Joseph Kubal, Kristen
+11
+
+[page 12]
+Kaasbjerg, Steen Lysgaard, Jón Bergmann Marons-
+son, Tristan Maxson, Thomas Olsen, Lars Pastewka,
+Andrew Peterson, Carsten Rostgaard, Jakob Schiøtz,
+Ole Schütt, Mikkel Strange, Kristian S Thygesen, Tejs
+Vegge, Lasse Vilhelmsen, Michael Walter, Zhenhua
+Zeng, and Karsten W Jacobsen. The atomic simula-
+tion environment—a python library for working with
+atoms. Journal of Physics: Condensed Matter, 29(27):
+273002, 2017. http://stacks.iop.org/0953-8984/29/i=
+27/a=273002.
+Yi-Lun Liao and Tess Smidt. Equiformer: Equivariant
+graph attention transformer for 3d atomistic graphs.
+arXiv preprint arXiv:2206.11990, 2022.
+Yi-Lun Liao, Brandon Wood, Abhishek Das, and Tess
+Smidt. Equiformerv2: Improved equivariant trans-
+former for scaling to higher-degree representations.
+arXiv preprint arXiv:2306.12059, 2023.
+Yi-Lun Liao, Tess Smidt, and Abhishek Das. Generalizing
+denoising to non-equilibrium structures improves equiv-
+ariant force fields. arXiv preprint arXiv:2403.09549,
+2024.
+Yi Liu, Limei Wang, Meng Liu, Yuchao Lin, Xuan Zhang,
+Bora Oztekin, and Shuiwang Ji. Spherical message
+passing for 3d molecular graphs. InInternational Con-
+ference on Learning Representations, 2021.
+AntoineLoew, DewenSun, Hai-ChenWang, SilvanaBotti,
+and Miguel AL Marques. Universal machine learning
+interatomic potentials are ready for phonons.arXiv
+preprint arXiv:2412.16551, 2024.
+Amil Merchant, Simon Batzner, Samuel S Schoenholz,
+Muratahan Aykol, Gowoon Cheon, and Ekin Dogus
+Cubuk. Scaling deep learning for materials discovery.
+Nature, 624(7990):80–85, 2023.
+J Harry Moore, Daniel J Cole, and Gabor Csanyi. Com-
+puting hydration free energies of small molecules
+with first principles accuracy. arXiv preprint
+arXiv:2405.18171, 2024.
+Albert Musaelian, Simon Batzner, Anders Johansson,
+Lixin Sun, Cameron J Owen, Mordechai Kornbluth,
+and Boris Kozinsky. Learning local equivariant repre-
+sentations for large-scale atomistic dynamics.arXiv
+preprint arXiv:2204.05249, 2022.
+Mark Neumann, James Gin, Benjamin Rhodes, Steven
+Bennett, Zhiyi Li, Hitarth Choubisa, Arthur Hussey,
+and Jonathan Godwin. Orb: A fast, scalable neural
+network potential. arXiv preprint arXiv:2410.22570,
+2024.
+John Nickolls, Ian Buck, Michael Garland, and Kevin
+Skadron. Scalable parallel programming with cuda: Is
+cuda the parallel programming model that application
+developers have been waiting for?Queue, 6(2):40–53,
+2008.
+MBJR Oppenheimer. Zur quantentheorie der molekeln
+[on the quantum theory of molecules].Annalen der
+Physik, 389(20):457–484, 1927.
+Cameron J Owen, Steven B Torrisi, Yu Xie, Simon
+Batzner, Kyle Bystrom, Jennifer Coulter, Albert
+Musaelian, Lixin Sun, and Boris Kozinsky. Complex-
+ity of many-body interactions in transition metals via
+machine-learned force fields from the tm23 data set.
+npj Computational Materials, 10(1):92, 2024.
+Yutack Park, Jaesun Kim, Seungwoo Hwang, and Se-
+ungwu Han. Scalable parallel algorithm for graph
+neural network interatomic potentials in molecular dy-
+namics simulations.J. Chem. Theory Comput., 20(11):
+4857–4868, 2024. doi: 10.1021/acs.jctc.4c00190.
+RobertGParr, ShridharRGadre, andLiberoJBartolotti.
+Local density functional theory of atoms and molecules.
+Proceedings of the National Academy of Sciences, 76
+(6):2522–2526, 1979.
+Saro Passaro and C Lawrence Zitnick. Reducing so (3)
+convolutions to so (2) for efficient equivariant gnns. In
+International Conference on Machine Learning, pages
+27420–27438. Proceedings of Machine Learning Re-
+search, 2023.
+Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer,
+James Bradbury, Gregory Chanan, Trevor Killeen,
+Zeming Lin, Natalia Gimelshein, Luca Antiga, et al.
+Pytorch: An imperative style, high-performance deep
+learning library.Advances in neural information pro-
+cessing systems, 32, 2019.
+Balázs Póta, Paramvir Ahlawat, Gábor Csányi, and
+Michele Simoncelli. Thermal conductivity predictions
+with foundation atomistic models. arXiv preprint
+arXiv:2408.00755, 2024.
+Eric Qu and Aditi S. Krishnapriyan. The importance of
+being scalable: Improving the speed and accuracy of
+neural network interatomic potentials across chemical
+domains. In The Thirty-eighth Annual Conference on
+Neural Information Processing Systems, 2024. https:
+//openreview.net/forum?id=Y4mBaZu4vy.
+Sanjeev Raja, Ishan Amin, Fabian Pedregosa, and Aditi S
+Krishnapriyan. Stability-aware training of neural net-
+work interatomic potentials with differentiable boltz-
+mann estimators. arXiv preprint arXiv:2402.13984,
+2024.
+Manijeh Razeghi. Thermal Properties of Crystals. In
+Manijeh Razeghi, editor,Fundamentals of Solid State
+Engineering, pages 197–220. Springer US, 2002. doi:
+10.1007/0-306-47567-7_7.
+Benjamin Rhodes, Sander Vandenhaute, Vaidotas Šimkus,
+James Gin, Jonathan Godwin, Tim Duignan, and Mark
+Neumann. Orb-v3: atomistic simulation at scale.arXiv
+preprint arXiv:2504.06231, 2025.
+Janosh Riebesell, Rhys EA Goodall, Anubhav Jain,
+Philipp Benner, Kristin A Persson, and Alpha A
+Lee. Matbench discovery–an evaluation framework
+12
+
+[page 13]
+for machine learning crystal stability prediction.arXiv
+preprint arXiv:2308.14920, 2023.
+Sebastien Röcken, Anton F Burnet, and Julija Zavad-
+lav. Predicting solvation free energies with an implicit
+solvent machine learning potential. arXiv preprint
+arXiv:2406.00183, 2024.
+Francesc Sabanes Zariquiey, Raimondas Galvelis, Emilio
+Gallicchio, John D Chodera, Thomas E Markland, and
+Gianni De Fabritiis. Enhancing protein–ligand binding
+affinity predictions using neural network potentials.
+Journal of Chemical Information and Modeling, 64(5):
+1481–1485, 2024.
+Jonathan Schmidt, Tiago FT Cerqueira, Aldo H Romero,
+Antoine Loew, Fabian Jäger, Hai-Chen Wang, Silvana
+Botti, and Miguel AL Marques. Improving machine-
+learning models in materials science through large
+datasets. Materials Today Physics, 48:101560, 2024.
+Kristof Schütt, Pieter-Jan Kindermans, Huziel Enoc
+Sauceda Felix, Stefan Chmiela, Alexandre Tkatchenko,
+and Klaus-Robert Müller. Schnet: A continuous-filter
+convolutional neural network for modeling quantum
+interactions. Advances in neural information processing
+systems, 30, 2017.
+Kristof Schütt, Oliver Unke, and Michael Gastegger.
+Equivariant message passing for the prediction of tenso-
+rial properties and molecular spectra. InInternational
+Conference on Machine Learning, pages 9377–9388.
+PMLR, 2021.
+Michele Simoncelli, Nicola Marzari, and Francesco Mauri.
+Wigner formulation of thermal transport in solids.
+Physical Review X, 12(4):041011, 2022.
+Justin S Smith, Olexandr Isayev, and Adrian E Roitberg.
+Ani-1: an extensible neural network potential with dft
+accuracy at force field computational cost.Chemical
+science, 8(4):3192–3203, 2017.
+Justin S Smith, Roman Zubatyuk, Benjamin Nebgen,
+Nicholas Lubbers, Kipton Barros, Adrian E Roitberg,
+Olexandr Isayev, and Sergei Tretiak. The ani-1ccx and
+ani-1x data sets, coupled-cluster and density functional
+theory properties for molecules.Scientific data, 7(1):
+134, 2020.
+PhilippThölkeandGianniDeFabritiis. Equivarianttrans-
+formers for neural network based molecular potentials.
+In International Conference on Learning Representa-
+tions, 2021.
+Nathaniel Thomas, Tess Smidt, Steven Kearnes, Lusann
+Yang, Li Li, Kai Kohlhoff, and Patrick Riley. Tensor
+field networks: Rotation-and translation-equivariant
+neural networks for 3d point clouds.arXiv preprint
+arXiv:1802.08219, 2018.
+Atsushi Togo, Laurent Chaput, and Isao Tanaka. Distri-
+butions of phonon lifetimes in brillouin zones.Phys.
+Rev. B, 91:094306, Mar 2015. doi: 10.1103/PhysRevB.
+91.094306.
+Atsushi Togo, Laurent Chaput, Terumasa Tadano, and
+Isao Tanaka. Implementation strategies in phonopy and
+phono3py. J. Phys. Condens. Matter, 35(35):353001,
+2023. doi: 10.1088/1361-648X/acd831.
+Richard Tran, Janice Lan, Muhammed Shuaibi, Bran-
+don M Wood, Siddharth Goyal, Abhishek Das, Javier
+Heras-Domingo, Adeesh Kolluru, Ammar Rizvi, Nima
+Shoghi, et al. The open catalyst 2022 (oc22) dataset
+and challenges for oxide electrocatalysts.ACS Cataly-
+sis, 13(5):3066–3084, 2023.
+Mark E Tuckerman.Statistical mechanics: theory and
+molecular simulation. Oxford university press, 2023.
+Oliver T Unke and Markus Meuwly. A reactive, scalable,
+and transferable model for molecular energies from a
+neural network approach based on local information.
+The Journal of chemical physics, 148(24):241708, 2018.
+Oliver T Unke, Stefan Chmiela, Michael Gastegger,
+Kristof T Schütt, Huziel E Sauceda, and Klaus-Robert
+Müller. Spookynet: Learning force fields with elec-
+tronic degrees of freedom and nonlocal effects.Nature
+communications, 12(1):1–14, 2021a.
+Oliver T Unke, Stefan Chmiela, Huziel E Sauceda,
+Michael Gastegger, Igor Poltavsky, Kristof T Schutt,
+Alexandre Tkatchenko, and Klaus-Robert Müller. Ma-
+chine learning force fields.Chemical Reviews, 121(16):
+10142–10186, 2021b.
+Axel Van De Walle and Gerbrand Ceder. The effect of lat-
+tice vibrations on substitutional alloy thermodynamics.
+Reviews of Modern Physics, 74(1):11, 2002.
+Brook Wander, Muhammed Shuaibi, John R Kitchin,
+ZacharyWUlissi, andCLawrenceZitnick. Cattsunami:
+Accelerating transition state energy calculations with
+pre-trained graph neural networks. arXiv preprint
+arXiv:2405.02078, 2024.
+Wujie Wang, Simon Axelrod, and Rafael Gómez-
+Bombarelli. Differentiable molecular simulations for
+control and learning.arXiv preprint arXiv:2003.00868,
+2020.
+Maurice Weiler, Mario Geiger, Max Welling, Wouter
+Boomsma, and Taco S Cohen. 3d steerable cnns: Learn-
+ing rotationally equivariant features in volumetric data.
+Advances in Neural Information Processing Systems,
+31, 2018.
+Nicholas J Williams, Lara Kabalan, Ljiljana Stojanovic,
+Viktor Zólyomi, and Edward O Pyzer-Knapp. Hessian
+qm9: A quantum chemistry database of molecular
+hessians in implicit solvents.Scientific Data, 12(1):9,
+2025.
+Daniel Wines and Kamal Choudhary. Chips-ff: Evaluat-
+ing universal machine learning force fields for material
+properties. arXiv preprint arXiv:2412.10516, 2024.
+Han Yang, Chenxi Hu, Yichi Zhou, Xixian Liu, Yu Shi,
+Jielan Li, Guanzhi Li, Zekun Chen, Shuizhou Chen,
+13
+
+[page 14]
+Claudio Zeni, et al. Mattersim: A deep learning atom-
+isticmodelacrosselements, temperaturesandpressures.
+arXiv preprint arXiv:2405.04967, 2024.
+Bangchen Yin, Jiaao Wang, Weitao Du, Pengbo Wang,
+Penghua Ying, Haojun Jia, Zisheng Zhang, Yuanqi Du,
+Carla P Gomes, Chenru Duan, et al. Alphanet: Scaling
+uplocalframe-basedatomisticfoundationmodel. arXiv
+preprint arXiv:2501.07155, 2025.
+Linfeng Zhang, Jiequn Han, Han Wang, Wissam Saidi,
+Roberto Car, et al. End-to-end symmetry preserv-
+ing inter-atomic potential energy model for finite and
+extended systems. Advances in Neural Information
+Processing Systems, 31, 2018.
+Larry Zitnick, Abhishek Das, Adeesh Kolluru, Janice Lan,
+Muhammed Shuaibi, Anuroop Sriram, Zachary Ulissi,
+and Brandon Wood. Spherical channels for modeling
+atomic interactions.Advances in Neural Information
+Processing Systems, 35:8054–8067, 2022.
+Roman Zubatyuk, Justin S Smith, Jerzy Leszczynski,
+and Olexandr Isayev. Accurate and transferable multi-
+task prediction of chemical properties with an atoms-
+in-molecules neural network.Science advances, 5(8):
+eaav6490, 2019.
+14
+
+[page 15]
+A Experimental details
+A.1 MD simulation protocol
+Simulating molecular systems not seen during train-
+ing is a key capability of MLIPs. Therefore, we
+construct challenging MD simulation tasks featuring
+out-of-di

@@ -182,6 +182,152 @@
           }
         }
       }
+    },
+    "evaluation": {
+      "question_all_evaluation_runs": {
+        "question": "Which model evaluation runs, benchmark evaluations, leaderboard submissions, validation experiments, or test evaluations are described for this model? Return a JSON array of stable snake_case identifiers. For Matbench Discovery, use YAML fields train_task, test_task, targets, and especially metrics as the authoritative source before the PDF. Include one evaluation run per official Matbench Discovery task actually present in YAML metrics.",
+        "variable": "evaluation_runs"
+      },
+      "evaluation_run_loop": {
+        "loop_over": "evaluation_runs",
+        "questions": {
+          "question_evaluation_run_type": {
+            "question": "What is the exact ontology class of evaluation run {item}? Return only MachineLearningEvaluationRun.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          },
+          "question_evaluation_run_model_variant": {
+            "question": "Which model variant is evaluated by evaluation run {item}? Return the model variant name, preferably the YAML model_name or model_key, or null if not specified.",
+            "variable": "model_variant"
+          },
+          "question_evaluation_run_benchmark_release": {
+            "question": "Which benchmark suite or benchmark release is used by evaluation run {item}? For YAML metrics from matbench-discovery.materialsproject.org, return matbench_discovery_benchmark_release. For a named paper benchmark outside Matbench Discovery, return that benchmark release name or null.",
+            "variable": "benchmark_release"
+          },
+          "question_evaluation_run_task": {
+            "question": "Which official Matbench Discovery task is evaluated by evaluation run {item}? Return exactly one of: thermodynamic_stability_classification_task, convex_hull_distance_regression_task, phonon_thermal_conductivity_contribution_task, relaxed_structure_matching_rmsd_task. Map YAML metrics.discovery classification metrics such as F1, Precision, Recall, Accuracy, TPR, FPR, TNR, FNR, TP, FP, TN, FN, or DAF to thermodynamic_stability_classification_task; map YAML metrics.discovery regression metrics MAE, RMSE, or R2 for convex hull distance to convex_hull_distance_regression_task; map YAML metrics.phonons to phonon_thermal_conductivity_contribution_task; map YAML metrics.geo_opt RMSD/StructureMatcher metrics to relaxed_structure_matching_rmsd_task.",
+            "variable": "task"
+          },
+          "question_evaluation_run_dataset": {
+            "question": "Which dataset is used for evaluation run {item}? Return the dataset name or null.",
+            "variable": "dataset"
+          },
+          "question_evaluation_run_folds": {
+            "question": "Which folds or dataset splits are used in evaluation run {item}? Return a JSON array of stable names such as train_split, validation_split, test_split, fold_0, or empty array if folds are not specified.",
+            "variable": "folds"
+          },
+          "question_evaluation_run_metric_results": {
+            "question": "What metric results are reported for evaluation run {item}? Return a JSON array of stable snake_case metric result identifiers from YAML metrics when available. Preserve the Matbench Discovery metric family and split in the identifier, for example discovery_full_test_set_f1, discovery_full_test_set_mae, phonons_kappa_103_kappa_srme, geo_opt_symprec_1e_5_rmsd. Include paper-only metrics only when no YAML metric exists.",
+            "variable": "metric_results"
+          }
+        }
+      },
+      "question_all_benchmark_releases": {
+        "question": "Which benchmark suites or benchmark releases are mentioned for evaluation? If YAML metrics are from Matbench Discovery, include matbench_discovery_benchmark_release. Also include paper-specific benchmark releases only when explicitly distinct from Matbench Discovery.",
+        "variable": "benchmark_releases"
+      },
+      "benchmark_release_loop": {
+        "loop_over": "benchmark_releases",
+        "questions": {
+          "question_benchmark_release_type": {
+            "question": "What is the exact ontology class of benchmark release {item}? Return only BenchmarkRelease.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          },
+          "question_benchmark_release_tasks": {
+            "question": "Which official Matbench Discovery tasks belong to benchmark release {item}? Return only task identifiers from this controlled list: thermodynamic_stability_classification_task, convex_hull_distance_regression_task, phonon_thermal_conductivity_contribution_task, relaxed_structure_matching_rmsd_task.",
+            "variable": "tasks"
+          }
+        }
+      },
+      "question_all_tasks": {
+        "question": "Which of the four official Matbench Discovery tasks are mentioned? Return only a JSON array containing identifiers from this controlled list: thermodynamic_stability_classification_task, convex_hull_distance_regression_task, phonon_thermal_conductivity_contribution_task, relaxed_structure_matching_rmsd_task. Map stable/unstable material classification and thermodynamic stability classification to thermodynamic_stability_classification_task; map MAE/RMSE/R2 of predicted vs DFT convex hull distance to convex_hull_distance_regression_task; map normalized phonon mode thermal conductivity contribution metrics to phonon_thermal_conductivity_contribution_task; map normalized unitless StructureMatcher RMSD between ML and DFT relaxed structures to relaxed_structure_matching_rmsd_task.",
+        "variable": "tasks"
+      },
+      "task_loop": {
+        "loop_over": "tasks",
+        "questions": {
+          "question_task_type": {
+            "question": "What is the exact ontology class of task {item}? Return only one existing class local name: BenchmarkTask, RegressionTask, ClassificationTask, or Task.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          },
+          "question_task_dataset": {
+            "question": "Which dataset does task {item} use? Return the dataset name or null.",
+            "variable": "dataset"
+          }
+        }
+      },
+      "fold_loop": {
+        "loop_over": "evaluation_runs.folds",
+        "questions": {
+          "question_fold_type": {
+            "question": "What is the exact ontology class of fold {item}? Return only Fold.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          },
+          "question_fold_index": {
+            "question": "What index is reported for fold {item}? Return an integer or null.",
+            "variable": "index"
+          },
+          "question_fold_train_split": {
+            "question": "Which training dataset split is associated with fold {item}? Return the split name or null.",
+            "variable": "train_split"
+          },
+          "question_fold_validation_split": {
+            "question": "Which validation dataset split is associated with fold {item}? Return the split name or null.",
+            "variable": "validation_split"
+          },
+          "question_fold_test_split": {
+            "question": "Which test dataset split is associated with fold {item}? Return the split name or null.",
+            "variable": "test_split"
+          },
+          "question_fold_metric_results": {
+            "question": "Which metric results are produced for fold {item}? Return only a JSON array of metric result identifiers.",
+            "variable": "metric_results"
+          }
+        }
+      },
+      "metric_result_loop": {
+        "loop_over": "evaluation_runs.metric_results",
+        "questions": {
+          "question_metric_result_type": {
+            "question": "What is the exact ontology class of metric result {item}? Return only MetricResult.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          },
+          "question_metric_result_metric_type": {
+            "question": "What metric type does metric result {item} measure? Return the exact Matbench Discovery metric name from YAML when available, such as F1, DAF, Precision, Recall, Accuracy, TPR, FPR, TNR, FNR, TP, FP, TN, FN, MAE, RMSE, R2, missing_preds, kappa_SRME, kappa_SRE, rmsd, n_sym_ops_mae, symmetry_decrease, symmetry_match, symmetry_increase, n_structures. Return null only if not specified.",
+            "variable": "metric_type"
+          },
+          "question_metric_result_value": {
+            "question": "What numeric value is reported for metric result {item}? Return a float or null. Do not include units or uncertainty text in this value.",
+            "variable": "metric_value"
+          },
+          "question_metric_result_unit": {
+            "question": "What unit is reported for metric result {item}, such as eV/atom, meV/atom, eV/Angstrom, GPa, percent, or dimensionless? Return a short unit string or null.",
+            "variable": "unit"
+          },
+          "question_metric_result_task": {
+            "question": "Which task is this metric result for? Return the task name or null.",
+            "variable": "task"
+          },
+          "question_metric_result_dataset": {
+            "question": "Which dataset or split is this metric result measured on? Return the dataset or split name or null.",
+            "variable": "dataset"
+          }
+        }
+      },
+      "metric_type_loop": {
+        "loop_over": "evaluation_runs.metric_results.metric_type",
+        "questions": {
+          "question_metric_type_type": {
+            "question": "What is the exact ontology class of metric type {item}? Return only MetricType.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          }
+        }
+      }
     }
   }
 }

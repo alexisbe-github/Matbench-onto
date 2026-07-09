@@ -1,0 +1,70 @@
+{
+  "model": {
+    "family": {
+      "value": "GRACE",
+      "evidence": "YAML model_name"
+    },
+    "variant": {
+      "value": "grace-2l-oam",
+      "evidence": "YAML model_key"
+    },
+    "parameter_number": {
+      "value": 12597516,
+      "evidence": "YAML model_params"
+    }
+  },
+  "architectures": {
+    "UIP": {
+      "ontology_class": {
+        "value": "MachineLearningArchitecture",
+        "evidence": "YAML model_type"
+      },
+      "parameter_number": {
+        "value": 12597516,
+        "evidence": "YAML model_params"
+      },
+      "hyperparameters": {
+        "value": [
+          "max_force",
+          "max_steps",
+          "ase_optimizer",
+          "cell_filter",
+          "graph_construction_radius",
+          "max_neighbors"
+        ],
+        "evidence": "YAML hyperparams"
+      }
+    }
+  },
+  "training": {
+    "training_runs": [
+      {
+        "id": "grace_2l_oam_training_run",
+        "type": {
+          "value": "MachineLearningTrainingRun",
+          "evidence": "ontology/trainingonto.ttl"
+        },
+        "architectures": {
+          "value": [
+            "UIP"
+          ],
+          "evidence": "YAML model_type"
+        },
+        "datasets": {
+          "value": [
+            "OMat24",
+            "sAlex",
+            "MPtrj"
+          ],
+          "evidence": "YAML training_set"
+        }
+      }
+    ]
+  },
+  "evaluation": {},
+  "_sources": {
+    "pdf_file": "papers/grace_2l_oam_l.pdf",
+    "pdf_url": "https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021036",
+    "yaml_file": "model_yamls\\grace_2l_oam.yml"
+  }
+}

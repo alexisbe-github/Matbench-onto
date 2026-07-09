@@ -6,6 +6,8 @@
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix tckgmat: <https://k.loria.fr/ontologies/tckg_materials#> .
 @base <https://k.loria.fr/ontologies/datasetonto#> .
 
 <https://k.loria.fr/ontologies/datasetonto> rdf:type owl:Ontology ;
@@ -28,6 +30,36 @@
 :hasLabellingMethod rdf:type owl:ObjectProperty ;
                     rdfs:domain :LabeledDataset ;
                     rdfs:range :LabellingMethod .
+
+
+###  https://k.loria.fr/ontologies/datasetonto#containsMaterial
+:containsMaterial rdf:type owl:ObjectProperty ;
+                  rdfs:domain :Dataset ;
+                  rdfs:range tckgmat:Material .
+
+
+###  https://k.loria.fr/ontologies/datasetonto#hasMaterialProperty
+:hasMaterialProperty rdf:type owl:ObjectProperty ;
+                     rdfs:domain tckgmat:Material ;
+                     rdfs:range tckgmat:MaterialProperty .
+
+
+###  https://k.loria.fr/ontologies/datasetonto#predictedByModelVariant
+:predictedByModelVariant rdf:type owl:ObjectProperty ;
+                         rdfs:domain tckgmat:MaterialProperty ;
+                         rdfs:range arch:ModelVariant .
+
+
+###  https://k.loria.fr/ontologies/datasetonto#propertyAttribute
+:propertyAttribute rdf:type owl:ObjectProperty ;
+                   rdfs:domain tckgmat:MaterialProperty ;
+                   rdfs:range :DatasetAttribute .
+
+
+###  https://k.loria.fr/ontologies/datasetonto#propertyFromDataset
+:propertyFromDataset rdf:type owl:ObjectProperty ;
+                     rdfs:domain tckgmat:MaterialProperty ;
+                     rdfs:range :Dataset .
 
 
 ###  https://k.loria.fr/ontologies/datasetonto#usesAttribute
@@ -65,6 +97,30 @@
 :hasNumberOfSamples rdf:type owl:DatatypeProperty ;
                     rdfs:domain :Dataset ;
                     rdfs:range xsd:integer .
+
+
+###  https://k.loria.fr/ontologies/datasetonto#hasMaterialIdentifier
+:hasMaterialIdentifier rdf:type owl:DatatypeProperty ;
+                       rdfs:domain tckgmat:Material ;
+                       rdfs:range xsd:string .
+
+
+###  https://k.loria.fr/ontologies/datasetonto#hasPropertyName
+:hasPropertyName rdf:type owl:DatatypeProperty ;
+                 rdfs:domain tckgmat:MaterialProperty ;
+                 rdfs:range xsd:string .
+
+
+###  https://k.loria.fr/ontologies/datasetonto#hasPropertyValue
+:hasPropertyValue rdf:type owl:DatatypeProperty ;
+                  rdfs:domain tckgmat:MaterialProperty ;
+                  rdfs:range rdfs:Literal .
+
+
+###  https://k.loria.fr/ontologies/datasetonto#hasPropertyUnit
+:hasPropertyUnit rdf:type owl:DatatypeProperty ;
+                 rdfs:domain tckgmat:MaterialProperty ;
+                 rdfs:range xsd:string .
 
 
 #################################################################

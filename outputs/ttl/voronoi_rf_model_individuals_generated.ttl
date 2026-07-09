@@ -1,0 +1,705 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix eval: <https://k.loria.fr/ontologies/evaluationonto#> .
+@prefix evalind: <https://k.loria.fr/ontologies/evaluationonto-individuals#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:voronoi_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "Voronoi"^^xsd:string ;
+    arch:hasVariant archind:voronoi_rf_fingerprint_model_variant,
+        archind:voronoi_rf_variant .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_evaluation_run a owl:NamedIndividual,
+        eval:MachineLearningEvaluationRun ;
+    rdfs:label "voronoi_rf_matbench_discovery_convex_hull_distance_regression"^^xsd:string ;
+    eval:evaluatesModelVariant archind:voronoi_rf_variant ;
+    eval:evaluatesTask evalind:convex_hull_distance_regression_task ;
+    eval:producesBenchmarkResult evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result ;
+    eval:usesBenchmarkRelease evalind:matbench_discovery_benchmark_release .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_evaluation_run a owl:NamedIndividual,
+        eval:MachineLearningEvaluationRun ;
+    rdfs:label "voronoi_rf_matbench_discovery_thermodynamic_stability_classification"^^xsd:string ;
+    eval:evaluatesModelVariant archind:voronoi_rf_variant ;
+    eval:evaluatesTask evalind:thermodynamic_stability_classification_task ;
+    eval:producesBenchmarkResult evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result ;
+    eval:usesBenchmarkRelease evalind:matbench_discovery_benchmark_release .
+
+trind:voronoi_rf_training_run a owl:NamedIndividual,
+        train:MachineLearningTrainingRun ;
+    rdfs:label "voronoi_rf_training_run"^^xsd:string ;
+    train:trainsModelVariant archind:voronoi_rf_fingerprint_model_variant ;
+    train:usesDataset dataind:mp_2022 .
+
+archind:voronoi_rf_fingerprint_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Fingerprint architecture configuration"^^xsd:string .
+
+dataind:mp_2022 a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MP 2022"^^xsd:string .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result a owl:NamedIndividual,
+        eval:BenchmarkResult ;
+    rdfs:label "voronoi_rf_matbench_discovery_convex_hull_distance_regression benchmark result"^^xsd:string ;
+    eval:hasMetricResult evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_mae_metric_result,
+        evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_missing_preds_metric_result,
+        evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_r2_metric_result,
+        evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_rmse_metric_result,
+        evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_mae_metric_result,
+        evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_missing_preds_metric_result,
+        evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_r2_metric_result,
+        evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_rmse_metric_result,
+        evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_mae_metric_result,
+        evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_missing_preds_metric_result,
+        evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_r2_metric_result,
+        evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_rmse_metric_result ;
+    eval:hasResultTask evalind:convex_hull_distance_regression_task .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_mae_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "MAE 0.141 eV/atom"^^xsd:string ;
+    eval:hasMetricType evalind:mae_metric_type ;
+    eval:hasMetricValue "0.141"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_missing_preds_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "missing_preds 19 count"^^xsd:string ;
+    eval:hasMetricType evalind:missing_preds_metric_type ;
+    eval:hasMetricValue 19 .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_r2_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "R2 -0.316 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:r2_metric_type ;
+    eval:hasMetricValue "-0.316"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_rmse_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "RMSE 0.206 eV/atom"^^xsd:string ;
+    eval:hasMetricType evalind:rmse_metric_type ;
+    eval:hasMetricValue "0.206"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_mae_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "MAE 0.349 eV/atom"^^xsd:string ;
+    eval:hasMetricType evalind:mae_metric_type ;
+    eval:hasMetricValue "0.349"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_missing_preds_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "missing_preds 0 count"^^xsd:string ;
+    eval:hasMetricType evalind:missing_preds_metric_type ;
+    eval:hasMetricValue 0 .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_r2_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "R2 -1.012 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:r2_metric_type ;
+    eval:hasMetricValue "-1.012"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_rmse_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "RMSE 0.417 eV/atom"^^xsd:string ;
+    eval:hasMetricType evalind:rmse_metric_type ;
+    eval:hasMetricValue "0.417"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_mae_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "MAE 0.148 eV/atom"^^xsd:string ;
+    eval:hasMetricType evalind:mae_metric_type ;
+    eval:hasMetricValue "0.148"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_missing_preds_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "missing_preds 2 count"^^xsd:string ;
+    eval:hasMetricType evalind:missing_preds_metric_type ;
+    eval:hasMetricValue 2 .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_r2_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "R2 -0.329 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:r2_metric_type ;
+    eval:hasMetricValue "-0.329"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_rmse_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "RMSE 0.212 eV/atom"^^xsd:string ;
+    eval:hasMetricType evalind:rmse_metric_type ;
+    eval:hasMetricValue "0.212"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result a owl:NamedIndividual,
+        eval:BenchmarkResult ;
+    rdfs:label "voronoi_rf_matbench_discovery_thermodynamic_stability_classification benchmark result"^^xsd:string ;
+    eval:hasMetricResult evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_accuracy_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_daf_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_f1_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fn_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fnr_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fp_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fpr_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_precision_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_recall_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tn_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tnr_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tp_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tpr_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_accuracy_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_daf_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_f1_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fn_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fnr_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fp_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fpr_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_precision_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_recall_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tn_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tnr_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tp_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tpr_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_accuracy_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_daf_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_f1_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fn_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fnr_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fp_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fpr_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_precision_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_recall_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tn_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tnr_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tp_metric_result,
+        evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tpr_metric_result ;
+    eval:hasResultTask evalind:thermodynamic_stability_classification_task .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_accuracy_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Accuracy 0.665 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:accuracy_metric_type ;
+    eval:hasMetricValue "0.665"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_daf_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "DAF 1.509 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:daf_metric_type ;
+    eval:hasMetricValue "1.509"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_f1_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "F1 0.344 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:f1_metric_type ;
+    eval:hasMetricValue "0.344"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fn_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FN 21575.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:fn_metric_type ;
+    eval:hasMetricValue "21575.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fnr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FNR 0.489 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:fnr_metric_type ;
+    eval:hasMetricValue "0.489"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fp_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FP 64431.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:fp_metric_type ;
+    eval:hasMetricValue "64431.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fpr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FPR 0.303 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:fpr_metric_type ;
+    eval:hasMetricValue "0.303"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_precision_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Precision 0.259 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:precision_metric_type ;
+    eval:hasMetricValue "0.259"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_recall_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Recall 0.511 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:recall_metric_type ;
+    eval:hasMetricValue "0.511"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tn_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TN 148440.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:tn_metric_type ;
+    eval:hasMetricValue "148440.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tnr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TNR 0.697 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:tnr_metric_type ;
+    eval:hasMetricValue "0.697"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tp_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TP 22517.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:tp_metric_type ;
+    eval:hasMetricValue "22517.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tpr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TPR 0.511 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:tpr_metric_type ;
+    eval:hasMetricValue "0.511"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_accuracy_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Accuracy 0.38 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:accuracy_metric_type ;
+    eval:hasMetricValue "0.38"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_daf_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "DAF 2.487 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:daf_metric_type ;
+    eval:hasMetricValue "2.487"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_f1_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "F1 0.551 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:f1_metric_type ;
+    eval:hasMetricValue "0.551"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fn_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FN 0.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:fn_metric_type ;
+    eval:hasMetricValue "0.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fnr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FNR 0.0 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:fnr_metric_type ;
+    eval:hasMetricValue "0.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fp_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FP 6198.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:fp_metric_type ;
+    eval:hasMetricValue "6198.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fpr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FPR 1.0 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:fpr_metric_type ;
+    eval:hasMetricValue "1.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_precision_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Precision 0.38 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:precision_metric_type ;
+    eval:hasMetricValue "0.38"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_recall_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Recall 1.0 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:recall_metric_type ;
+    eval:hasMetricValue "1.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tn_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TN 0.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:tn_metric_type ;
+    eval:hasMetricValue "0.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tnr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TNR 0.0 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:tnr_metric_type ;
+    eval:hasMetricValue "0.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tp_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TP 3802.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:tp_metric_type ;
+    eval:hasMetricValue "3802.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tpr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TPR 1.0 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:tpr_metric_type ;
+    eval:hasMetricValue "1.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_accuracy_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Accuracy 0.668 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:accuracy_metric_type ;
+    eval:hasMetricValue "0.668"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_daf_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "DAF 1.579 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:daf_metric_type ;
+    eval:hasMetricValue "1.579"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_f1_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "F1 0.333 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:f1_metric_type ;
+    eval:hasMetricValue "0.333"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fn_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FN 15520.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:fn_metric_type ;
+    eval:hasMetricValue "15520.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fnr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FNR 0.465 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:fnr_metric_type ;
+    eval:hasMetricValue "0.465"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fp_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FP 56122.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:fp_metric_type ;
+    eval:hasMetricValue "56122.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fpr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FPR 0.308 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:fpr_metric_type ;
+    eval:hasMetricValue "0.308"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_precision_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Precision 0.241 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:precision_metric_type ;
+    eval:hasMetricValue "0.241"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_recall_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Recall 0.535 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:recall_metric_type ;
+    eval:hasMetricValue "0.535"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tn_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TN 125992.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:tn_metric_type ;
+    eval:hasMetricValue "125992.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tnr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TNR 0.692 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:tnr_metric_type ;
+    eval:hasMetricValue "0.692"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tp_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TP 17854.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:tp_metric_type ;
+    eval:hasMetricValue "17854.0"^^xsd:float .
+
+evalind:voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tpr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TPR 0.535 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:tpr_metric_type ;
+    eval:hasMetricValue "0.535"^^xsd:float .
+
+archind:voronoi_rf_fingerprint_architecture a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "Fingerprint"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:voronoi_rf_fingerprint_architecture_configuration ;
+    arch:hasParameterNumber 26243464 .
+
+archind:voronoi_rf_fingerprint_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "voronoi-rf Fingerprint"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:voronoi_rf_fingerprint_architecture .
+
+dataind:wbm_test_set a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "WBM test set"^^xsd:string .
+
+evalind:matbench_discovery_benchmark_release a owl:NamedIndividual,
+        eval:BenchmarkRelease ;
+    rdfs:label "matbench_discovery_benchmark_release"^^xsd:string ;
+    eval:hasTask evalind:convex_hull_distance_regression_task,
+        evalind:thermodynamic_stability_classification_task .
+
+archind:voronoi_rf_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "voronoi-rf"^^xsd:string ;
+    dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> ;
+    prov:wasDerivedFrom <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> ;
+    arch:hasMachineLearningArchitecture archind:voronoi_rf_fingerprint_architecture ;
+    arch:hasParameterNumber 26243464 .
+
+evalind:accuracy_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "Accuracy"^^xsd:string .
+
+evalind:convex_hull_distance_regression_task a owl:NamedIndividual,
+        eval:RegressionTask,
+        eval:Task ;
+    rdfs:label "Convex hull distance regression"^^xsd:string ;
+    eval:usesDataset dataind:wbm_test_set .
+
+evalind:daf_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "DAF"^^xsd:string .
+
+evalind:f1_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "F1"^^xsd:string .
+
+evalind:fn_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "FN"^^xsd:string .
+
+evalind:fnr_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "FNR"^^xsd:string .
+
+evalind:fp_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "FP"^^xsd:string .
+
+evalind:fpr_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "FPR"^^xsd:string .
+
+evalind:mae_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "MAE"^^xsd:string .
+
+evalind:missing_preds_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "missing_preds"^^xsd:string .
+
+evalind:precision_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "Precision"^^xsd:string .
+
+evalind:r2_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "R2"^^xsd:string .
+
+evalind:recall_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "Recall"^^xsd:string .
+
+evalind:rmse_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "RMSE"^^xsd:string .
+
+evalind:thermodynamic_stability_classification_task a owl:NamedIndividual,
+        eval:ClassificationTask,
+        eval:Task ;
+    rdfs:label "Thermodynamic stability classification"^^xsd:string ;
+    eval:usesDataset dataind:wbm_test_set .
+
+evalind:tn_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "TN"^^xsd:string .
+
+evalind:tnr_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "TNR"^^xsd:string .
+
+evalind:tp_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "TP"^^xsd:string .
+
+evalind:tpr_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "TPR"^^xsd:string .
+
+
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_rf_variant> >> prov:wasDerivedFrom "YAML model_key" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_rf_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "26243464"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_rf_fingerprint_model_variant> >> prov:wasDerivedFrom "YAML model_type" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_rf_fingerprint_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_rf_fingerprint_architecture> >> prov:wasDerivedFrom "YAML model_type" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_rf_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_rf_fingerprint_architecture> >> prov:wasDerivedFrom "YAML model_type" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_rf_fingerprint_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "26243464"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML model_params" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#voronoi_rf_training_run> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_rf_fingerprint_model_variant> >> prov:wasDerivedFrom "YAML model_type" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#voronoi_rf_training_run> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mp_2022> >> prov:wasDerivedFrom "YAML training_set" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release> <https://k.loria.fr/ontologies/evaluationonto#hasTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#convex_hull_distance_regression_task> >> prov:wasDerivedFrom "YAML fields train_task, test_task, targets and metrics" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release> <https://k.loria.fr/ontologies/evaluationonto#hasTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#thermodynamic_stability_classification_task> >> prov:wasDerivedFrom "YAML fields train_task, test_task, targets and metrics" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#convex_hull_distance_regression_task> <https://k.loria.fr/ontologies/evaluationonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#wbm_test_set> >> prov:wasDerivedFrom "YAML fields train_task, test_task, targets and metrics" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#thermodynamic_stability_classification_task> <https://k.loria.fr/ontologies/evaluationonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#wbm_test_set> >> prov:wasDerivedFrom "YAML fields train_task, test_task, targets and metrics" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_f1_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#f1_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.F1" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_f1_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.344"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.F1" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_daf_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#daf_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.DAF" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_daf_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "1.509"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.DAF" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_precision_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#precision_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.Precision" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_precision_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.259"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.Precision" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_recall_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#recall_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.Recall" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_recall_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.511"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.Recall" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_accuracy_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#accuracy_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.Accuracy" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_accuracy_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.665"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.Accuracy" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tpr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TPR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.511"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TPR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fpr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FPR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.303"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FPR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tnr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TNR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.697"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TNR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fnr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FNR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.489"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FNR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tp_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TP" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "22517.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TP" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fp_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FP" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "64431.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FP" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tn_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TN" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "148440.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TN" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fn_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FN" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "21575.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FN" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#mae_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.MAE" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.141"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.MAE" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_rmse_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#rmse_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.RMSE" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_rmse_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.206"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.RMSE" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_r2_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#r2_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.R2" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_r2_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "-0.316"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.R2" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_missing_preds_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#missing_preds_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.missing_preds" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_missing_preds_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "19"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.missing_preds" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_f1_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#f1_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.F1" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_f1_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.551"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.F1" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_daf_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#daf_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.DAF" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_daf_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "2.487"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.DAF" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_precision_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#precision_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.Precision" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_precision_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.38"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.Precision" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_recall_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#recall_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.Recall" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_recall_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "1.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.Recall" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_accuracy_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#accuracy_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.Accuracy" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_accuracy_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.38"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.Accuracy" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tpr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TPR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "1.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TPR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fpr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FPR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "1.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FPR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tnr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TNR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TNR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fnr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FNR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FNR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tp_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TP" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "3802.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TP" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fp_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FP" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "6198.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FP" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tn_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TN" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TN" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fn_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FN" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FN" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#mae_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.MAE" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.349"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.MAE" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_rmse_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#rmse_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.RMSE" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_rmse_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.417"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.RMSE" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_r2_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#r2_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.R2" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_r2_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "-1.012"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.R2" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_missing_preds_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#missing_preds_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.missing_preds" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_missing_preds_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.missing_preds" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_f1_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#f1_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.F1" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_f1_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.333"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.F1" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_daf_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#daf_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.DAF" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_daf_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "1.579"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.DAF" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_precision_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#precision_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.Precision" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_precision_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.241"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.Precision" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_recall_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#recall_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.Recall" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_recall_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.535"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.Recall" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_accuracy_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#accuracy_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.Accuracy" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_accuracy_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.668"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.Accuracy" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tpr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TPR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.535"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TPR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fpr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FPR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.308"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FPR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tnr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TNR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.692"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TNR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fnr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FNR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.465"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FNR" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tp_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TP" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "17854.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TP" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fp_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FP" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "56122.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FP" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tn_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TN" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "125992.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TN" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fn_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FN" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "15520.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FN" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#mae_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.MAE" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.148"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.MAE" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_rmse_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#rmse_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.RMSE" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_rmse_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.212"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.RMSE" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_r2_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#r2_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.R2" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_r2_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "-0.329"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.R2" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_missing_preds_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#missing_preds_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.missing_preds" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_missing_preds_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "2"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.missing_preds" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#evaluatesModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_rf_variant> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#usesBenchmarkRelease> <https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#evaluatesTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#thermodynamic_stability_classification_task> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#thermodynamic_stability_classification_task> <https://k.loria.fr/ontologies/evaluationonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#wbm_test_set> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#producesBenchmarkResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> >> prov:wasDerivedFrom "ontology/evaluationonto.ttl: MachineLearningEvaluationRun" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasResultTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#thermodynamic_stability_classification_task> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_f1_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_f1" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_daf_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_daf" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_precision_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_precision" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_recall_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_recall" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_accuracy_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_accuracy" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tpr_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tpr" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fpr_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fpr" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tnr_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tnr" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fnr_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fnr" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tp_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tp" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fp_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fp" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tn_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tn" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fn_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fn" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_f1_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_f1" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_daf_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_daf" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_precision_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_precision" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_recall_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_recall" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_accuracy_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_accuracy" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tpr_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tpr" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fpr_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fpr" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tnr_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tnr" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fnr_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fnr" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tp_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tp" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fp_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fp" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tn_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tn" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fn_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fn" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_f1_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_f1" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_daf_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_daf" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_precision_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_precision" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_recall_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_recall" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_accuracy_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_accuracy" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tpr_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tpr" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fpr_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fpr" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tnr_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tnr" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fnr_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fnr" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tp_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tp" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fp_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fp" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tn_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tn" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fn_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fn" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#evaluatesModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#voronoi_rf_variant> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#usesBenchmarkRelease> <https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#evaluatesTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#convex_hull_distance_regression_task> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#convex_hull_distance_regression_task> <https://k.loria.fr/ontologies/evaluationonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#wbm_test_set> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#producesBenchmarkResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> >> prov:wasDerivedFrom "ontology/evaluationonto.ttl: MachineLearningEvaluationRun" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasResultTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#convex_hull_distance_regression_task> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_mae_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_mae" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_rmse_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_rmse" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_r2_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_r2" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_missing_preds_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_missing_preds" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_mae_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_mae" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_rmse_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_rmse" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_r2_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_r2" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_missing_preds_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_missing_preds" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_mae_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_mae" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_rmse_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_rmse" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_r2_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_r2" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_missing_preds_metric_result> >> prov:wasDerivedFrom "voronoi_rf_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_missing_preds" ; dcterms:source <https://link.aps.org/doi/10.1103/PhysRevB.96.024104> .

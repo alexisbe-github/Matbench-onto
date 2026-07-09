@@ -1,0 +1,200 @@
+@prefix : <https://k.loria.fr/ontologies/evaluationonto-individuals#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix eval: <https://k.loria.fr/ontologies/evaluationonto#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <https://k.loria.fr/ontologies/evaluationonto-individuals#> .
+
+<https://k.loria.fr/ontologies/evaluationonto-individuals> rdf:type owl:Ontology ;
+                                                            owl:imports <https://k.loria.fr/ontologies/evaluationonto> .
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#accuracy_metric_type
+:accuracy_metric_type rdf:type owl:NamedIndividual ,
+                               eval:MetricType ;
+                      rdfs:label "Accuracy" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#convex_hull_distance_regression_task
+:convex_hull_distance_regression_task rdf:type owl:NamedIndividual ,
+                                               eval:RegressionTask ;
+                                      rdfs:comment "Evaluate the mean absolute error between predicted and DFT convex hull distance." ;
+                                      rdfs:label "Convex hull distance regression" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#daf_metric_type
+:daf_metric_type rdf:type owl:NamedIndividual ,
+                          eval:MetricType ;
+                 rdfs:label "DAF" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#f1_metric_type
+:f1_metric_type rdf:type owl:NamedIndividual ,
+                         eval:MetricType ;
+                rdfs:label "F1" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#fn_metric_type
+:fn_metric_type rdf:type owl:NamedIndividual ,
+                         eval:MetricType ;
+                rdfs:label "FN" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#fnr_metric_type
+:fnr_metric_type rdf:type owl:NamedIndividual ,
+                          eval:MetricType ;
+                 rdfs:label "FNR" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#fp_metric_type
+:fp_metric_type rdf:type owl:NamedIndividual ,
+                         eval:MetricType ;
+                rdfs:label "FP" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#fpr_metric_type
+:fpr_metric_type rdf:type owl:NamedIndividual ,
+                          eval:MetricType ;
+                 rdfs:label "FPR" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#kappa_metric_type
+:kappa_metric_type rdf:type owl:NamedIndividual ,
+                            eval:MetricType ;
+                   rdfs:label "Kappa" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#mae_metric_type
+:mae_metric_type rdf:type owl:NamedIndividual ,
+                          eval:MetricType ;
+                 rdfs:label "MAE" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release
+:matbench_discovery_benchmark_release rdf:type owl:NamedIndividual ,
+                                               eval:BenchmarkRelease ;
+                                      eval:hasTask :convex_hull_distance_regression_task ,
+                                                   :phonon_thermal_conductivity_contribution_task ,
+                                                   :relaxed_structure_matching_rmsd_task ,
+                                                   :thermodynamic_stability_classification_task ;
+                                      rdfs:label "Matbench Discovery benchmark release" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_suite
+:matbench_discovery_benchmark_suite rdf:type owl:NamedIndividual ,
+                                             eval:BenchmarkSuite ;
+                                    eval:hasBenchmarkRelease :matbench_discovery_benchmark_release ;
+                                    rdfs:label "Matbench Discovery" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#missing_preds_metric_type
+:missing_preds_metric_type rdf:type owl:NamedIndividual ,
+                                    eval:MetricType ;
+                           rdfs:label "Missing predictions" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#n_structures_metric_type
+:n_structures_metric_type rdf:type owl:NamedIndividual ,
+                                   eval:MetricType ;
+                          rdfs:label "Number of structures" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#phonon_thermal_conductivity_contribution_task
+:phonon_thermal_conductivity_contribution_task rdf:type owl:NamedIndividual ,
+                                                        eval:RegressionTask ;
+                                               rdfs:comment "Evaluate normalized, unitless phonon mode contributions to thermal conductivity." ;
+                                               rdfs:label "Phonon thermal conductivity contribution prediction" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#precision_metric_type
+:precision_metric_type rdf:type owl:NamedIndividual ,
+                                eval:MetricType ;
+                       rdfs:label "Precision" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#r2_metric_type
+:r2_metric_type rdf:type owl:NamedIndividual ,
+                         eval:MetricType ;
+                rdfs:label "R2" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#recall_metric_type
+:recall_metric_type rdf:type owl:NamedIndividual ,
+                             eval:MetricType ;
+                    rdfs:label "Recall" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#relaxed_structure_matching_rmsd_task
+:relaxed_structure_matching_rmsd_task rdf:type owl:NamedIndividual ,
+                                               eval:RegressionTask ;
+                                      rdfs:comment "Evaluate normalized, unitless StructureMatcher RMSD between ML-relaxed and DFT-relaxed structures after matching." ;
+                                      rdfs:label "Relaxed structure matching RMSD" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#rmsd_metric_type
+:rmsd_metric_type rdf:type owl:NamedIndividual ,
+                           eval:MetricType ;
+                  rdfs:label "RMSD" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#rmse_metric_type
+:rmse_metric_type rdf:type owl:NamedIndividual ,
+                           eval:MetricType ;
+                  rdfs:label "RMSE" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#symmetry_decrease_metric_type
+:symmetry_decrease_metric_type rdf:type owl:NamedIndividual ,
+                                        eval:MetricType ;
+                               rdfs:label "Symmetry decrease" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#symmetry_increase_metric_type
+:symmetry_increase_metric_type rdf:type owl:NamedIndividual ,
+                                        eval:MetricType ;
+                               rdfs:label "Symmetry increase" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#symmetry_match_metric_type
+:symmetry_match_metric_type rdf:type owl:NamedIndividual ,
+                                     eval:MetricType ;
+                            rdfs:label "Symmetry match" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#thermodynamic_stability_classification_task
+:thermodynamic_stability_classification_task rdf:type owl:NamedIndividual ,
+                                                      eval:ClassificationTask ;
+                                             rdfs:comment "Classify crystals or materials as thermodynamically stable or unstable." ;
+                                             rdfs:label "Thermodynamic stability classification" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#tn_metric_type
+:tn_metric_type rdf:type owl:NamedIndividual ,
+                         eval:MetricType ;
+                rdfs:label "TN" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#tnr_metric_type
+:tnr_metric_type rdf:type owl:NamedIndividual ,
+                          eval:MetricType ;
+                 rdfs:label "TNR" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#tp_metric_type
+:tp_metric_type rdf:type owl:NamedIndividual ,
+                         eval:MetricType ;
+                rdfs:label "TP" .
+
+
+###  https://k.loria.fr/ontologies/evaluationonto-individuals#tpr_metric_type
+:tpr_metric_type rdf:type owl:NamedIndividual ,
+                          eval:MetricType ;
+                 rdfs:label "TPR" .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

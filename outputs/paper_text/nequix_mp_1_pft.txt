@@ -1,0 +1,1326 @@
+[page 1]
+PFT: Phonon Fine-tuning for
+Machine Learned Interatomic Potentials
+Teddy Koker1 Abhijeet Gangan 2 3 Mit Kotak 4 Jaime Marian 3 Tess Smidt1
+Abstract
+Many materials properties depend on higher-order
+derivatives of the potential energy surface, yet
+machine learned interatomic potentials (MLIPs)
+trained with a standard loss on energy, force, and
+stress errors can exhibit error in curvature, de-
+grading the prediction of vibrational properties.
+We introduce phonon fine-tuning (PFT), which
+directly supervises second-order force constants
+of materials by matching MLIP energy Hessians
+to DFT-computed force constants from finite dis-
+placement phonon calculations. To scale to large
+supercells, PFT stochastically samples Hessian
+columns and computes the loss with a single
+Hessian-vector product. We also use a simple
+co-training scheme to incorporate upstream data
+to mitigate catastrophic forgetting. On the MDR
+Phonon benchmark, PFT improves Nequix MP by
+55% on average across phonon thermodynamic
+properties and achieves state-of-the-art accuracy
+among models trained on Materials Project tra-
+jectories. PFT also generalizes to improve prop-
+erties beyond second-derivatives, improving ther-
+mal conductivity predictions that rely on third-
+order derivatives of the potential energy.
+1. Introduction
+Many computational materials workflows use density func-
+tional theory (DFT) to compute materials properties from
+first principles. DFT’s computational cost has motivated
+machine learned interatomic potentials (MLIPs) as fast sur-
+rogates that can replace or accelerate DFT in large-scale
+1Department of Electrical Engineering and Computer Sci-
+ence, Massachusetts Institute of Technology, Boston, MA, USA
+2Department of Civil and Environmental Engineering, University
+of California, Los Angeles, CA 90095, USA 3Department of Ma-
+terials Science and Engineering, University of California, Los
+Angeles, CA 90095, USA 4Center for Computational Science and
+Engineering, Massachusetts Institute of Technology, Boston, MA,
+USA. Correspondence to: Teddy Koker<tekoker@mit.edu>.
+Preprint. January 30, 2026.
+screening and simulation (Yang et al., 2024; Merchant et al.,
+2023). Accurate predictions of phonon and vibrational prop-
+erties require an MLIP to match thecurvatureof the DFT
+potential energy surface (PES), not just energies, forces and
+stress. However, existing “universal” MLIPs are typically
+trained with supervision over energy, force, and stress; this
+only indirectly constrains second derivatives, leading to er-
+rors in the curvature that degrade phonon dispersions and
+thus various thermodynamic properties (Deng et al., 2025).
+In this work, we show that Hessian error strongly correlates
+with error across multiple phonon thermodynamic metrics.
+In materials, training directly on curvature is challenging
+because phonon force constants in periodic crystals are com-
+monly obtained by finite-displacement calculations in su-
+percells; the supercell must be large enough that displaced
+atoms do not interact with periodic images of themselves,
+and to capture interactions that extend beyond the primi-
+tive cell. These requirements often necessitate hundreds
+or thousands of atoms, where the 3N×3N Hessian, or
+force-constant matrix scales quadratically in system size,
+making full Hessian training infeasible.
+We introducephonon fine-tuning (PFT), a fine-tuning pro-
+cedure that directly incorporates second-order force con-
+stants by matching energy Hessians from the MLIP to
+DFT-derived force constants (Fig. 1c(iv)). To scale to
+large supercells, PFT stochastically samples force-constant
+columns and computes the corresponding loss via a single
+Hessian-vector product, reducing the training step cost from
+quadratic to linear with respect to the number of atoms. Be-
+cause of the relative diversity of existing phonon datasets
+and lack of non-equilibrium geometries, we introduce a sim-
+ple co-training strategy to mitigate catastrophic forgetting
+by interleaving upstream pretraining data during fine-tuning.
+We evaluate PFT by fine-tuning the Nequix MP founda-
+tion model (Koker et al., 2025) and benchmarking on held
+out calculations from the PBE MDR Phonon benchmark
+(Togo, 2023a; Loew et al., 2025). At a fraction of the cost
+of the initial pretraining, PFT reduces property error by
+55% on average across maximum phonon frequency, vibra-
+tional entropy, Helmholtz free energy, and heat capacity,
+achieving state-of-the-art accuracy among models trained
+on MPtrj (Deng et al., 2023; Jain et al., 2013). Furthermore,
+1
+arXiv:2601.07742v3  [cond-mat.mtrl-sci]  29 Jan 2026
+
+[page 2]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+Sample
+Column
+a c
+i ii iii iv
+b
+Force constants MLIP Hessian
+Hessian
+Column
+Force constants
+Finite displacements
+DFT
+DFT MLIP MLIP MLIP
+Supercell
+Supercell
+Unitcell
+Supercell
+Unitcell
+Supercell
+Figure 1.Overview of PFT framework.aFinite-difference calculations rely on the construction of a supercell to obtain force
+constants from interactions beyond the unitcell.bMLIPs are pre-trained on standard unitcell DFT calculations.c-i Up to O(3N) atomic
+displacements are applied to the supercell, with the number reduced by crystal symmetries; forces are computed with DFT, and numerical
+derivatives yield the force constant matrix.c-ii The same workflow can be used for MLIPs, replacing DFT force calculations with force
+predictions from the model.c-iii Alternatively, the force constants can also be computed as the analytical Hessian of the predicted energy
+directly.c-iv In this work, we use the Hessian-vector product to efficiently compute columns of the Hessian, and align with sampled DFT
+force constant columns during training. Note the shown force constants are downsampled for clarity.
+we demonstrate that PFT improves generalization to third-
+order derivatives, improving Matbench Discovery thermal
+conductivity predictions from 0.446 to 0.306 κSRME, which
+is also state-of-the-art among MPtrj-trained models. We
+demonstrate that through co-training, PFT degrades perfor-
+mance by less than 1% on the Matbench Discovery stability
+classification task, which is otherwise greatly impacted by
+training on phonon data alone. Lastly, we apply PFT to a
+stronger base model trained on OMat24 (Barroso-Luque
+et al., 2024), observing consistent benefits despite substan-
+tially more upstream data.
+Our contributions are:
+• A fine-tuning objective that directly aligns the curva-
+ture of the MLIP PES by aligning energy Hessians
+with DFT-derived force-constants.
+• A scalable strategy for training on phonons of large
+supercells by sampling columns of the Hessian, and
+training with Hessian-vector products.
+• A simple co-training recipe that mitigates catastrophic
+forgetting by interleaving pre-training data into the
+fine-tuning procedure.
+• Empirical results demonstrating that Hessian error
+strongly correlates with phonon property error, and
+that the introduced training objective greatly improves
+performance on phonon properties while preserving
+performance on other tasks.
+2. Background
+2.1. Machine learned interatomic potentials
+Machine learned interatomic potentials (MLIPs) seek to
+model the Born-Oppenheimer potential energy surface
+E(r,z) for atoms with positions r∈R 3Na, and species
+z∈Z Na
++ , where Na is the number of the atoms in the
+system. Neural network MLIPs typically build a model
+for predicted energy ˆEθ(r,a) parameterized by weights θ,
+based on local atomic environments (Unke et al., 2021).
+These models are trained on quantum chemistry calcula-
+tions such as density functional theory (DFT) (Hohenberg
+& Kohn, 1964).
+Recent work has demonstrated the success of so-calleduni-
+versalMLIPs, which seek to model the PES across a broad
+range of chemistries and geometries by training on vast DFT
+databases (Chen & Ong, 2022; Batatia et al., 2025a; Wood
+et al., 2025). These models offer the promise of acting as a
+surrogate to otherwise computationally expensive quantum
+2
+
+[page 3]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+chemistry calculations, enabling higher-throughput compu-
+tational materials workflows.
+In this work we focus onenergy-conservingMLIPs, where
+forces and stresses are obtained as derivatives of a scalar
+energy model, which ensures that the curl of the predicted
+forces are zero by design.
+With atom positions r in a periodic cell of volume V , pre-
+dicted forces are computed as
+ˆFa =−∇ ra
+ˆE(r)(1)
+Predicted stress on the lattice is computed as the derivative
+of energy with respect to symmetric strain tensorε:
+ˆσij = 1
+V
+∂ ˆE(r)
+∂εij
+
+ε=0
+(2)
+These quantities are convenient to compute with automatic
+differentiation (AD) from ˆE. Note that for the remainder
+of the paper we have dropped the dependence on atomic
+specieszfor clarity.
+MLIPs for periodic systems are typically trained using a
+loss over energies, forces, and stresses computed from DFT.
+This is constructed as a weighted sum of errors over each
+term:
+LEFS =λ ELE +λ F LF +λ σLσ (3)
+with individual loss terms
+LE =
+
+ˆE
+Na
+− E
+Na
+ LF = 1
+Na
+NaX
+a=1
+ˆFa −F a
+
+2
+2
+(4)
+Lσ = 1
+9
+3X
+i=1
+3X
+j=1
+|ˆσij −σ ij|(5)
+where E, F, and σ denote DFT-computed energy, force,
+and stress respectively, and coefficientsλ are tunable hyper-
+parameters to allow weighting of different quantities. Uni-
+versal potentials are often trained on databases of relaxation
+trajectories (Deng et al., 2023; Jain et al., 2013; Schmidt
+et al., 2024) or by perturbing equilibrium structures to sam-
+ple more of the PES (Barroso-Luque et al., 2024; Kaplan
+et al., 2025). Prior work has found that due to the bias
+of data towards equilibrium structures, there often exists a
+softening in the curvature of the PES (Deng et al., 2025).
+2.2. Harmonic phonons and vibrational properties
+Phonons arise from small lattice vibrations around a local
+minimum of the PES, and their spectra and scattering control
+many materials properties of interest, including thermal
+conductivity, thermal expansion, and heat capacity (Ziman,
+2001). They also dictate dynamic stability and, via electron-
+phonon coupling, can enable superconductivity (Giustino,
+2017).
+Phonon frequencies are calculated from the eigenvalues
+of the dynamical matrix, which is constructed by mass-
+weighting the real-space force constants Φ, and applying a
+lattice Fourier transform that introduces the wavevector k
+dependence. The force constants are defined as the second
+derivative of the PES with respect to atomic positions:
+Φaibj = ∂2E
+∂ra,i∂rb,j
+(6)
+wherei,jare Cartesian indices, anda,bare atom indices.
+2.3. Phonon calculations
+Phonon calculations are usually conducted with DFT in one
+of two ways: 1) using density functional perturbation theory
+(DFPT), or 2) using DFT with finite displacements. The
+latter is more common due to its generality across commonly
+used functionals (Miranda).
+With finite displacement, second-order force constants are
+approximated with
+Φaibj ≃ − Fb,j(∆ra,i)−F b,j
+∆ra,i
+(7)
+Fb,j(∆ra,i) are forces where atom a is displaced in direc-
+tion i, and generally Fb,j = 0 due to the atom positions
+being at equilibrium. This approximation works well due
+to the smoothness of DFT under small displacements, com-
+monly 0.01 ˚A for these calculations. The number of finite-
+displacement calculations (3N) can typically be significantly
+reduced by leveraging the symmetry of the crystal (Togo
+et al., 2023).
+It is important to note that phonon calculations using finite
+displacement require large supercells for calculations to
+avoid self-interaction with the displaced atom, and correctly
+model interatomic force constants that extend past the unit
+cell (Fig. 1a).
+MLIPs can be used for phonon calculations in the same way
+as DFT, constructing force constants with force calculations
+under finite displacement (Fig. 1c(i-ii)), which has shown
+success in predicting second-order (Loew et al., 2025) and
+third-order (P´ota et al., 2024) phonon properties.
+3
+
+[page 4]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+20 40 60
+Max Frequency max MAE [K]
+0.03
+0.04
+0.05
+0.06Hessian MAE [eV/Å2]
+20 40 60
+Vibrational Entropy S MAE [J/K/mol]
+5 10 15 20
+Helmholtz Free Energy F MAE [kJ/mol]
+2.5 5.0 7.5 10.0 12.5
+Heat Capacity CV MAE [J/K/mol]
+Nequix MP PFT (Ours) Nequix MP eSEN-MP MACE-MP-0 SevenNet-l3i5 SevenNet-0
+Figure 2.Hessian error vs. phonon properties.Error in the Hessians on the test subset of the MDR Phonon data are plotted against heat
+capacity errors for several foundation models trained on MPtrj. Hessian errors correlate with improved property prediction.
+3. Methodology
+3.1. Hessian error and vibrational properties
+Because phonon spectra and derived vibrational properties
+are functions of the second-order force constants, models
+must match the curvature of the PES to achieve accurate
+phonon predictions. Using the finite displacement method
+above, we calculate the error in the second-order force con-
+stants, or Hessians of models trained on MPtrj (Deng et al.,
+2023; Jain et al., 2013), evaluating them on a portion of the
+force constants and phonon properties from the PBE MDR
+phonon dataset (Loew et al., 2025; Togo, 2023a). Figure 2
+shows that lower Hessian error correlates with lower error
+on multiple thermodynamic properties. This motivates that
+training directly on second-order force constants results in
+more accurate predictions of these properties.
+3.2. Phonon fine-tuning (PFT)
+We propose phonon fine-tuning (PFT), a method for fine-
+tuning MLIPs directly on DFT-computed force constants.
+LPFT is a four term loss function, with terms that minimize
+error in the energy, force, stress, and force constants:
+LPFT =λ ELE +λ F LF +λ σLσ +λ ΦLΦ (8)
+where we define
+LΦ = 1
+3Na
+NaX
+a=1
+3X
+i=1
+Eb∼U[1,N a]
+j∼U[1,3]
+
+∂2 ˆE
+∂ra,i ∂rb,j
+−Φ aibj
+ (9)
+where Na is the number of atoms in a system. Note that
+again the batch dimension is omitted for readability. ˆE is
+the predicted potential energy from the neural network; the
+first three terms follow the standard EFS loss from Eq. (3)
+with an MAE loss on energy and stress and a ℓ2 loss on
+forces. The second-order force constants are predicted an-
+alytically as the Hessian of the energy with respect to two
+atom positions.
+To improve computational efficiency and enable training on
+large supercells, we uniformly sample one atom and Carte-
+sian direction for each structure in the batch, effectively
+selecting one column of the Hessian. This requires only
+a single Hessian-vector product (see next section) to com-
+pute the loss across the whole batch, while effectively still
+training on the full Hessian in expectation. This reduces the
+computational complexity of a training step from O(N 2)
+to O(N) for N number of atoms. Furthermore, by using a
+symmetry-aware E(3)-equivariant architecture, many Hes-
+sian elements are redundant due to the high symmetry of the
+force constants of a crystal structure (Califano et al., 1981).
+More consideration may be necessary with regards to sam-
+pling and data augmentation if non-equivariant architectures
+are used.
+Since the DFT phonon calculations themselves consist of
+energy, force, and stress calculations under displacements
+of atoms, it is reasonable to assume that one could sim-
+ply fine-tune models directly on this displacement data, as
+it contains sufficient information for constructing the full
+Hessian. Empirically we find this not to be the case, and
+observe that directly fine-tuning on the phonon displace-
+ments results in a significantlyworseHessian error (Fig. 3,
+Table 1). This suggests that the standard practice of EFS
+training on DFT calculations of rattled, or perturbed struc-
+tures (Barroso-Luque et al., 2024; Kaplan et al., 2025) may
+not be sufficient for correctly modeling the PES curvature.
+3.3. Efficient computation via Hessian-vector product
+PFT requires computing a subset of predicted second deriva-
+tives to compare to DFT-computed force constants for
+large supercells. For a structure with atomic positions
+r= (r 1, ...rNa)∈R 3N we form a selection vector v that
+is composed of zeros everywhere except for the index cor-
+responding to rb,j, the j-th Cartesian component of atom b,
+where it is one. The corresponding Hessian column is then
+∇2
+r ˆE(r)v=∇ r
+
+∇r ˆE(r)⊤v
+
+(10)
+4
+
+[page 5]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+0 20 40 60 80 100
+Step [k]
+10
+20
+30
+40
+50
+60Hessian MAE [meV/Å2/atom]
+0 50 100
+Step [k]
+10
+20
+30MDR Phonon (val)
+*
+0 50 100
+Step [k]
+10
+15
+0 50 100
+Step [k]
+2
+3
+4
+1e 3
+25
+50
+75MPtrj (val)
+Energy MAE [meV/atom]
+40
+60
+80
+Force MAE [meV/Å]
+0.25
+0.30
+Stress MAE [meV/Å2/atom]
+Nequix MP Nequix MP PFT Nequix MP PFT (no cotrain) Nequix MP (fine-tune on disp.)
+Figure 3.Training ablation. The left figure shows Hessian error on the MDR Phonon validation set, and the remaining figures show
+energy, force, and stress errors on the MPtrj validation set (top) and the MDR Phonon validation set (bottom). We compare phonon
+fine-tuning with and without co-training on MPtrj, as well as directly fine-tuning energy, force, and stress on the phonon displacement
+calculations. Co-training mostly mitigates degradation of MPtrj performance at only a slight increase in Hessian error. Training directly
+on displacements significantly worsens Hessian error over the base model. *We note that larger energy errors on MDR Phonon data are
+likely due to a mismatch in energies between MPtrj and MDR Phonon, see Sec. A.2.
+which can be computed without materializing the full Hes-
+sian by using a Hessian-vector product (HVP), using a
+forward-mode Jacobian-vector product (JVP) through a
+reverse-mode gradient (Pearlmutter, 1994). In practice, Hes-
+sian columns across a full batch of structures are computed
+by forming a single graph of atom positions where each
+structure is not connected, concatenating the sampled v for
+each structure into a single vector, and computing the HVP
+with respect to the sum of energies across all structures. This
+facilitates calculation of the loss with a single HVP call, and
+enables training on GPUs that would otherwise not have
+enough memory for a single Hessian calculation, especially
+for the large supercells that are needed for accurate phonon
+calculations (see Sec. A.1). During training, this results in a
+“triple-backward” as gradient-based optimization requires a
+derivative of the HVP with respect to model weights.
+3.4. Co-training
+While fine-tuning models on phonon data will more closely
+align the curvature of the PES with that of DFT, this pro-
+cedure may lead to catastrophic forgetting (French, 1999),
+where the fine-tuning procedure effects the performance of
+the model on its original upstream training data. This may
+be an issue as phonon calculations are always done at equi-
+librium, which can cause forgetting for out-of-distribution
+non-equilibrium configurations. Furthermore, the relative
+quantity and diversity of the phonon dataset may be less
+than the original pretraining or fine-tuning datasets (such as
+the case in our experimental setting).
+We propose a simple solution to this by alternating training
+steps between PFT steps and a typical energy/force/stress
+Algorithm 1PFT training with co-training
+Require: Phonon dataset Dphonon, upstream dataset Dup,
+co-training ratioK, model ˆEθ
+1:forbatch inD phonon do
+2:Sample(b, j)∼ U([1, N a]×[1,3])per structure
+3:UpdateθusingL PFT (Eq. 8)
+4:fork= 1toKdo
+5:Sample batch fromD up
+6:UpdateθusingL EFS (Eq. 3)
+7:end for
+8:end for
+(EFS) loss on the original upstream dataset, as outlined in
+Algorithm 1. The ratio of EFS on the upstream dataset
+to PFT steps on the phonon dataset K can be tuned by
+monitoring validation datasets for both the upstream and
+phonon datasets during training. As shown in Fig. 3, we
+demonstrate that without co-training, PFT causes energy,
+force, and stress errors to deviate quite significantly on the
+upstream validation dataset. The introduction of co-training,
+however, mostly eliminates this deviation with only a small
+reduction in Hessian MAE.
+3.5. Analytical property prediction
+As discussed, most existing methods for evaluating MLIPs
+on higher order derivatives of the PES do so with finite
+displacement (Loew et al., 2025; P ´ota et al., 2024). This
+is typically accurate if the smoothness and continuity of
+the PES is taken into account when designing the neural
+network architecture; however, it does introduce an addi-
+5
+
+[page 6]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+tional hyper-parameter in the form of displacement distance,
+which can subtly affect results (Fu et al., 2025).
+Leveraging the HVP, we can compute the full force con-
+stants, see Eq. (6), by iterating over Hessian columns, paral-
+lelizing HVP calls until GPU memory is saturated. While
+in theory this computation may need to be conducted on a
+graph that exceeds the receptive field of the neural network
+(Fang et al., 2024), simply using the same supercell as the
+DFT calculation will ensure we can sufficiently predict the
+same phonon modes as the ground truth. In practice we
+find that we achieve near identical results through analytical
+force constant prediction and finite displacement, which we
+show in Table 1.
+4. Experiments
+4.1. Training
+For all experiments, we start with the Nequix MP (Koker
+et al., 2025), whose JAX (Bradbury et al., 2018) implemen-
+tation enables convenient auto-differentiation through the
+Hessian terms of the loss function. Nequix MP was trained
+on MPtrj (Deng et al., 2023), a dataset of relaxation trajecto-
+ries from the v2022.10.28 release of Materials Project
+(Jain et al., 2013) consisting of 145,923 unique materials.
+MPtrj will serve as the upstream datasetD up
+For phonon calculation data Dphonon, we use MDR Phonon
+calculation database (Togo, 2023a), which was recalculated
+by (Loew et al., 2025) using the PBE exchange correlation
+functional in order to match the settings of the Materials
+Project data. These calculations were conducted using finite
+displacement (see Sec. 2.3), and contain the original en-
+ergy/force/stress calculations at each displacement. While
+the phonon data itself does not contain force, or stress labels
+needed for the PFT loss function (Eq. 8), we assume the
+force and stress labels are zero due to the strict structural
+relaxation procedure done prior to the phonon calculation.
+The energy label is computed by multiplying the provided
+unitcell energy by the number of repetitions within the su-
+percell used for calculations. Of the 9,959 materials within
+the dataset, all but 91 exist in MPtrj based onmp-id. These
+91 materials along with randomly selected calculations from
+the remaining data are used as a test set of 1,000 materials,
+with the rest of the data split into training/validation subsets
+with proportion 95/5. This ensures any benefit we see from
+PFT is due to the additional phonon information, and not
+novel chemistry or geometries. The training set then con-
+tains 8,510 structures derived from 301,414 displacement
+DFT calculations. We do note there is a discrepancy be-
+tween the energies of materials in phonon data and MPtrj,
+which we detail in Sec. A.2.
+We perform PFT both with (K= 4 ) and without (K= 0 )
+co-training for 200 epochs on the MDR Phonon data. With
+co-training, this requires about 140 A100 hours, with about
+60 A100 hours for PFT without co-training — significantly
+fewer than the 500 A100 hours needed to train the base
+Nequix MP model and a small fraction of other competi-
+tive MPtrj-trained MLIPs (Koker et al., 2025). To evaluate
+robustness to base model quality and scale of pre-training
+data, we pre-train a new base model, Nequix OAM (see
+Sec. A.3.1), and apply PFT using the same procedure as
+Nequix MP. For details on other hyper-parameters and their
+selection see Sec. A.3.
+4.2. Phonon properties
+Table 1.Evaluation of models on held-out MDR Phonon data. Met-
+rics are MAE of maximum phonon frequencyωmax (K), vibrational
+entropy S (J/K/mol), Helmholtz free energy F (kJ/mol) and heat
+capacity at constant volume CV (J/K/mol). †Additional upstream
+data (Sec. A.3.1).
+Modelω max S F C V
+MACE-MP-0 61 60 24 13
+SevenNet-0 38 47 18 8
+Nequix MP 24 32 12 6
+SevenNet-l3i5 25 25 9 4
+eSEN-MP 24 14 45
+Nequix MP (fine-tune on disp.) 182 143 59 30
+Nequix MP PFT 12 14 5 3
+Nequix MP PFT (autodiff) 12 14 5 3
+Nequix MP PFT (no cotrain)10 11 4 2
+Nequix OAM† 17 18 7 4
+Nequix OAM† PFT9 9 3 2
+Models are evaluated on the 1,000 material test subset of
+phonon calculations by following the same procedure as
+Loew et al. (2025), first performing a structural relaxation,
+and then running phonon calculations with finite displac-
+ment using phonopy (Togo et al., 2023). Thermodynamic
+properties are calculated at 300K. We re-run several com-
+petitive MPtrj-trained models (Batatia et al., 2025a; Park
+et al., 2024; Koker et al., 2025; Fu et al., 2025) on the subset.
+For Nequix MP PFT, we compute force constants with both
+finite displacement, and analytically via AD.
+Table 1 shows the errors of each model on phonon related
+properties maximum phonon frequency, vibrational entropy,
+Helmholtz free energy, and heat capacity at constant volume.
+From the Nequix MP base model, PFT results in an average
+reduction in MAE of 55%, and achieves state-of-the-art er-
+ror across all metrics for models trained on MPtrj materials
+despite being the smallest model. We find no significant
+differences between properties computed from forces con-
+stants obtained via finite displacement or AD, although the
+PFT model without co-training demonstrates a slight im-
+provement in MAE. Applying PFT to Nequix OAM yields a
+similar average relative improvement of 50%. Notably, the
+MP PFT model exceeds the performance of the OAM base
+6
+
+[page 7]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+X M
+ R X
+0
+1
+2
+3
+4Frequency [THz]
+R M
+CsCl (mp-22865)
+M K
+ A L H A
+0
+10
+20
+30
+40
+50
+L MH K
+C (mp-990448)
+M K
+ A L H A
+0
+1
+2
+3
+4
+L MH K
+YbI  (mp-570418)
+DFT/PBE Nequix MP Nequix MP PFT
+Figure 4.Phonon band structures. For ease of visualization, we display the phonon band structure for the three materials in the test
+split of MDR Phonon with the fewest number of atoms. In the case of Carbon structure (mp-990448), it results in a dynamically stable
+structure similar to DFT while the non-PFT model shows imaginary mode around the q-point A. Overall, we find that PFT generally
+produces bands with closer alignment to those of the DFT ground truth. More phonon band structures are provided in Fig. A.3.
+model,despite being trained with approximately two orders
+of magnitude fewer DFT calculations.
+Lastly, Fig. 4 shows several computed phonon band struc-
+tures before and after PFT. As is to be expected, we find the
+PFT leads to band structures that more closely align with
+the DFT computed band structures.
+4.3. Thermal conductivity
+To demonstrate the effect of PFT on properties that are
+higher-order derivatives of the PES, we evaluate the model
+on thermal conductivity, a task from the Matbench Discov-
+ery (Riebesell et al., 2025) benchmark. Thermal conductiv-
+ity κ is a function of third-order force constants (P´ota et al.,
+2024), or the third derivative of the energy. Just as with sec-
+ond order force-constants, third order force constants can
+be calculated with finite displacement, leveraging symmetry
+to reduce the number of computations (Togo, 2023b).
+We follow the procedure used by Matbench Discovery
+(Riebesell et al., 2025; P´ota et al., 2024) performing a struc-
+tural relaxation and then calculation of the third-order force
+constants with a displacement of 0.03 ˚A. Results from all
+of the other MPtrj-trained, or “compliant” models (Neu-
+mann et al., 2024; Barroso-Luque et al., 2024; Zhou et al.,
+2025; Batatia et al., 2025a; Zhang et al., 2025; Yan et al.,
+2025; Park et al., 2024; Bochkarev et al., 2024; Tan et al.,
+2025; Chen et al., 2025; Fu et al., 2025) sourced from the
+Matbench Discovery leaderboard are shown in Table 2.
+Similarly to phonon properties we find a reduction in error
+of 31% from the base Nequix MP model, and state-of-the-
+art performance for MPtrj-trained models. For the OAM
+base model, PFT improves error by 26%. In Fig. 6, we
+show macroscopic conductivity predictions for two zinc
+blends, AgI and BeO, showing again that PFT aligns predic-
+tions closer to the ground truth DFT result. PFT not only
+Table 2.Matbench Discovery “compliant” leaderboard for thermal
+conductivity, measured in symmetric relative mean error in pre-
+dicted phonon mode contributions to thermal conductivity κSRME.
+†Additional upstream data (Sec. A.3.1).
+Model Paramsκ SRME ↓
+ORB v2 MPtrj 25.2M 1.725
+eqV2 S DeNS 31.2M 1.676
+MatRIS v0.5.0 MPtrj 5.83M 0.865
+MACE-MP-0 4.69M 0.682
+DPA-3.1-MPtrj 4.81M 0.650
+HIENet 7.51M 0.642
+SevenNet-l3i5 1.17M 0.550
+GRACE-2L-MPtrj 15.3M 0.525
+Nequip-MP-L 9.6M 0.452
+Nequix MP 707K 0.446
+Eqnorm MPtrj 1.31M 0.408
+eSEN-30M-MP 30.1M 0.340
+Nequix MP PFT 707K 0.307
+Nequix MP PFT (no cotrain) 707K0.281
+Nequix OAM† 707K 0.267
+Nequix OAM† PFT 707K0.198
+improves second order vibrational properties, but also gener-
+alizes to third-order, or anharmonic, vibrational properties.
+4.4. Matbench Discovery
+The main Matbench Discovery task (Riebesell et al., 2025)
+consists of a geometry optimization followed by energy
+prediction to determine material stability. Performance on
+this task is less influenced by curvature of the PES and
+largely dictated by energy error, so it highlights any degra-
+dation of energy prediction caused by fine-tuning. Table
+3 shows the evaluation of the geometry optimization task,
+measured in root mean squared distance (RMSD) from the
+DFT-optimized structures as well as the F1 score of the
+stability classification task.
+7
+
+[page 8]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+0.3 0.4 0.5 0.6 0.7
+Thermal Conductivity SRME
+0.030
+0.035
+0.040
+0.045
+0.050
+0.055
+0.060Hessian MAE [eV/Å2]
+Nequix MP PFT (Ours)
+Nequix MP
+eSEN-MP
+MACE-MP-0
+SevenNet-l3i5
+SevenNet-0
+Figure 5.Thermal conductivity vs. Hessian error. Scatter
+plot of several models Hessian MAE on the MDR phonon test
+set vs. symmetric relative mean error in predicted phonon mode
+contributions to thermal conductivity κSRME. We find there is still a
+strong trend in between the two despite thermal conductivity using
+third-order force constants.
+200 400 600
+T emperature (K)
+0
+1
+2
+5
+10
+20 (W m 1 K 1)
+AgI
+200 400 600
+T emperature (K)
+100
+200
+500
+1000
+2000
+5000
+BeO
+DFT Nequix MP Nequix MP PFT
+Figure 6.Macroscopic conductivity predictions. Macroscopic
+thermal conductivity calculations for zinc blend AgI (left), which
+exhibits low conductivity and zinc blend BeO (right), which ex-
+hibits high conductivity. DFT calculations are from (Togo, 2025).
+PFT produces conductivity predictions closer to the ground truth.
+We find that neither PFT models improve performance over
+the base model. This may be expected, especially for F1,
+as the fine-tuning data has no additional energy data from
+extra chemistries or geometries, so performance of the ar-
+chitecture in this task will be saturated by the original MPtrj
+training data. However, the co-training is vital for preserv-
+ing performance on this task; while the non-co-trained PFT
+model worsens RMSD and F1 by 5% and 60% respectively,
+co-training reduces this difference to less than a 2% increase
+in geometry optimization RMSD and less than 1% reduction
+in stability classification F1.
+5. Related Work
+Several works have proposed the use of analytical Hes-
+sians with interatomic potentials. Fang et al. (2024) first
+demonstrated the ability to use AD for phonon prediction
+Table 3.Evaluation of models on Matbench Discovery, con-
+sisting of geometry optimization, measured in RMSD ( ˚A) and
+stable/unstable material classification F1 on unique prototypes.
+†Additional upstream data (Sec. A.3.1).
+Model RMSD↓F1↑
+Nequix MP0.0853 0.751
+Nequix MP PFT 0.0866 0.748
+Nequix MP PFT (no cotrain) 0.0893 0.301
+Nequix OAM† 0.0659 0.874
+Nequix OAM† PFT 0.0666 0.864
+through the use of an extended graph, eliminating previously
+aforementioned issues introduced with self-interaction un-
+der finite displacement calculations. They also demonstrate
+the training of MLIP models on Hessians of small organic
+molecules. Gangan et al. (2025) demonstrate gradient-based
+optimization of the classical Stillinger-Weber and EDIP
+potentials to align with DFT-computed phonon and elas-
+tic constant calculations. Amin et al. (2025) introduced
+a method of model distillation by training smaller MLIP
+on the analytical Hessians of larger, more accurate models.
+They also randomly sample columns of the Hessian, but use
+the Jacobian-vector product of direct-force prediction (i.e.
+non-energy conserving) models for training.
+Lastly, Burger et al. (2025) proposed the direct prediction
+Hessians in small organic molecules, bypassing the need
+for AD or finite-difference calculations. While this may be
+beneficial in terms of computational cost, models would not
+be able to benefit from pre-training on the large quantities
+of available DFT calculations. Furthermore, tasks such as
+molecular dynamics, which require lower-order forces, or
+thermal conductivity which require higher third-order force
+constants, would be infeasible to conduct.
+6. Discussion
+Phonon fine-tuning (PFT) provides a simple, model agnostic
+method to improve vibrational and thermal property predic-
+tions by directly supervising PES curvature. Across MDR
+Phonon and Matbench Discovery thermal conductivity, we
+find that reducing Hessian error aligns phonon-derived ob-
+servables and can transfer to downstream properties that
+depend on higher-order energy derivatives. PFT uses force-
+constants already produced by standard DFT phonon work-
+flows, and remains scalable to large supercell via stochastic
+Hessian column sampling and Hessian-vector products.
+We also highlight practical considerations for training on
+phonon calculations. Training necessitates access to higher-
+order derivatives through automatic differentiation, e.g. with
+JAX, which may not be accessible for all universal models.
+Scaling PFT to larger and more diverse phonon datasets,
+8
+
+[page 9]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+or with more accurate base models with larger pre-training
+datasets could improve accuracy and generalization. Beyond
+force constants, this work could be extended to other DFT-
+computed higher-order energy derivatives such as elasticity
+or anharmonic force constants, as well as with properties
+obtained through experiment.
+Software and Data
+We provide the source code used in this work, trained
+model weights, and preprocessed training data at https:
+//github.com/atomicarchitects/nequix/.
+Acknowledgements
+T. K., M. K., and T. S. were supported in part by the Na-
+tional Science Foundation through the AI Research Insti-
+tutes program Award No. PHY-2019786 (The NSF AI
+Institute for Artificial Intelligence and Fundamental Inter-
+actions, http://iaifi.org/) and Award No. DMR-
+2433348 (The NSF AI Materials Institute, https://
+aimi.cornell.edu/), by the Air Force Office of Sci-
+entific Research under Award No. FA9550-24-1-0067, as
+well as by the U.S. Department of Energy, National Nuclear
+Security Administration under Award No. DE-NA0004266.
+A. G. and J. M. were supported by DOE Project No. DE-
+SC0024401. M. K. was also supported by NSF Graduate Re-
+search Fellowship program under Grant No. DGE-1745302.
+This research used resources of the MIT Office of Research
+Computing and Data, and the National Energy Research
+Scientific Computing Center (NERSC), a Department of En-
+ergy User Facility using NERSC awards ERCAP0033254
+and ERCAP0036437.
+Impact Statement
+The goal of this work is to advance research in the field
+of machine learning for computational materials science.
+There are many potential societal consequences of our work,
+none of which we feel must be specifically highlighted here.
+References
+Amin, I., Raja, S., and Krishnapriyan, A. Towards fast,
+specialized machine learning force fields: Distilling
+foundation models via energy hessians.arXiv preprint
+arXiv:2501.09009, 2025.
+Barroso-Luque, L., Shuaibi, M., Fu, X., Wood, B. M.,
+Dzamba, M., Gao, M., Rizvi, A., Zitnick, C. L., and
+Ulissi, Z. W. Open materials 2024 (omat24) inor-
+ganic materials dataset and models.arXiv preprint
+arXiv:2410.12771, 2024.
+Batatia, I., Benner, P., Chiang, Y ., Elena, A. M., Kov´acs,
+D. P., Riebesell, J., Advincula, X. R., Asta, M., Avay-
+lon, M., Baldwin, W. J., et al. A foundation model for
+atomistic materials chemistry.The Journal of chemical
+physics, 163(18), 2025a.
+Batatia, I., Lin, C., Hart, J., Kasoar, E., Elena, A. M., Nor-
+wood, S. W., Wolf, T., and Cs ´anyi, G. Cross learning
+between electronic structure theories for unifying molecu-
+lar, surface, and inorganic crystal foundation force fields.
+arXiv preprint arXiv:2510.25380, 2025b.
+Bharadwaj, V ., Glover, A., Buluc, A., and Demmel, J.An
+Efficient Sparse Kernel Generator for O(3)-Equivariant
+Deep Networks. Society for Industrial and Applied Math-
+ematics, 2025. URL https://arxiv.org/abs/
+2501.13986.
+Bochkarev, A., Lysogorskiy, Y ., and Drautz, R. Graph
+atomic cluster expansion for semilocal interactions be-
+yond equivariant message passing.Physical Review X,
+14(2):021036, 2024.
+Bradbury, J., Frostig, R., Hawkins, P., Johnson, M. J., Leary,
+C., Maclaurin, D., Necula, G., Paszke, A., VanderPlas, J.,
+Wanderman-Milne, S., and Zhang, Q. JAX: composable
+transformations of Python+NumPy programs, 2018. URL
+http://github.com/jax-ml/jax.
+Burger, A., Thiede, L., Rønne, N., Bernales, V ., Vijayku-
+mar, N., Vegge, T., Bhowmik, A., and Aspuru-Guzik,
+A. Shoot from the hip: Hessian interatomic potentials
+without derivatives.arXiv preprint arXiv:2509.21624,
+2025.
+Califano, S., Schettino, V ., and Neto, N. Lattice dynamics.
+InLattice Dynamics of Molecular Crystals, pp. 1–40.
+Springer, 1981.
+Chen, C. and Ong, S. P. A universal graph deep learning
+interatomic potential for the periodic table.Nature Com-
+putational Science, 2(11):718–728, 2022.
+Chen, Y ., Fu, L., Yang, S., and Chen, L. Eqnorm MPtrj,
+2025. URL https://github.com/yzchen08/
+eqnorm.
+Deng, B., Zhong, P., Jun, K., Riebesell, J., Han, K., Bartel,
+C. J., and Ceder, G. Chgnet as a pretrained universal
+neural network potential for charge-informed atomistic
+modelling.Nature Machine Intelligence, 5(9):1031–1041,
+2023.
+Deng, B., Choi, Y ., Zhong, P., Riebesell, J., Anand, S., Li,
+Z., Jun, K., Persson, K. A., and Ceder, G. Systematic
+softening in universal machine learning interatomic po-
+tentials.npj Computational Materials, 11(1):9, 2025.
+9
+
+[page 10]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+Fang, S., Geiger, M., Checkelsky, J. G., and Smidt, T.
+Phonon predictions with E(3)-equivariant graph neural
+networks.arXiv preprint arXiv:2403.11347, 2024.
+French, R. M. Catastrophic forgetting in connectionist net-
+works.Trends in cognitive sciences, 3(4):128–135, 1999.
+Fu, X., Wood, B. M., Barroso-Luque, L., Levine, D. S., Gao,
+M., Dzamba, M., and Zitnick, C. L. Learning smooth and
+expressive interatomic potentials for physical property
+prediction.arXiv preprint arXiv:2502.12147, 2025.
+Gangan, A. S., Cubuk, E. D., Schoenholz, S. S., Bauchy,
+M., and Krishnan, N. A. Force-field optimization by
+end-to-end differentiable atomistic simulation.Journal of
+Chemical Theory and Computation, 21(12):5867–5879,
+2025.
+Giustino, F. Electron-phonon interactions from first princi-
+ples.Reviews of Modern Physics, 89(1):015003, 2017.
+Hohenberg, P. and Kohn, W. Inhomogeneous electron gas.
+Physical review, 136(3B):B864, 1964.
+Jain, A., Ong, S. P., Hautier, G., Chen, W., Richards, W. D.,
+Dacek, S., Cholia, S., Gunter, D., Skinner, D., Ceder, G.,
+et al. Commentary: The materials project: A materials
+genome approach to accelerating materials innovation.
+APL materials, 1(1), 2013.
+Kaplan, A. D., Liu, R., Qi, J., Ko, T. W., Deng, B., Riebesell,
+J., Ceder, G., Persson, K. A., and Ong, S. P. A founda-
+tional potential energy surface dataset for materials.arXiv
+preprint arXiv:2503.04070, 2025.
+Kasoar, E., Hart, J., Batatia, I., Elena, A., and Cs ´anyi, G.
+ml-peg, November 2025. URL https://doi.org/
+10.5281/zenodo.17705093.
+Koker, T., Kotak, M., and Smidt, T. Training a founda-
+tion model for materials on a budget.arXiv preprint
+arXiv:2508.16067, 2025.
+Liu, R., Liu, E., Riebesell, J., Qi, J., Ong, S. P., and Ko,
+T. W. MatCalc, January 2024. URLhttps://github.
+com/materialsvirtuallab/matcalc.
+Loew, A., Sun, D., Wang, H.-C., Botti, S., and Marques,
+M. A. Universal machine learning interatomic potentials
+are ready for phonons.npj Computational Materials, 11
+(1):178, 2025.
+Merchant, A., Batzner, S., Schoenholz, S. S., Aykol, M.,
+Cheon, G., and Cubuk, E. D. Scaling deep learning for
+materials discovery.Nature, 624(7990):80–85, 2023.
+Miranda, H. Phonons from density-functional perturbation
+theory. URL https://vasp.at/wiki/Phonons_
+from_density-functional-perturbation_
+theory. Accessed: 2026-01-09.
+Neumann, M., Gin, J., Rhodes, B., Bennett, S., Li, Z.,
+Choubisa, H., Hussey, A., and Godwin, J. Orb: A
+fast, scalable neural network potential.arXiv preprint
+arXiv:2410.22570, 2024.
+Park, Y ., Kim, J., Hwang, S., and Han, S. Scalable parallel
+algorithm for graph neural network interatomic potentials
+in molecular dynamics simulations.Journal of chemical
+theory and computation, 20(11):4857–4868, 2024.
+Pearlmutter, B. A. Fast exact multiplication by the hessian.
+Neural computation, 6(1):147–160, 1994.
+P´ota, B., Ahlawat, P., Cs´anyi, G., and Simoncelli, M. Ther-
+mal conductivity predictions with foundation atomistic
+models.arXiv preprint arXiv:2408.00755, 2024.
+Riebesell, J., Goodall, R. E., Benner, P., Chiang, Y ., Deng,
+B., Ceder, G., Asta, M., Lee, A. A., Jain, A., and Persson,
+K. A. A framework to evaluate machine learning crystal
+stability predictions.Nature Machine Intelligence, 7(6):
+836–847, 2025.
+Schmidt, J., Cerqueira, T. F., Romero, A. H., Loew, A.,
+J¨ager, F., Wang, H.-C., Botti, S., and Marques, M. A.
+Improving machine-learning models in materials science
+through large datasets.Materials Today Physics, 48:
+101560, 2024.
+Tan, C. W., Descoteaux, M. L., Kotak, M., Nascimento, G.
+d. M., Kavanagh, S. R., Zichi, L., Wang, M., Saluja, A.,
+Hu, Y . R., Smidt, T., et al. High-performance training
+and inference for deep equivariant interatomic potentials.
+arXiv preprint arXiv:2504.16068, 2025.
+Togo, A. MDR phonon calculation database.
+https://mdr.nims.go.jp/collections/
+8g84ms862?locale=en, 2023a.
+Togo, A. First-principles phonon calculations with phonopy
+and phono3py.J. Phys. Soc. Jpn., 92(1):012001, 2023b.
+doi: 10.7566/JPSJ.92.012001.
+Togo, A. Phono3py input data for 103 compounds calcu-
+lated using the finite displacement method with PBE,
+2025. URL https://github.com/atztogo/
+phonondb.
+Togo, A., Chaput, L., Tadano, T., and Tanaka, I. Im-
+plementation strategies in phonopy and phono3py.J.
+Phys. Condens. Matter, 35(35):353001, 2023. doi:
+10.1088/1361-648X/acd831.
+Unke, O. T., Chmiela, S., Sauceda, H. E., Gastegger, M.,
+Poltavsky, I., Schutt, K. T., Tkatchenko, A., and Muller,
+K.-R. Machine learning force fields.Chemical Reviews,
+121(16):10142–10186, 2021.
+10
+
+[page 11]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+Wood, B. M., Dzamba, M., Fu, X., Gao, M., Shuaibi, M.,
+Barroso-Luque, L., Abdelmaqsoud, K., Gharakhanyan,
+V ., Kitchin, J. R., Levine, D. S., et al. Uma: A
+family of universal models for atoms.arXiv preprint
+arXiv:2506.23971, 2025.
+Yan, K., Bohde, M., Kryvenko, A., Xiang, Z., Zhao, K.,
+Zhu, S., Kolachina, S., Sarıt ¨urk, D., Xie, J., Arr ´oyave,
+R., et al. A materials foundation model via hy-
+brid invariant-equivariant architectures.arXiv preprint
+arXiv:2503.05771, 2025.
+Yang, H., Hu, C., Zhou, Y ., Liu, X., Shi, Y ., Li, J., Li, G.,
+Chen, Z., Chen, S., Zeni, C., et al. Mattersim: A deep
+learning atomistic model across elements, temperatures
+and pressures.arXiv preprint arXiv:2405.04967, 2024.
+Zhang, D., Peng, A., Cai, C., Li, W., Zhou, Y ., Zeng, J.,
+Guo, M., Zhang, C., Li, B., Jiang, H., et al. Graph neu-
+ral network model for the era of large atomistic models.
+arXiv preprint arXiv:2506.01686, 2025.
+Zhou, Y ., Hu, S., Wang, C., Tan, G., and Jia, W.
+MatRIS, 2025. URL https://github.com/
+HPC-AI-Team/MatRIS.
+Ziman, J. M.Electrons and phonons: the theory of transport
+phenomena in solids. Oxford university press, 2001.
+11
+
+[page 12]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+A. Appendix
+A.1. Full Hessian vs. stochastic HVP training
+In this section we compare training with stochastic Hessian-vector products (HVP) to training on the full analytical Hessian.
+Using a very small 90K-parameter model (3 layers, hidden irreps 32x0e + 32x1o + 32x2e , and a 5 ˚A radial cutoff),
+we train from scratch on the force constants of three 64-atom supercells selected to span high, median, and low symmetry
+(Fig. A.1). Relative to training on the full Hessian, stochastic HVP reduces wall-clock time by approximately 30× and peak
+GPU memory by 90×, while achieving comparable Hessian MAE throughout training. As expected, agreement is strongest
+for the most symmetric structure, but it remains favorable even in the least symmetric case.
+As the time and space complexity of the full Hessian is O(N 2) and HVP is O(N) with respect to number of atoms, this
+performance gap only grows with more atoms. With larger models and radial cutoffs that are typically used for universal
+MLIPs and larger supercells needed for accurate phonon calculations, the time and memory usage of training on the full
+analytical Hessian quickly becomes computationally infeasible.
+Si (mp-149)
+ BaT e (mp-1000)
+ ZnS (mp-555666)
+0 500 1000
+Step
+0
+100
+200Hessian MAE [meV/Å2/atom] Full Hessian (606 ms, 17.3 GB)
+Stochastic HVP (17 ms, 0.19 GB)
+0 500 1000
+Step
+0
+20
+40
+Full Hessian (137 ms, 4.1 GB)
+Stochastic HVP (11 ms, 0.05 GB)
+0 500 1000
+Step
+20
+40
+60
+80
+Full Hessian (584 ms, 17.2 GB)
+Stochastic HVP (17 ms, 0.19 GB)
+Figure A.1.Full Hessian vs stochastic HVP with Nequix 90K. We train a small 90K parameter model from scratch on the force constants
+of individual materials, using both the full Hessian and the stochastic HVP. Each column shows the unit cell, the training time and GPU
+memory consumption on an NVIDIA RTX A5500, and the full Hessian MAE throughout training.
+A.2. Energy discrepancy between PBE MDR and MPtrj datasets
+We compare the DFT energies within the PBE recalculation of the MDR Phonon database (Togo, 2023a) by Loew et al.
+(2025) to those within MPtrj (Deng et al., 2023; Jain et al., 2013). This is performed by selecting the 9959 matching materials
+across datasets by mp-id. For MPtrj we select the final relaxed structure energy, and for both datasets we normalize by
+number of atoms to offset differences caused by unitcell selection. The energies and the error between them are plotted in
+Fig. A.2. We find that, while the energies are generally in agreement, there exists a slight shift between the two datasets
+with a MAE of 31.60 meV/atom. Furthermore there are several outliers with energy differences up to 1.5 eV/atom. We
+suspect this systemic shift is the cause of the consistent ≈ 30 meV/atom MAE reported with all interatomic potentials used
+in Loew et al. (2025), and energy MAE seen in Fig. 3.
+12
+
+[page 13]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+10
+ 8
+ 6
+ 4
+ 2
+ 0
+MDR Phonon PBE Energy [eV/atom]
+10
+8
+6
+4
+2
+0
+MPtrj Energy [eV/atom]
+150
+ 100
+ 50
+ 0 50 100 150
+MDR Phonon PBE - MPtrj Energy [meV/atom]
+0
+100
+200
+300
+400
+500
+600Count
+1000
+ 0
+0
+10
+20
+30
+40
+Outliers
+Figure A.2.MDR Phonon and MPtrj energy comparison. Left: Parity plot of energies from MPtrj (Deng et al., 2023; Jain et al., 2013)
+vs. PBE MDR Phonon (Togo, 2023a; Loew et al., 2025). Right: Histogram of differences in energy between materials in two datasets.
+Absolute differences less than 150 meV/atom are shown in the main plot with the remaining outliers in the inset.
+A.3. Hyper-parameters
+A.3.1. TRAINING THENEQUIXOAMBASE MODEL
+Following Fu et al. (2025), the Nequix OAM model is trained by first pretraining on OMat24 (Barroso-Luque et al., 2024),
+and then fine-tuning on a combination of subsampled Alexandria (sAlex) (Schmidt et al., 2024) and eight copies of MPtrj
+(Deng et al., 2023; Jain et al., 2013). OMat24 and sAlex contain over 100M and 10M DFT calculations respectively.
+We use the same training setup as the original Nequix MP model (Koker et al., 2025), using the torch backend with
+OpenEquivariance kernels (Bharadwaj et al., 2025). Changes to hyper-parameters outlined in Table A.1. The OMat
+pretraining was about 250 A100 hours, and the OAM fine-tuning was an additional 40 A100 hours.
+Table A.1.Hyper-parameters used for training OMat24 and OAM base models and rationale behind selection.
+Hyper-parameter Nequix OMat Nequix OAM Notes/Rationale
+Train data OMat24 MPtrj + sAlex
+Batch size 512 512 Maximum for GPU memory (4×A100
+80GB).
+Warmup epochs 0.1 0 From Nequix MP; no warmup for fine-
+tuning.
+# of epochs 6 3 Models seem to mostly converge at this
+duration.
+A.3.2. TRAININGPFTMODELS
+Table A.2 shows the hyper-parameters and method for selection for the Nequix PFT models, which are trained using the
+JAX backend on a single A100 GPU.
+13
+
+[page 14]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+Table A.2.Hyper-parameters used for PFT models and rationale behind selection.
+Hyper-
+parameter
+Nequix MP
+PFT
+Nequix MP PFT
+(no co-train)
+Nequix OAM
+PFT Notes/Rationale
+Base model Nequix MP Nequix MP Nequix OAM See Koker et al. (2025) for architecture details.
+Learning rate 0.0001 0.0001 0.0001 Selected from {0.003, 0.001, 0.0003, 0.0001} based on vali-
+dation performance early in training.
+Optimizer AdamW AdamW AdamW Standard optimizer.
+Weight decay 0.001 0.001 0.001 From Nequix MP.
+PFTλ E 0 20 0 From Nequix MP.
+PFTλ F 20 20 20 From Nequix MP.
+PFTλ σ 5 5 5 From Nequix MP.
+PFTλ Φ 100 100 100 Not tuned, selected to be larger than other weights.
+Co-train train MPtrj n/a MPtrj + sAlex Same as training data for base model.
+Co-train val. MPtrj n/a sAlex Same as validation data for base model.
+Co-trainλ E 500 n/a 750 Started with Nequix MP value × 10, increased until co-train
+validation energy does not diverge over time (see Fig. 3).
+Co-trainλ F 200 n/a 200 Nequix MP value×10.
+Co-trainλ σ 50 n/a 50 Nequix MP value×10.
+Co-train ratioK4 n/a 4 Trade off between training time and overfitting to phonon
+data; 4 cotraining steps for every phonon step is reasonable.
+Batch size 16 16 16 Maximum for GPU memory (1×A100 80GB).
+# of epochs 200 200 200 Not tuned, based on GPU budget. May benefit from longer
+training, but validation metrics are close to converged at this
+duration.
+A.4. Elastic properties
+We also benchmark the performance effects of PFT on materials elastic properties, shown in Table A.3. For the benchmark
+we use the MatCalc Elasticity Calc (Liu et al., 2024) based on the settings as described in the ml-peg package (Kasoar
+et al., 2025; Batatia et al., 2025b) whereby the elastic tensor and derived properties like the bulk K and shear G modulus
+are obtained. V oigt-Reuss-Hill (VRH) average is used to report the final values for which we compute the metrics. We
+observe that the error on shear modulus is lowered for the PFT model while bulk modulus is worsened. Overall, average
+performance on both modulus is improved for the PFT model. We also report the failure rate for the models for which
+MatCalc calculations fail to converge.
+Table A.3.Evaluation of models on Materials Project elastic properties containing 12,122 different materials. Metrics are mean absolute
+error of bulk modulus K and shear modulus G in units of GPa, correlation score, as well as success rate of computations. To compare the
+models in a fair way we only consider the materials for which both models return a valid output.
+ModelKMAEGMAER 2
+K R2
+G Failure
+Nequix MP15.0318.160.890.44 18.37%
+Nequix MP PFT 16.4916.410.870.5418.21%
+A.5. Phonon band structures
+Figure A.3 shows additional examples of band structures calculated with Nequix MP PFT.
+14
+
+[page 15]
+PFT: Phonon Fine-tuning for Machine Learned Interatomic Potentials
+X M
+ Z R A Z
+0
+10
+20
+30
+40
+50Frequency [THz]
+X R M A
+Rb H Pd (mp-643022)
+M K
+ A L H A
+0
+1
+2
+3
+4
+LMHK
+CdI  (mp-570610)
+XF0
+0
+20
+40
+60
+80
+100
+0
+ 0
+G0 X
+ R W S
+ T W
+LiAsH OF  (mp-697263)
+X S Y
+ Z U R T Z
+0
+5
+10
+15
+20
+25
+X U Y T S R
+MgGeO  (mp-4575)
+L T P0
+0
+20
+40
+60
+80
+100Frequency [THz]
+P2
+ F
+Ga(HO)  (mp-626729)
+X M
+ Z
+0
+1
+2
+3
+4
+5
+6
+7
+Z0M X P N
+Cs PdSe  (mp-31285)
+X F2
+5
+0
+5
+10
+15
+20
+25
+0
+ Y0U0 X
+ R W S
+ T W
+KCaNb O F (mp-682067)
+X S Y
+ Z U R T Z
+0
+2
+4
+6
+8
+10
+12
+X U Y T S R
+Ga (PS)  (mp-676038)
+Z D B
+ A E Z C2 Y2
+0
+1
+2
+3
+4
+5
+6
+7Frequency [THz]
+Ba As  (mp-524)
+Y M A
+0
+2
+4
+6
+8
+10
+12
+14
+L2
+ V2
+Hg P Cl (mp-28875)
+M K
+ A L H A
+0
+10
+20
+30
+40
+L M H K H2
+PNO (mp-38975)
+Y M A
+0
+1
+2
+3
+4
+5
+6
+7
+L2
+ V2
+Pr IrCl  (mp-975605)
+Figure A.3.Phonon band structures with Nequix MP PFT. Following (Fang et al., 2024), we display predicted band structures (with
+DFT in black) of four randomly selected materials from each tercile of Hessian error in the PBE MDR phonon test set. The top row shows
+lowest error, and the bottom row shows highest error materials. Band structures are calculated withphonopy(Togo et al., 2023). Note
+that the number bands is3×the number of atoms in the unit cell.
+15

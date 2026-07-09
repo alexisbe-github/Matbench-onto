@@ -1,0 +1,1180 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix archind: <https://k.loria.fr/ontologies/architectureonto-individuals#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix dataind: <https://k.loria.fr/ontologies/dataset-individuals#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix eval: <https://k.loria.fr/ontologies/evaluationonto#> .
+@prefix evalind: <https://k.loria.fr/ontologies/evaluationonto-individuals#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix train: <https://k.loria.fr/ontologies/trainingonto#> .
+@prefix trind: <https://k.loria.fr/ontologies/trainingonto-individuals#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+archind:dpa4_family a owl:NamedIndividual,
+        arch:ModelFamily ;
+    rdfs:label "DPA4"^^xsd:string ;
+    arch:hasVariant archind:dpa_4_0_pro_mptrj_dpa4_model_variant,
+        archind:dpa_4_0_pro_mptrj_variant .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_evaluation_run a owl:NamedIndividual,
+        eval:MachineLearningEvaluationRun ;
+    rdfs:label "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression"^^xsd:string ;
+    eval:evaluatesModelVariant archind:dpa_4_0_pro_mptrj_variant ;
+    eval:evaluatesTask evalind:convex_hull_distance_regression_task ;
+    eval:producesBenchmarkResult evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result ;
+    eval:usesBenchmarkRelease evalind:matbench_discovery_benchmark_release .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_evaluation_run a owl:NamedIndividual,
+        eval:MachineLearningEvaluationRun ;
+    rdfs:label "dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution"^^xsd:string ;
+    eval:evaluatesModelVariant archind:dpa_4_0_pro_mptrj_variant ;
+    eval:evaluatesTask evalind:phonon_thermal_conductivity_contribution_task ;
+    eval:producesBenchmarkResult evalind:dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_benchmark_result ;
+    eval:usesBenchmarkRelease evalind:matbench_discovery_benchmark_release .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_evaluation_run a owl:NamedIndividual,
+        eval:MachineLearningEvaluationRun ;
+    rdfs:label "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd"^^xsd:string ;
+    eval:evaluatesModelVariant archind:dpa_4_0_pro_mptrj_variant ;
+    eval:evaluatesTask evalind:relaxed_structure_matching_rmsd_task ;
+    eval:producesBenchmarkResult evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result ;
+    eval:usesBenchmarkRelease evalind:matbench_discovery_benchmark_release .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_evaluation_run a owl:NamedIndividual,
+        eval:MachineLearningEvaluationRun ;
+    rdfs:label "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification"^^xsd:string ;
+    eval:evaluatesModelVariant archind:dpa_4_0_pro_mptrj_variant ;
+    eval:evaluatesTask evalind:thermodynamic_stability_classification_task ;
+    eval:producesBenchmarkResult evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result ;
+    eval:usesBenchmarkRelease evalind:matbench_discovery_benchmark_release .
+
+evalind:full_test_set_fold a owl:NamedIndividual,
+        eval:Fold ;
+    rdfs:label "full_test_set"^^xsd:string ;
+    eval:hasTestSplit dataind:full_test_set .
+
+evalind:kappa_103_fold a owl:NamedIndividual,
+        eval:Fold ;
+    rdfs:label "kappa_103"^^xsd:string ;
+    eval:hasTestSplit dataind:kappa_103 .
+
+evalind:symprec_1e_2_fold a owl:NamedIndividual,
+        eval:Fold ;
+    rdfs:label "symprec_1e_2"^^xsd:string ;
+    eval:hasTestSplit dataind:symprec_1e_2 .
+
+evalind:symprec_1e_5_fold a owl:NamedIndividual,
+        eval:Fold ;
+    rdfs:label "symprec_1e_5"^^xsd:string ;
+    eval:hasTestSplit dataind:symprec_1e_5 .
+
+trind:dpa_4_0_pro_mptrj_materialization a owl:NamedIndividual,
+        train:Checkpoint ;
+    rdfs:label "DPA-4.0-Pro-MPtrj"^^xsd:string ;
+    train:generatedBy trind:dpa_4_0_pro_mptrj_pretraining .
+
+archind:dpa4_atomic_energy_head_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "atomic energy head"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:dpa4_atomic_energy_head_component_configuration .
+
+archind:dpa4_atomic_energy_head_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "atomic energy head component configuration"^^xsd:string .
+
+archind:dpa4_dpa4_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "DPA4"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:dpa4_dpa4_component_configuration .
+
+archind:dpa4_dpa4_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "DPA4 component configuration"^^xsd:string .
+
+archind:dpa4_emfa_so_2_convolution_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "EMFA SO(2) convolution"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:dpa4_emfa_so_2_convolution_component_configuration .
+
+archind:dpa4_emfa_so_2_convolution_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "EMFA SO(2) convolution component configuration"^^xsd:string .
+
+archind:dpa4_equivariant_feed_forward_network_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "equivariant feed-forward network"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:dpa4_equivariant_feed_forward_network_component_configuration .
+
+archind:dpa4_equivariant_feed_forward_network_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "equivariant feed-forward network component configuration"^^xsd:string .
+
+archind:dpa4_geometry_informed_embedding_component a owl:NamedIndividual,
+        arch:MachineLearningArchitecture ;
+    rdfs:label "Geometry-Informed Embedding"^^xsd:string ;
+    arch:hasMachineLearningArchitectureConfiguration archind:dpa4_geometry_informed_embedding_component_configuration .
+
+archind:dpa4_geometry_informed_embedding_component_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "Geometry-Informed Embedding component configuration"^^xsd:string .
+
+archind:dpa_4_0_pro_mptrj_dpa4_architecture_configuration a owl:NamedIndividual,
+        arch:MachineLearningArchitectureConfiguration ;
+    rdfs:label "DPA4 architecture configuration"^^xsd:string .
+
+dataind:full_test_set a owl:NamedIndividual,
+        data:DatasetSplit ;
+    rdfs:label "full_test_set"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:wasDerivedFromDataset dataind:wbm_test_set .
+
+dataind:kappa_103 a owl:NamedIndividual,
+        data:DatasetSplit ;
+    rdfs:label "kappa_103"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:wasDerivedFromDataset dataind:kappa_103_phonon_benchmark_set .
+
+dataind:kappa_103_phonon_benchmark_set a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "kappa-103 phonon benchmark set"^^xsd:string .
+
+dataind:mptrj a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "MPtrj"^^xsd:string .
+
+dataind:symprec_1e_2 a owl:NamedIndividual,
+        data:DatasetSplit ;
+    rdfs:label "symprec_1e_2"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:wasDerivedFromDataset dataind:wbm_test_set .
+
+dataind:symprec_1e_5 a owl:NamedIndividual,
+        data:DatasetSplit ;
+    rdfs:label "symprec_1e_5"^^xsd:string ;
+    data:hasDataRepresentation dataind:atomic_structure_representation ;
+    data:wasDerivedFromDataset dataind:wbm_test_set .
+
+dataind:atomic_structure_representation a owl:NamedIndividual,
+        data:DataRepresentation ;
+    rdfs:label "atomic structure"^^xsd:string .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result a owl:NamedIndividual,
+        eval:BenchmarkResult ;
+    rdfs:label "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression benchmark result"^^xsd:string ;
+    eval:hasMetricResult evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_mae_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_missing_preds_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_r2_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_rmse_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_mae_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_missing_preds_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_r2_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_rmse_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_mae_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_missing_preds_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_r2_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_rmse_metric_result ;
+    eval:hasResultTask evalind:convex_hull_distance_regression_task .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_mae_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "MAE 0.029 eV/atom"^^xsd:string ;
+    eval:hasMetricType evalind:mae_metric_type ;
+    eval:hasMetricValue "0.029"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_missing_preds_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "missing_preds 2 count"^^xsd:string ;
+    eval:hasMetricType evalind:missing_preds_metric_type ;
+    eval:hasMetricValue 2 .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_r2_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "R2 0.82 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:r2_metric_type ;
+    eval:hasMetricValue "0.82"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_rmse_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "RMSE 0.076 eV/atom"^^xsd:string ;
+    eval:hasMetricType evalind:rmse_metric_type ;
+    eval:hasMetricValue "0.076"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_mae_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "MAE 0.033 eV/atom"^^xsd:string ;
+    eval:hasMetricType evalind:mae_metric_type ;
+    eval:hasMetricValue "0.033"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_missing_preds_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "missing_preds 0 count"^^xsd:string ;
+    eval:hasMetricType evalind:missing_preds_metric_type ;
+    eval:hasMetricValue 0 .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_r2_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "R2 0.698 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:r2_metric_type ;
+    eval:hasMetricValue "0.698"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_rmse_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "RMSE 0.122 eV/atom"^^xsd:string ;
+    eval:hasMetricType evalind:rmse_metric_type ;
+    eval:hasMetricValue "0.122"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_mae_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "MAE 0.03 eV/atom"^^xsd:string ;
+    eval:hasMetricType evalind:mae_metric_type ;
+    eval:hasMetricValue "0.03"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_missing_preds_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "missing_preds 0 count"^^xsd:string ;
+    eval:hasMetricType evalind:missing_preds_metric_type ;
+    eval:hasMetricValue 0 .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_r2_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "R2 0.823 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:r2_metric_type ;
+    eval:hasMetricValue "0.823"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_rmse_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "RMSE 0.078 eV/atom"^^xsd:string ;
+    eval:hasMetricType evalind:rmse_metric_type ;
+    eval:hasMetricValue "0.078"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_benchmark_result a owl:NamedIndividual,
+        eval:BenchmarkResult ;
+    rdfs:label "dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution benchmark result"^^xsd:string ;
+    eval:hasMetricResult evalind:dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_phonons_kappa_103_kappa_sre_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_phonons_kappa_103_kappa_srme_metric_result ;
+    eval:hasResultTask evalind:phonon_thermal_conductivity_contribution_task .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_phonons_kappa_103_kappa_sre_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "κ_SRE 0.1323 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:kappa_sre_metric_type ;
+    eval:hasMetricValue "0.1323"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_phonons_kappa_103_kappa_srme_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "κ_SRME 0.2414 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:kappa_srme_metric_type ;
+    eval:hasMetricValue "0.2414"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result a owl:NamedIndividual,
+        eval:BenchmarkResult ;
+    rdfs:label "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd benchmark result"^^xsd:string ;
+    eval:hasMetricResult evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_n_structures_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_n_sym_ops_mae_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_rmsd_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_decrease_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_increase_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_match_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_n_structures_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_n_sym_ops_mae_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_rmsd_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_decrease_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_increase_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_match_metric_result ;
+    eval:hasResultTask evalind:relaxed_structure_matching_rmsd_task .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_n_structures_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "n_structures 256963 count"^^xsd:string ;
+    eval:hasMetricType evalind:n_structures_metric_type ;
+    eval:hasMetricValue 256963 .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_n_sym_ops_mae_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "n_sym_ops_mae 2.3791 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:n_sym_ops_mae_metric_type ;
+    eval:hasMetricValue "2.3791"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_rmsd_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "rmsd 0.0694 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:rmsd_metric_type ;
+    eval:hasMetricValue "0.0694"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_decrease_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "symmetry_decrease 0.2207 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:symmetry_decrease_metric_type ;
+    eval:hasMetricValue "0.2207"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_increase_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "symmetry_increase 0.1039 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:symmetry_increase_metric_type ;
+    eval:hasMetricValue "0.1039"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_match_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "symmetry_match 0.6502 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:symmetry_match_metric_type ;
+    eval:hasMetricValue "0.6502"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_n_structures_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "n_structures 256963 count"^^xsd:string ;
+    eval:hasMetricType evalind:n_structures_metric_type ;
+    eval:hasMetricValue 256963 .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_n_sym_ops_mae_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "n_sym_ops_mae 6.818 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:n_sym_ops_mae_metric_type ;
+    eval:hasMetricValue "6.818"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_rmsd_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "rmsd 0.0694 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:rmsd_metric_type ;
+    eval:hasMetricValue "0.0694"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_decrease_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "symmetry_decrease 0.6561 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:symmetry_decrease_metric_type ;
+    eval:hasMetricValue "0.6561"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_increase_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "symmetry_increase 0.0674 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:symmetry_increase_metric_type ;
+    eval:hasMetricValue "0.0674"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_match_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "symmetry_match 0.2497 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:symmetry_match_metric_type ;
+    eval:hasMetricValue "0.2497"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result a owl:NamedIndividual,
+        eval:BenchmarkResult ;
+    rdfs:label "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification benchmark result"^^xsd:string ;
+    eval:hasMetricResult evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_accuracy_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_daf_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_f1_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fn_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fnr_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fp_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fpr_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_precision_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_recall_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tn_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tnr_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tp_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tpr_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_accuracy_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_daf_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_f1_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fn_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fnr_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fp_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fpr_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_precision_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_recall_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tn_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tnr_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tp_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tpr_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_accuracy_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_daf_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_f1_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fn_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fnr_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fp_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fpr_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_precision_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_recall_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tn_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tnr_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tp_metric_result,
+        evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tpr_metric_result ;
+    eval:hasResultTask evalind:thermodynamic_stability_classification_task .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_accuracy_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Accuracy 0.943 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:accuracy_metric_type ;
+    eval:hasMetricValue "0.943"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_daf_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "DAF 4.943 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:daf_metric_type ;
+    eval:hasMetricValue "4.943"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_f1_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "F1 0.832 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:f1_metric_type ;
+    eval:hasMetricValue "0.832"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fn_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FN 8105.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:fn_metric_type ;
+    eval:hasMetricValue "8105.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fnr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FNR 0.184 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:fnr_metric_type ;
+    eval:hasMetricValue "0.184"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fp_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FP 6439.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:fp_metric_type ;
+    eval:hasMetricValue "6439.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fpr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FPR 0.03 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:fpr_metric_type ;
+    eval:hasMetricValue "0.03"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_precision_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Precision 0.848 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:precision_metric_type ;
+    eval:hasMetricValue "0.848"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_recall_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Recall 0.816 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:recall_metric_type ;
+    eval:hasMetricValue "0.816"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tn_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TN 206432.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:tn_metric_type ;
+    eval:hasMetricValue "206432.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tnr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TNR 0.97 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:tnr_metric_type ;
+    eval:hasMetricValue "0.97"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tp_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TP 35987.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:tp_metric_type ;
+    eval:hasMetricValue "35987.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tpr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TPR 0.816 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:tpr_metric_type ;
+    eval:hasMetricValue "0.816"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_accuracy_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Accuracy 0.964 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:accuracy_metric_type ;
+    eval:hasMetricValue "0.964"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_daf_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "DAF 6.307 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:daf_metric_type ;
+    eval:hasMetricValue "6.307"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_f1_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "F1 0.982 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:f1_metric_type ;
+    eval:hasMetricValue "0.982"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fn_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FN 0.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:fn_metric_type ;
+    eval:hasMetricValue "0.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fnr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FNR 0.0 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:fnr_metric_type ;
+    eval:hasMetricValue "0.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fp_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FP 359.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:fp_metric_type ;
+    eval:hasMetricValue "359.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fpr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FPR 1.0 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:fpr_metric_type ;
+    eval:hasMetricValue "1.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_precision_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Precision 0.964 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:precision_metric_type ;
+    eval:hasMetricValue "0.964"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_recall_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Recall 1.0 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:recall_metric_type ;
+    eval:hasMetricValue "1.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tn_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TN 0.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:tn_metric_type ;
+    eval:hasMetricValue "0.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tnr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TNR 0.0 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:tnr_metric_type ;
+    eval:hasMetricValue "0.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tp_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TP 9641.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:tp_metric_type ;
+    eval:hasMetricValue "9641.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tpr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TPR 1.0 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:tpr_metric_type ;
+    eval:hasMetricValue "1.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_accuracy_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Accuracy 0.954 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:accuracy_metric_type ;
+    eval:hasMetricValue "0.954"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_daf_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "DAF 5.628 dimensionless"^^xsd:string ;
+    eval:hasMetricType evalind:daf_metric_type ;
+    eval:hasMetricValue "5.628"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_f1_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "F1 0.85 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:f1_metric_type ;
+    eval:hasMetricValue "0.85"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fn_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FN 5322.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:fn_metric_type ;
+    eval:hasMetricValue "5322.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fnr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FNR 0.159 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:fnr_metric_type ;
+    eval:hasMetricValue "0.159"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fp_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FP 4554.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:fp_metric_type ;
+    eval:hasMetricValue "4554.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fpr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "FPR 0.025 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:fpr_metric_type ;
+    eval:hasMetricValue "0.025"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_precision_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Precision 0.86 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:precision_metric_type ;
+    eval:hasMetricValue "0.86"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_recall_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "Recall 0.841 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:recall_metric_type ;
+    eval:hasMetricValue "0.841"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tn_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TN 177560.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:tn_metric_type ;
+    eval:hasMetricValue "177560.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tnr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TNR 0.975 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:tnr_metric_type ;
+    eval:hasMetricValue "0.975"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tp_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TP 28052.0 count"^^xsd:string ;
+    eval:hasMetricType evalind:tp_metric_type ;
+    eval:hasMetricValue "28052.0"^^xsd:float .
+
+evalind:dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tpr_metric_result a owl:NamedIndividual,
+        eval:MetricResult ;
+    rdfs:label "TPR 0.841 fraction"^^xsd:string ;
+    eval:hasMetricType evalind:tpr_metric_type ;
+    eval:hasMetricValue "0.841"^^xsd:float .
+
+evalind:kappa_sre_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "κ_SRE"^^xsd:string .
+
+evalind:kappa_srme_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "κ_SRME"^^xsd:string .
+
+trind:ase_optimizer a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "ase_optimizer"^^xsd:string .
+
+trind:cell_filter a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "cell_filter"^^xsd:string .
+
+trind:conservative_energy_gradient_loss a owl:NamedIndividual,
+        train:LossFunction ;
+    rdfs:label "conservative energy-gradient loss"^^xsd:string .
+
+trind:dpa_4_0_pro_mptrj_pretraining a owl:NamedIndividual,
+        train:PretrainingRun ;
+    rdfs:label "dpa_4_0_pro_mptrj_pretraining"^^xsd:string ;
+    rdfs:comment "Pretraining of DPA4.0-Pro-MPtrj on MPtrj dataset using conservative energy-gradient training"^^xsd:string ;
+    train:hasHyperparameterValue trind:dpa_4_0_pro_mptrj_pretraining_ase_optimizer_value,
+        trind:dpa_4_0_pro_mptrj_pretraining_cell_filter_value,
+        trind:dpa_4_0_pro_mptrj_pretraining_graph_construction_radius_value,
+        trind:dpa_4_0_pro_mptrj_pretraining_max_force_value,
+        trind:dpa_4_0_pro_mptrj_pretraining_max_neighbors_value,
+        trind:dpa_4_0_pro_mptrj_pretraining_max_steps_value,
+        trind:dpa_4_0_pro_mptrj_pretraining_optimizer_value,
+        trind:dpa_4_0_pro_mptrj_pretraining_weight_decay_value ;
+    train:trainsModelVariant archind:dpa_4_0_pro_mptrj_dpa4_model_variant ;
+    train:usesDataset dataind:mptrj ;
+    train:usesLoss trind:conservative_energy_gradient_loss ;
+    train:usesObjectiveFunction trind:energy_and_force_matching ;
+    train:usesOptimizer trind:hybridmuon .
+
+trind:dpa_4_0_pro_mptrj_pretraining_ase_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "dpa_4_0_pro_mptrj_pretraining ase_optimizer value"^^xsd:string ;
+    prov:value "FIRE"^^xsd:string ;
+    train:ofHyperparameter trind:ase_optimizer .
+
+trind:dpa_4_0_pro_mptrj_pretraining_cell_filter_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "dpa_4_0_pro_mptrj_pretraining cell_filter value"^^xsd:string ;
+    prov:value "FrechetCellFilter"^^xsd:string ;
+    train:ofHyperparameter trind:cell_filter .
+
+trind:dpa_4_0_pro_mptrj_pretraining_graph_construction_radius_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "dpa_4_0_pro_mptrj_pretraining graph_construction_radius value"^^xsd:string ;
+    prov:value "6.0"^^xsd:float ;
+    train:ofHyperparameter trind:graph_construction_radius .
+
+trind:dpa_4_0_pro_mptrj_pretraining_max_force_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "dpa_4_0_pro_mptrj_pretraining max_force value"^^xsd:string ;
+    prov:value "0.02"^^xsd:float ;
+    train:ofHyperparameter trind:max_force .
+
+trind:dpa_4_0_pro_mptrj_pretraining_max_neighbors_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "dpa_4_0_pro_mptrj_pretraining max_neighbors value"^^xsd:string ;
+    prov:value 384 ;
+    train:ofHyperparameter trind:max_neighbors .
+
+trind:dpa_4_0_pro_mptrj_pretraining_max_steps_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "dpa_4_0_pro_mptrj_pretraining max_steps value"^^xsd:string ;
+    prov:value 500 ;
+    train:ofHyperparameter trind:max_steps .
+
+trind:dpa_4_0_pro_mptrj_pretraining_optimizer_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "dpa_4_0_pro_mptrj_pretraining optimizer value"^^xsd:string ;
+    prov:value "Muon"^^xsd:string ;
+    train:ofHyperparameter trind:optimizer .
+
+trind:dpa_4_0_pro_mptrj_pretraining_weight_decay_value a owl:NamedIndividual,
+        train:MachineLearningHyperparameterValue ;
+    rdfs:label "dpa_4_0_pro_mptrj_pretraining weight_decay value"^^xsd:string ;
+    prov:value "0.001"^^xsd:float ;
+    train:ofHyperparameter trind:weight_decay .
+
+trind:energy_and_force_matching a owl:NamedIndividual,
+        train:ObjectiveFunction ;
+    rdfs:label "energy and force matching"^^xsd:string .
+
+trind:graph_construction_radius a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "graph_construction_radius"^^xsd:string .
+
+trind:hybridmuon a owl:NamedIndividual,
+        train:Optimizer ;
+    rdfs:label "HybridMuon"^^xsd:string .
+
+trind:max_force a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_force"^^xsd:string .
+
+trind:max_neighbors a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_neighbors"^^xsd:string .
+
+trind:max_steps a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "max_steps"^^xsd:string .
+
+trind:optimizer a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "optimizer"^^xsd:string .
+
+trind:weight_decay a owl:NamedIndividual,
+        train:MachineLearningHyperparameter ;
+    rdfs:label "weight_decay"^^xsd:string .
+
+archind:dpa_4_0_pro_mptrj_dpa4_architecture a owl:NamedIndividual,
+        arch:EquivariantMessagePassingNeuralNetworkArchitecture ;
+    rdfs:label "DPA4"^^xsd:string ;
+    arch:hasBackboneArchitecture archind:dpa4_dpa4_component ;
+    arch:hasComponent archind:dpa4_emfa_so_2_convolution_component,
+        archind:dpa4_equivariant_feed_forward_network_component,
+        archind:dpa4_geometry_informed_embedding_component ;
+    arch:hasHeadArchitecture archind:dpa4_atomic_energy_head_component ;
+    arch:hasMachineLearningArchitectureConfiguration archind:dpa_4_0_pro_mptrj_dpa4_architecture_configuration ;
+    arch:hasParameterNumber 32724908 .
+
+archind:dpa_4_0_pro_mptrj_dpa4_model_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "dpa-4.0-pro-mptrj DPA4"^^xsd:string ;
+    arch:hasMachineLearningArchitecture archind:dpa_4_0_pro_mptrj_dpa4_architecture .
+
+evalind:n_structures_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "n_structures"^^xsd:string .
+
+evalind:n_sym_ops_mae_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "n_sym_ops_mae"^^xsd:string .
+
+evalind:rmsd_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "rmsd"^^xsd:string .
+
+evalind:symmetry_decrease_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "symmetry_decrease"^^xsd:string .
+
+evalind:symmetry_increase_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "symmetry_increase"^^xsd:string .
+
+evalind:symmetry_match_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "symmetry_match"^^xsd:string .
+
+dataind:wbm_test_set a owl:NamedIndividual,
+        data:Dataset ;
+    rdfs:label "WBM test set"^^xsd:string .
+
+evalind:accuracy_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "Accuracy"^^xsd:string .
+
+evalind:convex_hull_distance_regression_task a owl:NamedIndividual,
+        eval:RegressionTask,
+        eval:Task ;
+    rdfs:label "Convex hull distance regression"^^xsd:string ;
+    eval:usesDataset dataind:wbm_test_set .
+
+evalind:daf_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "DAF"^^xsd:string .
+
+evalind:f1_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "F1"^^xsd:string .
+
+evalind:fn_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "FN"^^xsd:string .
+
+evalind:fnr_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "FNR"^^xsd:string .
+
+evalind:fp_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "FP"^^xsd:string .
+
+evalind:fpr_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "FPR"^^xsd:string .
+
+evalind:mae_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "MAE"^^xsd:string .
+
+evalind:missing_preds_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "missing_preds"^^xsd:string .
+
+evalind:phonon_thermal_conductivity_contribution_task a owl:NamedIndividual,
+        eval:RegressionTask,
+        eval:Task ;
+    rdfs:label "Phonon thermal conductivity contribution prediction"^^xsd:string ;
+    eval:usesDataset dataind:kappa_103_phonon_benchmark_set .
+
+evalind:precision_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "Precision"^^xsd:string .
+
+evalind:r2_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "R2"^^xsd:string .
+
+evalind:recall_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "Recall"^^xsd:string .
+
+evalind:relaxed_structure_matching_rmsd_task a owl:NamedIndividual,
+        eval:RegressionTask,
+        eval:Task ;
+    rdfs:label "Relaxed structure matching RMSD"^^xsd:string ;
+    eval:usesDataset dataind:wbm_test_set .
+
+evalind:rmse_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "RMSE"^^xsd:string .
+
+evalind:thermodynamic_stability_classification_task a owl:NamedIndividual,
+        eval:ClassificationTask,
+        eval:Task ;
+    rdfs:label "Thermodynamic stability classification"^^xsd:string ;
+    eval:usesDataset dataind:wbm_test_set .
+
+evalind:tn_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "TN"^^xsd:string .
+
+evalind:tnr_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "TNR"^^xsd:string .
+
+evalind:tp_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "TP"^^xsd:string .
+
+evalind:tpr_metric_type a owl:NamedIndividual,
+        eval:MetricType ;
+    rdfs:label "TPR"^^xsd:string .
+
+evalind:matbench_discovery_benchmark_release a owl:NamedIndividual,
+        eval:BenchmarkRelease ;
+    rdfs:label "matbench_discovery_benchmark_release"^^xsd:string ;
+    eval:hasTask evalind:convex_hull_distance_regression_task,
+        evalind:phonon_thermal_conductivity_contribution_task,
+        evalind:relaxed_structure_matching_rmsd_task,
+        evalind:thermodynamic_stability_classification_task .
+
+archind:dpa_4_0_pro_mptrj_variant a owl:NamedIndividual,
+        arch:ModelVariant ;
+    rdfs:label "dpa-4.0-pro-mptrj"^^xsd:string ;
+    dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> ;
+    prov:wasDerivedFrom <https://arxiv.org/pdf/2606.02419.pdf> ;
+    arch:hasMachineLearningArchitecture archind:dpa_4_0_pro_mptrj_dpa4_architecture ;
+    arch:hasParameterNumber 32724908 .
+
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa4_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_variant> >> prov:wasDerivedFrom "YAML model_key" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_variant> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "32724908"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa4_family> <https://k.loria.fr/ontologies/architectureonto#hasVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_dpa4_model_variant> >> prov:wasDerivedFrom "architecture.ttl" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_dpa4_model_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_dpa4_architecture> >> prov:wasDerivedFrom "architecture.ttl" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_variant> <https://k.loria.fr/ontologies/architectureonto#hasMachineLearningArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_dpa4_architecture> >> prov:wasDerivedFrom "architecture.ttl" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_dpa4_architecture> <https://k.loria.fr/ontologies/architectureonto#hasParameterNumber> "32724908"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "model_params" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_dpa4_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa4_emfa_so_2_convolution_component> >> prov:wasDerivedFrom "[{'value': 'EMFA SO(2) convolution', 'evidence': 'EMFA SO(2) convolution'}, {'value': 'equivariant feed-forward network', 'evidence': 'equivariant feed-forward network'}, {'value': 'Geometry-Informed Embedding', 'evidence': 'Geometry-Informed Embedding (GIE) stage'}]" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_dpa4_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa4_equivariant_feed_forward_network_component> >> prov:wasDerivedFrom "[{'value': 'EMFA SO(2) convolution', 'evidence': 'EMFA SO(2) convolution'}, {'value': 'equivariant feed-forward network', 'evidence': 'equivariant feed-forward network'}, {'value': 'Geometry-Informed Embedding', 'evidence': 'Geometry-Informed Embedding (GIE) stage'}]" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_dpa4_architecture> <https://k.loria.fr/ontologies/architectureonto#hasComponent> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa4_geometry_informed_embedding_component> >> prov:wasDerivedFrom "[{'value': 'EMFA SO(2) convolution', 'evidence': 'EMFA SO(2) convolution'}, {'value': 'equivariant feed-forward network', 'evidence': 'equivariant feed-forward network'}, {'value': 'Geometry-Informed Embedding', 'evidence': 'Geometry-Informed Embedding (GIE) stage'}]" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_dpa4_architecture> <https://k.loria.fr/ontologies/architectureonto#hasBackboneArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa4_dpa4_component> >> prov:wasDerivedFrom "DPA4 architecture" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_dpa4_architecture> <https://k.loria.fr/ontologies/architectureonto#hasHeadArchitecture> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa4_atomic_energy_head_component> >> prov:wasDerivedFrom "atomic energy head" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#trainsModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_dpa4_model_variant> >> prov:wasDerivedFrom "[{'value': 'DPA4', 'evidence': 'DPA4 architecture'}]" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_max_force_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#max_force> >> prov:wasDerivedFrom "YAML hyperparams.max_force" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_max_force_value> <http://www.w3.org/ns/prov#value> "0.02"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "0.02" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_max_force_value> >> prov:wasDerivedFrom "YAML hyperparams.max_force" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_max_steps_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#max_steps> >> prov:wasDerivedFrom "YAML hyperparams.max_steps" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_max_steps_value> <http://www.w3.org/ns/prov#value> "500"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "500" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_max_steps_value> >> prov:wasDerivedFrom "YAML hyperparams.max_steps" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_ase_optimizer_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#ase_optimizer> >> prov:wasDerivedFrom "YAML hyperparams.ase_optimizer" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_ase_optimizer_value> <http://www.w3.org/ns/prov#value> "FIRE"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "FIRE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_ase_optimizer_value> >> prov:wasDerivedFrom "YAML hyperparams.ase_optimizer" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_cell_filter_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#cell_filter> >> prov:wasDerivedFrom "YAML hyperparams.cell_filter" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_cell_filter_value> <http://www.w3.org/ns/prov#value> "FrechetCellFilter"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "FrechetCellFilter" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_cell_filter_value> >> prov:wasDerivedFrom "YAML hyperparams.cell_filter" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_graph_construction_radius_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#graph_construction_radius> >> prov:wasDerivedFrom "YAML hyperparams.graph_construction_radius" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_graph_construction_radius_value> <http://www.w3.org/ns/prov#value> "6.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "6.0" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_graph_construction_radius_value> >> prov:wasDerivedFrom "YAML hyperparams.graph_construction_radius" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_max_neighbors_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#max_neighbors> >> prov:wasDerivedFrom "YAML hyperparams.max_neighbors" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_max_neighbors_value> <http://www.w3.org/ns/prov#value> "384"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "384" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_max_neighbors_value> >> prov:wasDerivedFrom "YAML hyperparams.max_neighbors" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_optimizer_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#optimizer> >> prov:wasDerivedFrom "YAML hyperparams.optimizer" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_optimizer_value> <http://www.w3.org/ns/prov#value> "Muon"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "Muon" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_optimizer_value> >> prov:wasDerivedFrom "YAML hyperparams.optimizer" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_weight_decay_value> <https://k.loria.fr/ontologies/trainingonto#ofHyperparameter> <https://k.loria.fr/ontologies/trainingonto-individuals#weight_decay> >> prov:wasDerivedFrom "YAML hyperparams.weight_decay" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_weight_decay_value> <http://www.w3.org/ns/prov#value> "0.001"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "0.001" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#hasHyperparameterValue> <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining_weight_decay_value> >> prov:wasDerivedFrom "YAML hyperparams.weight_decay" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#mptrj> >> prov:wasDerivedFrom "[{'value': 'MPtrj', 'evidence': 'training_set'}]" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesOptimizer> <https://k.loria.fr/ontologies/trainingonto-individuals#hybridmuon> >> prov:wasDerivedFrom "HybridMuon optimizer" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesLoss> <https://k.loria.fr/ontologies/trainingonto-individuals#conservative_energy_gradient_loss> >> prov:wasDerivedFrom "conservative energy-gradient training path" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <https://k.loria.fr/ontologies/trainingonto#usesObjectiveFunction> <https://k.loria.fr/ontologies/trainingonto-individuals#energy_and_force_matching> >> prov:wasDerivedFrom "energy and force matching" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_materialization> <https://k.loria.fr/ontologies/trainingonto#generatedBy> <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> >> prov:wasDerivedFrom "[{'value': 'DPA-4.0-Pro-MPtrj', 'evidence': 'model_name'}]" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/trainingonto-individuals#dpa_4_0_pro_mptrj_pretraining> <http://www.w3.org/2000/01/rdf-schema#comment> "Pretraining of DPA4.0-Pro-MPtrj on MPtrj dataset using conservative energy-gradient training"^^<http://www.w3.org/2001/XMLSchema#string> >> prov:wasDerivedFrom "trained only on the MPtrj dataset" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release> <https://k.loria.fr/ontologies/evaluationonto#hasTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#convex_hull_distance_regression_task> >> prov:wasDerivedFrom "YAML fields train_task, test_task, targets and metrics" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release> <https://k.loria.fr/ontologies/evaluationonto#hasTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#phonon_thermal_conductivity_contribution_task> >> prov:wasDerivedFrom "YAML fields train_task, test_task, targets and metrics" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release> <https://k.loria.fr/ontologies/evaluationonto#hasTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#relaxed_structure_matching_rmsd_task> >> prov:wasDerivedFrom "YAML fields train_task, test_task, targets and metrics" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release> <https://k.loria.fr/ontologies/evaluationonto#hasTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#thermodynamic_stability_classification_task> >> prov:wasDerivedFrom "YAML fields train_task, test_task, targets and metrics" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#convex_hull_distance_regression_task> <https://k.loria.fr/ontologies/evaluationonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#wbm_test_set> >> prov:wasDerivedFrom "YAML fields train_task, test_task, targets and metrics" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#phonon_thermal_conductivity_contribution_task> <https://k.loria.fr/ontologies/evaluationonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#kappa_103_phonon_benchmark_set> >> prov:wasDerivedFrom "YAML fields train_task, test_task, targets and metrics" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#relaxed_structure_matching_rmsd_task> <https://k.loria.fr/ontologies/evaluationonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#wbm_test_set> >> prov:wasDerivedFrom "YAML fields train_task, test_task, targets and metrics" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#thermodynamic_stability_classification_task> <https://k.loria.fr/ontologies/evaluationonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#wbm_test_set> >> prov:wasDerivedFrom "YAML fields train_task, test_task, targets and metrics" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#full_test_set_fold> <https://k.loria.fr/ontologies/evaluationonto#hasTestSplit> <https://k.loria.fr/ontologies/dataset-individuals#full_test_set> >> prov:wasDerivedFrom "full_test_set" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#kappa_103_fold> <https://k.loria.fr/ontologies/evaluationonto#hasTestSplit> <https://k.loria.fr/ontologies/dataset-individuals#kappa_103> >> prov:wasDerivedFrom "kappa_103" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#symprec_1e_2_fold> <https://k.loria.fr/ontologies/evaluationonto#hasTestSplit> <https://k.loria.fr/ontologies/dataset-individuals#symprec_1e_2> >> prov:wasDerivedFrom "symprec=1e-2" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#symprec_1e_5_fold> <https://k.loria.fr/ontologies/evaluationonto#hasTestSplit> <https://k.loria.fr/ontologies/dataset-individuals#symprec_1e_5> >> prov:wasDerivedFrom "symprec=1e-5" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_f1_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#f1_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.F1" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_f1_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.832"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.F1" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_daf_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#daf_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.DAF" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_daf_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "4.943"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.DAF" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_precision_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#precision_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.Precision" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_precision_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.848"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.Precision" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_recall_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#recall_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.Recall" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_recall_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.816"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.Recall" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_accuracy_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#accuracy_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.Accuracy" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_accuracy_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.943"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.Accuracy" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tpr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TPR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.816"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TPR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fpr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FPR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.03"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FPR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tnr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TNR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.97"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TNR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fnr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FNR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.184"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FNR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tp_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TP" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "35987.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TP" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fp_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FP" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "6439.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FP" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tn_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TN" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "206432.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.TN" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fn_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FN" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "8105.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.FN" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#mae_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.MAE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.029"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.MAE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_rmse_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#rmse_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.RMSE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_rmse_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.076"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.RMSE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_r2_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#r2_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.R2" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_r2_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.82"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.R2" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_missing_preds_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#missing_preds_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.missing_preds" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_missing_preds_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "2"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML metrics.discovery.full_test_set.missing_preds" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_f1_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#f1_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.F1" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_f1_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.85"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.F1" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_daf_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#daf_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.DAF" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_daf_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "5.628"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.DAF" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_precision_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#precision_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.Precision" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_precision_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.86"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.Precision" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_recall_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#recall_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.Recall" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_recall_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.841"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.Recall" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_accuracy_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#accuracy_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.Accuracy" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_accuracy_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.954"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.Accuracy" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tpr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TPR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.841"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TPR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fpr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FPR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.025"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FPR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tnr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TNR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.975"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TNR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fnr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FNR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.159"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FNR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tp_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TP" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "28052.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TP" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fp_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FP" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "4554.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FP" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tn_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TN" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "177560.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.TN" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fn_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FN" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "5322.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.FN" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#mae_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.MAE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.03"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.MAE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_rmse_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#rmse_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.RMSE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_rmse_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.078"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.RMSE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_r2_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#r2_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.R2" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_r2_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.823"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.R2" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_missing_preds_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#missing_preds_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.missing_preds" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_missing_preds_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML metrics.discovery.unique_prototypes.missing_preds" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_f1_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#f1_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.F1" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_f1_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.982"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.F1" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_daf_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#daf_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.DAF" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_daf_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "6.307"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.DAF" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_precision_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#precision_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.Precision" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_precision_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.964"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.Precision" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_recall_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#recall_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.Recall" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_recall_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "1.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.Recall" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_accuracy_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#accuracy_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.Accuracy" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_accuracy_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.964"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.Accuracy" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tpr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TPR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "1.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TPR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fpr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FPR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fpr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "1.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FPR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tnr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TNR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TNR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fnr_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FNR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fnr_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FNR" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tp_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TP" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "9641.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TP" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fp_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FP" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fp_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "359.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FP" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#tn_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TN" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.TN" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#fn_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FN" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fn_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.0"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.FN" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#mae_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.MAE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.033"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.MAE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_rmse_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#rmse_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.RMSE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_rmse_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.122"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.RMSE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_r2_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#r2_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.R2" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_r2_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.698"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.R2" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_missing_preds_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#missing_preds_metric_type> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.missing_preds" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_missing_preds_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML metrics.discovery.most_stable_10k.missing_preds" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_phonons_kappa_103_kappa_srme_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#kappa_srme_metric_type> >> prov:wasDerivedFrom "YAML metrics.phonons.kappa_103.κ_SRME" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_phonons_kappa_103_kappa_srme_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.2414"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.phonons.kappa_103.κ_SRME" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_phonons_kappa_103_kappa_sre_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#kappa_sre_metric_type> >> prov:wasDerivedFrom "YAML metrics.phonons.kappa_103.κ_SRE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_phonons_kappa_103_kappa_sre_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.1323"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.phonons.kappa_103.κ_SRE" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_rmsd_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#rmsd_metric_type> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-2.rmsd" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_rmsd_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.0694"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-2.rmsd" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_n_sym_ops_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#n_sym_ops_mae_metric_type> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-2.n_sym_ops_mae" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_n_sym_ops_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "2.3791"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-2.n_sym_ops_mae" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_decrease_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#symmetry_decrease_metric_type> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-2.symmetry_decrease" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_decrease_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.2207"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-2.symmetry_decrease" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_match_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#symmetry_match_metric_type> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-2.symmetry_match" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_match_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.6502"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-2.symmetry_match" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_increase_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#symmetry_increase_metric_type> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-2.symmetry_increase" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_increase_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.1039"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-2.symmetry_increase" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_n_structures_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#n_structures_metric_type> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-2.n_structures" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_n_structures_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "256963"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-2.n_structures" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_rmsd_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#rmsd_metric_type> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-5.rmsd" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_rmsd_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.0694"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-5.rmsd" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_n_sym_ops_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#n_sym_ops_mae_metric_type> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-5.n_sym_ops_mae" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_n_sym_ops_mae_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "6.818"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-5.n_sym_ops_mae" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_decrease_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#symmetry_decrease_metric_type> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-5.symmetry_decrease" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_decrease_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.6561"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-5.symmetry_decrease" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_match_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#symmetry_match_metric_type> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-5.symmetry_match" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_match_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.2497"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-5.symmetry_match" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_increase_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#symmetry_increase_metric_type> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-5.symmetry_increase" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_increase_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "0.0674"^^<http://www.w3.org/2001/XMLSchema#float> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-5.symmetry_increase" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_n_structures_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricType> <https://k.loria.fr/ontologies/evaluationonto-individuals#n_structures_metric_type> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-5.n_structures" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_n_structures_metric_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricValue> "256963"^^<http://www.w3.org/2001/XMLSchema#integer> >> prov:wasDerivedFrom "YAML metrics.geo_opt.symprec=1e-5.n_structures" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#evaluatesModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_variant> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#usesBenchmarkRelease> <https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#evaluatesTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#thermodynamic_stability_classification_task> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#thermodynamic_stability_classification_task> <https://k.loria.fr/ontologies/evaluationonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#wbm_test_set> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#producesBenchmarkResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> >> prov:wasDerivedFrom "ontology/evaluationonto.ttl: MachineLearningEvaluationRun" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasResultTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#thermodynamic_stability_classification_task> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_f1_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_f1" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_daf_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_daf" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_precision_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_precision" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_recall_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_recall" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_accuracy_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_accuracy" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tpr_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tpr" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fpr_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fpr" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tnr_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tnr" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fnr_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fnr" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tp_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tp" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fp_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fp" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tn_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_tn" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fn_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_full_test_set_fn" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_f1_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_f1" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_daf_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_daf" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_precision_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_precision" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_recall_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_recall" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_accuracy_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_accuracy" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tpr_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tpr" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fpr_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fpr" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tnr_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tnr" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fnr_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fnr" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tp_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tp" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fp_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fp" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tn_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_tn" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fn_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_unique_prototypes_fn" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_f1_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_f1" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_daf_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_daf" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_precision_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_precision" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_recall_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_recall" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_accuracy_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_accuracy" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tpr_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tpr" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fpr_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fpr" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tnr_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tnr" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fnr_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fnr" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tp_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tp" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fp_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fp" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tn_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_tn" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fn_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_thermodynamic_stability_classification_discovery_most_stable_10k_fn" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#evaluatesModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_variant> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#usesBenchmarkRelease> <https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#evaluatesTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#convex_hull_distance_regression_task> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#convex_hull_distance_regression_task> <https://k.loria.fr/ontologies/evaluationonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#wbm_test_set> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#producesBenchmarkResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> >> prov:wasDerivedFrom "ontology/evaluationonto.ttl: MachineLearningEvaluationRun" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasResultTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#convex_hull_distance_regression_task> >> prov:wasDerivedFrom "YAML metrics.discovery" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_mae_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_mae" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_rmse_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_rmse" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_r2_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_r2" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_missing_preds_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_full_test_set_missing_preds" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_mae_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_mae" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_rmse_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_rmse" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_r2_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_r2" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_missing_preds_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_unique_prototypes_missing_preds" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_mae_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_mae" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_rmse_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_rmse" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_r2_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_r2" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_missing_preds_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_convex_hull_distance_regression_discovery_most_stable_10k_missing_preds" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#evaluatesModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_variant> >> prov:wasDerivedFrom "YAML metrics.phonons" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#usesBenchmarkRelease> <https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release> >> prov:wasDerivedFrom "YAML metrics.phonons" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#evaluatesTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#phonon_thermal_conductivity_contribution_task> >> prov:wasDerivedFrom "YAML metrics.phonons" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#phonon_thermal_conductivity_contribution_task> <https://k.loria.fr/ontologies/evaluationonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#kappa_103_phonon_benchmark_set> >> prov:wasDerivedFrom "YAML metrics.phonons" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#producesBenchmarkResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_benchmark_result> >> prov:wasDerivedFrom "ontology/evaluationonto.ttl: MachineLearningEvaluationRun" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasResultTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#phonon_thermal_conductivity_contribution_task> >> prov:wasDerivedFrom "YAML metrics.phonons" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_phonons_kappa_103_kappa_srme_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_phonons_kappa_103_kappa_srme" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_phonons_kappa_103_kappa_sre_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_phonon_thermal_conductivity_contribution_phonons_kappa_103_kappa_sre" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#evaluatesModelVariant> <https://k.loria.fr/ontologies/architectureonto-individuals#dpa_4_0_pro_mptrj_variant> >> prov:wasDerivedFrom "YAML metrics.geo_opt" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#usesBenchmarkRelease> <https://k.loria.fr/ontologies/evaluationonto-individuals#matbench_discovery_benchmark_release> >> prov:wasDerivedFrom "YAML metrics.geo_opt" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#evaluatesTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#relaxed_structure_matching_rmsd_task> >> prov:wasDerivedFrom "YAML metrics.geo_opt" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#relaxed_structure_matching_rmsd_task> <https://k.loria.fr/ontologies/evaluationonto#usesDataset> <https://k.loria.fr/ontologies/dataset-individuals#wbm_test_set> >> prov:wasDerivedFrom "YAML metrics.geo_opt" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_evaluation_run> <https://k.loria.fr/ontologies/evaluationonto#producesBenchmarkResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> >> prov:wasDerivedFrom "ontology/evaluationonto.ttl: MachineLearningEvaluationRun" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasResultTask> <https://k.loria.fr/ontologies/evaluationonto-individuals#relaxed_structure_matching_rmsd_task> >> prov:wasDerivedFrom "YAML metrics.geo_opt" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_rmsd_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_rmsd" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_n_sym_ops_mae_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_n_sym_ops_mae" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_decrease_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_decrease" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_match_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_match" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_increase_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_symmetry_increase" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_n_structures_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_2_n_structures" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_rmsd_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_rmsd" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_n_sym_ops_mae_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_n_sym_ops_mae" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_decrease_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_decrease" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_match_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_match" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_increase_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_symmetry_increase" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
+<< <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_benchmark_result> <https://k.loria.fr/ontologies/evaluationonto#hasMetricResult> <https://k.loria.fr/ontologies/evaluationonto-individuals#dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_n_structures_metric_result> >> prov:wasDerivedFrom "dpa_4_0_pro_mptrj_matbench_discovery_relaxed_structure_matching_rmsd_geo_opt_symprec_1e_5_n_structures" ; dcterms:source <https://arxiv.org/pdf/2606.02419.pdf> .
