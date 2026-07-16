@@ -29,6 +29,7 @@ load_dotenv(BASE_DIR / ".env")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_MODEL = "openrouter/owl-alpha"
 PAPER_TEXT_MAX_CHARS = int(os.getenv("PAPER_TEXT_MAX_CHARS", "60000"))
+MAX_REPAIR_ITERATIONS = int(os.getenv("MAX_REPAIR_ITERATIONS", "5"))
 
 if not OPENROUTER_API_KEY:
     raise ValueError("OPENROUTER_API_KEY missing in .env file")
@@ -321,7 +322,7 @@ Rules:
 === SOURCE CONTEXT ===
 {source_context}
 
-=== ORIGINAL TTL ===
+=== TTL TO REPAIR ===
 {ttl_text}
 """.strip()
 
@@ -473,79 +474,90 @@ def repair_one_file(ttl_path):
         print(f"[OK] {ttl_path.name} already conforms")
         return True
 
-    print(f"[REPAIR] {ttl_path.name}")
+    for repair_iteration in range(1, MAX_REPAIR_ITERATIONS + 1):
+        print(
+            f"[REPAIR {repair_iteration}/{MAX_REPAIR_ITERATIONS}] "
+            f"{ttl_path.name}"
+        )
 
-    prompt = build_repair_prompt(
-        ttl_text=current_ttl,
-        shacl_report=format_shacl_report(report),
-        source_context=source_context,
-    )
+        prompt = build_repair_prompt(
+            ttl_text=current_ttl,
+            shacl_report=format_shacl_report(report),
+            source_context=source_context,
+        )
 
-    repaired_ttl = clean_llm_ttl_output(call_llm(prompt))
-    syntax_error = None
+        repaired_ttl = clean_llm_ttl_output(call_llm(prompt))
+        syntax_error = None
 
-    for syntax_attempt in range(2):
-        try:
-            validate_turtle_syntax(repaired_ttl)
-            syntax_error = None
-            break
-        except Exception as error:
-            syntax_error = error
-
-            if syntax_attempt == 1:
+        for syntax_attempt in range(2):
+            try:
+                validate_turtle_syntax(repaired_ttl)
+                syntax_error = None
                 break
+            except Exception as error:
+                syntax_error = error
 
-            print(f"[RETRY] LLM returned invalid Turtle for {ttl_path.name}")
-            retry_prompt = build_syntax_retry_prompt(
-                original_prompt=prompt,
-                bad_ttl=repaired_ttl,
-                syntax_error=error,
+                if syntax_attempt == 1:
+                    break
+
+                print(f"[RETRY] LLM returned invalid Turtle for {ttl_path.name}")
+                retry_prompt = build_syntax_retry_prompt(
+                    original_prompt=prompt,
+                    bad_ttl=repaired_ttl,
+                    syntax_error=error,
+                )
+                repaired_ttl = clean_llm_ttl_output(call_llm(retry_prompt))
+
+        if syntax_error:
+            debug_path = REPAIRED_TTL_DIR / f"__invalid_{ttl_path.name}"
+            write_text(debug_path, repaired_ttl)
+
+            print(f"[FAIL] LLM returned invalid Turtle for {ttl_path.name}")
+            print(syntax_error)
+            print(f"[DEBUG] Invalid TTL written to {debug_path}")
+
+            temporary_path.unlink(missing_ok=True)
+            return False
+
+        if is_suspiciously_short_repair(original_ttl, repaired_ttl):
+            debug_path = REPAIRED_TTL_DIR / f"__truncated_{ttl_path.name}"
+            write_text(debug_path, repaired_ttl)
+
+            print(f"[FAIL] repaired TTL looks truncated: {ttl_path.name}")
+            print(f"[DEBUG] Truncated candidate written to {debug_path}")
+
+            temporary_path.unlink(missing_ok=True)
+            return False
+
+        current_ttl = normalize_source_provenance(repaired_ttl, model_key)
+        repaired_ttl_with_rdf_star = restore_rdf_star_lines(
+            current_ttl,
+            original_ttl,
+        )
+        write_text(output_path, repaired_ttl_with_rdf_star)
+        write_text(temporary_path, current_ttl)
+
+        report = get_shacl_report(temporary_path)
+
+        if report["conforms"]:
+            temporary_path.unlink(missing_ok=True)
+            print(
+                f"[OK] repaired {ttl_path.name} "
+                f"in {repair_iteration} iteration(s)"
             )
-            repaired_ttl = clean_llm_ttl_output(call_llm(retry_prompt))
+            return True
 
-    if syntax_error:
-        debug_path = REPAIRED_TTL_DIR / f"__invalid_{ttl_path.name}"
-        write_text(debug_path, repaired_ttl)
-
-        print(f"[FAIL] LLM returned invalid Turtle for {ttl_path.name}")
-        print(syntax_error)
-        print(f"[DEBUG] Invalid TTL written to {debug_path}")
-
-        temporary_path.unlink(missing_ok=True)
-        return False
-
-    if is_suspiciously_short_repair(current_ttl, repaired_ttl):
-        debug_path = REPAIRED_TTL_DIR / f"__truncated_{ttl_path.name}"
-        write_text(debug_path, repaired_ttl)
-
-        print(f"[FAIL] repaired TTL looks truncated: {ttl_path.name}")
-        print(f"[DEBUG] Truncated candidate written to {debug_path}")
-
-        temporary_path.unlink(missing_ok=True)
-        return False
-
-    repaired_ttl = normalize_source_provenance(repaired_ttl, model_key)
-    repaired_ttl_with_rdf_star = restore_rdf_star_lines(
-        repaired_ttl,
-        original_ttl,
-    )
-
-    write_text(output_path, repaired_ttl_with_rdf_star)
-
-    final_tmp_path = REPAIRED_TTL_DIR / f"__final_{ttl_path.name}"
-    write_text(final_tmp_path, repaired_ttl_with_rdf_star)
-
-    final_report = get_shacl_report(final_tmp_path)
+        print(
+            f"[RETRY] SHACL violations remain after iteration "
+            f"{repair_iteration}: {ttl_path.name}"
+        )
 
     temporary_path.unlink(missing_ok=True)
-    final_tmp_path.unlink(missing_ok=True)
-
-    if final_report["conforms"]:
-        print(f"[OK] repaired {ttl_path.name}")
-        return True
-
-    print(f"[FAIL] repaired TTL still violates SHACL: {ttl_path.name}")
-    print(final_report["report_text"])
+    print(
+        f"[FAIL] repaired TTL still violates SHACL after "
+        f"{MAX_REPAIR_ITERATIONS} iteration(s): {ttl_path.name}"
+    )
+    print(report["report_text"])
     return False
 
 
@@ -577,5 +589,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
