@@ -1,0 +1,57 @@
+Validation Report
+Conforms: False
+Results (9):
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class data:DataRepresentation ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("every data:DatasetSplit should have exactly one data representation.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path data:hasDataRepresentation ]
+	Focus Node: dataind:full_test_set
+	Result Path: data:hasDataRepresentation
+	Message: every data:DatasetSplit should have exactly one data representation.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class data:DataRepresentation ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("every data:DatasetSplit should have exactly one data representation.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path data:hasDataRepresentation ]
+	Focus Node: dataind:most_stable_10k
+	Result Path: data:hasDataRepresentation
+	Message: every data:DatasetSplit should have exactly one data representation.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class data:DataRepresentation ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("every data:DatasetSplit should have exactly one data representation.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path data:hasDataRepresentation ]
+	Focus Node: dataind:test_split
+	Result Path: data:hasDataRepresentation
+	Message: every data:DatasetSplit should have exactly one data representation.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class data:DataRepresentation ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("every data:DatasetSplit should have exactly one data representation.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path data:hasDataRepresentation ]
+	Focus Node: dataind:unique_prototypes
+	Result Path: data:hasDataRepresentation
+	Message: every data:DatasetSplit should have exactly one data representation.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("every arch:ModelVariant should link to exactly one arch:MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:node arch:MachineLearningArchitectureClassShape ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:esnet_variant
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every arch:ModelVariant should link to exactly one arch:MachineLearningArchitecture.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("every data:DatasetSplit should be derived from exactly one dataset.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:node data:DatasetClassShape ; sh:path data:wasDerivedFromDataset ]
+	Focus Node: dataind:full_test_set
+	Result Path: data:wasDerivedFromDataset
+	Message: every data:DatasetSplit should be derived from exactly one dataset.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("every data:DatasetSplit should be derived from exactly one dataset.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:node data:DatasetClassShape ; sh:path data:wasDerivedFromDataset ]
+	Focus Node: dataind:most_stable_10k
+	Result Path: data:wasDerivedFromDataset
+	Message: every data:DatasetSplit should be derived from exactly one dataset.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("every data:DatasetSplit should be derived from exactly one dataset.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:node data:DatasetClassShape ; sh:path data:wasDerivedFromDataset ]
+	Focus Node: dataind:test_split
+	Result Path: data:wasDerivedFromDataset
+	Message: every data:DatasetSplit should be derived from exactly one dataset.
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("every data:DatasetSplit should be derived from exactly one dataset.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:node data:DatasetClassShape ; sh:path data:wasDerivedFromDataset ]
+	Focus Node: dataind:unique_prototypes
+	Result Path: data:wasDerivedFromDataset
+	Message: every data:DatasetSplit should be derived from exactly one dataset.

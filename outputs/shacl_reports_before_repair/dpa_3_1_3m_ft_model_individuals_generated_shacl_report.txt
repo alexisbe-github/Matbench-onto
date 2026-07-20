@@ -1,0 +1,109 @@
+Validation Report
+Conforms: False
+Results (13):
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:HasLabellingMethodSubjectShape
+	Focus Node: dataind:mptrj
+	Value Node: dataind:mptrj
+	Message: data:hasLabellingMethod must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:HasLabellingMethodSubjectShape
+	Focus Node: dataind:omat24
+	Value Node: dataind:omat24
+	Message: data:hasLabellingMethod must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:HasLabellingMethodSubjectShape
+	Focus Node: dataind:openlam_v1
+	Value Node: dataind:openlam_v1
+	Message: data:hasLabellingMethod must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:HasLabellingMethodSubjectShape
+	Focus Node: dataind:salex
+	Value Node: dataind:salex
+	Message: data:hasLabellingMethod must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsTargetFeatureSubjectShape
+	Focus Node: dataind:mptrj
+	Value Node: dataind:mptrj
+	Message: data:usesAttributeAsTargetFeature must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsTargetFeatureSubjectShape
+	Focus Node: dataind:omat24
+	Value Node: dataind:omat24
+	Message: data:usesAttributeAsTargetFeature must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsTargetFeatureSubjectShape
+	Focus Node: dataind:openlam_v1
+	Value Node: dataind:openlam_v1
+	Message: data:usesAttributeAsTargetFeature must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsTargetFeatureSubjectShape
+	Focus Node: dataind:salex
+	Value Node: dataind:salex
+	Message: data:usesAttributeAsTargetFeature must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: train:InitializedFromModelMaterializationSubjectShape
+	Focus Node: trind:dpa_3_1_3m_ft_finetuning
+	Value Node: trind:dpa_3_1_3m_ft_finetuning
+	Message: train:initializedFromModelMaterialization must have a train:MachineLearningAdaptationRun as subject.
+Constraint Violation in NodeConstraintComponent (http://www.w3.org/ns/shacl#NodeConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsInputFeatureSubjectShape
+	Focus Node: dataind:mptrj
+	Value Node: dataind:mptrj
+	Message: data:usesAttributeAsInputFeature must have a train:TrainingDataset as subject.
+	Details:
+		Constraint Violation in OrConstraintComponent (http://www.w3.org/ns/shacl#OrConstraintComponent):
+			Severity: sh:Violation
+			Source Shape: data:TrainingDatasetClassShape
+			Focus Node: dataind:mptrj
+			Value Node: dataind:mptrj
+			Message: Node dataind:mptrj must conform to one or more shapes in [ sh:class train:TrainingDataset ] , [ sh:class data:LabeledDataset ]
+Constraint Violation in NodeConstraintComponent (http://www.w3.org/ns/shacl#NodeConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsInputFeatureSubjectShape
+	Focus Node: dataind:omat24
+	Value Node: dataind:omat24
+	Message: data:usesAttributeAsInputFeature must have a train:TrainingDataset as subject.
+	Details:
+		Constraint Violation in OrConstraintComponent (http://www.w3.org/ns/shacl#OrConstraintComponent):
+			Severity: sh:Violation
+			Source Shape: data:TrainingDatasetClassShape
+			Focus Node: dataind:omat24
+			Value Node: dataind:omat24
+			Message: Node dataind:omat24 must conform to one or more shapes in [ sh:class train:TrainingDataset ] , [ sh:class data:LabeledDataset ]
+Constraint Violation in NodeConstraintComponent (http://www.w3.org/ns/shacl#NodeConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsInputFeatureSubjectShape
+	Focus Node: dataind:openlam_v1
+	Value Node: dataind:openlam_v1
+	Message: data:usesAttributeAsInputFeature must have a train:TrainingDataset as subject.
+	Details:
+		Constraint Violation in OrConstraintComponent (http://www.w3.org/ns/shacl#OrConstraintComponent):
+			Severity: sh:Violation
+			Source Shape: data:TrainingDatasetClassShape
+			Focus Node: dataind:openlam_v1
+			Value Node: dataind:openlam_v1
+			Message: Node dataind:openlam_v1 must conform to one or more shapes in [ sh:class train:TrainingDataset ] , [ sh:class data:LabeledDataset ]
+Constraint Violation in NodeConstraintComponent (http://www.w3.org/ns/shacl#NodeConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsInputFeatureSubjectShape
+	Focus Node: dataind:salex
+	Value Node: dataind:salex
+	Message: data:usesAttributeAsInputFeature must have a train:TrainingDataset as subject.
+	Details:
+		Constraint Violation in OrConstraintComponent (http://www.w3.org/ns/shacl#OrConstraintComponent):
+			Severity: sh:Violation
+			Source Shape: data:TrainingDatasetClassShape
+			Focus Node: dataind:salex
+			Value Node: dataind:salex
+			Message: Node dataind:salex must conform to one or more shapes in [ sh:class train:TrainingDataset ] , [ sh:class data:LabeledDataset ]

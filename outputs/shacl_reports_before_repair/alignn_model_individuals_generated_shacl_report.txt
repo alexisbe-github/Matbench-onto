@@ -1,0 +1,51 @@
+Validation Report
+Conforms: False
+Results (8):
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:HasLabellingMethodSubjectShape
+	Focus Node: dataind:jarvis_dft
+	Value Node: dataind:jarvis_dft
+	Message: data:hasLabellingMethod must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:HasLabellingMethodSubjectShape
+	Focus Node: dataind:mp_2018_6_1
+	Value Node: dataind:mp_2018_6_1
+	Message: data:hasLabellingMethod must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:HasLabellingMethodSubjectShape
+	Focus Node: dataind:mp_2022
+	Value Node: dataind:mp_2022
+	Message: data:hasLabellingMethod must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:HasLabellingMethodSubjectShape
+	Focus Node: dataind:qm9
+	Value Node: dataind:qm9
+	Message: data:hasLabellingMethod must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsTargetFeatureSubjectShape
+	Focus Node: dataind:jarvis_dft
+	Value Node: dataind:jarvis_dft
+	Message: data:usesAttributeAsTargetFeature must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsTargetFeatureSubjectShape
+	Focus Node: dataind:mp_2018_6_1
+	Value Node: dataind:mp_2018_6_1
+	Message: data:usesAttributeAsTargetFeature must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsTargetFeatureSubjectShape
+	Focus Node: dataind:mp_2022
+	Value Node: dataind:mp_2022
+	Message: data:usesAttributeAsTargetFeature must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsTargetFeatureSubjectShape
+	Focus Node: dataind:qm9
+	Value Node: dataind:qm9
+	Message: data:usesAttributeAsTargetFeature must have a data:LabeledDataset as subject.

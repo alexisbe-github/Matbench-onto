@@ -1,0 +1,87 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix data: <https://k.loria.fr/ontologies/datasetonto#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a sh:ValidationReport ;
+    sh:conforms false ;
+    sh:result [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/dataset-individuals#full_test_set> ;
+            sh:resultMessage "every data:DatasetSplit should be derived from exactly one dataset." ;
+            sh:resultPath data:wasDerivedFromDataset ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape _:n8b1e8a046a344951897d75a8befe69cab133 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/dataset-individuals#most_stable_10k> ;
+            sh:resultMessage "every data:DatasetSplit should be derived from exactly one dataset." ;
+            sh:resultPath data:wasDerivedFromDataset ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape _:n8b1e8a046a344951897d75a8befe69cab133 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/dataset-individuals#most_stable_10k> ;
+            sh:resultMessage "every data:DatasetSplit should have exactly one data representation." ;
+            sh:resultPath data:hasDataRepresentation ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape _:n8b1e8a046a344951897d75a8befe69cab132 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/dataset-individuals#test_split> ;
+            sh:resultMessage "every data:DatasetSplit should be derived from exactly one dataset." ;
+            sh:resultPath data:wasDerivedFromDataset ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape _:n8b1e8a046a344951897d75a8befe69cab133 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/dataset-individuals#test_split> ;
+            sh:resultMessage "every data:DatasetSplit should have exactly one data representation." ;
+            sh:resultPath data:hasDataRepresentation ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape _:n8b1e8a046a344951897d75a8befe69cab132 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/dataset-individuals#full_test_set> ;
+            sh:resultMessage "every data:DatasetSplit should have exactly one data representation." ;
+            sh:resultPath data:hasDataRepresentation ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape _:n8b1e8a046a344951897d75a8befe69cab132 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#esnet_variant> ;
+            sh:resultMessage "every arch:ModelVariant should link to exactly one arch:MachineLearningArchitecture." ;
+            sh:resultPath arch:hasMachineLearningArchitecture ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape [ sh:maxCount 1 ;
+                    sh:message "every arch:ModelVariant should link to exactly one arch:MachineLearningArchitecture." ;
+                    sh:minCount 1 ;
+                    sh:node arch:MachineLearningArchitectureClassShape ;
+                    sh:path arch:hasMachineLearningArchitecture ] ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/dataset-individuals#unique_prototypes> ;
+            sh:resultMessage "every data:DatasetSplit should have exactly one data representation." ;
+            sh:resultPath data:hasDataRepresentation ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape _:n8b1e8a046a344951897d75a8befe69cab132 ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/dataset-individuals#unique_prototypes> ;
+            sh:resultMessage "every data:DatasetSplit should be derived from exactly one dataset." ;
+            sh:resultPath data:wasDerivedFromDataset ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape _:n8b1e8a046a344951897d75a8befe69cab133 ] .
+
+_:n8b1e8a046a344951897d75a8befe69cab132 sh:class data:DataRepresentation ;
+    sh:maxCount 1 ;
+    sh:message "every data:DatasetSplit should have exactly one data representation." ;
+    sh:minCount 1 ;
+    sh:path data:hasDataRepresentation .
+
+_:n8b1e8a046a344951897d75a8befe69cab133 sh:maxCount 1 ;
+    sh:message "every data:DatasetSplit should be derived from exactly one dataset." ;
+    sh:minCount 1 ;
+    sh:node data:DatasetClassShape ;
+    sh:path data:wasDerivedFromDataset .
+

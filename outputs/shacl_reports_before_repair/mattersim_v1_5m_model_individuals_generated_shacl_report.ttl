@@ -1,0 +1,18 @@
+@prefix arch: <https://k.loria.fr/ontologies/architectureonto#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a sh:ValidationReport ;
+    sh:conforms false ;
+    sh:result [ a sh:ValidationResult ;
+            sh:focusNode <https://k.loria.fr/ontologies/architectureonto-individuals#mattersim_v1_5m_variant> ;
+            sh:resultMessage "every arch:ModelVariant should link to exactly one arch:MachineLearningArchitecture." ;
+            sh:resultPath arch:hasMachineLearningArchitecture ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape [ sh:maxCount 1 ;
+                    sh:message "every arch:ModelVariant should link to exactly one arch:MachineLearningArchitecture." ;
+                    sh:minCount 1 ;
+                    sh:node arch:MachineLearningArchitectureClassShape ;
+                    sh:path arch:hasMachineLearningArchitecture ] ] .
+

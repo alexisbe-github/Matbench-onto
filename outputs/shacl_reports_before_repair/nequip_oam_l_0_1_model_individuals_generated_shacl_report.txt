@@ -1,0 +1,9 @@
+Validation Report
+Conforms: False
+Results (1):
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("every arch:ModelVariant should link to exactly one arch:MachineLearningArchitecture.") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:node arch:MachineLearningArchitectureClassShape ; sh:path arch:hasMachineLearningArchitecture ]
+	Focus Node: archind:nequip_oam_l_0_1_variant
+	Result Path: arch:hasMachineLearningArchitecture
+	Message: every arch:ModelVariant should link to exactly one arch:MachineLearningArchitecture.

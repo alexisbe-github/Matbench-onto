@@ -1,0 +1,40 @@
+Validation Report
+Conforms: False
+Results (5):
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:HasLabellingMethodSubjectShape
+	Focus Node: dataind:mp_2022
+	Value Node: dataind:mp_2022
+	Message: data:hasLabellingMethod must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:HasLabellingMethodSubjectShape
+	Focus Node: dataind:nb_sr_h_hydrides
+	Value Node: dataind:nb_sr_h_hydrides
+	Message: data:hasLabellingMethod must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsTargetFeatureSubjectShape
+	Focus Node: dataind:mp_2022
+	Value Node: dataind:mp_2022
+	Message: data:usesAttributeAsTargetFeature must have a data:LabeledDataset as subject.
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsTargetFeatureSubjectShape
+	Focus Node: dataind:nb_sr_h_hydrides
+	Value Node: dataind:nb_sr_h_hydrides
+	Message: data:usesAttributeAsTargetFeature must have a data:LabeledDataset as subject.
+Constraint Violation in NodeConstraintComponent (http://www.w3.org/ns/shacl#NodeConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: data:UsesAttributeAsInputFeatureSubjectShape
+	Focus Node: dataind:nb_sr_h_hydrides
+	Value Node: dataind:nb_sr_h_hydrides
+	Message: data:usesAttributeAsInputFeature must have a train:TrainingDataset as subject.
+	Details:
+		Constraint Violation in OrConstraintComponent (http://www.w3.org/ns/shacl#OrConstraintComponent):
+			Severity: sh:Violation
+			Source Shape: data:TrainingDatasetClassShape
+			Focus Node: dataind:nb_sr_h_hydrides
+			Value Node: dataind:nb_sr_h_hydrides
+			Message: Node dataind:nb_sr_h_hydrides must conform to one or more shapes in [ sh:class train:TrainingDataset ] , [ sh:class data:LabeledDataset ]
