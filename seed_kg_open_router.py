@@ -21,10 +21,7 @@ ONTOLOGY_FILES = [
 ]
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-OPENROUTER_MODEL = "qwen/qwen3.7-plus"
-#OPENROUTER_MODEL =  "nvidia/nemotron-3-ultra-550b-a55b:free"
-#OPENROUTER_MODEL = "openrouter/owl-alpha"
-#OPENROUTER_MODEL = "openai/gpt-oss-120b:free"
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "meituan/longcat-2.0")
 
 YAML_FILE = Path(os.environ["YAML_FILE"])
 

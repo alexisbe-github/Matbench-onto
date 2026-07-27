@@ -27,7 +27,7 @@ PAPER_TEXT_DIR = BASE_DIR / "outputs" / "paper_text"
 load_dotenv(BASE_DIR / ".env")
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-OPENROUTER_MODEL = "openrouter/owl-alpha"
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "meituan/longcat-2.0")
 PAPER_TEXT_MAX_CHARS = int(os.getenv("PAPER_TEXT_MAX_CHARS", "60000"))
 MAX_REPAIR_ITERATIONS = int(os.getenv("MAX_REPAIR_ITERATIONS", "5"))
 
@@ -589,4 +589,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -2,8 +2,8 @@
 
 This project builds a knowledge graph around the machine-learning models and
 benchmarks published by [Matbench Discovery](https://matbench-discovery.materialsproject.org/).
-It combines model submission metadata, research papers, benchmark results, and
-material-level prediction files with a set of OWL ontologies.
+It combines model submission metadata, research papers, and benchmark results
+with a set of OWL ontologies.
 
 The repository can:
 
@@ -12,7 +12,7 @@ The repository can:
 - convert the extracted JSON records to RDF/Turtle;
 - validate generated graphs against local SHACL constraints;
 - repair invalid model graphs with an LLM;
-- generate RDF for datasets, benchmark tasks, WBM materials, and predictions;
+- generate RDF for Matbench datasets and benchmark tasks;
 - upload the resulting named graphs to GraphDB;
 - provide reusable SPARQL queries for inspecting the knowledge graph.
 
@@ -23,11 +23,9 @@ The repository can:
 | `ontology/` | Architecture, training, dataset, and evaluation ontologies and their base individuals |
 | `model_yamls/` | Matbench Discovery model submission files |
 | `papers/` | Research papers used as extraction context |
-| `dataset/` | WBM data, prediction files, PhononDB data, and material RDF inputs |
 | `outputs/json/` | Structured model metadata extracted by the LLM |
 | `outputs/ttl/` | Model individuals generated from the JSON extractions |
 | `outputs/ttl_repaired/` | Validated or LLM-repaired model graphs |
-| `outputs/ttl_datasets/` | Generated dataset, task, material, and property graphs |
 | `outputs/shacl_reports*/` | Human-readable and RDF SHACL validation reports |
 | `query/` | Documented SPARQL queries |
 
@@ -58,9 +56,6 @@ Matbench model page + YAML + paper
                  |
            SPARQL queries
 ```
-
-The dataset branch independently produces the files in
-`outputs/ttl_datasets/`, which can also be loaded into GraphDB.
 
 ## Requirements
 
@@ -168,9 +163,6 @@ $env:OUTPUT_JSON_FILE = "outputs/json/chgnet_0_3_0_model_extraction.json"
 python seed_kg_open_router.py
 ```
 
-`run_tece_oam_rra_1_0.py` is a concrete single-model example that performs
-extraction, conversion, copying to the repaired directory, and validation.
-
 ## SHACL validation and repair
 
 Validate all raw generated model graphs:
@@ -259,7 +251,5 @@ datasets in GraphDB.
   reviewable stages.
 - `upload_to_graphdb.py` clears non-ontology named graphs by default. Use
   `--no-clear` when replacing the existing repository contents is not intended.
-- Full material generation can be large. Use the row and file limits for
-  development runs.
-- Papers and compressed prediction files make the repository relatively
-  large; use a full clone when those local source files are required.
+- Research papers make the repository relatively large; use a full clone when
+  those local source files are required.

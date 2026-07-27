@@ -1,0 +1,13 @@
+beautifulsoup4
+matplotlib
+numpy
+openrouter
+pandas
+pypdf
+pyshacl
+python-dotenv
+PyYAML
+rdflib
+requests
+scipy
+seaborn

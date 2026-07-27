@@ -90,13 +90,7 @@ def slugify(value):
 
 
 def configured_openrouter_model():
-    runner = BASE_DIR / "run_tece_oam_rra_1_0.py"
-    if runner.exists():
-        text = runner.read_text(encoding="utf-8")
-        match = re.search(r'^OPENROUTER_MODEL\s*=\s*["\']([^"\']+)["\']', text, re.M)
-        if match:
-            return match.group(1)
-    return os.getenv("OPENROUTER_MODEL", "qwen/qwen3.7-plus")
+    return os.getenv("OPENROUTER_MODEL", "meituan/longcat-2.0")
 
 
 def fetch_html(url):

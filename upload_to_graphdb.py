@@ -14,6 +14,7 @@ INDIVIDUALS_GRAPH_BASE = "https://k.loria.fr/graphs/individuals"
 ONTOLOGY_GRAPHS_TO_KEEP = {
     "https://k.loria.fr/graphs/ontology/architecture",
     "https://k.loria.fr/graphs/ontology/dataset",
+    "https://k.loria.fr/graphs/ontology/evaluation",
     "https://k.loria.fr/graphs/ontology/training",
 }
 
