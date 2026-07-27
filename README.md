@@ -20,15 +20,18 @@ The repository can:
 
 | Path | Purpose |
 | --- | --- |
-| `pipeline/` | Model scraping, LLM extraction, RDF conversion, validation, and repair |
+| `pipeline/` | Shared pipeline orchestration and SHACL validation |
+| `pipeline/backends/longcat/` | LongCat 2.0 extraction, RDF conversion, and repair |
+| `pipeline/backends/free/` | Free-model extraction, RDF conversion, repair, and prompts |
 | `metadata/` | Matbench dataset/task context and model release-date synchronization |
 | `graphdb/` | GraphDB upload utilities |
 | `ontology/` | Architecture, training, dataset, and evaluation ontologies and their base individuals |
 | `model_yamls/` | Matbench Discovery model submission files |
 | `papers/` | Research papers used as extraction context |
-| `outputs/json/` | Structured model metadata extracted by the LLM |
-| `outputs/ttl/` | Model individuals generated from the JSON extractions |
-| `outputs/ttl_repaired/` | Validated or LLM-repaired model graphs |
+| `outputs/json/` | Structured model metadata extracted by LongCat |
+| `outputs/ttl/` | Model individuals generated from the LongCat extractions |
+| `outputs/ttl_repaired/` | Validated or LLM-repaired LongCat graphs |
+| `outputs/free_llm/` | Isolated JSON, Turtle, retrieval, and repair outputs from the free backend |
 | `outputs/shacl_reports*/` | Human-readable and RDF SHACL validation reports |
 | `query/` | Documented SPARQL queries |
 
@@ -38,16 +41,13 @@ The repository can:
 Matbench model page + YAML + paper
                  |
                  v
-        OpenRouter extraction
-                 |
-                 v
-        outputs/json/*.json
-                 |
-                 v
+       Select LLM profile
+          /          \
+     LongCat         Free
+        |              |
+ outputs/json/   outputs/free_llm/json/
+          \          /
            JSON -> Turtle
-                 |
-                 v
-         outputs/ttl/*.ttl
                  |
           SHACL validation
                  |
@@ -75,7 +75,9 @@ python -m pip install -r requirements.txt
 
 Create a `.env` file in the repository root containing your
 `OPENROUTER_API_KEY`. The default model is `meituan/longcat-2.0`; it can be
-overridden with `OPENROUTER_MODEL`. The `.env` file is ignored by Git.
+overridden with `OPENROUTER_MODEL`. The free profile defaults to
+`nvidia/nemotron-3-ultra-550b-a55b:free` and can be overridden with
+`FREE_OPENROUTER_MODEL`. The `.env` file is ignored by Git.
 
 Run all commands below from the repository root.
 
@@ -88,7 +90,13 @@ python pipeline/matbench_pipeline.py --limit 1
 ```
 
 This downloads the model sources, calls OpenRouter, and writes both the JSON
-extraction and its generated Turtle graph.
+extraction and its generated Turtle graph. LongCat is the default profile.
+
+Run the same test with the free backend:
+
+```bash
+python pipeline/matbench_pipeline.py --profile free --limit 1
+```
 
 Validate the generated graph:
 
@@ -106,6 +114,12 @@ Process every model currently listed by Matbench Discovery:
 python pipeline/matbench_pipeline.py
 ```
 
+Choose the backend explicitly with `--profile longcat` or `--profile free`:
+
+```bash
+python pipeline/matbench_pipeline.py --profile free
+```
+
 Process only a small batch:
 
 ```bash
@@ -120,9 +134,10 @@ python pipeline/matbench_pipeline.py --start-from chgnet_0_3_0
 ```
 
 The pipeline stores downloaded inputs in `model_yamls/`, `papers/`, and
-`outputs/model_pages/`. It writes extracted data to `outputs/json/` and model
-individuals to `outputs/ttl/`. Errors are reported per model so that the rest
-of the batch can continue.
+the profile-specific `model_pages/` directory. LongCat writes to `outputs/`;
+the free backend writes to `outputs/free_llm/`, so the two runs never overwrite
+each other. Errors are reported per model so that the rest of the batch can
+continue.
 
 ### Convert existing JSON files without calling an LLM
 
@@ -132,14 +147,21 @@ Convert every extraction in `outputs/json/`:
 python pipeline/convert_all_json_to_ttl.py
 ```
 
-Convert one file by setting its input and output paths.
+Convert every free-backend extraction:
+
+```bash
+python pipeline/convert_all_json_to_ttl.py --profile free
+```
+
+The converters are backend-specific because the two extraction schemas differ.
+To convert one file, set its input and output paths and run the matching module.
 
 PowerShell:
 
 ```powershell
 $env:INPUT_JSON_FILE = "outputs/json/chgnet_0_3_0_model_extraction.json"
 $env:OUTPUT_TTL_FILE = "outputs/ttl/chgnet_0_3_0_model_individuals_generated.ttl"
-python pipeline/json_to_ttl.py
+python -m pipeline.backends.longcat.json_to_ttl
 ```
 
 Bash:
@@ -147,12 +169,12 @@ Bash:
 ```bash
 INPUT_JSON_FILE=outputs/json/chgnet_0_3_0_model_extraction.json \
 OUTPUT_TTL_FILE=outputs/ttl/chgnet_0_3_0_model_individuals_generated.ttl \
-python pipeline/json_to_ttl.py
+python -m pipeline.backends.longcat.json_to_ttl
 ```
 
 ### Run one custom extraction
 
-`pipeline/seed_kg_open_router.py` expects its source paths through environment
+Each backend extractor expects its source paths through environment
 variables. At minimum, set `YAML_FILE`, `PDF_FILE`, and `OUTPUT_JSON_FILE`.
 `PDF_URL`, `MODEL_PAGE_FILE`, and `MODEL_PAGE_URL` add provenance and page
 context when available.
@@ -163,8 +185,10 @@ PowerShell example:
 $env:YAML_FILE = "model_yamls/chgnet_0_3_0.yml"
 $env:PDF_FILE = "papers/chgnet_0_3_0.pdf"
 $env:OUTPUT_JSON_FILE = "outputs/json/chgnet_0_3_0_model_extraction.json"
-python pipeline/seed_kg_open_router.py
+python -m pipeline.backends.longcat.extract
 ```
+
+Use `python -m pipeline.backends.free.extract` for the free schema.
 
 ## SHACL validation and repair
 
@@ -191,14 +215,16 @@ python pipeline/validate_shacl.py \
 Validation checks both the local SHACL constraints and unknown ontology classes
 used as `rdf:type`. Reports are written as `.txt` and `.ttl`.
 
-To run the LLM repair pass over the files in `outputs/ttl/`:
+Run the repair implementation matching the extraction profile:
 
 ```bash
-python pipeline/repair_ttl_with_llm.py
+python -m pipeline.backends.longcat.repair
+python -m pipeline.backends.free.repair
 ```
 
-The repair script uses the corresponding JSON, YAML, paper, and validation
-report as context. Repaired graphs are written to `outputs/ttl_repaired/`.
+The LongCat repair writes to `outputs/ttl_repaired/`; the free repair writes to
+`outputs/free_llm/ttl_repaired/`. Each implementation uses the context and
+validation strategy expected by its own extraction schema.
 Because this operation makes OpenRouter calls, test extraction and validation
 on a small selection before repairing a large batch.
 
@@ -239,6 +265,13 @@ Upload every repaired model graph:
 
 ```bash
 python graphdb/upload_to_graphdb.py
+```
+
+Upload the free-backend graphs instead:
+
+```bash
+python graphdb/upload_to_graphdb.py \
+  --ttl-dir outputs/free_llm/ttl_repaired
 ```
 
 By default this clears all named graphs except the four ontology graphs above.

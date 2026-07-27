@@ -23,14 +23,44 @@ JSON_OUTPUTS_DIR = OUTPUTS_DIR / "json"
 TTL_OUTPUTS_DIR = OUTPUTS_DIR / "ttl"
 MODEL_PAGE_OUTPUTS_DIR = OUTPUTS_DIR / "model_pages"
 
-SEED_SCRIPT = BASE_DIR / "pipeline" / "seed_kg_open_router.py"
-JSON_TO_TTL_SCRIPT = BASE_DIR / "pipeline" / "json_to_ttl.py"
+BACKENDS_DIR = BASE_DIR / "pipeline" / "backends"
+SEED_SCRIPT = BACKENDS_DIR / "longcat" / "extract.py"
+JSON_TO_TTL_SCRIPT = BACKENDS_DIR / "longcat" / "json_to_ttl.py"
+
+PROFILES = {
+    "longcat": {
+        "output_root": OUTPUTS_DIR,
+        "extractor": BACKENDS_DIR / "longcat" / "extract.py",
+        "converter": BACKENDS_DIR / "longcat" / "json_to_ttl.py",
+    },
+    "free": {
+        "output_root": OUTPUTS_DIR / "free_llm",
+        "extractor": BACKENDS_DIR / "free" / "extract.py",
+        "converter": BACKENDS_DIR / "free" / "json_to_ttl.py",
+    },
+}
 
 FALLBACK_PDF_BY_MODEL = {
     "grace_1l_oam": "grace_2l_oam_l.pdf",
     "grace_2l_oam": "grace_2l_oam_l.pdf",
     "grace_2l_mptrj": "grace_2l_oam_l.pdf",
 }
+
+
+def configure_profile(profile):
+    global JSON_OUTPUTS_DIR
+    global TTL_OUTPUTS_DIR
+    global MODEL_PAGE_OUTPUTS_DIR
+    global SEED_SCRIPT
+    global JSON_TO_TTL_SCRIPT
+
+    config = PROFILES[profile]
+    output_root = config["output_root"]
+    JSON_OUTPUTS_DIR = output_root / "json"
+    TTL_OUTPUTS_DIR = output_root / "ttl"
+    MODEL_PAGE_OUTPUTS_DIR = output_root / "model_pages"
+    SEED_SCRIPT = config["extractor"]
+    JSON_TO_TTL_SCRIPT = config["converter"]
 
 
 def slugify(value):
@@ -452,11 +482,21 @@ def parse_args():
         type=int,
         help="Process at most this many model pages after applying --start-from.",
     )
+    parser.add_argument(
+        "--profile",
+        choices=sorted(PROFILES),
+        default="longcat",
+        help=(
+            "LLM backend to use. 'longcat' writes to outputs/; "
+            "'free' writes to outputs/free_llm/."
+        ),
+    )
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
+    configure_profile(args.profile)
 
     MODELS_DIR.mkdir(parents=True, exist_ok=True)
     PAPERS_DIR.mkdir(parents=True, exist_ok=True)
@@ -471,6 +511,7 @@ def main():
         model_urls = model_urls[: args.limit]
 
     print(f"Found {len(all_model_urls)} model pages.")
+    print(f"Profile: {args.profile}")
 
     if args.start_from:
         print(

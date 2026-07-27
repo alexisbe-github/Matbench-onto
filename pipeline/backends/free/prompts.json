@@ -1,0 +1,343 @@
+{
+  "questionnaire": {
+    "model": {
+      "question_model_family": {
+        "question": "What is the stable base model family name, without version, size, or release information?",
+        "variable": "model.family",
+        "yaml_path": "model_name"
+      },
+      "question_model_variant": {
+        "question": "What is the model variant name? Use the YAML model_name. Lowercase it and replace spaces and hyphens by underscores.",
+        "variable": "model.variant",
+        "yaml_path": "model_name"
+      },
+      "question_model_parameters": {
+        "question": "How many parameters does this specific model variant have?",
+        "variable": "model.parameter_number",
+        "yaml_path": "model_params"
+      }
+    },
+    "architectures": {
+      "question_model_architectures": {
+        "question": "What are the architecture(s) used for this model? Return only a JSON array of architecture names.",
+        "variable": "architectures"
+      },
+      "architecture_loop": {
+        "loop_over": "architectures",
+        "questions": {
+          "question_architecture_type": {
+            "question": "What is the exact ontology class of {item} among the MachineLearningArchitecture classes? Return only an existing ontology class local name.",
+            "variable": "ontology_class",
+            "source": "ontology_mapping"
+          },
+          "question_architecture_parameters": {
+            "question": "For the {item} architecture, extract only its total number of parameters as an integer. If unknown, return null.",
+            "variable": "parameter_number"
+          },
+          "question_architecture_datasets": {
+            "question": "Which datasets were used to train the {item} architecture? Return only dataset names.",
+            "variable": "datasets"
+          },
+          "question_architecture_hyperparameters": {
+            "question": "What hyperparameters are reported for training the {item} architecture? Return only a JSON array of hyperparameter names.",
+            "variable": "hyperparameters"
+          },
+          "hyperparameter_loop": {
+            "loop_over": "hyperparameters",
+            "questions": {
+              "question_hyperparameter_type": {
+                "question": "What is the exact ontology class of the hyperparameter {item}? Return only an existing ontology class local name.",
+                "variable": "ontology_class",
+                "source": "ontology_mapping"
+              },
+              "question_hyperparameter_value": {
+                "question": "What is the value of the hyperparameter {item}?",
+                "variable": "value"
+              }
+            }
+          },
+          "question_architecture_components": {
+            "question": "What are the named sub-components of the {item} architecture? Return only a JSON array of component architecture names, or an empty array.",
+            "variable": "components"
+          },
+          "question_architecture_backbone": {
+            "question": "What backbone architecture is used by {item}? Return only the architecture name, or null.",
+            "variable": "backbone_architecture"
+          },
+          "question_architecture_backbone_type": {
+            "question": "What is the exact ontology class of the backbone architecture used by {item}? Use the backbone_architecture answer and return only an existing MachineLearningArchitecture class local name, or null.",
+            "variable": "backbone_ontology_class",
+            "source": "ontology_mapping"
+          },
+          "question_architecture_head": {
+            "question": "What prediction head or output head architecture is used by {item}? Return only the architecture name, or null.",
+            "variable": "head_architecture"
+          },
+          "question_architecture_head_type": {
+            "question": "What is the exact ontology class of the prediction or output head used by {item}? Use the head_architecture answer and return only an existing MachineLearningArchitecture class local name, or null.",
+            "variable": "head_ontology_class",
+            "source": "ontology_mapping"
+          },
+          "question_architecture_layer_count": {
+            "question": "How many layers does the {item} architecture or configuration have? Return an integer or null.",
+            "variable": "layer_count"
+          },
+          "question_architecture_hidden_dimension": {
+            "question": "What hidden dimension, embedding dimension, or feature dimension is reported for {item}? Return an integer or null.",
+            "variable": "hidden_dimension"
+          }
+        }
+      }
+    },
+    "training_runs": {
+      "question_all_training_runs": {
+        "question": "What training runs or training processes are described for this model family? Return a JSON array of stable snake_case identifiers. Include pretraining runs, fine-tuning runs, active learning runs, scratch training runs, and generic training runs when explicitly mentioned.",
+        "variable": "training_runs"
+      },
+      "training_run_loop": {
+        "loop_over": "training_runs",
+        "questions": {
+          "question_training_run_type": {
+            "question": "What is the exact ontology class of the training run {item}? Return only one existing ontology class local name such as PretrainingRun, MachineLearningTrainingRun, MachineLearningFinetuningRun, or MachineLearningActiveLearningRun.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          },
+          "question_training_run_architectures": {
+            "question": "Which architectures are associated with the training run {item}? Return only architecture names.",
+            "variable": "architectures"
+          },
+          "question_training_run_datasets": {
+            "question": "Which datasets are used by the training run {item}? Return only dataset names.",
+            "variable": "datasets"
+          },
+          "question_training_run_optimizer": {
+            "question": "Which optimizer is used by the training run {item}? Return null if not specified.",
+            "variable": "optimizer"
+          },
+          "question_training_run_loss_function": {
+            "question": "Which loss function is used by the training run {item}? Return null if not specified.",
+            "variable": "loss_function"
+          },
+          "question_training_run_description": {
+            "question": "Provide a short description of the training run {item}.",
+            "variable": "description"
+          },
+          "question_training_run_objective_function": {
+            "question": "Which objective function is used by the training run {item}? Return null if not specified.",
+            "variable": "objective_function"
+          },
+          "question_training_run_sampling_method": {
+            "question": "Which sampling method is used by the training run {item}, such as active learning sampling, batch selection, random sampling, curriculum sampling, or dataset sampling? Return null if not specified.",
+            "variable": "sampling_method"
+          },
+          "question_training_run_uses_batched_selection": {
+            "question": "Does the active learning or sampling process in training run {item} use batched selection? Return true, false, or null.",
+            "variable": "uses_batched_selection"
+          },
+          "question_training_run_initialized_from": {
+            "question": "Is the training run {item} initialized from a previous checkpoint, pretrained model, or model materialization? Return the source model or checkpoint name, or null.",
+            "variable": "initialized_from_model_materialization"
+          },
+          "question_training_run_teacher_model": {
+            "question": "If {item} is a distillation run, what teacher model is used? Return the model/checkpoint name or null.",
+            "variable": "teacher_model"
+          },
+          "question_training_run_student_model": {
+            "question": "If {item} is a distillation run, what student model is trained? Return the model/checkpoint name or null.",
+            "variable": "student_model"
+          },
+          "question_training_run_outputs": {
+            "question": "What model checkpoints or materialized models are produced by training run {item}? Return only a JSON array of names.",
+            "variable": "model_materializations"
+          }
+        }
+      }
+    },
+    "datasets": {
+      "question_all_datasets": {
+        "question": "Which datasets are mentioned as training, validation, test, pretraining, fine-tuning, benchmark, or derived datasets? Return a JSON array of stable dataset names.",
+        "variable": "datasets"
+      },
+      "dataset_loop": {
+        "loop_over": "datasets",
+        "questions": {
+          "question_dataset_type": {
+            "question": "What is the exact ontology class of dataset {item}? Return only one existing class local name such as Dataset, TrainingDataset, LabeledDataset, or DatasetSplit.",
+            "variable": "ontology_class",
+            "source": "ontology_mapping"
+          },
+          "question_dataset_samples": {
+            "question": "How many samples, structures, configurations, crystals, molecules, or materials are reported for dataset {item}? Return an integer or null.",
+            "variable": "number_of_samples"
+          },
+          "question_dataset_representation": {
+            "question": "What data representation is used for dataset {item}, such as crystal graph, atomic structure, molecule graph, composition, trajectory, or point cloud? Return a short name or null.",
+            "variable": "data_representation"
+          },
+          "question_dataset_labelling_method": {
+            "question": "How are labels or targets obtained for dataset {item}, such as DFT, relaxation, molecular dynamics, experimental measurement, or another method? Return a short name or null.",
+            "variable": "labelling_method"
+          },
+          "question_dataset_input_features": {
+            "question": "What input attributes or features are used from dataset {item}? Return only a JSON array of feature names.",
+            "variable": "input_features"
+          },
+          "question_dataset_target_features": {
+            "question": "What target attributes or labels are predicted from dataset {item}? Return only a JSON array of target names.",
+            "variable": "target_features"
+          },
+          "question_dataset_derived_from": {
+            "question": "Is dataset {item} derived from another dataset? Return the source dataset name, or null.",
+            "variable": "derived_from_dataset"
+          }
+        }
+      }
+    },
+    "evaluation": {
+      "question_all_evaluation_runs": {
+        "question": "Which model evaluation runs, benchmark evaluations, leaderboard submissions, validation experiments, or test evaluations are described for this model? Return a JSON array of stable snake_case identifiers. For Matbench Discovery, use YAML fields train_task, test_task, targets, and especially metrics as the authoritative source before the PDF. Include one evaluation run per official Matbench Discovery task actually present in YAML metrics.",
+        "variable": "evaluation_runs"
+      },
+      "evaluation_run_loop": {
+        "loop_over": "evaluation_runs",
+        "questions": {
+          "question_evaluation_run_type": {
+            "question": "What is the exact ontology class of evaluation run {item}? Return only MachineLearningEvaluationRun.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          },
+          "question_evaluation_run_model_variant": {
+            "question": "Which model variant is evaluated by evaluation run {item}? Return the model variant name, preferably the YAML model_name or model_key, or null if not specified.",
+            "variable": "model_variant"
+          },
+          "question_evaluation_run_benchmark_release": {
+            "question": "Which benchmark suite or benchmark release is used by evaluation run {item}? For YAML metrics from matbench-discovery.materialsproject.org, return matbench_discovery_benchmark_release. For a named paper benchmark outside Matbench Discovery, return that benchmark release name or null.",
+            "variable": "benchmark_release"
+          },
+          "question_evaluation_run_task": {
+            "question": "Which official Matbench Discovery task is evaluated by evaluation run {item}? Return exactly one of: thermodynamic_stability_classification_task, convex_hull_distance_regression_task, phonon_thermal_conductivity_contribution_task, relaxed_structure_matching_rmsd_task. Map YAML metrics.discovery classification metrics such as F1, Precision, Recall, Accuracy, TPR, FPR, TNR, FNR, TP, FP, TN, FN, or DAF to thermodynamic_stability_classification_task; map YAML metrics.discovery regression metrics MAE, RMSE, or R2 for convex hull distance to convex_hull_distance_regression_task; map YAML metrics.phonons to phonon_thermal_conductivity_contribution_task; map YAML metrics.geo_opt RMSD/StructureMatcher metrics to relaxed_structure_matching_rmsd_task.",
+            "variable": "task"
+          },
+          "question_evaluation_run_dataset": {
+            "question": "Which dataset is used for evaluation run {item}? Return the dataset name or null.",
+            "variable": "dataset"
+          },
+          "question_evaluation_run_folds": {
+            "question": "Which folds or dataset splits are used in evaluation run {item}? Return a JSON array of stable names such as train_split, validation_split, test_split, fold_0, or empty array if folds are not specified.",
+            "variable": "folds"
+          },
+          "question_evaluation_run_metric_results": {
+            "question": "What metric results are reported for evaluation run {item}? Return a JSON array of stable snake_case metric result identifiers from YAML metrics when available. Preserve the Matbench Discovery metric family and split in the identifier, for example discovery_full_test_set_f1, discovery_full_test_set_mae, phonons_kappa_103_kappa_srme, geo_opt_symprec_1e_5_rmsd. Include paper-only metrics only when no YAML metric exists.",
+            "variable": "metric_results"
+          }
+        }
+      },
+      "question_all_benchmark_releases": {
+        "question": "Which benchmark suites or benchmark releases are mentioned for evaluation? If YAML metrics are from Matbench Discovery, include matbench_discovery_benchmark_release. Also include paper-specific benchmark releases only when explicitly distinct from Matbench Discovery.",
+        "variable": "benchmark_releases"
+      },
+      "benchmark_release_loop": {
+        "loop_over": "benchmark_releases",
+        "questions": {
+          "question_benchmark_release_type": {
+            "question": "What is the exact ontology class of benchmark release {item}? Return only BenchmarkRelease.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          },
+          "question_benchmark_release_tasks": {
+            "question": "Which official Matbench Discovery tasks belong to benchmark release {item}? Return only task identifiers from this controlled list: thermodynamic_stability_classification_task, convex_hull_distance_regression_task, phonon_thermal_conductivity_contribution_task, relaxed_structure_matching_rmsd_task.",
+            "variable": "tasks"
+          }
+        }
+      },
+      "question_all_tasks": {
+        "question": "Which of the four official Matbench Discovery tasks are mentioned? Return only a JSON array containing identifiers from this controlled list: thermodynamic_stability_classification_task, convex_hull_distance_regression_task, phonon_thermal_conductivity_contribution_task, relaxed_structure_matching_rmsd_task. Map stable/unstable material classification and thermodynamic stability classification to thermodynamic_stability_classification_task; map MAE/RMSE/R2 of predicted vs DFT convex hull distance to convex_hull_distance_regression_task; map normalized phonon mode thermal conductivity contribution metrics to phonon_thermal_conductivity_contribution_task; map normalized unitless StructureMatcher RMSD between ML and DFT relaxed structures to relaxed_structure_matching_rmsd_task.",
+        "variable": "tasks"
+      },
+      "task_loop": {
+        "loop_over": "tasks",
+        "questions": {
+          "question_task_type": {
+            "question": "What is the exact ontology class of task {item}? Return only one existing class local name: BenchmarkTask, RegressionTask, ClassificationTask, or Task.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          },
+          "question_task_dataset": {
+            "question": "Which dataset does task {item} use? Return the dataset name or null.",
+            "variable": "dataset"
+          }
+        }
+      },
+      "fold_loop": {
+        "loop_over": "evaluation_runs.folds",
+        "questions": {
+          "question_fold_type": {
+            "question": "What is the exact ontology class of fold {item}? Return only Fold.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          },
+          "question_fold_index": {
+            "question": "What index is reported for fold {item}? Return an integer or null.",
+            "variable": "index"
+          },
+          "question_fold_train_split": {
+            "question": "Which training dataset split is associated with fold {item}? Return the split name or null.",
+            "variable": "train_split"
+          },
+          "question_fold_validation_split": {
+            "question": "Which validation dataset split is associated with fold {item}? Return the split name or null.",
+            "variable": "validation_split"
+          },
+          "question_fold_test_split": {
+            "question": "Which test dataset split is associated with fold {item}? Return the split name or null.",
+            "variable": "test_split"
+          },
+          "question_fold_metric_results": {
+            "question": "Which metric results are produced for fold {item}? Return only a JSON array of metric result identifiers.",
+            "variable": "metric_results"
+          }
+        }
+      },
+      "metric_result_loop": {
+        "loop_over": "evaluation_runs.metric_results",
+        "questions": {
+          "question_metric_result_type": {
+            "question": "What is the exact ontology class of metric result {item}? Return only MetricResult.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          },
+          "question_metric_result_metric_type": {
+            "question": "What metric type does metric result {item} measure? Return the exact Matbench Discovery metric name from YAML when available, such as F1, DAF, Precision, Recall, Accuracy, TPR, FPR, TNR, FNR, TP, FP, TN, FN, MAE, RMSE, R2, missing_preds, kappa_SRME, kappa_SRE, rmsd, n_sym_ops_mae, symmetry_decrease, symmetry_match, symmetry_increase, n_structures. Return null only if not specified.",
+            "variable": "metric_type"
+          },
+          "question_metric_result_value": {
+            "question": "What numeric value is reported for metric result {item}? Return a float or null. Do not include units or uncertainty text in this value.",
+            "variable": "metric_value"
+          },
+          "question_metric_result_unit": {
+            "question": "What unit is reported for metric result {item}, such as eV/atom, meV/atom, eV/Angstrom, GPa, percent, or dimensionless? Return a short unit string or null.",
+            "variable": "unit"
+          },
+          "question_metric_result_task": {
+            "question": "Which task is this metric result for? Return the task name or null.",
+            "variable": "task"
+          },
+          "question_metric_result_dataset": {
+            "question": "Which dataset or split is this metric result measured on? Return the dataset or split name or null.",
+            "variable": "dataset"
+          }
+        }
+      },
+      "metric_type_loop": {
+        "loop_over": "evaluation_runs.metric_results.metric_type",
+        "questions": {
+          "question_metric_type_type": {
+            "question": "What is the exact ontology class of metric type {item}? Return only MetricType.",
+            "variable": "type",
+            "source": "ontology_mapping"
+          }
+        }
+      }
+    }
+  }
+}

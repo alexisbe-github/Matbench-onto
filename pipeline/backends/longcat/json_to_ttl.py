@@ -8,7 +8,7 @@ from rdflib import Graph, Namespace, RDF, RDFS, OWL, Literal, URIRef
 from rdflib.namespace import XSD, PROV
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parents[3]
 
 INPUT_JSON_FILE = Path(
     os.getenv("INPUT_JSON_FILE", BASE_DIR / "outputs" / "model_extraction.json")

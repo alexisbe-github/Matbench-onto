@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from openrouter import OpenRouter, errors
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parents[3]
 
 load_dotenv(BASE_DIR / ".env")
 
@@ -25,7 +25,7 @@ OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "meituan/longcat-2.0")
 
 YAML_FILE = Path(os.environ["YAML_FILE"])
 
-PROMPT_FILE = BASE_DIR / "prompts.json"
+PROMPT_FILE = Path(os.getenv("PROMPT_FILE", BASE_DIR / "prompts.json"))
 
 PDF_FILE = Path(os.environ["PDF_FILE"])
 PDF_URL = os.getenv("PDF_URL")
