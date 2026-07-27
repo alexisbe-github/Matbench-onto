@@ -83,6 +83,14 @@
                rdfs:range xsd:int .
 
 
+###  https://k.loria.fr/ontologies/architectureonto#hasReleaseDate
+:hasReleaseDate rdf:type owl:DatatypeProperty ,
+                         owl:FunctionalProperty ;
+                rdfs:domain :ModelVariant ;
+                rdfs:range xsd:date ;
+                rdfs:comment "Date on which the model variant was added to the Matbench Discovery benchmark."@en .
+
+
 ###  https://k.loria.fr/ontologies/architectureonto#hasParameterNumber
 :hasParameterNumber rdf:type owl:DatatypeProperty ,
                              owl:FunctionalProperty ;
