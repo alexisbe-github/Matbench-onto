@@ -1,3 +1,12 @@
 .env
 /.idea
 __pycache__/
+
+# Regenerable pipeline outputs
+/outputs/model_urls.txt
+/outputs/paper_text/
+/outputs/raw_llm/
+/outputs/shacl_reports/
+/outputs/shacl_reports_before_repair/
+/outputs/ttl_datasets/materials_properties_generated.ttl
+/outputs/ttl_datasets/wbm_materials_generated.ttl
