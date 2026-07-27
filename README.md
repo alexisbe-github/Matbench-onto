@@ -69,24 +69,6 @@ The dataset branch independently produces the files in
 - Internet access for scraping model pages and downloading source files
 - GraphDB running locally if you want to load and query the complete graph
 
-Create and activate a virtual environment:
-
-```bash
-python -m venv .venv
-```
-
-Windows PowerShell:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
-
-Linux or macOS:
-
-```bash
-source .venv/bin/activate
-```
-
 Install the project dependencies:
 
 ```bash
@@ -225,58 +207,6 @@ report as context. Repaired graphs are written to `outputs/ttl_repaired/`.
 Because this operation makes OpenRouter calls, test extraction and validation
 on a small selection before repairing a large batch.
 
-## Dataset and material graphs
-
-Generate RDF describing the datasets and tasks scraped from the Matbench
-Discovery site:
-
-```bash
-python generate_matbench_site_context_ttl.py
-```
-
-Useful alternatives:
-
-```bash
-# Deterministic scraping only, without the OpenRouter enrichment step
-python generate_matbench_site_context_ttl.py --no-llm
-
-# Reuse the cached LLM JSON extraction
-python generate_matbench_site_context_ttl.py --use-cache
-```
-
-Generate material properties from prediction files under `dataset/`. The
-default samples up to 1,000 rows from each supported file:
-
-```bash
-python generate_dataset_materials_ttl.py
-```
-
-For a quick test or a complete export:
-
-```bash
-python generate_dataset_materials_ttl.py --files-limit 2 --limit-per-file 50
-python generate_dataset_materials_ttl.py --full
-```
-
-Generate the compact WBM material graph:
-
-```bash
-python generate_wbm_materials_ttl.py
-```
-
-Limit it during development:
-
-```bash
-python generate_wbm_materials_ttl.py --limit 100
-```
-
-To synchronize model release dates, point the script to a checkout of the
-official `matbench-discovery` source repository:
-
-```bash
-python sync_matbench_release_dates.py --source-root ../matbench-discovery
-```
-
 ## Loading the graph into GraphDB
 
 The upload scripts expect GraphDB at `http://localhost:7200` and a repository
@@ -306,12 +236,6 @@ Use `--no-clear` to preserve existing graphs, or upload only one file:
 python upload_to_graphdb.py --no-clear
 python upload_to_graphdb.py \
   --ttl-file outputs/ttl_repaired/chgnet_0_3_0_model_individuals_generated.ttl
-```
-
-Upload generated material data:
-
-```bash
-python upload_dataset_materials_to_graphdb.py
 ```
 
 For a different server or repository:
