@@ -1,0 +1,341 @@
+# Matbench Ontology Knowledge Graph
+
+This project builds a knowledge graph around the machine-learning models and
+benchmarks published by [Matbench Discovery](https://matbench-discovery.materialsproject.org/).
+It combines model submission metadata, research papers, benchmark results, and
+material-level prediction files with a set of OWL ontologies.
+
+The repository can:
+
+- scrape model pages, YAML submissions, and papers from Matbench Discovery;
+- use an OpenRouter model to extract structured model and training metadata;
+- convert the extracted JSON records to RDF/Turtle;
+- validate generated graphs against local SHACL constraints;
+- repair invalid model graphs with an LLM;
+- generate RDF for datasets, benchmark tasks, WBM materials, and predictions;
+- upload the resulting named graphs to GraphDB;
+- provide reusable SPARQL queries for inspecting the knowledge graph.
+
+## Repository layout
+
+| Path | Purpose |
+| --- | --- |
+| `ontology/` | Architecture, training, dataset, and evaluation ontologies and their base individuals |
+| `model_yamls/` | Matbench Discovery model submission files |
+| `papers/` | Research papers used as extraction context |
+| `dataset/` | WBM data, prediction files, PhononDB data, and material RDF inputs |
+| `outputs/json/` | Structured model metadata extracted by the LLM |
+| `outputs/ttl/` | Model individuals generated from the JSON extractions |
+| `outputs/ttl_repaired/` | Validated or LLM-repaired model graphs |
+| `outputs/ttl_datasets/` | Generated dataset, task, material, and property graphs |
+| `outputs/shacl_reports*/` | Human-readable and RDF SHACL validation reports |
+| `query/` | Documented SPARQL queries |
+
+## Pipeline overview
+
+```text
+Matbench model page + YAML + paper
+                 |
+                 v
+        OpenRouter extraction
+                 |
+                 v
+        outputs/json/*.json
+                 |
+                 v
+           JSON -> Turtle
+                 |
+                 v
+         outputs/ttl/*.ttl
+                 |
+          SHACL validation
+                 |
+                 v
+    outputs/ttl_repaired/*.ttl
+                 |
+                 v
+              GraphDB
+                 |
+           SPARQL queries
+```
+
+The dataset branch independently produces the files in
+`outputs/ttl_datasets/`, which can also be loaded into GraphDB.
+
+## Requirements
+
+- Python 3.10 or newer
+- An [OpenRouter](https://openrouter.ai/) API key for LLM extraction and repair
+- Internet access for scraping model pages and downloading source files
+- GraphDB running locally if you want to load and query the complete graph
+
+Create and activate a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Linux or macOS:
+
+```bash
+source .venv/bin/activate
+```
+
+Install the project dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Create a `.env` file in the repository root containing your
+`OPENROUTER_API_KEY`. The default model is `meituan/longcat-2.0`; it can be
+overridden with `OPENROUTER_MODEL`. The `.env` file is ignored by Git.
+
+Run all commands below from the repository root.
+
+## Quick start
+
+Start with a single model to check the complete extraction path:
+
+```bash
+python matbench_pipeline.py --limit 1
+```
+
+This downloads the model sources, calls OpenRouter, and writes both the JSON
+extraction and its generated Turtle graph.
+
+Validate the generated graph:
+
+```bash
+python validate_shacl.py
+```
+
+## Model extraction and RDF generation
+
+### Run the complete scraper
+
+Process every model currently listed by Matbench Discovery:
+
+```bash
+python matbench_pipeline.py
+```
+
+Process only a small batch:
+
+```bash
+python matbench_pipeline.py --limit 3
+```
+
+Resume from a model slug, URL, YAML/PDF filename, JSON extraction, or TTL
+filename:
+
+```bash
+python matbench_pipeline.py --start-from chgnet_0_3_0
+```
+
+The pipeline stores downloaded inputs in `model_yamls/`, `papers/`, and
+`outputs/model_pages/`. It writes extracted data to `outputs/json/` and model
+individuals to `outputs/ttl/`. Errors are reported per model so that the rest
+of the batch can continue.
+
+### Convert existing JSON files without calling an LLM
+
+Convert every extraction in `outputs/json/`:
+
+```bash
+python convert_all_json_to_ttl.py
+```
+
+Convert one file by setting its input and output paths.
+
+PowerShell:
+
+```powershell
+$env:INPUT_JSON_FILE = "outputs/json/chgnet_0_3_0_model_extraction.json"
+$env:OUTPUT_TTL_FILE = "outputs/ttl/chgnet_0_3_0_model_individuals_generated.ttl"
+python json_to_ttl.py
+```
+
+Bash:
+
+```bash
+INPUT_JSON_FILE=outputs/json/chgnet_0_3_0_model_extraction.json \
+OUTPUT_TTL_FILE=outputs/ttl/chgnet_0_3_0_model_individuals_generated.ttl \
+python json_to_ttl.py
+```
+
+### Run one custom extraction
+
+`seed_kg_open_router.py` expects its source paths through environment
+variables. At minimum, set `YAML_FILE`, `PDF_FILE`, and `OUTPUT_JSON_FILE`.
+`PDF_URL`, `MODEL_PAGE_FILE`, and `MODEL_PAGE_URL` add provenance and page
+context when available.
+
+PowerShell example:
+
+```powershell
+$env:YAML_FILE = "model_yamls/chgnet_0_3_0.yml"
+$env:PDF_FILE = "papers/chgnet_0_3_0.pdf"
+$env:OUTPUT_JSON_FILE = "outputs/json/chgnet_0_3_0_model_extraction.json"
+python seed_kg_open_router.py
+```
+
+`run_tece_oam_rra_1_0.py` is a concrete single-model example that performs
+extraction, conversion, copying to the repaired directory, and validation.
+
+## SHACL validation and repair
+
+Validate all raw generated model graphs:
+
+```bash
+python validate_shacl.py
+```
+
+Validate one graph:
+
+```bash
+python validate_shacl.py --ttl outputs/ttl/chgnet_0_3_0_model_individuals_generated.ttl
+```
+
+Validate another directory and choose the report directory:
+
+```bash
+python validate_shacl.py \
+  --ttl-dir outputs/ttl_repaired \
+  --report-dir outputs/shacl_reports_after_repair
+```
+
+Validation checks both the local SHACL constraints and unknown ontology classes
+used as `rdf:type`. Reports are written as `.txt` and `.ttl`.
+
+To run the LLM repair pass over the files in `outputs/ttl/`:
+
+```bash
+python repair_ttl_with_llm.py
+```
+
+The repair script uses the corresponding JSON, YAML, paper, and validation
+report as context. Repaired graphs are written to `outputs/ttl_repaired/`.
+Because this operation makes OpenRouter calls, test extraction and validation
+on a small selection before repairing a large batch.
+
+## Dataset and material graphs
+
+Generate RDF describing the datasets and tasks scraped from the Matbench
+Discovery site:
+
+```bash
+python generate_matbench_site_context_ttl.py
+```
+
+Useful alternatives:
+
+```bash
+# Deterministic scraping only, without the OpenRouter enrichment step
+python generate_matbench_site_context_ttl.py --no-llm
+
+# Reuse the cached LLM JSON extraction
+python generate_matbench_site_context_ttl.py --use-cache
+```
+
+Generate material properties from prediction files under `dataset/`. The
+default samples up to 1,000 rows from each supported file:
+
+```bash
+python generate_dataset_materials_ttl.py
+```
+
+For a quick test or a complete export:
+
+```bash
+python generate_dataset_materials_ttl.py --files-limit 2 --limit-per-file 50
+python generate_dataset_materials_ttl.py --full
+```
+
+Generate the compact WBM material graph:
+
+```bash
+python generate_wbm_materials_ttl.py
+```
+
+Limit it during development:
+
+```bash
+python generate_wbm_materials_ttl.py --limit 100
+```
+
+To synchronize model release dates, point the script to a checkout of the
+official `matbench-discovery` source repository:
+
+```bash
+python sync_matbench_release_dates.py --source-root ../matbench-discovery
+```
+
+## Loading the graph into GraphDB
+
+The upload scripts expect GraphDB at `http://localhost:7200` and a repository
+named `matbench`. Both values can be overridden on the command line.
+
+Before uploading generated individuals, create the repository and load the
+ontology files from `ontology/` into stable named graphs. The model uploader
+preserves these four graph names:
+
+| Ontology | Named graph |
+| --- | --- |
+| Architecture | `https://k.loria.fr/graphs/ontology/architecture` |
+| Dataset | `https://k.loria.fr/graphs/ontology/dataset` |
+| Evaluation | `https://k.loria.fr/graphs/ontology/evaluation` |
+| Training | `https://k.loria.fr/graphs/ontology/training` |
+
+Upload every repaired model graph:
+
+```bash
+python upload_to_graphdb.py
+```
+
+By default this clears all named graphs except the four ontology graphs above.
+Use `--no-clear` to preserve existing graphs, or upload only one file:
+
+```bash
+python upload_to_graphdb.py --no-clear
+python upload_to_graphdb.py \
+  --ttl-file outputs/ttl_repaired/chgnet_0_3_0_model_individuals_generated.ttl
+```
+
+Upload generated material data:
+
+```bash
+python upload_dataset_materials_to_graphdb.py
+```
+
+For a different server or repository:
+
+```bash
+python upload_to_graphdb.py \
+  --graphdb-url http://localhost:7200 \
+  --repository matbench
+```
+
+## SPARQL queries
+
+See [`query/README.md`](query/README.md) for the principal SPARQL queries used
+to inspect model performance, parameter counts, release dates, and training
+datasets in GraphDB.
+
+## Important notes
+
+- LLM extraction is evidence-assisted but not guaranteed to be correct. Keep
+  the JSON extraction, Turtle conversion, and SHACL validation as separate
+  reviewable stages.
+- `upload_to_graphdb.py` clears non-ontology named graphs by default. Use
+  `--no-clear` when replacing the existing repository contents is not intended.
+- Full material generation can be large. Use the row and file limits for
+  development runs.
+- Papers and compressed prediction files make the repository relatively
+  large; use a full clone when those local source files are required.
