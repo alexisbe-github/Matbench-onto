@@ -6,7 +6,7 @@ from pyshacl import validate
 from rdflib import Graph, Namespace, RDF, OWL, RDFS, URIRef
 
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEFAULT_TTL_DIR = BASE_DIR / "outputs" / "ttl"
 ONTOLOGY_FILES = [

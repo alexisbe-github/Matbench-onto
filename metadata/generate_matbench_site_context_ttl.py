@@ -15,7 +15,7 @@ from rdflib import Graph, Literal, Namespace, RDF, RDFS, URIRef
 from rdflib.namespace import DCTERMS, OWL, XSD
 
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = BASE_DIR / "outputs" / "ttl_datasets" / "matbench_site_context_generated.ttl"
 DEFAULT_LLM_JSON = BASE_DIR / "outputs" / "json" / "matbench_site_context_llm_extraction.json"
 RAW_LLM_DIR = BASE_DIR / "outputs" / "raw_llm"

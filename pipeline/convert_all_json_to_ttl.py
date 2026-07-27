@@ -4,12 +4,12 @@ import subprocess
 from pathlib import Path
 
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 JSON_DIR = BASE_DIR / "outputs" / "json"
 TTL_DIR = BASE_DIR / "outputs" / "ttl"
 
-JSON_TO_TTL_SCRIPT = BASE_DIR / "json_to_ttl.py"
+JSON_TO_TTL_SCRIPT = BASE_DIR / "pipeline" / "json_to_ttl.py"
 
 
 def output_ttl_path(json_path):

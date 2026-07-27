@@ -4,10 +4,11 @@ from pathlib import Path
 import requests
 
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 GRAPHDB_URL = "http://localhost:7200"
 REPOSITORY = "matbench"
 
-TTL_DIR = Path("outputs/ttl_repaired")
+TTL_DIR = BASE_DIR / "outputs" / "ttl_repaired"
 
 INDIVIDUALS_GRAPH_BASE = "https://k.loria.fr/graphs/individuals"
 

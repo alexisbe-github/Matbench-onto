@@ -13,7 +13,7 @@ from rdflib.util import from_n3
 from validate_shacl import get_shacl_report, SHACL_SHAPES
 
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 TTL_DIR = BASE_DIR / "outputs" / "ttl"
 REPAIRED_TTL_DIR = BASE_DIR / "outputs" / "ttl_repaired"

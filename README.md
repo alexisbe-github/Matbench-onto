@@ -20,6 +20,9 @@ The repository can:
 
 | Path | Purpose |
 | --- | --- |
+| `pipeline/` | Model scraping, LLM extraction, RDF conversion, validation, and repair |
+| `metadata/` | Matbench dataset/task context and model release-date synchronization |
+| `graphdb/` | GraphDB upload utilities |
 | `ontology/` | Architecture, training, dataset, and evaluation ontologies and their base individuals |
 | `model_yamls/` | Matbench Discovery model submission files |
 | `papers/` | Research papers used as extraction context |
@@ -81,7 +84,7 @@ Run all commands below from the repository root.
 Start with a single model to check the complete extraction path:
 
 ```bash
-python matbench_pipeline.py --limit 1
+python pipeline/matbench_pipeline.py --limit 1
 ```
 
 This downloads the model sources, calls OpenRouter, and writes both the JSON
@@ -90,7 +93,7 @@ extraction and its generated Turtle graph.
 Validate the generated graph:
 
 ```bash
-python validate_shacl.py
+python pipeline/validate_shacl.py
 ```
 
 ## Model extraction and RDF generation
@@ -100,20 +103,20 @@ python validate_shacl.py
 Process every model currently listed by Matbench Discovery:
 
 ```bash
-python matbench_pipeline.py
+python pipeline/matbench_pipeline.py
 ```
 
 Process only a small batch:
 
 ```bash
-python matbench_pipeline.py --limit 3
+python pipeline/matbench_pipeline.py --limit 3
 ```
 
 Resume from a model slug, URL, YAML/PDF filename, JSON extraction, or TTL
 filename:
 
 ```bash
-python matbench_pipeline.py --start-from chgnet_0_3_0
+python pipeline/matbench_pipeline.py --start-from chgnet_0_3_0
 ```
 
 The pipeline stores downloaded inputs in `model_yamls/`, `papers/`, and
@@ -126,7 +129,7 @@ of the batch can continue.
 Convert every extraction in `outputs/json/`:
 
 ```bash
-python convert_all_json_to_ttl.py
+python pipeline/convert_all_json_to_ttl.py
 ```
 
 Convert one file by setting its input and output paths.
@@ -136,7 +139,7 @@ PowerShell:
 ```powershell
 $env:INPUT_JSON_FILE = "outputs/json/chgnet_0_3_0_model_extraction.json"
 $env:OUTPUT_TTL_FILE = "outputs/ttl/chgnet_0_3_0_model_individuals_generated.ttl"
-python json_to_ttl.py
+python pipeline/json_to_ttl.py
 ```
 
 Bash:
@@ -144,12 +147,12 @@ Bash:
 ```bash
 INPUT_JSON_FILE=outputs/json/chgnet_0_3_0_model_extraction.json \
 OUTPUT_TTL_FILE=outputs/ttl/chgnet_0_3_0_model_individuals_generated.ttl \
-python json_to_ttl.py
+python pipeline/json_to_ttl.py
 ```
 
 ### Run one custom extraction
 
-`seed_kg_open_router.py` expects its source paths through environment
+`pipeline/seed_kg_open_router.py` expects its source paths through environment
 variables. At minimum, set `YAML_FILE`, `PDF_FILE`, and `OUTPUT_JSON_FILE`.
 `PDF_URL`, `MODEL_PAGE_FILE`, and `MODEL_PAGE_URL` add provenance and page
 context when available.
@@ -160,7 +163,7 @@ PowerShell example:
 $env:YAML_FILE = "model_yamls/chgnet_0_3_0.yml"
 $env:PDF_FILE = "papers/chgnet_0_3_0.pdf"
 $env:OUTPUT_JSON_FILE = "outputs/json/chgnet_0_3_0_model_extraction.json"
-python seed_kg_open_router.py
+python pipeline/seed_kg_open_router.py
 ```
 
 ## SHACL validation and repair
@@ -168,19 +171,19 @@ python seed_kg_open_router.py
 Validate all raw generated model graphs:
 
 ```bash
-python validate_shacl.py
+python pipeline/validate_shacl.py
 ```
 
 Validate one graph:
 
 ```bash
-python validate_shacl.py --ttl outputs/ttl/chgnet_0_3_0_model_individuals_generated.ttl
+python pipeline/validate_shacl.py --ttl outputs/ttl/chgnet_0_3_0_model_individuals_generated.ttl
 ```
 
 Validate another directory and choose the report directory:
 
 ```bash
-python validate_shacl.py \
+python pipeline/validate_shacl.py \
   --ttl-dir outputs/ttl_repaired \
   --report-dir outputs/shacl_reports_after_repair
 ```
@@ -191,13 +194,30 @@ used as `rdf:type`. Reports are written as `.txt` and `.ttl`.
 To run the LLM repair pass over the files in `outputs/ttl/`:
 
 ```bash
-python repair_ttl_with_llm.py
+python pipeline/repair_ttl_with_llm.py
 ```
 
 The repair script uses the corresponding JSON, YAML, paper, and validation
 report as context. Repaired graphs are written to `outputs/ttl_repaired/`.
 Because this operation makes OpenRouter calls, test extraction and validation
 on a small selection before repairing a large batch.
+
+## Metadata enrichment
+
+Generate RDF individuals for the datasets and benchmark tasks published on the
+Matbench Discovery site:
+
+```bash
+python metadata/generate_matbench_site_context_ttl.py
+```
+
+Synchronize model release dates from a checkout of the official
+`matbench-discovery` repository:
+
+```bash
+python metadata/sync_matbench_release_dates.py \
+  --source-root ../matbench-discovery
+```
 
 ## Loading the graph into GraphDB
 
@@ -218,22 +238,22 @@ preserves these four graph names:
 Upload every repaired model graph:
 
 ```bash
-python upload_to_graphdb.py
+python graphdb/upload_to_graphdb.py
 ```
 
 By default this clears all named graphs except the four ontology graphs above.
 Use `--no-clear` to preserve existing graphs, or upload only one file:
 
 ```bash
-python upload_to_graphdb.py --no-clear
-python upload_to_graphdb.py \
+python graphdb/upload_to_graphdb.py --no-clear
+python graphdb/upload_to_graphdb.py \
   --ttl-file outputs/ttl_repaired/chgnet_0_3_0_model_individuals_generated.ttl
 ```
 
 For a different server or repository:
 
 ```bash
-python upload_to_graphdb.py \
+python graphdb/upload_to_graphdb.py \
   --graphdb-url http://localhost:7200 \
   --repository matbench
 ```
@@ -249,7 +269,7 @@ datasets in GraphDB.
 - LLM extraction is evidence-assisted but not guaranteed to be correct. Keep
   the JSON extraction, Turtle conversion, and SHACL validation as separate
   reviewable stages.
-- `upload_to_graphdb.py` clears non-ontology named graphs by default. Use
+- `graphdb/upload_to_graphdb.py` clears non-ontology named graphs by default. Use
   `--no-clear` when replacing the existing repository contents is not intended.
 - Research papers make the repository relatively large; use a full clone when
   those local source files are required.

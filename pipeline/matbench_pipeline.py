@@ -11,7 +11,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 SITE_URL = "https://matbench-discovery.materialsproject.org"
 MODELS_URL = f"{SITE_URL}/models"
@@ -23,8 +23,8 @@ JSON_OUTPUTS_DIR = OUTPUTS_DIR / "json"
 TTL_OUTPUTS_DIR = OUTPUTS_DIR / "ttl"
 MODEL_PAGE_OUTPUTS_DIR = OUTPUTS_DIR / "model_pages"
 
-SEED_SCRIPT = BASE_DIR / "seed_kg_open_router.py"
-JSON_TO_TTL_SCRIPT = BASE_DIR / "json_to_ttl.py"
+SEED_SCRIPT = BASE_DIR / "pipeline" / "seed_kg_open_router.py"
+JSON_TO_TTL_SCRIPT = BASE_DIR / "pipeline" / "json_to_ttl.py"
 
 FALLBACK_PDF_BY_MODEL = {
     "grace_1l_oam": "grace_2l_oam_l.pdf",
